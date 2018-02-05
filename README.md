@@ -90,16 +90,6 @@ let peerGroup.start()
 Installation
 ------------
 
-### CocoaPods
-
-BitcoinKit is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following lines to your Podfile:
-
-```ruby
-use_frameworks!
-pod 'BitcoinKit'
-```
-
 ### Carthage
 
 BitcoinKit is available through [Carthage](https://github.com/Carthage/Carthage). To install
