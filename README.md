@@ -3,6 +3,8 @@ BitcoinKit
 
 BitcoinKit implements Bitcoin protocol in Swift. It is an implementation of the Bitcoin SPV protocol written (almost) entirely in swift.
 
+<img src="https://user-images.githubusercontent.com/40610/35793683-0d497b4e-0a96-11e8-8e49-2b0ce09211a4.png" width="320px" />&nmsp;<img src="https://user-images.githubusercontent.com/40610/35793685-0da36a32-0a96-11e8-855b-ecbc3ce1474c.png" width="320px" />
+
 Features
 --------
 
