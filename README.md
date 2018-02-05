@@ -106,7 +106,7 @@ Feel free to open issues, drop us pull requests or contact us to discuss how to 
 
 Email: [kishikawakatsumi@mac.com](mailto:kishikawakatsumi@mac.com)
 
-Twitter: [@oleganza](http://twitter.com/k_katsumi)
+Twitter: [@k_katsumi](http://twitter.com/k_katsumi)
 
 
 License
