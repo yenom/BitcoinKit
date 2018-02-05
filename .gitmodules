@@ -1,0 +1,3 @@
+[submodule "Carthage/Checkouts/KeychainAccess"]
+	path = Examples/Wallet/Carthage/Checkouts/KeychainAccess
+	url = https://github.com/kishikawakatsumi/KeychainAccess.git

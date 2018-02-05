@@ -1,0 +1,11 @@
+framework module KeychainAccess {
+  umbrella header "KeychainAccess.h"
+
+  export *
+  module * { export * }
+}
+
+module KeychainAccess.Swift {
+    header "KeychainAccess-Swift.h"
+    requires objc
+}
