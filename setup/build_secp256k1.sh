@@ -24,7 +24,10 @@ mkdir -p "$TARGETDIR_SIMULATOR"
 
 cd -
 
-xcrun lipo -create "$TARGETDIR_IPHONEOS/lib/libsecp256k1.a" "$TARGETDIR_SIMULATOR/lib/libsecp256k1.a" -o "$SCRIPT_DIR/../Libraries/secp256k1/libsecp256k1.a"
+mkdir -p $SCRIPT_DIR/../Libraries/secp256k1/lib
+xcrun lipo -create "$TARGETDIR_IPHONEOS/lib/libsecp256k1.a" \
+                   "$TARGETDIR_SIMULATOR/lib/libsecp256k1.a" \
+                   -o "$SCRIPT_DIR/../Libraries/secp256k1/lib/libsecp256k1.a"
 cp -rf $TDIR/src/include $SCRIPT_DIR/../Libraries/secp256k1/
 
 rm -rf $TDIR
