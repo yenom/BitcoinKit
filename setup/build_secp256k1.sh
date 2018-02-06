@@ -8,7 +8,7 @@ trap "{ cd - ; rm -rf $TDIR; exit 255; }" SIGINT
 
 cd $TDIR
 
-git clone git@github.com:bitcoin-core/secp256k1.git src
+git clone https://github.com/bitcoin-core/secp256k1.git src
 
 CURRENTPATH=$(pwd)
 

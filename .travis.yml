@@ -1,0 +1,21 @@
+language: objective-c
+osx_image: xcode9.2
+script:
+- xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration "$CONFIGURATION"
+  -sdk "$SDK" -destination "$DESTINATION" -derivedDataPath build
+  -enableCodeCoverage YES ENABLE_TESTABILITY=YES "$ACTION"
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+env:
+  matrix:
+  - SDK=iphonesimulator CONFIGURATION=Debug ACTION=test
+  - SDK=iphonesimulator CONFIGURATION=Release ACTION=test
+  global:
+  - LANG=en_US.UTF-8
+  - LC_ALL=en_US.UTF-8
+  - WORKSPACE=BitcoinKit.xcworkspace
+  - SCHEME=BitcoinKit
+  - DESTINATION='name=iPhone 7,OS=11.2'
+branches:
+  only:
+  - master
