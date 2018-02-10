@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'BitcoinKit'
-  spec.version = '0.1.1'
+  spec.version = '0.1.2'
   spec.summary = 'Bitcoin protocol toolkit for Swift'
   spec.description = <<-DESC
                        BitcoinKit implements Bitcoin protocol in Swift. It is an implementation of the Bitcoin SPV protocol written (almost) entirely in swift.
