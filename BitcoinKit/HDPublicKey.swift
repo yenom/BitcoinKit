@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import crypto
+import BitcoinKitInternal
 
 public class HDPublicKey {
     public let network: Network
@@ -67,61 +67,15 @@ public class HDPublicKey {
         if ((0x80000000 & index) != 0) {
             throw KeyChainError.invalidChildIndex
         }
-
-        let ctx = BN_CTX_new()
-        defer { BN_CTX_free(ctx) }
-
-        var data = Data()
-        data += raw
-        data += index.bigEndian
-
-        let digest = Crypto.hmacsha512(key: chainCode, data: data)
-
-        let curveOrder = BN_new()
-        defer { BN_free(curveOrder) }
-        let curveData = Data(hex: "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141")!
-        _ = curveData.withUnsafeBytes { BN_bin2bn($0, Int32(curveData.count), curveOrder) }
-
-        let factor = BN_new()
-        defer { BN_free(factor) }
-        let pk = digest[0..<32]
-        _ = pk.withUnsafeBytes { BN_bin2bn($0, Int32(pk.count), factor) }
-        guard BN_cmp(factor, curveOrder) < 0 else {
-            throw KeyChainError.derivateionFailed
+        if let keys = BitcoinKitInternal.deriveKey(nil, publicKey: raw, chainCode: chainCode, at: index, hardened: false) {
+            let fingerPrint: UInt32 = Crypto.sha256ripemd160(raw).withUnsafeBytes { $0.pointee }
+            return HDPublicKey(raw: keys[0],
+                               chainCode: keys[1],
+                               network: network,
+                               depth: depth + 1,
+                               fingerprint: fingerPrint,
+                               childIndex: index)
         }
-
-        let derivedChainCode = digest[32..<64]
-
-        let pubNum = BN_new()
-        defer { BN_free(pubNum) }
-        _ = raw.withUnsafeBytes { BN_bin2bn($0, Int32(raw.count), pubNum) }
-
-        let group = EC_GROUP_new_by_curve_name(NID_secp256k1)
-        defer { EC_GROUP_free(group) }
-
-        let point = EC_POINT_new(group)
-        defer { EC_POINT_free(point) }
-
-        EC_POINT_bn2point(group, pubNum, point, ctx)
-        EC_POINT_mul(group, point, factor, point, BN_value_one(), ctx)
-
-        guard EC_POINT_is_at_infinity(group, point) != 1 else {
-            throw KeyChainError.derivateionFailed
-        }
-
-        var derivedPublicKey = Data(count: 33)
-        let pointNum = BN_new()
-        defer { BN_free(pointNum) }
-        EC_POINT_point2bn(group, point, POINT_CONVERSION_COMPRESSED, pointNum, ctx)
-        _ = derivedPublicKey.withUnsafeMutableBytes { BN_bn2bin(pointNum, $0) }
-
-        let derivedFingerPrint: UInt32 = Crypto.sha256ripemd160(raw).withUnsafeBytes { $0.pointee }
-
-        return HDPublicKey(raw: derivedPublicKey,
-                           chainCode: derivedChainCode,
-                           network: network,
-                           depth: depth + 1,
-                           fingerprint: derivedFingerPrint,
-                           childIndex: index)
+        throw KeyChainError.derivateionFailed
     }
 }

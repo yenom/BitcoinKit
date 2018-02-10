@@ -7,41 +7,28 @@
 //
 
 import Foundation
-import crypto
+import BitcoinKitInternal
 import secp256k1
 
 public struct Crypto {
-    public static func sha256(_ plain: Data) -> Data {
-        let length = Int(SHA256_DIGEST_LENGTH)
-        var result = [UInt8](repeating: 0, count: length)
-        _ = plain.withUnsafeBytes { SHA256($0, plain.count, &result) }
-        return Data(bytes: result, count: length)
+    public static func sha256(_ data: Data) -> Data {
+        return BitcoinKitInternal.sha256(data)
     }
     
-    public static func sha256sha256(_ plain: Data) -> Data {
-        return sha256(sha256(plain))
+    public static func sha256sha256(_ data: Data) -> Data {
+        return sha256(sha256(data))
     }
 
-    public static func ripemd160(_ plain: Data) -> Data {
-        let length = Int(RIPEMD160_DIGEST_LENGTH)
-        var result = [UInt8](repeating: 0, count: length)
-        _ = plain.withUnsafeBytes { RIPEMD160($0, plain.count, &result) }
-        return Data(bytes: result, count: length)
+    public static func ripemd160(_ data: Data) -> Data {
+        return BitcoinKitInternal.ripemd160(data)
     }
 
-    public static func sha256ripemd160(_ plain: Data) -> Data {
-        return ripemd160(sha256(plain))
+    public static func sha256ripemd160(_ data: Data) -> Data {
+        return ripemd160(sha256(data))
     }
 
-    public static func hmacsha512(key: Data, data: Data) -> Data {
-        var length = UInt32(SHA512_DIGEST_LENGTH)
-        var result = [UInt8](repeating: 0, count: Int(length))
-        _ = key.withUnsafeBytes { (keyPtr) in
-            data.withUnsafeBytes { (dataPtr) in
-                HMAC(EVP_sha512(), keyPtr, Int32(key.count), dataPtr, data.count, &result, &length)
-            }
-        }
-        return Data(result)
+    public static func hmacsha512(data: Data, key: Data) -> Data {
+        return BitcoinKitInternal.hmacsha512(data, key: key)
     }
 
     public static func sign(_ data: Data, privateKey: PrivateKey) throws -> Data {

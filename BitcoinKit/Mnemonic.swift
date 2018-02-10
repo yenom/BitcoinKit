@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import crypto
+import BitcoinKitInternal
 
 public struct Mnemonic {
     public enum Strength : Int {
@@ -60,12 +60,7 @@ public struct Mnemonic {
     public static func seed(mnemonic m: [String], passphrase: String = "") -> Data {
         let mnemonic = m.joined(separator: " ").decomposedStringWithCompatibilityMapping.data(using: .utf8)!
         let salt = ("mnemonic" + passphrase).decomposedStringWithCompatibilityMapping.data(using: .utf8)!
-        var seed = Data(count: 64)
-        _ = seed.withUnsafeMutableBytes { (seedPtr) in
-            mnemonic.withUnsafeBytes { (mnemonicPtr) in
-                PKCS5_PBKDF2_HMAC(mnemonicPtr, Int32(mnemonic.count), UnsafePointer(salt.map { $0 }), Int32(salt.count), 2048, EVP_sha512(), Int32(seed.count), seedPtr)
-            }
-        }
+        let seed = BitcoinKitInternal.deriveKey(mnemonic, salt: salt, iterations: 2048, keyLength: 64)
         return seed
     }
 
