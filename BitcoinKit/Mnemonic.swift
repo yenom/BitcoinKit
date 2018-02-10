@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import BitcoinKitInternal
+import BitcoinKit.Private
 
 public struct Mnemonic {
     public enum Strength : Int {

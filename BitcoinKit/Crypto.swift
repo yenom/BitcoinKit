@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import BitcoinKitInternal
+import BitcoinKit.Private
 import secp256k1
 
 public struct Crypto {

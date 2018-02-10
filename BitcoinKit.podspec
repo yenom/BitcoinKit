@@ -14,6 +14,8 @@ Pod::Spec.new do |spec|
   spec.requires_arc = true
   spec.source = { git: 'https://github.com/kishikawakatsumi/BitcoinKit.git', tag: "v#{spec.version}" }
   spec.source_files = 'BitcoinKit/**/*.{h,m,swift}'
+  spec.private_header_files = 'BitcoinKit/**/BitcoinKitInternal.h'
+  spec.module_map = 'BitcoinKit/BitcoinKit.modulemap'
   spec.ios.deployment_target = '8.0'
   spec.swift_version = '4.0'
 

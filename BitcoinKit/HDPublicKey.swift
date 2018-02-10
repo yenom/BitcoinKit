@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import BitcoinKitInternal
+import BitcoinKit.Private
 
 public class HDPublicKey {
     public let network: Network
