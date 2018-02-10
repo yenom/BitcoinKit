@@ -1,4 +1,0 @@
-module BitcoinKitInternal {
-    header "../../BitcoinKit/BitcoinKitInternal.h"
-    link "crypto"
-}
