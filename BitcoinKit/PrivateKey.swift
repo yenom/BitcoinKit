@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import crypto
 
 public struct PrivateKey {
     let raw: Data
@@ -15,14 +14,6 @@ public struct PrivateKey {
 
     public init(network: Network = .testnet) {
         self.network = network
-
-        let ctx = BN_CTX_new();
-        defer { BN_CTX_free(ctx) }
-        let start = BN_new()
-        defer {
-            BN_clear(start)
-            BN_free(start)
-        }
 
         func check(_ vch: [UInt8]) -> Bool {
             let max: [UInt8] = [
@@ -52,10 +43,12 @@ public struct PrivateKey {
             return true
         }
 
-        var key = Data(count: 32)
+        let count = 32
+        var key = Data(count: count)
+        var status: Int32 = 0
         repeat {
-            _ = key.withUnsafeMutableBytes { RAND_bytes($0, 32) }
-        } while (!check([UInt8](key)))
+            status = key.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, count, $0) }
+        } while (status != 0 || !check([UInt8](key)))
 
         self.raw = key
     }
@@ -94,13 +87,9 @@ public struct PrivateKey {
     }
 
     public func toWIF() -> String {
-        let d1 = raw
-        let d2 = Data([network.privatekey]) + d1
-        let h = Crypto.sha256sha256(d2)
-        let checksum = Data(h.prefix(4))
-        let d4 = d2 + checksum
-        let wif = Base58.encode(d4)
-        return wif
+        let data = Data([network.privatekey]) + raw
+        let checksum = Crypto.sha256sha256(data).prefix(4)
+        return Base58.encode(data + checksum)
     }
 }
 

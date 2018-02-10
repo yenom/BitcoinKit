@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1419E83A202CDBE500FCB0BE /* BitcoinKitInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinKitInternal.h */; };
+		1419E83B202CDBE500FCB0BE /* BitcoinKitInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 1419E839202CDBE500FCB0BE /* BitcoinKitInternal.m */; };
 		141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E12022588C00A08B04 /* PublicKey.swift */; };
 		141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E32022589E00A08B04 /* PrivateKey.swift */; };
 		1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463E6B32025E9480033DAAE /* BlockStore.swift */; };
@@ -47,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1419E838202CDBE500FCB0BE /* BitcoinKitInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinKitInternal.h; sourceTree = "<group>"; };
+		1419E839202CDBE500FCB0BE /* BitcoinKitInternal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitcoinKitInternal.m; sourceTree = "<group>"; };
 		141FE2E12022588C00A08B04 /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
 		141FE2E32022589E00A08B04 /* PrivateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKey.swift; sourceTree = "<group>"; };
 		1463E6B32025E9480033DAAE /* BlockStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStore.swift; sourceTree = "<group>"; };
@@ -144,6 +148,8 @@
 				147F9728201FC89E0071F49D /* BloomFilter.swift */,
 				147494ED201FADAC006D1CF8 /* MurmurHash.swift */,
 				14CDC38B2021EF5000C01556 /* Helpers.swift */,
+				1419E838202CDBE500FCB0BE /* BitcoinKitInternal.h */,
+				1419E839202CDBE500FCB0BE /* BitcoinKitInternal.m */,
 				147494CB201F9A29006D1CF8 /* Info.plist */,
 			);
 			path = BitcoinKit;
@@ -166,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				147494D8201F9A29006D1CF8 /* BitcoinKit.h in Headers */,
+				1419E83A202CDBE500FCB0BE /* BitcoinKitInternal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,7 +286,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -d \"$SRCROOT/Libraries/secp256k1/lib\" ] || [ ! -d \"$SRCROOT/Libraries/crypto/lib\" ]; then\n  env -i PATH=$PATH sh \"$SRCROOT/setup/build_libraries.sh\"\nfi\n";
+			shellScript = "if [ ! -d \"$SRCROOT/Libraries/secp256k1/lib\" ] || [ ! -d \"$SRCROOT/Libraries/openssl/lib\" ]; then\n  env -i PATH=$PATH sh \"$SRCROOT/setup/build_libraries.sh\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -302,6 +309,7 @@
 				14CDC3862021824200C01556 /* Wallet.swift in Sources */,
 				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
+				1419E83B202CDBE500FCB0BE /* BitcoinKitInternal.m in Sources */,
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
 				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
 				1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */,
@@ -389,7 +397,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -442,7 +449,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -463,19 +469,20 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/Libraries/crypto/include",
+					"$(SRCROOT)/Libraries/openssl/include",
 					"$(SRCROOT)/Libraries/secp256k1/include",
 				);
 				INFOPLIST_FILE = BitcoinKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/Libraries/crypto/lib",
+					"$(SRCROOT)/Libraries/openssl/lib",
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries $(SRCROOT)/BitcoinKit/BitcoinKitInternal";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -495,19 +502,20 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/Libraries/crypto/include",
+					"$(SRCROOT)/Libraries/openssl/include",
 					"$(SRCROOT)/Libraries/secp256k1/include",
 				);
 				INFOPLIST_FILE = BitcoinKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/Libraries/crypto/lib",
+					"$(SRCROOT)/Libraries/openssl/lib",
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries $(SRCROOT)/BitcoinKit/BitcoinKitInternal";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
