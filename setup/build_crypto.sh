@@ -14,11 +14,11 @@ tar zxf openssl-$OPENSSL_VERSION.tar.gz
 
 cd openssl-$OPENSSL_VERSION
 
-sh "$SCRIPT_DIR/build_crypto_common.sh" iphoneos arm64
-sh "$SCRIPT_DIR/build_crypto_common.sh" iphoneos armv7s
-sh "$SCRIPT_DIR/build_crypto_common.sh" iphoneos armv7
-sh "$SCRIPT_DIR/build_crypto_common.sh" iphonesimulator x86_64
-sh "$SCRIPT_DIR/build_crypto_common.sh" iphonesimulator i386
+sh "$SCRIPT_DIR/build_crypto_impl.sh" iphoneos arm64
+sh "$SCRIPT_DIR/build_crypto_impl.sh" iphoneos armv7s
+sh "$SCRIPT_DIR/build_crypto_impl.sh" iphoneos armv7
+sh "$SCRIPT_DIR/build_crypto_impl.sh" iphonesimulator x86_64
+sh "$SCRIPT_DIR/build_crypto_impl.sh" iphonesimulator i386
 
 
 mkdir -p "$SCRIPT_DIR/../Libraries/openssl/lib"
