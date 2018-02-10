@@ -13,18 +13,15 @@ Pod::Spec.new do |spec|
 
   spec.requires_arc = true
   spec.source = { git: 'https://github.com/kishikawakatsumi/BitcoinKit.git', tag: "v#{spec.version}" }
-  spec.source_files = 'BitcoinKit/*.{h,swift}'
+  spec.source_files = 'BitcoinKit/**/*.{h,m,swift}'
   spec.ios.deployment_target = '8.0'
   spec.swift_version = '4.0'
 
   spec.pod_target_xcconfig = { 'SWIFT_WHOLE_MODULE_OPTIMIZATION' => 'YES',
                                'APPLICATION_EXTENSION_API_ONLY' => 'YES',
                                'SWIFT_INCLUDE_PATHS' => '${PODS_ROOT}/BitcoinKit/Libraries',
-                               'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/BitcoinKit/Libraries/crypto/include" "${PODS_ROOT}/BitcoinKit/Libraries/secp256k1/include"',
-                               'LIBRARY_SEARCH_PATHS' => '"${PODS_ROOT}/BitcoinKit/Libraries/crypto/lib" "${PODS_ROOT}/BitcoinKit/Libraries/secp256k1/lib"' }
-
-  spec.user_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/BitcoinKit/Libraries/crypto/include" "${PODS_ROOT}/BitcoinKit/Libraries/secp256k1/include"' }
-
+                               'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/BitcoinKit/Libraries/openssl/include" "${PODS_ROOT}/BitcoinKit/Libraries/secp256k1/include"',
+                               'LIBRARY_SEARCH_PATHS' => '"${PODS_ROOT}/BitcoinKit/Libraries/openssl/lib" "${PODS_ROOT}/BitcoinKit/Libraries/secp256k1/lib"' }
   spec.preserve_paths = ['setup', 'Libraries']
   spec.prepare_command = 'sh setup/build_libraries.sh'
 end
