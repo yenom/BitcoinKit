@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 
-SCRIPT_DIR=`dirname $0`
+SCRIPT_DIR=`dirname "$0"`
 
 TDIR=`mktemp -d`
 trap "{ cd - ; rm -rf $TDIR; exit 255; }" SIGINT
@@ -10,12 +10,12 @@ cd $TDIR
 
 git clone https://github.com/bitcoin-core/secp256k1.git src
 
-CURRENTPATH=$(pwd)
+CURRENTPATH=`pwd`
 
-TARGETDIR_IPHONEOS="$CURRENTPATH"/.build/iphoneos
+TARGETDIR_IPHONEOS="$CURRENTPATH/.build/iphoneos"
 mkdir -p "$TARGETDIR_IPHONEOS"
 
-TARGETDIR_SIMULATOR="$CURRENTPATH"/.build/iphonesimulator
+TARGETDIR_SIMULATOR="$CURRENTPATH/.build/iphonesimulator"
 mkdir -p "$TARGETDIR_SIMULATOR"
 
 (cd src && ./autogen.sh)
@@ -24,10 +24,12 @@ mkdir -p "$TARGETDIR_SIMULATOR"
 
 cd -
 
-mkdir -p $SCRIPT_DIR/../Libraries/secp256k1/lib
+mkdir -p "$SCRIPT_DIR/../Libraries/secp256k1/lib"
 xcrun lipo -create "$TARGETDIR_IPHONEOS/lib/libsecp256k1.a" \
                    "$TARGETDIR_SIMULATOR/lib/libsecp256k1.a" \
                    -o "$SCRIPT_DIR/../Libraries/secp256k1/lib/libsecp256k1.a"
-cp -rf $TDIR/src/include $SCRIPT_DIR/../Libraries/secp256k1/
+cp -rf $TDIR/src/include "$SCRIPT_DIR/../Libraries/secp256k1"
 
 rm -rf $TDIR
+
+exit 0
