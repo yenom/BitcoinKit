@@ -29,6 +29,7 @@
 		1482B5E42026F2590098B612 /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E32026F2580098B612 /* WordList.swift */; };
 		1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E7202721FF0098B612 /* HDPrivateKey.swift */; };
 		1482B5EA20273B8A0098B612 /* HDPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E920273B8A0098B612 /* HDPublicKey.swift */; };
+		14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A7B202F79F900A6CB34 /* PaymentURI.swift */; };
 		14CDC3862021824200C01556 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3852021824200C01556 /* Wallet.swift */; };
 		14CDC3882021855200C01556 /* PeerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3872021855200C01556 /* PeerGroup.swift */; };
 		14CDC38A2021881A00C01556 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3892021881A00C01556 /* Address.swift */; };
@@ -74,6 +75,7 @@
 		1482B5E32026F2580098B612 /* WordList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
 		1482B5E7202721FF0098B612 /* HDPrivateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPrivateKey.swift; sourceTree = "<group>"; };
 		1482B5E920273B8A0098B612 /* HDPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPublicKey.swift; sourceTree = "<group>"; };
+		14839A7B202F79F900A6CB34 /* PaymentURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentURI.swift; sourceTree = "<group>"; };
 		14CDC3852021824200C01556 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		14CDC3872021855200C01556 /* PeerGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerGroup.swift; sourceTree = "<group>"; };
 		14CDC3892021881A00C01556 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				14F37A3920209B5400D34748 /* Transaction.swift */,
 				14F37A3B20209F9200D34748 /* Script.swift */,
 				14F37A3D2020A02000D34748 /* Signature.swift */,
+				14839A7B202F79F900A6CB34 /* PaymentURI.swift */,
 				147494EB201F9E4F006D1CF8 /* Network.swift */,
 				147494E5201F9BEF006D1CF8 /* Encoding.swift */,
 				147494EF201FAE30006D1CF8 /* Serialization.swift */,
@@ -313,6 +316,7 @@
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
 				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
 				1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */,
+				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
 				14CDC3882021855200C01556 /* PeerGroup.swift in Sources */,
 				147494EA201F9C1F006D1CF8 /* Peer.swift in Sources */,
 				14CDC38A2021881A00C01556 /* Address.swift in Sources */,
