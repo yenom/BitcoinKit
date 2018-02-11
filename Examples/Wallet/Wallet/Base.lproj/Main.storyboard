@@ -141,6 +141,9 @@
                             <outlet property="delegate" destination="zoc-8V-2Uh" id="6Au-8j-Exg"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="syncButton" destination="3ub-u2-7WJ" id="M1o-kc-85u"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IT3-Rf-oqE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

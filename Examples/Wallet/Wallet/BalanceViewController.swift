@@ -12,6 +12,7 @@ import BitcoinKit
 class BalanceViewController: UITableViewController, PeerGroupDelegate {
     var peerGroup: PeerGroup?
     var wallet: WalletProtocol!
+    @IBOutlet weak var syncButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,13 +23,22 @@ class BalanceViewController: UITableViewController, PeerGroupDelegate {
     }
 
     @IBAction func sync(_ sender: UIButton) {
-        let blockStore = try! SQLiteBlockStore.default()
-        let blockChain = BlockChain(wallet: wallet, blockStore: blockStore)
+        if let peerGroup = peerGroup {
+            peerGroup.stop()
+            peerGroup.delegate = nil
+            self.peerGroup = nil
 
-        peerGroup = PeerGroup(blockChain: blockChain)
-        peerGroup?.delegate = self
+            syncButton.setTitle("Sync", for: .normal)
+        } else {
+            let blockStore = try! SQLiteBlockStore.default()
+            let blockChain = BlockChain(wallet: wallet, blockStore: blockStore)
 
-        peerGroup?.start()
+            peerGroup = PeerGroup(blockChain: blockChain)
+            peerGroup?.delegate = self
+
+            peerGroup?.start()
+            syncButton.setTitle("Stop", for: .normal)
+        }
     }
 
     func peerGroupDidStart(_ peer: PeerGroup) {}
