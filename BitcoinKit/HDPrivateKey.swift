@@ -62,24 +62,17 @@ public class HDPrivateKey {
 
     public func derived(at index: UInt32, hardened: Bool = false) throws -> HDPrivateKey {
         // As we use explicit parameter "hardened", do not allow higher bit set.
-        if ((0x80000000 & index) != 0) {
-            throw KeyChainError.invalidChildIndex
+        if (0x80000000 & index) != 0 {
+            fatalError("invalid child index")
         }
-        let pubKey = publicKey().raw
-        if let keys = BitcoinKitInternal.deriveKey(raw, publicKey: pubKey, chainCode: chainCode, at: index, hardened: hardened) {
-            let fingerPrint: UInt32 = Crypto.sha256ripemd160(pubKey).withUnsafeBytes { $0.pointee }
-            return HDPrivateKey(privateKey: keys[0],
-                                chainCode: keys[1],
-                                network: network,
-                                depth: depth + 1,
-                                fingerprint: fingerPrint,
-                                childIndex: (hardened ? (0x80000000 | index) : index).bigEndian)
+
+        guard let derivedKey = _HDKey(privateKey: raw, publicKey: publicKey().raw, chainCode: chainCode, depth: depth, fingerprint: fingerprint, childIndex: childIndex).derived(at: index, hardened: hardened) else {
+            throw DerivationError.derivateionFailed
         }
-        throw KeyChainError.derivateionFailed
+        return HDPrivateKey(privateKey: derivedKey.privateKey!, chainCode: derivedKey.chainCode, network: network, depth: derivedKey.depth, fingerprint: derivedKey.fingerprint, childIndex: derivedKey.childIndex)
     }
 }
 
-public enum KeyChainError : Error {
-    case invalidChildIndex
+public enum DerivationError : Error {
     case derivateionFailed
 }

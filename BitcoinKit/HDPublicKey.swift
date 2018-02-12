@@ -65,17 +65,11 @@ public class HDPublicKey {
     public func derived(at index: UInt32) throws -> HDPublicKey {
         // As we use explicit parameter "hardened", do not allow higher bit set.
         if ((0x80000000 & index) != 0) {
-            throw KeyChainError.invalidChildIndex
+            fatalError("invalid child index")
         }
-        if let keys = BitcoinKitInternal.deriveKey(nil, publicKey: raw, chainCode: chainCode, at: index, hardened: false) {
-            let fingerPrint: UInt32 = Crypto.sha256ripemd160(raw).withUnsafeBytes { $0.pointee }
-            return HDPublicKey(raw: keys[0],
-                               chainCode: keys[1],
-                               network: network,
-                               depth: depth + 1,
-                               fingerprint: fingerPrint,
-                               childIndex: index)
+        guard let derivedKey = _HDKey(privateKey: nil, publicKey: raw, chainCode: chainCode, depth: depth, fingerprint: fingerprint, childIndex: childIndex).derived(at: index, hardened: false) else {
+            throw DerivationError.derivateionFailed
         }
-        throw KeyChainError.derivateionFailed
+        return HDPublicKey(raw: derivedKey.publicKey!, chainCode: derivedKey.chainCode, network: network, depth: derivedKey.depth, fingerprint: derivedKey.fingerprint, childIndex: derivedKey.childIndex)
     }
 }
