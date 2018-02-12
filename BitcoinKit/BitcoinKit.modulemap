@@ -5,7 +5,7 @@ framework module BitcoinKit {
     module * { export * }
 
     explicit module Private {
-        header "BitcoinKitInternal.h"
+        header "BitcoinKitPrivate.h"
         link "crypto"
     }
 }

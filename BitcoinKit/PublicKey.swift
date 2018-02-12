@@ -23,17 +23,17 @@ public struct PublicKey {
         self.network = network
     }
 
-    // Version = 1 byte of 0 (zero); on the test network, this is 1 byte of 111
-    // Key hash = Version concatenated with RIPEMD-160(SHA-256(public key))
-    // Checksum = 1st 4 bytes of SHA-256(SHA-256(Key hash))
-    // Bitcoin Address = Base58Encode(Key hash concatenated with Checksum)
+    /// Version = 1 byte of 0 (zero); on the test network, this is 1 byte of 111
+    /// Key hash = Version concatenated with RIPEMD-160(SHA-256(public key))
+    /// Checksum = 1st 4 bytes of SHA-256(SHA-256(Key hash))
+    /// Bitcoin Address = Base58Encode(Key hash concatenated with Checksum)
     public func toAddress() -> String {
         let hash = Data([network.pubkeyhash]) + Crypto.sha256ripemd160(raw)
         return publicKeyHashToAddress(hash)
     }
 
     static func from(privateKey raw: Data, compression: Bool = false) -> Data {
-        return BitcoinKitInternal.computePublicKey(fromPrivateKey: raw, compression: compression)
+        return _Key.computePublicKey(fromPrivateKey: raw, compression: compression)
     }
 }
 

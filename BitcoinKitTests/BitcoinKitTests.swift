@@ -238,6 +238,20 @@ class BitcoinKitTests: XCTestCase {
         XCTAssertEqual(m0prv.extended(), "xprv9uPDJpEQgRQfDcW7BkF7eTya6RPxXeJCqCJGHuCJ4GiRVLzkTXBAJMu2qaMWPrS7AANYqdq6vcBcBUdJCVVFceUvJFjaPdGZ2y9WACViL4L")
     }
 
+    func testHDKey4() {
+        // Master: 000102030405060708090a0b0c0d0e0f
+        let seed = Data(hex: "000102030405060708090a0b0c0d0e0f")!
+
+        // m
+        let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
+        // m/0'
+        let m0prv = try! privateKey.derived(at: 0, hardened: true)
+        // m/0'/1
+        let m01prv = try! m0prv.derived(at: 1)
+        let m011pub = try! m01prv.publicKey().derived(at: 1)
+        XCTAssertEqual(m011pub.extended(), "xpub6D4BDPcEgbv6teFCGk7PMijta2aSGvRbvFX8dthHedYVVMM8QBf9xp9TF6TeuHYD9xiHGcuGNZQkKmD9jvojPj7YqnqtB3iYXv3f8s1JzwS")
+    }
+
     func testMnemonic1() {
         let testVectors = """
             {

@@ -60,7 +60,7 @@ public struct Mnemonic {
     public static func seed(mnemonic m: [String], passphrase: String = "") -> Data {
         let mnemonic = m.joined(separator: " ").decomposedStringWithCompatibilityMapping.data(using: .utf8)!
         let salt = ("mnemonic" + passphrase).decomposedStringWithCompatibilityMapping.data(using: .utf8)!
-        let seed = BitcoinKitInternal.deriveKey(mnemonic, salt: salt, iterations: 2048, keyLength: 64)
+        let seed = _Key.deriveKey(mnemonic, salt: salt, iterations: 2048, keyLength: 64)
         return seed
     }
 

@@ -6,13 +6,13 @@
 //  Copyright © 2018 Kishikawa Katsumi. All rights reserved.
 //
 
-#import "BitcoinKitInternal.h"
+#import "BitcoinKitPrivate.h"
 #import <openssl/sha.h>
 #import <openssl/ripemd.h>
 #import <openssl/hmac.h>
 #import <openssl/ec.h>
 
-@implementation BitcoinKitInternal
+@implementation _Hash
 
 + (NSData *)sha256:(NSData *)data {
     NSMutableData *result = [NSMutableData dataWithLength:SHA256_DIGEST_LENGTH];
@@ -20,10 +20,18 @@
     return result;
 }
 
++ (NSData *)sha256sha256:(NSData *)data {
+    return [self sha256:[self sha256:data]];
+}
+
 + (NSData *)ripemd160:(NSData *)data {
     NSMutableData *result = [NSMutableData dataWithLength:RIPEMD160_DIGEST_LENGTH];
     RIPEMD160(data.bytes, data.length, result.mutableBytes);
     return result;
+}
+
++ (NSData *)sha256ripemd160:(NSData *)data {
+    return [self ripemd160:[self sha256:data]];
 }
 
 + (NSData *)hmacsha512:(NSData *)data key:(NSData *)key {
@@ -33,9 +41,9 @@
     return result;
 }
 
-+ (NSData *)generatePrivateKey {
-    return [NSData data];
-}
+@end
+
+@implementation _Key
 
 + (NSData *)computePublicKeyFromPrivateKey:(NSData *)privateKey compression:(BOOL)compression {
     BN_CTX *ctx = BN_CTX_new();
@@ -64,8 +72,8 @@
         BN_free(n);
     }
 
-    BN_free(prv);
     EC_POINT_free(pub);
+    BN_free(prv);
     EC_KEY_free(key);
     BN_CTX_free(ctx);
 
@@ -78,90 +86,89 @@
     return result;
 }
 
-NSString* BTCHexFromDataWithFormat(NSData* data, const char* format) {
-    if (!data) return nil;
+@end
 
-    NSUInteger length = data.length;
-    if (length == 0) return @"";
+@implementation _HDKey
 
-    NSMutableData* resultdata = [NSMutableData dataWithLength:length * 2];
-    char *dest = resultdata.mutableBytes;
-    unsigned const char *src = data.bytes;
-    for (int i = 0; i < length; ++i) {
-        sprintf(dest + i*2, format, (unsigned int)(src[i]));
+- (instancetype)initWithPrivateKey:(NSData *)privateKey publicKey:(NSData *)publicKey chainCode:(NSData *)chainCode depth:(uint8_t)depth fingerprint:(uint32_t)fingerprint childIndex:(uint32_t)childIndex {
+    self = [super init];
+    if (self) {
+        _privateKey = privateKey;
+        _publicKey = publicKey;
+        _chainCode = chainCode;
+        _depth = depth;
+        _fingerprint = fingerprint;
+        _childIndex = childIndex;
     }
-    return [[NSString alloc] initWithData:resultdata encoding:NSASCIIStringEncoding];
+    return self;
 }
 
-NSString* BTCHexStringFromData(NSData* data) { // deprecated
-    return BTCHexFromDataWithFormat(data, "%02x");
-}
-
-+ (NSArray *)deriveKey:(nullable NSData *)privateKey publicKey:(NSData *)publicKey chainCode:(NSData *)chainCode atIndex:(uint32_t)index hardened:(BOOL)hardened {
+- (_HDKey *)derivedAtIndex:(uint32_t)index hardened:(BOOL)hardened {
     BN_CTX *ctx = BN_CTX_new();
 
     NSMutableData *data = [NSMutableData data];
     if (hardened) {
         uint8_t padding = 0;
         [data appendBytes:&padding length:1];
-        [data appendData:privateKey];
+        [data appendData:self.privateKey];
     } else {
-        [data appendData:publicKey];
+        [data appendData:self.publicKey];
     }
 
-    uint32_t i = OSSwapHostToBigInt32(hardened ? (0x80000000 | index) : index);
-    [data appendBytes:&i length:sizeof(i)];
+    uint32_t childIndex = OSSwapHostToBigInt32(hardened ? (0x80000000 | index) : index);
+    [data appendBytes:&childIndex length:sizeof(childIndex)];
 
-    NSData *digest = [self hmacsha512:data key:chainCode];
-    NSData *prv = [digest subdataWithRange:NSMakeRange(0, 32)];
+    NSData *digest = [_Hash hmacsha512:data key:self.chainCode];
+    NSData *derivedPrivateKey = [digest subdataWithRange:NSMakeRange(0, 32)];
     NSData *derivedChainCode = [digest subdataWithRange:NSMakeRange(32, 32)];
 
     BIGNUM *curveOrder = BN_new();
     BN_hex2bn(&curveOrder, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141");
 
     BIGNUM *factor = BN_new();
-    BN_bin2bn(prv.bytes, (int)prv.length, factor);
+    BN_bin2bn(derivedPrivateKey.bytes, (int)derivedPrivateKey.length, factor);
     // Factor is too big, this derivation is invalid.
     if (BN_cmp(factor, curveOrder) >= 0) {
         return nil;
     }
 
     NSMutableData *result;
-    if (privateKey) {
-        BIGNUM *pkNum = BN_new();
-        BN_bin2bn(privateKey.bytes, (int)privateKey.length, pkNum);
+    if (self.privateKey) {
+        BIGNUM *privateKey = BN_new();
+        BN_bin2bn(self.privateKey.bytes, (int)self.privateKey.length, privateKey);
 
-        BN_mod_add(pkNum, pkNum, factor, curveOrder, ctx);
+        BN_mod_add(privateKey, privateKey, factor, curveOrder, ctx);
         // Check for invalid derivation.
-        if (BN_is_zero(pkNum)) {
+        if (BN_is_zero(privateKey)) {
             return nil;
         }
 
-        int numBytes = BN_num_bytes(pkNum);
+        int numBytes = BN_num_bytes(privateKey);
         result = [NSMutableData dataWithLength:numBytes];
-        BN_bn2bin(pkNum, result.mutableBytes);
+        BN_bn2bin(privateKey, result.mutableBytes);
 
-        BN_free(pkNum);
+        BN_free(privateKey);
     } else {
-        BIGNUM *pubNum = BN_new();
-        BN_bin2bn(publicKey.bytes, (int)publicKey.length, pubNum);
+        BIGNUM *publicKey = BN_new();
+        BN_bin2bn(self.publicKey.bytes, (int)self.publicKey.length, publicKey);
         EC_GROUP *group = EC_GROUP_new_by_curve_name(NID_secp256k1);
 
         EC_POINT *point = EC_POINT_new(group);
-        EC_POINT_bn2point(group, pubNum, point, ctx);
+        EC_POINT_bn2point(group, publicKey, point, ctx);
         EC_POINT_mul(group, point, factor, point, BN_value_one(), ctx);
         // Check for invalid derivation.
-        if (EC_POINT_is_at_infinity(group, point) == 0) {
+        if (EC_POINT_is_at_infinity(group, point) == 1) {
             return nil;
         }
 
-        BIGNUM *pointNum = BN_new();
+        BIGNUM *n = BN_new();
         result = [NSMutableData dataWithLength:33];
 
-        EC_POINT_point2bn(group, point, POINT_CONVERSION_COMPRESSED, pointNum, ctx);
-        BN_bn2bin(pointNum, result.mutableBytes);
+        EC_POINT_point2bn(group, point, POINT_CONVERSION_COMPRESSED, n, ctx);
+        BN_bn2bin(n, result.mutableBytes);
 
-        BN_free(pointNum);
+        BN_free(n);
+        BN_free(publicKey);
         EC_POINT_free(point);
         EC_GROUP_free(group);
     }
@@ -170,7 +177,8 @@ NSString* BTCHexStringFromData(NSData* data) { // deprecated
     BN_free(curveOrder);
     BN_CTX_free(ctx);
 
-    return @[result, derivedChainCode];
+    uint32_t *fingerPrint = (uint32_t *)[_Hash sha256ripemd160:self.publicKey].bytes;
+    return [[_HDKey alloc] initWithPrivateKey:result publicKey:result chainCode:derivedChainCode depth:self.depth + 1 fingerprint:*fingerPrint childIndex:childIndex];
 }
 
 @end

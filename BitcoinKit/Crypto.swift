@@ -12,7 +12,7 @@ import secp256k1
 
 public struct Crypto {
     public static func sha256(_ data: Data) -> Data {
-        return BitcoinKitInternal.sha256(data)
+        return _Hash.sha256(data)
     }
     
     public static func sha256sha256(_ data: Data) -> Data {
@@ -20,7 +20,7 @@ public struct Crypto {
     }
 
     public static func ripemd160(_ data: Data) -> Data {
-        return BitcoinKitInternal.ripemd160(data)
+        return _Hash.ripemd160(data)
     }
 
     public static func sha256ripemd160(_ data: Data) -> Data {
@@ -28,7 +28,7 @@ public struct Crypto {
     }
 
     public static func hmacsha512(data: Data, key: Data) -> Data {
-        return BitcoinKitInternal.hmacsha512(data, key: key)
+        return _Hash.hmacsha512(data, key: key)
     }
 
     public static func sign(_ data: Data, privateKey: PrivateKey) throws -> Data {
