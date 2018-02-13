@@ -333,7 +333,7 @@ public class Peer : NSObject, StreamDelegate {
     }
 
     private func handleVerackMessage(payload: Data) {
-        log("got verack in \(Date().timeIntervalSince(context.pingTime))s")
+        log("got verack in \(String(format: "%g", Date().timeIntervalSince(context.pingTime)))s")
         context.gotVerack = true
         delegate?.peerDidConnect(self)
     }
@@ -389,7 +389,6 @@ public class Peer : NSObject, StreamDelegate {
     private func handleBlockMessage(payload: Data) {
         let block = BlockMessage.deserialize(payload)
         let blockHash = Data(Crypto.sha256sha256(payload.prefix(80)).reversed())
-        log("got block \(blockHash.hex)")
         delegate?.peer(self, didReceiveBlockMessage: block, hash: blockHash)
 
         context.inventoryItems[blockHash] = nil
@@ -402,7 +401,6 @@ public class Peer : NSObject, StreamDelegate {
     private func handleMerkleBlockMessage(payload: Data) {
         let merkleBlock = MerkleBlockMessage.deserialize(payload)
         let blockHash = Crypto.sha256sha256(payload.prefix(80))
-        log("got merkleblock")
         delegate?.peer(self, didReceiveMerkleBlockMessage: merkleBlock, hash: blockHash)
 
         context.inventoryItems[Data(blockHash.reversed())] = nil
@@ -415,6 +413,7 @@ public class Peer : NSObject, StreamDelegate {
     private func handleTransaction(payload: Data) {
         let transaction = Transaction.deserialize(payload)
         let txHash = Data(Crypto.sha256sha256(payload).reversed())
+        log("got tx: \(txHash.hex)")
         delegate?.peer(self, didReceiveTransaction: transaction, hash: txHash)
     }
 
