@@ -17,7 +17,9 @@ public class PeerGroup : PeerDelegate {
     public weak var delegate: PeerGroupDelegate?
 
     var peers = [String: Peer]()
-    var transactions = [Transaction]()
+
+    private var publicKeys = [Data]()
+    private var transactions = [Transaction]()
 
     public init(blockChain: BlockChain, maxConnections: Int = 1) {
         self.blockChain = blockChain
@@ -45,6 +47,12 @@ public class PeerGroup : PeerDelegate {
             peer.disconnect()
         }
         peers.removeAll()
+
+        delegate?.peerGroupDidStop(self)
+    }
+
+    public func addPublickey(publicKey: Data) {
+        publicKeys.append(publicKey)
     }
 
     public func sendTransaction(transaction: Transaction) {
@@ -59,7 +67,7 @@ public class PeerGroup : PeerDelegate {
     public func peerDidConnect(_ peer: Peer) {
         if peers.filter({ $0.value.context.isSyncing }).isEmpty {
             let latestBlockHash = blockChain.latestBlockHash()
-            peer.startSync(filters: [], latestBlockHash: latestBlockHash)
+            peer.startSync(filters: publicKeys, latestBlockHash: latestBlockHash)
         }
         if !transactions.isEmpty {
             for transaction in transactions {
@@ -79,6 +87,7 @@ public class PeerGroup : PeerDelegate {
 
     public func peer(_ peer: Peer, didReceiveTransaction transaction: Transaction, hash: Data) {
         try! blockChain.addTransaction(transaction, hash: hash)
+        delegate?.peerGroupDidReceiveTransaction(self)
     }
 }
 
