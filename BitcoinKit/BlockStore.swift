@@ -9,6 +9,19 @@
 import Foundation
 import SQLite3
 
+public struct Payment {
+    public enum State {
+        case sent
+        case received
+    }
+
+    public let state: State
+    public let amount: Int64
+    public let from: Address
+    public let to: Address
+    public let transactionHash: Data
+}
+
 public protocol BlockStore {
     func addBlock(_ block: BlockMessage, hash: Data) throws
     func addMerkleBlock(_ merkleBlock: MerkleBlockMessage, hash: Data) throws
@@ -85,6 +98,10 @@ public class SQLiteBlockStore : BlockStore {
                                    address_id TEXT,
                                    FOREIGN KEY(tx_id) REFERENCES tx(id)
                                );
+                               CREATE VIEW IF NOT EXISTS view_tx AS
+                                  SELECT tx.id, txout.address_id, txout.value, txin.txout_id from tx
+                                  LEFT JOIN txout on id = txout.tx_id
+                                  LEFT JOIN txin on id = txin.txout_id;
                                CREATE VIEW IF NOT EXISTS view_utxo AS
                                   SELECT tx.id, txout.address_id, txout.value, txin.txout_id from tx
                                   LEFT JOIN txout on id = txout.tx_id
@@ -141,7 +158,7 @@ public class SQLiteBlockStore : BlockStore {
             var statement: OpaquePointer?
             try execute { sqlite3_prepare_v2(database,
                                              """
-                                             REPLACE INTO txin
+                                             INSERT INTO txin
                                                  (script_length, signature_script, sequence, tx_id, txout_id)
                                                  VALUES
                                                  (?,             ?,                ?,        ?,     ?);
@@ -165,11 +182,44 @@ public class SQLiteBlockStore : BlockStore {
                                              nil) }
             return statement
         }()
+        statements["deleteTransactionInput"] = try {
+            var statement: OpaquePointer?
+            try execute { sqlite3_prepare_v2(database,
+                                             """
+                                             DELETE FROM txin WHERE tx_id = ?;
+                                             """,
+                                             -1,
+                                             &statement,
+                                             nil) }
+            return statement
+        }()
+        statements["deleteTransactionOutput"] = try {
+            var statement: OpaquePointer?
+            try execute { sqlite3_prepare_v2(database,
+                                             """
+                                             DELETE FROM txout WHERE tx_id = ?;
+                                             """,
+                                             -1,
+                                             &statement,
+                                             nil) }
+            return statement
+        }()
         statements["calculateBlance"] = try {
             var statement: OpaquePointer?
             try execute { sqlite3_prepare_v2(database,
                                              """
                                              SELECT value FROM view_utxo WHERE address_id == ?;
+                                             """,
+                                             -1,
+                                             &statement,
+                                             nil) }
+            return statement
+        }()
+        statements["transactions"] = try {
+            var statement: OpaquePointer?
+            try execute { sqlite3_prepare_v2(database,
+                                             """
+                                             SELECT * FROM view_tx WHERE address_id == ?;
                                              """,
                                              -1,
                                              &statement,
@@ -247,9 +297,11 @@ public class SQLiteBlockStore : BlockStore {
         try executeUpdate { sqlite3_step(stmt) }
         try execute { sqlite3_reset(stmt) }
 
+        try deleteTransactionInput(txId: hash)
         for input in transaction.inputs {
             try addTransactionInput(input, txId: hash)
         }
+        try deleteTransactionOutput(txId: hash)
         for output in transaction.outputs {
             try addTransactionOutput(output, txId: hash)
         }
@@ -285,16 +337,51 @@ public class SQLiteBlockStore : BlockStore {
         try execute { sqlite3_reset(stmt) }
     }
 
+    private func deleteTransactionInput(txId: Data) throws {
+        let stmt = statements["deleteTransactionInput"]
+        try execute { txId.withUnsafeBytes { sqlite3_bind_blob(stmt, 1, $0, Int32(txId.count), SQLITE_TRANSIENT) } }
+        try executeUpdate { sqlite3_step(stmt) }
+        try execute { sqlite3_reset(stmt) }
+    }
+
+    private func deleteTransactionOutput(txId: Data) throws {
+        let stmt = statements["deleteTransactionOutput"]
+        try execute { txId.withUnsafeBytes { sqlite3_bind_blob(stmt, 1, $0, Int32(txId.count), SQLITE_TRANSIENT) } }
+        try executeUpdate { sqlite3_step(stmt) }
+        try execute { sqlite3_reset(stmt) }
+    }
+
     public func calculateBlance(address: Address) throws -> Int64 {
         let stmt = statements["calculateBlance"]
-        try execute { sqlite3_bind_text(stmt, 1, address.base58, -1, nil) }
+        try execute { sqlite3_bind_text(stmt, 1, address.base58, -1, SQLITE_TRANSIENT) }
 
         var balance: Int64 = 0
         while sqlite3_step(stmt) == SQLITE_ROW {
             let value = sqlite3_column_int64(stmt, 0)
             balance += value
         }
+
+        try execute { sqlite3_reset(stmt) }
+
         return balance
+    }
+
+    public func transactions(address: Address) throws -> [Payment] {
+        let stmt = statements["transactions"]
+        try execute { sqlite3_bind_text(stmt, 1, address.base58, -1, SQLITE_TRANSIENT) }
+
+        var payments = [Payment]()
+        while sqlite3_step(stmt) == SQLITE_ROW {
+            let hash = sqlite3_column_blob(stmt, 0)
+            let address = sqlite3_column_text(stmt, 1)!
+            let value = sqlite3_column_int64(stmt, 2)
+
+            payments.append(Payment(state: .received, amount: value, from: try! Address(String(cString: address)), to: try! Address(String(cString: address)), transactionHash: Data(bytes: hash!, count: 32)))
+        }
+
+        try execute { sqlite3_reset(stmt) }
+
+        return payments
     }
 
     public func latestBlockHash() throws -> Data? {
