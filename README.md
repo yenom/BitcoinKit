@@ -21,15 +21,6 @@ Features
 - BIP32, BIP44 hierarchical deterministic wallets.
 - BIP39 implementation.
 
-Initial Setup
--------------
-
-#### Build dependencies
-
-```
-sh ./setup/build_libraries.sh
-```
-
 Usage
 -----
 
