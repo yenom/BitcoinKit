@@ -12,26 +12,44 @@ import KeychainAccess
 
 class AppController {
     static let shared = AppController()
+
     let network = Network.testnet
 
-    private(set) var wallets = [HDWallet]()
-
-    func addWallet(_ wallet: HDWallet) {
-        wallets.append(wallet)
-
-        if let serialized = try? JSONEncoder().encode(wallets) {
-            let keychain = Keychain()
-            keychain[data: "wallets"] = serialized
+    private(set) var wallet: HDWallet? {
+        didSet {
+            NotificationCenter.default.post(name: Notification.Name.AppController.walletChanged, object: self)
         }
+    }
 
-        NotificationCenter.default.post(name: Notification.Name.AppController.walletChanged, object: self)
+    var internalIndex: UInt32 {
+        set {
+            UserDefaults.standard.set(Int(newValue), forKey: #function)
+        }
+        get {
+            return UInt32(UserDefaults.standard.integer(forKey: #function))
+        }
+    }
+    var externalIndex: UInt32 {
+        set {
+            UserDefaults.standard.set(Int(newValue), forKey: #function)
+        }
+        get {
+            return UInt32(UserDefaults.standard.integer(forKey: #function))
+        }
     }
 
     private init() {
         let keychain = Keychain()
-        if let serialized = keychain[data: "wallets"], let wallets = try? JSONDecoder().decode([HDWallet].self, from: serialized) {
-            self.wallets = wallets
+        if let seed = keychain[data: "seed"] {
+            self.wallet = HDWallet(seed: seed, network: network)
         }
+    }
+
+    func importWallet(seed: Data) {
+        let keychain = Keychain()
+        keychain[data: "seed"] = seed
+
+        self.wallet = HDWallet(seed: seed, network: network)
     }
 }
 

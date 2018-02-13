@@ -28,8 +28,7 @@ class CreateWalletViewController: UIViewController {
 
     @IBAction func createNewWallet(_ sender: UIButton) {
         let seed = Mnemonic.seed(mnemonic: mnemonic)
-        let wallet = HDWallet(seed: seed, network: AppController.shared.network)
-        AppController.shared.addWallet(wallet)
+        AppController.shared.importWallet(seed: seed)
 
         dismiss()
     }

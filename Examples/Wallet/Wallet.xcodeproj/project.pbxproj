@@ -19,7 +19,6 @@
 		1482B5F220279EB50098B612 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5F120279EB50098B612 /* SettingsViewController.swift */; };
 		1482B5F42027A01B0098B612 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5F32027A01B0098B612 /* AppController.swift */; };
 		1482B5F62027A2590098B612 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5F52027A2590098B612 /* CreateWalletViewController.swift */; };
-		1482B5F82027B9740098B612 /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5F72027B9740098B612 /* BalanceViewController.swift */; };
 		1482B5FA2028314B0098B612 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1482B5F92028314A0098B612 /* KeychainAccess.framework */; };
 		1482B5FB2028314B0098B612 /* KeychainAccess.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1482B5F92028314A0098B612 /* KeychainAccess.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -53,7 +52,6 @@
 		1482B5F120279EB50098B612 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1482B5F32027A01B0098B612 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		1482B5F52027A2590098B612 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
-		1482B5F72027B9740098B612 /* BalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceViewController.swift; sourceTree = "<group>"; };
 		1482B5F92028314A0098B612 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,7 +95,6 @@
 				1482B5EF20279EA90098B612 /* SendViewController.swift */,
 				1482B5F120279EB50098B612 /* SettingsViewController.swift */,
 				1482B5F52027A2590098B612 /* CreateWalletViewController.swift */,
-				1482B5F72027B9740098B612 /* BalanceViewController.swift */,
 				1474951D201FBC3E006D1CF8 /* Main.storyboard */,
 				14749522201FBC3E006D1CF8 /* LaunchScreen.storyboard */,
 				14749520201FBC3E006D1CF8 /* Assets.xcassets */,
@@ -191,7 +188,6 @@
 				1482B5F020279EAA0098B612 /* SendViewController.swift in Sources */,
 				1482B5F62027A2590098B612 /* CreateWalletViewController.swift in Sources */,
 				14749518201FBC3E006D1CF8 /* AppDelegate.swift in Sources */,
-				1482B5F82027B9740098B612 /* BalanceViewController.swift in Sources */,
 				1482B5EE20279D3D0098B612 /* ReceiveViewController.swift in Sources */,
 				1482B5F220279EB50098B612 /* SettingsViewController.swift in Sources */,
 				1482B5EC20279B3D0098B612 /* HomeViewController.swift in Sources */,
