@@ -18,7 +18,7 @@ public class HDPrivateKey {
     let raw: Data
     let chainCode: Data
 
-    public init(privateKey: Data, chainCode: Data, network: Network = .testnet) {
+    public init(privateKey: Data, chainCode: Data, network: Network) {
         self.raw = privateKey
         self.chainCode = chainCode
         self.network = network
@@ -27,14 +27,14 @@ public class HDPrivateKey {
         self.childIndex = 0
     }
 
-    public convenience init(seed: Data, network: Network = .testnet) {
+    public convenience init(seed: Data, network: Network) {
         let hmac = Crypto.hmacsha512(data: seed, key: "Bitcoin seed".data(using: .ascii)!)
         let privateKey = hmac[0..<32]
         let chainCode = hmac[32..<64]
         self.init(privateKey: privateKey, chainCode: chainCode, network: network)
     }
 
-    init(privateKey: Data, chainCode: Data, network: Network = .testnet, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
+    init(privateKey: Data, chainCode: Data, network: Network, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
         self.raw = privateKey
         self.chainCode = chainCode
         self.network = network

@@ -12,8 +12,6 @@ public class PeerGroup : PeerDelegate {
     public let blockChain: BlockChain
     public let maxConnections: Int
 
-    public let wallet: WalletProtocol
-
     public weak var delegate: PeerGroupDelegate?
 
     var peers = [String: Peer]()
@@ -22,14 +20,12 @@ public class PeerGroup : PeerDelegate {
     public init(blockChain: BlockChain, maxConnections: Int = 1) {
         self.blockChain = blockChain
         self.maxConnections = maxConnections
-
-        self.wallet = blockChain.wallet
     }
 
     public func start() {
-        let network = wallet.network
+        let network = blockChain.network
         for i in peers.count..<maxConnections {
-            let peer = Peer(host: network.dnsSeeds[i], network: network)
+            let peer = Peer(host: network.dnsSeeds[1], network: network)
             peer.delegate = self
             peer.connect()
 
@@ -80,8 +76,9 @@ public class PeerGroup : PeerDelegate {
 }
 
 public protocol PeerGroupDelegate : class {
-    func peerGroupDidStart(_ peer: PeerGroup)
-    func peerGroupDidStop(_ peer: PeerGroup)
+    func peerGroupDidStart(_ peerGroup: PeerGroup)
+    func peerGroupDidStop(_ peerGroup: PeerGroup)
+    func peerGroupDidReceiveTransaction(_ peerGroup: PeerGroup)
 }
 
 extension PeerGroupDelegate {
