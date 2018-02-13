@@ -35,6 +35,8 @@ public class PeerGroup : PeerDelegate {
 
             peers[peer.host] = peer
         }
+
+        delegate?.peerGroupDidStart(self)
     }
 
     public func stop() {
@@ -70,6 +72,7 @@ public class PeerGroup : PeerDelegate {
         peers[peer.host] = nil
         start()
     }
+
     public func peer(_ peer: Peer, didReceiveMerkleBlockMessage message: MerkleBlockMessage, hash: Data) {
         try! blockChain.addMerkleBlock(message, hash: hash)
     }
@@ -85,6 +88,7 @@ public protocol PeerGroupDelegate : class {
 }
 
 extension PeerGroupDelegate {
-    public func peerGroupDidStart(_ peer: PeerGroup) {}
-    public func peerGroupDidStop(_ peer: PeerGroup) {}
+    public func peerGroupDidStart(_ peerGroup: PeerGroup) {}
+    public func peerGroupDidStop(_ peerGroup: PeerGroup) {}
+    public func peerGroupDidReceiveTransaction(_ peerGroup: PeerGroup) {}
 }
