@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,60 +40,17 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="LHk-Zx-0UE" kind="relationship" relationship="rootViewController" id="ASv-n1-ubR"/>
+                        <segue destination="zoc-8V-2Uh" kind="relationship" relationship="rootViewController" id="Sen-lV-a0m"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kmy-Je-wB7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="855" y="-635"/>
         </scene>
-        <!--Home View Controller-->
-        <scene sceneID="Vrt-EA-Upb">
-            <objects>
-                <tableViewController id="LHk-Zx-0UE" customClass="HomeViewController" customModule="Wallet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="zWC-5w-rqd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="createCell" id="t07-ht-geb">
-                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="t07-ht-geb" id="K9X-aQ-SBn">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="UQS-GI-qVd" kind="showDetail" action="showViewController:sender:" id="Qgt-rz-uYP"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="walletCell" id="z4c-IC-bKz">
-                                <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z4c-IC-bKz" id="Hyb-LL-CUh">
-                                    <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="zoc-8V-2Uh" kind="show" id="6wS-pt-WTG"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="LHk-Zx-0UE" id="Uzn-Dr-4Er"/>
-                            <outlet property="delegate" destination="LHk-Zx-0UE" id="kUm-uR-8su"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="QoV-Va-nk9"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MX5-Eb-Mhs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1708" y="-636"/>
-        </scene>
-        <!--Balance View Controller-->
+        <!--Home-->
         <scene sceneID="g0g-3j-Bd7">
             <objects>
-                <tableViewController id="zoc-8V-2Uh" customClass="BalanceViewController" customModule="Wallet" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="zoc-8V-2Uh" customClass="HomeViewController" customModule="Wallet" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Vi-3y-lsl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -127,7 +83,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="GRw-7M-RJh">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="transactionCell" id="GRw-7M-RJh">
                                 <rect key="frame" x="0.0" y="168" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GRw-7M-RJh" id="vsv-3y-AMV">
@@ -141,13 +97,16 @@
                             <outlet property="delegate" destination="zoc-8V-2Uh" id="6Au-8j-Exg"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Home" id="m8I-3y-Ci0"/>
                     <connections>
+                        <outlet property="balanceLabel" destination="oEi-8O-rmD" id="OX9-Ut-pAs"/>
                         <outlet property="syncButton" destination="3ub-u2-7WJ" id="M1o-kc-85u"/>
+                        <segue destination="UQS-GI-qVd" kind="presentation" identifier="createWallet" id="Jhy-eb-CKA"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IT3-Rf-oqE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2557.5999999999999" y="-636.4317841079461"/>
+            <point key="canvasLocation" x="1708" y="-636"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UI4-u3-6dL">
@@ -163,7 +122,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iD0-Bd-K6A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2559" y="-1360"/>
+            <point key="canvasLocation" x="2519" y="-636"/>
         </scene>
         <!--Recover Key-->
         <scene sceneID="P8i-eO-cXT">
@@ -331,7 +290,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ryd-TN-Pm6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3398" y="-1360"/>
+            <point key="canvasLocation" x="3359" y="-636"/>
         </scene>
         <!--Recieve-->
         <scene sceneID="JJv-aF-Fvq">
@@ -343,76 +302,68 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="eF9-ym-gsJ" kind="relationship" relationship="rootViewController" id="5sk-sC-wMH"/>
+                        <segue destination="gGL-0J-Do8" kind="relationship" relationship="rootViewController" id="4Lq-sG-3CC"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WV0-qd-g17" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="854" y="125"/>
         </scene>
-        <!--Receive View Controller-->
-        <scene sceneID="s2x-cX-Bff">
+        <!--Receive-->
+        <scene sceneID="gMf-3F-oiB">
             <objects>
-                <tableViewController id="eF9-ym-gsJ" customClass="ReceiveViewController" customModule="Wallet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="360" estimatedRowHeight="360" sectionHeaderHeight="28" sectionFooterHeight="28" id="KME-wZ-W6g">
+                <viewController id="gGL-0J-Do8" customClass="ReceiveViewController" customModule="Wallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LjB-yu-dJH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="addressCell" rowHeight="360" id="eyQ-pO-pkR" customClass="AddressCell" customModule="Wallet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="360"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eyQ-pO-pkR" id="Fkm-lz-U1R">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="360"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Fj-FZ-g4v">
-                                            <rect key="frame" x="87" y="20" width="200" height="200"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="200" id="EQf-SZ-4W0"/>
-                                                <constraint firstAttribute="height" constant="200" id="nUm-ZA-M7i"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2dt-gX-Hnk">
-                                            <rect key="frame" x="16" y="240" width="343" height="13.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nc2-r7-LC0">
-                                            <rect key="frame" x="16" y="262" width="343" height="26"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <state key="normal" title="Generate new address"/>
-                                            <connections>
-                                                <action selector="generateNewAddress:" destination="eyQ-pO-pkR" eventType="touchUpInside" id="ySE-T4-i6B"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="2dt-gX-Hnk" secondAttribute="trailing" constant="16" id="6yH-Kb-5dE"/>
-                                        <constraint firstItem="2dt-gX-Hnk" firstAttribute="leading" secondItem="Fkm-lz-U1R" secondAttribute="leading" constant="16" id="99Y-H4-qLN"/>
-                                        <constraint firstItem="nc2-r7-LC0" firstAttribute="top" secondItem="2dt-gX-Hnk" secondAttribute="bottom" constant="8.5" id="BzP-38-6cM"/>
-                                        <constraint firstAttribute="trailing" secondItem="nc2-r7-LC0" secondAttribute="trailing" constant="16" id="Sr4-8S-wZU"/>
-                                        <constraint firstItem="8Fj-FZ-g4v" firstAttribute="top" secondItem="Fkm-lz-U1R" secondAttribute="topMargin" constant="9" id="UYe-pa-ufX"/>
-                                        <constraint firstItem="8Fj-FZ-g4v" firstAttribute="centerX" secondItem="Fkm-lz-U1R" secondAttribute="centerX" id="aBy-zX-Y8L"/>
-                                        <constraint firstItem="2dt-gX-Hnk" firstAttribute="top" secondItem="8Fj-FZ-g4v" secondAttribute="bottom" constant="20" id="dps-Bk-7s0"/>
-                                        <constraint firstItem="nc2-r7-LC0" firstAttribute="leading" secondItem="Fkm-lz-U1R" secondAttribute="leading" constant="16" id="fUf-gh-ZMM"/>
-                                    </constraints>
-                                </tableViewCellContentView>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Kq-uC-Scv">
+                                <rect key="frame" x="87" y="104" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="KY2-Il-9ld"/>
+                                    <constraint firstAttribute="width" constant="200" id="e9b-Ey-4AL"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Go6-RU-azf">
+                                <rect key="frame" x="173.5" y="324" width="28.5" height="13.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fwe-1k-foV">
+                                <rect key="frame" x="128.5" y="346" width="118" height="26"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <state key="normal" title="Generate new address"/>
                                 <connections>
-                                    <outlet property="addressLabel" destination="2dt-gX-Hnk" id="4Tz-mV-6oR"/>
-                                    <outlet property="qrCodeImageView" destination="8Fj-FZ-g4v" id="n9R-HJ-k3Z"/>
+                                    <action selector="generateNewAddress:" destination="gGL-0J-Do8" eventType="touchUpInside" id="FMx-hV-ppl"/>
                                 </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="eF9-ym-gsJ" id="lLc-MP-GKQ"/>
-                            <outlet property="delegate" destination="eF9-ym-gsJ" id="AXU-NF-sYU"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="94v-ZA-Axe"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ctq-Re-bJX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kDW-8k-Phl">
+                                <rect key="frame" x="87" y="104" width="200" height="234"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="copyAddress:" destination="gGL-0J-Do8" eventType="touchUpInside" id="OkG-9V-1gh"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="8Kq-uC-Scv" firstAttribute="centerX" secondItem="LjB-yu-dJH" secondAttribute="centerX" id="1iJ-5f-c60"/>
+                            <constraint firstItem="Go6-RU-azf" firstAttribute="top" secondItem="8Kq-uC-Scv" secondAttribute="bottom" constant="20" id="Ask-2z-RHg"/>
+                            <constraint firstItem="Fwe-1k-foV" firstAttribute="centerX" secondItem="LjB-yu-dJH" secondAttribute="centerX" id="B43-yZ-9dR"/>
+                            <constraint firstItem="Fwe-1k-foV" firstAttribute="top" secondItem="Go6-RU-azf" secondAttribute="bottom" constant="8.5" id="Dns-sW-xTp"/>
+                            <constraint firstItem="8Kq-uC-Scv" firstAttribute="top" secondItem="faB-4H-8TW" secondAttribute="top" constant="40" id="KAp-07-F1Q"/>
+                            <constraint firstItem="Go6-RU-azf" firstAttribute="centerX" secondItem="LjB-yu-dJH" secondAttribute="centerX" id="fGn-9U-EJZ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="faB-4H-8TW"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Receive" id="KVa-9v-MUL"/>
+                    <connections>
+                        <outlet property="addressLabel" destination="Go6-RU-azf" id="4vH-gk-LSE"/>
+                        <outlet property="qrCodeImageView" destination="8Kq-uC-Scv" id="5c7-EJ-veU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OIk-3J-age" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1708" y="124.58770614692655"/>
         </scene>
@@ -433,7 +384,7 @@
             </objects>
             <point key="canvasLocation" x="854" y="867"/>
         </scene>
-        <!--Send View Controller-->
+        <!--Send-->
         <scene sceneID="O1f-0r-rws">
             <objects>
                 <viewController id="1xW-jT-CKn" customClass="SendViewController" customModule="Wallet" customModuleProvider="target" sceneMemberID="viewController">
@@ -443,13 +394,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="ujg-vK-WOh"/>
                     </view>
-                    <navigationItem key="navigationItem" id="UAP-94-DlI"/>
+                    <navigationItem key="navigationItem" title="Send" id="UAP-94-DlI"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jqH-Bx-DPX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1708" y="867"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Settings-->
         <scene sceneID="7YH-sh-A4X">
             <objects>
                 <tableViewController id="Kx1-bB-FkR" customClass="SettingsViewController" customModule="Wallet" customModuleProvider="target" sceneMemberID="viewController">
@@ -458,7 +409,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="cb3-qB-SL5">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="itemCell" id="cb3-qB-SL5">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cb3-qB-SL5" id="mz5-m6-s48">
@@ -472,7 +423,7 @@
                             <outlet property="delegate" destination="Kx1-bB-FkR" id="Veh-u6-AHW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="Dlj-xv-fQp"/>
+                    <navigationItem key="navigationItem" title="Settings" id="Dlj-xv-fQp"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dku-nU-3uo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

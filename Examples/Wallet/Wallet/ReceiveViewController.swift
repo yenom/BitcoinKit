@@ -8,34 +8,29 @@
 
 import UIKit
 
-class ReceiveViewController: UITableViewController, AddressCellDelegate {
+class ReceiveViewController: UIViewController {
+    @IBOutlet weak var qrCodeImageView: UIImageView!
+    @IBOutlet weak var addressLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        updateUI()
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return AppController.shared.wallets.count
+    @IBAction func copyAddress(_ sender: UIButton) {
+        UIPasteboard.general.string = receiveAddress()
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "addressCell", for: indexPath) as! AddressCell
-        cell.delegate = self
-
-        let wallet = AppController.shared.wallets[indexPath.row]
-        let address = wallet.publicKey.toAddress()
-        
-        cell.qrCodeImageView.image = generateVisualCode(address: address)
-        cell.addressLabel.text = address
-
-        return cell
+    @IBAction func generateNewAddress(_ sender: UIButton) {
+        AppController.shared.externalIndex += 1
+        updateUI()
     }
 
-    public func generateVisualCode(address: String) -> UIImage? {
+    private func generateVisualCode(address: String) -> UIImage? {
         let parameters: [String : Any] = [
             "inputMessage": address.data(using: .utf8)!,
             "inputCorrectionLevel": "L"
@@ -54,35 +49,15 @@ class ReceiveViewController: UITableViewController, AddressCellDelegate {
         return UIImage(cgImage: cgImage)
     }
 
-    func addressCellGenerateNewAddress(_ addressCell: AddressCell) {
-        guard let indexPath = tableView.indexPath(for: addressCell) else {
-            return
-        }
-
-        let wallet = AppController.shared.wallets[indexPath.row]
-        do {
-            // FIXME
-            let childKey = try wallet.publicKey.derived(at: arc4random_uniform(UInt32.max))
-            let address = childKey.toAddress()
-
-            addressCell.qrCodeImageView.image = generateVisualCode(address: address)
-            addressCell.addressLabel.text = address
-        } catch {}
-
+    func receiveAddress() -> String {
+        let wallet = AppController.shared.wallet!
+        let externalIndex = AppController.shared.externalIndex
+        let address = try! wallet.receiveAddress(index: externalIndex)
+        return address.base58
     }
-}
 
-class AddressCell: UITableViewCell {
-    @IBOutlet weak var qrCodeImageView: UIImageView!
-    @IBOutlet weak var addressLabel: UILabel!
-
-    weak var delegate: AddressCellDelegate?
-
-    @IBAction func generateNewAddress(_ sender: UIButton) {
-        delegate?.addressCellGenerateNewAddress(self)
+    private func updateUI() {
+        qrCodeImageView.image = generateVisualCode(address: receiveAddress())
+        addressLabel.text = receiveAddress()
     }
-}
-
-protocol AddressCellDelegate: class {
-    func addressCellGenerateNewAddress(_ addressCell: AddressCell)
 }
