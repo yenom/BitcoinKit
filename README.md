@@ -67,6 +67,14 @@ let m01prv = try! m0prv.derived(at: 1)
 let m012prv = try! m01prv.derived(at: 2, hardened: true)
 ```
 
+#### HD Wallet Key derivation
+
+```
+let keychain = HDKeychain(seed: seed, network: .mainnet)
+let privateKey = try! keychain.derivedKey(path: "m/44'/1'/0'/0/0")
+...
+```
+
 #### Extended Keys
 
 ```
