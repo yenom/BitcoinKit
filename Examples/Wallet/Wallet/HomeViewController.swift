@@ -94,14 +94,14 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
 
     private func usedAddresses() -> [Address] {
         var addresses = [Address]()
-        let wallet = AppController.shared.wallet
+        guard let wallet = AppController.shared.wallet else { return [] }
         for index in 0..<(AppController.shared.externalIndex + 20) {
-            if let address = try? wallet!.receiveAddress(index: index) {
+            if let address = try? wallet.receiveAddress(index: index) {
                 addresses.append(address)
             }
         }
         for index in 0..<(AppController.shared.internalIndex + 20) {
-            if let address = try? wallet!.changeAddress(index: index) {
+            if let address = try? wallet.changeAddress(index: index) {
                 addresses.append(address)
             }
         }
