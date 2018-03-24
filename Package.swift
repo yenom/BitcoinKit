@@ -16,6 +16,10 @@ let package = Package(
         ),
         .target(
             name: "BitcoinKitPrivate"
+        ),
+        .testTarget(
+            name: "BitcoinKitTests",
+            dependencies: ["BitcoinKit"]
         )
     ],
     swiftLanguageVersions: [4]
