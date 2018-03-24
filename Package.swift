@@ -7,7 +7,7 @@ let package = Package(
         .library(name: "BitcoinKit", targets: ["BitcoinKit"])
     ],
     dependencies: [
-        //.package(url: "https://github.com/vapor/cmysql.git", .upToNextMajor(from: "2.0.0")),
+        .package(url: "https://github.com/vapor-community/copenssl.git", .exact("1.0.0-rc.1")),
     ],
     targets: [
         .target(

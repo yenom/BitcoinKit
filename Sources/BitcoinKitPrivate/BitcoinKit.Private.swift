@@ -7,10 +7,15 @@
 //
 
 import Foundation
+import COpenSSL
 
 public class _Hash {
     public static func sha256(_ data: Data) -> Data {
-        fatalError("unimplemented")
+        var result = [UInt8](repeating: 0, count: Int(SHA256_DIGEST_LENGTH))
+        _ = data.withUnsafeBytes { (ptr: UnsafePointer<UInt8>!) in
+            SHA256(ptr, data.count, &result)
+        }
+        return Data(result)
     }
     public static func ripemd160(_ data: Data) -> Data {
         fatalError("unimplemented")
