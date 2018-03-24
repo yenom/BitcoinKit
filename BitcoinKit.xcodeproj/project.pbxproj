@@ -9,25 +9,10 @@
 /* Begin PBXBuildFile section */
 		1419E83A202CDBE500FCB0BE /* BitcoinKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */; };
-		141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E12022588C00A08B04 /* PublicKey.swift */; };
-		141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E32022589E00A08B04 /* PrivateKey.swift */; };
-		1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463E6B32025E9480033DAAE /* BlockStore.swift */; };
-		1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463E6B52025E99C0033DAAE /* BlockChain.swift */; };
 		147494D1201F9A29006D1CF8 /* BitcoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147494C7201F9A29006D1CF8 /* BitcoinKit.framework */; };
 		147494D6201F9A29006D1CF8 /* BitcoinKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */; };
 		147494D8201F9A29006D1CF8 /* BitcoinKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 147494CA201F9A29006D1CF8 /* BitcoinKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494E3201F9B85006D1CF8 /* Crypto.swift */; };
-		147494E6201F9BF0006D1CF8 /* Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494E5201F9BEF006D1CF8 /* Encoding.swift */; };
 		147494EA201F9C1F006D1CF8 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494E9201F9C1F006D1CF8 /* Peer.swift */; };
-		147494EC201F9E4F006D1CF8 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494EB201F9E4F006D1CF8 /* Network.swift */; };
-		147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494ED201FADAC006D1CF8 /* MurmurHash.swift */; };
-		147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494EF201FAE30006D1CF8 /* Serialization.swift */; };
-		147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147F9728201FC89E0071F49D /* BloomFilter.swift */; };
-		1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E12026B0680098B612 /* Mnemonic.swift */; };
-		1482B5E42026F2590098B612 /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E32026F2580098B612 /* WordList.swift */; };
-		1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E7202721FF0098B612 /* HDPrivateKey.swift */; };
-		1482B5EA20273B8A0098B612 /* HDPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E920273B8A0098B612 /* HDPublicKey.swift */; };
-		14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A7B202F79F900A6CB34 /* PaymentURI.swift */; };
 		14839A7F202FE58800A6CB34 /* VersionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A7E202FE58800A6CB34 /* VersionMessage.swift */; };
 		14839A81202FE5CA00A6CB34 /* VerackMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A80202FE5CA00A6CB34 /* VerackMessage.swift */; };
 		14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A82202FE5F800A6CB34 /* AddressMessage.swift */; };
@@ -46,20 +31,35 @@
 		14839A9F202FE73B00A6CB34 /* TransactionOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A9E202FE73B00A6CB34 /* TransactionOutput.swift */; };
 		14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA0202FE75500A6CB34 /* TransactionWitness.swift */; };
 		14839AA3202FE78600A6CB34 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA2202FE78600A6CB34 /* Message.swift */; };
-		14839AA5202FE7A100A6CB34 /* ByteStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA4202FE7A100A6CB34 /* ByteStream.swift */; };
 		14839AA7202FE7C700A6CB34 /* VarInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA6202FE7C700A6CB34 /* VarInt.swift */; };
 		14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA8202FE7DD00A6CB34 /* VarString.swift */; };
 		14839AAB202FE7F000A6CB34 /* NetworkAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AAA202FE7F000A6CB34 /* NetworkAddress.swift */; };
 		14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AAC202FE80400A6CB34 /* ServiceFlags.swift */; };
-		14A2961D2032316900E19177 /* HDKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A2961C2032316900E19177 /* HDKeychain.swift */; };
 		14A2961F2032317B00E19177 /* HDWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A2961E2032317B00E19177 /* HDWallet.swift */; };
 		14CDC3862021824200C01556 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3852021824200C01556 /* Wallet.swift */; };
 		14CDC3882021855200C01556 /* PeerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3872021855200C01556 /* PeerGroup.swift */; };
-		14CDC38A2021881A00C01556 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3892021881A00C01556 /* Address.swift */; };
-		14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC38B2021EF5000C01556 /* Helpers.swift */; };
 		14F37A3A20209B5400D34748 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3920209B5400D34748 /* Transaction.swift */; };
-		14F37A3C20209F9200D34748 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3B20209F9200D34748 /* Script.swift */; };
-		14F37A3E2020A02000D34748 /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* Signature.swift */; };
+		5215527C206676D400316C16 /* PrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215527B206676D400316C16 /* PrivateKey.swift */; };
+		5215527E206676E200316C16 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215527D206676E100316C16 /* PublicKey.swift */; };
+		52155282206676EF00316C16 /* HDPrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215527F206676EF00316C16 /* HDPrivateKey.swift */; };
+		52155283206676EF00316C16 /* HDPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52155280206676EF00316C16 /* HDPublicKey.swift */; };
+		52155284206676EF00316C16 /* HDKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52155281206676EF00316C16 /* HDKeychain.swift */; };
+		521552882066770300316C16 /* BlockChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552852066770300316C16 /* BlockChain.swift */; };
+		521552892066770300316C16 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552862066770300316C16 /* Network.swift */; };
+		5215528A2066770300316C16 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552872066770300316C16 /* Address.swift */; };
+		5215528E2066771500316C16 /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215528B2066771500316C16 /* WordList.swift */; };
+		5215528F2066771500316C16 /* BlockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215528C2066771500316C16 /* BlockStore.swift */; };
+		521552902066771500316C16 /* Mnemonic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215528D2066771500316C16 /* Mnemonic.swift */; };
+		521552932066772700316C16 /* PaymentURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552912066772700316C16 /* PaymentURI.swift */; };
+		521552942066772700316C16 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552922066772700316C16 /* Crypto.swift */; };
+		521552982066773300316C16 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552952066773300316C16 /* Serialization.swift */; };
+		521552992066773300316C16 /* Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552962066773300316C16 /* Encoding.swift */; };
+		5215529A2066773300316C16 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552972066773300316C16 /* Script.swift */; };
+		5215529E2066774100316C16 /* ByteStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215529B2066774000316C16 /* ByteStream.swift */; };
+		5215529F2066774100316C16 /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215529C2066774000316C16 /* Signature.swift */; };
+		521552A02066774100316C16 /* BloomFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215529D2066774000316C16 /* BloomFilter.swift */; };
+		521552A32066774F00316C16 /* MurmurHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552A12066774F00316C16 /* MurmurHash.swift */; };
+		521552A42066774F00316C16 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521552A22066774F00316C16 /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,28 +75,13 @@
 /* Begin PBXFileReference section */
 		1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinKitPrivate.h; sourceTree = "<group>"; };
 		1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitcoinKitPrivate.m; sourceTree = "<group>"; };
-		141FE2E12022588C00A08B04 /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
-		141FE2E32022589E00A08B04 /* PrivateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKey.swift; sourceTree = "<group>"; };
-		1463E6B32025E9480033DAAE /* BlockStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStore.swift; sourceTree = "<group>"; };
-		1463E6B52025E99C0033DAAE /* BlockChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockChain.swift; sourceTree = "<group>"; };
 		147494C7201F9A29006D1CF8 /* BitcoinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BitcoinKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		147494CA201F9A29006D1CF8 /* BitcoinKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinKit.h; sourceTree = "<group>"; };
 		147494CB201F9A29006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		147494D0201F9A29006D1CF8 /* BitcoinKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BitcoinKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinKitTests.swift; sourceTree = "<group>"; };
 		147494D7201F9A29006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		147494E3201F9B85006D1CF8 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
-		147494E5201F9BEF006D1CF8 /* Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encoding.swift; sourceTree = "<group>"; };
 		147494E9201F9C1F006D1CF8 /* Peer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
-		147494EB201F9E4F006D1CF8 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		147494ED201FADAC006D1CF8 /* MurmurHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MurmurHash.swift; sourceTree = "<group>"; };
-		147494EF201FAE30006D1CF8 /* Serialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
-		147F9728201FC89E0071F49D /* BloomFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloomFilter.swift; sourceTree = "<group>"; };
-		1482B5E12026B0680098B612 /* Mnemonic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mnemonic.swift; sourceTree = "<group>"; };
-		1482B5E32026F2580098B612 /* WordList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
-		1482B5E7202721FF0098B612 /* HDPrivateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPrivateKey.swift; sourceTree = "<group>"; };
-		1482B5E920273B8A0098B612 /* HDPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPublicKey.swift; sourceTree = "<group>"; };
-		14839A7B202F79F900A6CB34 /* PaymentURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentURI.swift; sourceTree = "<group>"; };
 		14839A7E202FE58800A6CB34 /* VersionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionMessage.swift; sourceTree = "<group>"; };
 		14839A80202FE5CA00A6CB34 /* VerackMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerackMessage.swift; sourceTree = "<group>"; };
 		14839A82202FE5F800A6CB34 /* AddressMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressMessage.swift; sourceTree = "<group>"; };
@@ -115,21 +100,36 @@
 		14839A9E202FE73B00A6CB34 /* TransactionOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOutput.swift; sourceTree = "<group>"; };
 		14839AA0202FE75500A6CB34 /* TransactionWitness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionWitness.swift; sourceTree = "<group>"; };
 		14839AA2202FE78600A6CB34 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		14839AA4202FE7A100A6CB34 /* ByteStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteStream.swift; sourceTree = "<group>"; };
 		14839AA6202FE7C700A6CB34 /* VarInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarInt.swift; sourceTree = "<group>"; };
 		14839AA8202FE7DD00A6CB34 /* VarString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarString.swift; sourceTree = "<group>"; };
 		14839AAA202FE7F000A6CB34 /* NetworkAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAddress.swift; sourceTree = "<group>"; };
 		14839AAC202FE80400A6CB34 /* ServiceFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFlags.swift; sourceTree = "<group>"; };
 		14A2961B203207F400E19177 /* BitcoinKit.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = BitcoinKit.modulemap; sourceTree = "<group>"; };
-		14A2961C2032316900E19177 /* HDKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDKeychain.swift; sourceTree = "<group>"; };
 		14A2961E2032317B00E19177 /* HDWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWallet.swift; sourceTree = "<group>"; };
 		14CDC3852021824200C01556 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		14CDC3872021855200C01556 /* PeerGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerGroup.swift; sourceTree = "<group>"; };
-		14CDC3892021881A00C01556 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
-		14CDC38B2021EF5000C01556 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		14F37A3920209B5400D34748 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
-		14F37A3B20209F9200D34748 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
-		14F37A3D2020A02000D34748 /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signature.swift; sourceTree = "<group>"; };
+		5215527B206676D400316C16 /* PrivateKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateKey.swift; sourceTree = "<group>"; };
+		5215527D206676E100316C16 /* PublicKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
+		5215527F206676EF00316C16 /* HDPrivateKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDPrivateKey.swift; sourceTree = "<group>"; };
+		52155280206676EF00316C16 /* HDPublicKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDPublicKey.swift; sourceTree = "<group>"; };
+		52155281206676EF00316C16 /* HDKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDKeychain.swift; sourceTree = "<group>"; };
+		521552852066770300316C16 /* BlockChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockChain.swift; sourceTree = "<group>"; };
+		521552862066770300316C16 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		521552872066770300316C16 /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		5215528B2066771500316C16 /* WordList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
+		5215528C2066771500316C16 /* BlockStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockStore.swift; sourceTree = "<group>"; };
+		5215528D2066771500316C16 /* Mnemonic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mnemonic.swift; sourceTree = "<group>"; };
+		521552912066772700316C16 /* PaymentURI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentURI.swift; sourceTree = "<group>"; };
+		521552922066772700316C16 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
+		521552952066773300316C16 /* Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
+		521552962066773300316C16 /* Encoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encoding.swift; sourceTree = "<group>"; };
+		521552972066773300316C16 /* Script.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
+		5215529B2066774000316C16 /* ByteStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByteStream.swift; sourceTree = "<group>"; };
+		5215529C2066774000316C16 /* Signature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signature.swift; sourceTree = "<group>"; };
+		5215529D2066774000316C16 /* BloomFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloomFilter.swift; sourceTree = "<group>"; };
+		521552A12066774F00316C16 /* MurmurHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MurmurHash.swift; sourceTree = "<group>"; };
+		521552A22066774F00316C16 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +172,8 @@
 		147494C9201F9A29006D1CF8 /* BitcoinKit */ = {
 			isa = PBXGroup;
 			children = (
-				14A296242032325E00E19177 /* Core */,
+				5215527A2066762000316C16 /* Core */,
+				14A296242032325E00E19177 /* Core-Private */,
 				14A29622203231DD00E19177 /* Wallet */,
 				14A296252032328900E19177 /* Networking */,
 				14839A7D202FE57300A6CB34 /* Messages */,
@@ -220,6 +221,7 @@
 				14839AA0202FE75500A6CB34 /* TransactionWitness.swift */,
 			);
 			name = Messages;
+			path = ../Sources/BitcoinKit;
 			sourceTree = "<group>";
 		};
 		14A29622203231DD00E19177 /* Wallet */ = {
@@ -229,36 +231,16 @@
 				14A2961E2032317B00E19177 /* HDWallet.swift */,
 			);
 			name = Wallet;
+			path = ../Sources/BitcoinKit;
 			sourceTree = "<group>";
 		};
-		14A296242032325E00E19177 /* Core */ = {
+		14A296242032325E00E19177 /* Core-Private */ = {
 			isa = PBXGroup;
 			children = (
-				141FE2E32022589E00A08B04 /* PrivateKey.swift */,
-				141FE2E12022588C00A08B04 /* PublicKey.swift */,
-				14A2961C2032316900E19177 /* HDKeychain.swift */,
-				1482B5E7202721FF0098B612 /* HDPrivateKey.swift */,
-				1482B5E920273B8A0098B612 /* HDPublicKey.swift */,
-				14CDC3892021881A00C01556 /* Address.swift */,
-				147494EB201F9E4F006D1CF8 /* Network.swift */,
-				1463E6B52025E99C0033DAAE /* BlockChain.swift */,
-				1463E6B32025E9480033DAAE /* BlockStore.swift */,
-				1482B5E12026B0680098B612 /* Mnemonic.swift */,
-				1482B5E32026F2580098B612 /* WordList.swift */,
-				14839A7B202F79F900A6CB34 /* PaymentURI.swift */,
-				147494E3201F9B85006D1CF8 /* Crypto.swift */,
-				147494E5201F9BEF006D1CF8 /* Encoding.swift */,
-				147494EF201FAE30006D1CF8 /* Serialization.swift */,
-				14F37A3B20209F9200D34748 /* Script.swift */,
-				14F37A3D2020A02000D34748 /* Signature.swift */,
-				14839AA4202FE7A100A6CB34 /* ByteStream.swift */,
-				147F9728201FC89E0071F49D /* BloomFilter.swift */,
-				147494ED201FADAC006D1CF8 /* MurmurHash.swift */,
-				14CDC38B2021EF5000C01556 /* Helpers.swift */,
 				1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */,
 				1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */,
 			);
-			name = Core;
+			name = "Core-Private";
 			sourceTree = "<group>";
 		};
 		14A296252032328900E19177 /* Networking */ = {
@@ -268,6 +250,36 @@
 				14CDC3872021855200C01556 /* PeerGroup.swift */,
 			);
 			name = Networking;
+			path = ../Sources/BitcoinKit;
+			sourceTree = "<group>";
+		};
+		5215527A2066762000316C16 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				5215527B206676D400316C16 /* PrivateKey.swift */,
+				5215527D206676E100316C16 /* PublicKey.swift */,
+				52155281206676EF00316C16 /* HDKeychain.swift */,
+				5215527F206676EF00316C16 /* HDPrivateKey.swift */,
+				52155280206676EF00316C16 /* HDPublicKey.swift */,
+				521552872066770300316C16 /* Address.swift */,
+				521552852066770300316C16 /* BlockChain.swift */,
+				521552862066770300316C16 /* Network.swift */,
+				5215528C2066771500316C16 /* BlockStore.swift */,
+				5215528D2066771500316C16 /* Mnemonic.swift */,
+				5215528B2066771500316C16 /* WordList.swift */,
+				521552922066772700316C16 /* Crypto.swift */,
+				521552912066772700316C16 /* PaymentURI.swift */,
+				521552962066773300316C16 /* Encoding.swift */,
+				521552972066773300316C16 /* Script.swift */,
+				521552952066773300316C16 /* Serialization.swift */,
+				5215529D2066774000316C16 /* BloomFilter.swift */,
+				5215529B2066774000316C16 /* ByteStream.swift */,
+				5215529C2066774000316C16 /* Signature.swift */,
+				521552A22066774F00316C16 /* Helpers.swift */,
+				521552A12066774F00316C16 /* MurmurHash.swift */,
+			);
+			name = Core;
+			path = ../Sources/BitcoinKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -402,54 +414,54 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1482B5EA20273B8A0098B612 /* HDPublicKey.swift in Sources */,
 				14F37A3A20209B5400D34748 /* Transaction.swift in Sources */,
-				1482B5E42026F2590098B612 /* WordList.swift in Sources */,
+				5215528A2066770300316C16 /* Address.swift in Sources */,
 				14839A93202FE6AC00A6CB34 /* FilterLoadMessage.swift in Sources */,
+				521552992066773300316C16 /* Encoding.swift in Sources */,
 				14839A9D202FE72600A6CB34 /* TransactionOutPoint.swift in Sources */,
-				147494E6201F9BF0006D1CF8 /* Encoding.swift in Sources */,
+				5215527C206676D400316C16 /* PrivateKey.swift in Sources */,
 				14839A7F202FE58800A6CB34 /* VersionMessage.swift in Sources */,
 				14839AAB202FE7F000A6CB34 /* NetworkAddress.swift in Sources */,
 				14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */,
-				147494EC201F9E4F006D1CF8 /* Network.swift in Sources */,
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
+				521552A42066774F00316C16 /* Helpers.swift in Sources */,
 				14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */,
-				14F37A3C20209F9200D34748 /* Script.swift in Sources */,
-				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
+				521552A02066774100316C16 /* BloomFilter.swift in Sources */,
+				52155282206676EF00316C16 /* HDPrivateKey.swift in Sources */,
+				521552902066771500316C16 /* Mnemonic.swift in Sources */,
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,
-				14F37A3E2020A02000D34748 /* Signature.swift in Sources */,
 				14839A8F202FE68000A6CB34 /* PongMessage.swift in Sources */,
 				14CDC3862021824200C01556 /* Wallet.swift in Sources */,
-				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
+				5215528E2066771500316C16 /* WordList.swift in Sources */,
 				14839A85202FE60E00A6CB34 /* InventoryMessage.swift in Sources */,
+				521552942066772700316C16 /* Crypto.swift in Sources */,
+				5215528F2066771500316C16 /* BlockStore.swift in Sources */,
 				14839AA7202FE7C700A6CB34 /* VarInt.swift in Sources */,
+				521552932066772700316C16 /* PaymentURI.swift in Sources */,
 				14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */,
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
-				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
+				521552882066770300316C16 /* BlockChain.swift in Sources */,
+				521552A32066774F00316C16 /* MurmurHash.swift in Sources */,
 				1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */,
-				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
-				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
 				14839A9F202FE73B00A6CB34 /* TransactionOutput.swift in Sources */,
-				1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */,
 				14839A81202FE5CA00A6CB34 /* VerackMessage.swift in Sources */,
 				14839A95202FE6BE00A6CB34 /* GetBlocksMessage.swift in Sources */,
 				14A2961F2032317B00E19177 /* HDWallet.swift in Sources */,
-				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
+				52155283206676EF00316C16 /* HDPublicKey.swift in Sources */,
 				14CDC3882021855200C01556 /* PeerGroup.swift in Sources */,
 				14839A91202FE69300A6CB34 /* RejectMessage.swift in Sources */,
-				14839AA5202FE7A100A6CB34 /* ByteStream.swift in Sources */,
-				14A2961D2032316900E19177 /* HDKeychain.swift in Sources */,
+				521552982066773300316C16 /* Serialization.swift in Sources */,
+				5215529A2066773300316C16 /* Script.swift in Sources */,
+				52155284206676EF00316C16 /* HDKeychain.swift in Sources */,
 				147494EA201F9C1F006D1CF8 /* Peer.swift in Sources */,
-				14CDC38A2021881A00C01556 /* Address.swift in Sources */,
-				141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */,
+				5215527E206676E200316C16 /* PublicKey.swift in Sources */,
 				14839A97202FE6D000A6CB34 /* BlockMessage.swift in Sources */,
-				1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */,
+				521552892066770300316C16 /* Network.swift in Sources */,
 				14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */,
-				147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */,
+				5215529F2066774100316C16 /* Signature.swift in Sources */,
 				14839A8B202FE64D00A6CB34 /* GetDataMessage.swift in Sources */,
-				1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */,
+				5215529E2066774100316C16 /* ByteStream.swift in Sources */,
 				14839A99202FE6E700A6CB34 /* MerkleBlockMessage.swift in Sources */,
-				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
 				14839A8D202FE66A00A6CB34 /* PingMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -525,6 +537,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-DBTCKitXcode";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -578,6 +591,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_SWIFT_FLAGS = "-DBTCKitXcode";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
