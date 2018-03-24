@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if BTCKitXcode
 import BitcoinKit.Private
+#else
+import BitcoinKitPrivate
+#endif
 
 public class HDPublicKey {
     public let network: Network

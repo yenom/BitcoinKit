@@ -7,7 +7,12 @@
 //
 
 import Foundation
+
+#if BTCKitXcode
 import BitcoinKit.Private
+#else
+import BitcoinKitPrivate
+#endif
 
 public struct Mnemonic {
     public enum Strength : Int {

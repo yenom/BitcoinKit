@@ -7,8 +7,12 @@
 //
 
 import Foundation
+#if BTCKitXcode
 import BitcoinKit.Private
 import secp256k1
+#else
+import BitcoinKitPrivate
+#endif
 
 public struct Crypto {
     public static func sha256(_ data: Data) -> Data {
