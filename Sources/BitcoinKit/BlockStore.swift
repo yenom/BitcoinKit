@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if BTCKitXcode
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 import SQLite3
 #endif
 
@@ -33,7 +33,7 @@ public protocol BlockStore {
     func latestBlockHash() throws -> Data?
 }
 
-#if BTCKitXcode
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 let SQLITE_TRANSIENT = unsafeBitCast(OpaquePointer(bitPattern: -1), to: sqlite3_destructor_type.self)
 
 public class SQLiteBlockStore : BlockStore {

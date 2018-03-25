@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if BTCKitXcode
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
     
 private let protocolVersion: Int32 = 70015
 private let bufferSize = 4096

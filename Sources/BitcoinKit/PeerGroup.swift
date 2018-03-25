@@ -8,7 +8,8 @@
 
 import Foundation
 
-#if BTCKitXcode
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+
 public class PeerGroup : PeerDelegate {
     public let blockChain: BlockChain
     public let maxConnections: Int
