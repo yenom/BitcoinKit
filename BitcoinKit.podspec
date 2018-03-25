@@ -23,7 +23,8 @@ Pod::Spec.new do |spec|
                                'APPLICATION_EXTENSION_API_ONLY' => 'YES',
                                'SWIFT_INCLUDE_PATHS' => '${PODS_ROOT}/BitcoinKit/Libraries',
                                'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/BitcoinKit/Libraries/openssl/include" "${PODS_ROOT}/BitcoinKit/Libraries/secp256k1/include"',
-                               'LIBRARY_SEARCH_PATHS' => '"${PODS_ROOT}/BitcoinKit/Libraries/openssl/lib" "${PODS_ROOT}/BitcoinKit/Libraries/secp256k1/lib"' }
+                               'LIBRARY_SEARCH_PATHS' => '"${PODS_ROOT}/BitcoinKit/Libraries/openssl/lib", "${PODS_ROOT}/BitcoinKit/Libraries/secp256k1/lib"',
+                               'OTHER_SWIFT_FLAGS' => '-DBitcoinKitXcode' }
   spec.preserve_paths = ['setup', 'Libraries']
   spec.prepare_command = 'sh setup/build_libraries.sh'
 end

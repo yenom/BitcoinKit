@@ -8,6 +8,8 @@
 
 import Foundation
 
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+    
 private let protocolVersion: Int32 = 70015
 private let bufferSize = 4096
 
@@ -465,3 +467,5 @@ extension PeerDelegate {
     public func peer(_ peer: Peer, didReceiveTransaction transaction: Transaction, hash: Data) {}
     public func peer(_ peer: Peer, didReceiveRejectMessage message: RejectMessage) {}
 }
+
+#endif

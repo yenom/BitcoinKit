@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if BitcoinKitXcode
 import BitcoinKit.Private
+#else
+import BitcoinKitPrivate
+#endif
 import secp256k1
 
 public struct Crypto {
