@@ -7,7 +7,7 @@
 //
 
 import Foundation
-#if BTCKitXcode
+#if BitcoinKitXcode
 import BitcoinKit.Private
 #else
 import BitcoinKitPrivate
