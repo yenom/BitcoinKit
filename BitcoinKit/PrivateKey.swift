@@ -54,6 +54,17 @@ public struct PrivateKey {
     }
 
     public init(wif: String) throws {
+        // wif : 5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ
+        //
+        // 800C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D507A5B8D : decoded
+        //
+        // 80 : prefix
+        // 0C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D : privatekey
+        // 507A5B8D : checksum
+        //
+        // 507A5B8DFED0FC6FE8801743720CEDEC06AA5C6FCA72B07C49964492FB98A714 : DoubleSHA256(prefix + privatekey)
+        
+        
         let decoded = Base58.decode(wif)
         let checksumDropped = decoded.prefix(decoded.count - 4)
 
