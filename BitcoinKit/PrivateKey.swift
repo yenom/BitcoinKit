@@ -12,6 +12,7 @@ public struct PrivateKey {
     let raw: Data
     public let network: Network
 
+    // QUESTION: これランダムに生成する場合かな？
     public init(network: Network = .testnet) {
         self.network = network
 
@@ -34,12 +35,14 @@ public struct PrivateKey {
             }
             for (index, byte) in vch.enumerated() {
                 if byte < max[index] {
+                    // 少しでも上限値より大きかったら、もう一度。
                     return true
                 }
                 if byte > max[index] {
                     return false
                 }
             }
+            // 最後まで上限値と一致（＝上限値）だったらもう一度。
             return true
         }
 
