@@ -20,10 +20,10 @@ public class Network {
     var scripthash: UInt8 { return 0 }
     var xpubkey: UInt32 { return 0 }
     var xprivkey: UInt32 { return 0 }
-    var magic: UInt32 { return 0 }
+    var magic: UInt32 { return 0 } // QUESTION: magicって何だろう
     public var port: UInt32 { return 0 }
     public var dnsSeeds: [String] { return [] }
-    var checkpoints: [Checkpoint] { return [] }
+    var checkpoints: [Checkpoint] { return [] } // QUESTION: Bitcoinにもcheckpointあるのか。ある意味finalizeしてるの・・・？
     var genesisBlock: Data { return Data() }
 
     fileprivate init() {}
