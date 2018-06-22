@@ -13,6 +13,9 @@ import Foundation
 /// A standard address is built by taking the RIPE-MD160 hash of the public key bytes, with a version prefix and a
 /// checksum suffix, then encoding it textually as base58. The version prefix is used to both denote the network for
 /// which the address is valid.
+
+// このAddressというstructをそのまま使うということはないのかなー。
+
 public struct Address {
     public let network: Network
     public let publicKey: Data?

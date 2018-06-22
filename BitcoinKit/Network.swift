@@ -14,6 +14,7 @@ public class Network {
 
     public var name: String { return "" }
     public var alias: String { return "" }
+    // 名前はpubkeyhash, privatekey, scripthashとかじゃなくて、version byteとした方が良さげ。
     var pubkeyhash: UInt8 { return 0 }
     var privatekey: UInt8 { return 0 }
     var scripthash: UInt8 { return 0 }
