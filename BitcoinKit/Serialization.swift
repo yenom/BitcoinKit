@@ -71,6 +71,8 @@ extension Data {
         return String(bytes: self, encoding: .ascii)!.replacingOccurrences(of: "\0", with: "")
     }
 
+    // QUESTION: このVarIntへの変換わからん。
+    // ていうかVarIntも自作クラスかい。
     func to(type: VarInt.Type) -> VarInt {
         let value: UInt64
         let length = self[0..<1].to(type: UInt8.self)
@@ -98,6 +100,7 @@ extension Data {
             let j = hex.index(hex.startIndex, offsetBy: i * 2)
             let k = hex.index(j, offsetBy: 2)
             let bytes = hex[j..<k]
+            // radixは基数のこと。"37" -> 16*3 + 7 = UInt8(55)みたいな。
             if var num = UInt8(bytes, radix: 16) {
                 data.append(&num, count: 1)
             } else {
