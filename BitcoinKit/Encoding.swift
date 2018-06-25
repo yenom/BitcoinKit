@@ -25,12 +25,16 @@ public struct Base58 {
             zerosCount += 1
         }
 
-        bytes.removeFirst(zerosCount)
+        bytes.removeFirst(zerosCount) //
 
-        let size = bytes.count * 138 / 100 + 1
+        let size = bytes.count * 138 / 100 + 1 // log(256) / log(58), rounded up.
+        // QUESTION: log256 / log58 = 1.36565823731なんだよな...
+        // 256 = 2^8 = 1bytes, 58 = base58 information size
+        // QUESTION: なんでログ?log2で情報量を表すためか。 base58は1文字で大体 5.86bits分の情報量。
+        // 8 bytesだとしたら -> 12文字
 
         var base58: [UInt8] = Array(repeating: 0, count: size)
-        for b in bytes {
+        for b in bytes { // 0x9a3b = 154 59
             var carry = Int(b)
             var i = 0
 
@@ -80,7 +84,7 @@ public struct Base58 {
             zerosCount += 1
         }
 
-        let size = string.lengthOfBytes(using: .utf8) * 733 / 1000 + 1 - zerosCount
+        let size = string.lengthOfBytes(using: .utf8) * 733 / 1000 + 1 - zerosCount // log(58) / log(256), rounded up.
         var base58: [UInt8] = Array(repeating: 0, count: size)
         for c in string where c != " " {
             // search for base58 character
