@@ -24,7 +24,7 @@ public class Peer : NSObject, StreamDelegate {
     class Context {
         var packets = Data()
         /// Transactions to be sent
-        var transactions = [Data: Transaction]()
+        var transactions = [Data: Transaction]() // QUESTION: これPeerGroupで使ってないやんけ。使うべき感すごいあるけど。
 
         var pingTime = Date()
         var estimatedHeight: Int32 = 0
@@ -55,6 +55,7 @@ public class Peer : NSObject, StreamDelegate {
         self.init(host: host, port: Int(network.port), network: network)
     }
 
+    // Networkがport持ってるんだからportって必要なくないか・・・？
     public init(host: String, port: Int, network: Network = .testnet) {
         self.host = host
         self.port = UInt32(port)
@@ -62,14 +63,17 @@ public class Peer : NSObject, StreamDelegate {
         latestBlockHash = network.genesisBlock
     }
 
+    // deinit使われるの初めて見た〜
     deinit {
         disconnect()
     }
 
+    // QUESTION: socket通信のあたりとか触ったことなさすぎてなにこれって感じ〜〜〜
     public func connect() {
         log("connecting")
 
         CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault, host as CFString, port, &readStream, &writeStream)
+
         inputStream = readStream!.takeRetainedValue()
         outputStream = writeStream!.takeRetainedValue()
 
@@ -104,6 +108,7 @@ public class Peer : NSObject, StreamDelegate {
         self.latestBlockHash = latestBlockHash
         context.isSyncing = true
 
+        // QUESTION: syncするときは、その前に、sendFilterLoadMessage, sendMemoryPoolMessageっていうのをやるのか。それぞれ何なんだろう。
         if !self.context.sentFilterLoad {
             sendFilterLoadMessage(filters: filters)
             self.context.sentFilterLoad = true
@@ -112,6 +117,7 @@ public class Peer : NSObject, StreamDelegate {
                 self.context.sentMemPool = true
             }
         }
+        // QUESTION: syncするときは、sendGetBlocksMessageをする。
         self.sendGetBlocksMessage()
     }
 
@@ -146,6 +152,7 @@ public class Peer : NSObject, StreamDelegate {
             case .hasBytesAvailable:
                 break
             case .hasSpaceAvailable:
+                // QUESTION: hasSpaceAvailableだったらば、sendVersionするのこれなに・・・
                 if !context.sentVersion {
                     sendVersionMessage()
                     context.sentVersion = true
@@ -231,7 +238,10 @@ public class Peer : NSObject, StreamDelegate {
         _ = data.withUnsafeBytes { outputStream.write($0, maxLength: data.count) }
     }
 
+    // checksum多用するので、functionかDataのextensionにしても良さそう。
     private func sendVersionMessage() {
+        // QUESTION: yourAddressとmyAddressとは・・・
+        // QUESTION: startHeight: -1 とは。。。
         let version = VersionMessage(version: protocolVersion,
                                      services: 0x00,
                                      timestamp: Int64(Date().timeIntervalSince1970),
@@ -290,6 +300,7 @@ public class Peer : NSObject, StreamDelegate {
     private func sendGetBlocksMessage() {
         let blockLocatorHash = latestBlockHash
         let getBlocks = GetBlocksMessage(version: UInt32(protocolVersion), hashCount: 1, blockLocatorHashes: blockLocatorHash, hashStop: Data(count: 32))
+        // QUESTION: hashStopって何だろう。
 
         let payload = getBlocks.serialized()
         let checksum = Data(Crypto.sha256sha256(payload).prefix(4))
@@ -354,6 +365,7 @@ public class Peer : NSObject, StreamDelegate {
             case .error:
                 break
             case .transactionMessage:
+                // QUESTION: GetDataのタイミングでsendするのはなんでだろう。
                 // Send transaction
                 if let transaction = context.transactions[item.hash] {
                     let payload = transaction.serialized()
@@ -374,6 +386,7 @@ public class Peer : NSObject, StreamDelegate {
         }
     }
 
+    // QUESTION: inventory messageって何だろう
     private func handleInventoryMessage(payload: Data) {
         let inventory = InventoryMessage.deserialize(payload)
         log("got inv with \(inventory.count) item(s)")
@@ -453,6 +466,7 @@ public protocol PeerDelegate : class {
     func peer(_ peer: Peer, didReceiveRejectMessage message: RejectMessage)
 }
 
+// extensionで全部Voidに実装する事で、実装をoptionalにしてる。
 extension PeerDelegate {
     public func peerDidConnect(_ peer: Peer) {}
     public func peerDidDisconnect(_ peer: Peer) {}
