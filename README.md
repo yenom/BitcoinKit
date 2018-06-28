@@ -22,84 +22,19 @@ Features
 Usage
 -----
 
-#### Creating new wallet
-
-```swift
-let privateKey = PrivateKey(network: .testnet) // You can choose .mainnet or .testnet
-let wallet = Wallet(privateKey: privateKey)
-```
-
-#### Import wallet from WIF
-
-```swift
-let wallet = try Wallet(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
-```
-
-#### Hierarchical Deterministic Wallet
-
-```swift
-// Generate mnemonic
-let mnemonic = try Mnemonic.generate()
-
-// Generate seed from the mnemonic
-let seed = Mnemonic.seed(mnemonic: mnemonic)
-
-let wallet = HDWallet(seed: seed, network: .testnet)
-```
-
-#### Key derivation
-
-```
-let mnemonic = try Mnemonic.generate()
-let seed = Mnemonic.seed(mnemonic: mnemonic)
-
-let privateKey = HDPrivateKey(seed: seed, network: .testnet)
-
-// m/0'
-let m0prv = try! privateKey.derived(at: 0, hardened: true)
-
-// m/0'/1
-let m01prv = try! m0prv.derived(at: 1)
-
-// m/0'/1/2'
-let m012prv = try! m01prv.derived(at: 2, hardened: true)
-```
-
-#### HD Wallet Key derivation
-
-```
-let keychain = HDKeychain(seed: seed, network: .mainnet)
-let privateKey = try! keychain.derivedKey(path: "m/44'/1'/0'/0/0")
-...
-```
-
-#### Extended Keys
-
-```
-let extendedKey = privateKey.extended()
-```
-
-#### Sync blockchain
-
-```
-let blockStore = try! SQLiteBlockStore.default()
-let blockChain = BlockChain(wallet: wallet, blockStore: blockStore)
-
-let peerGroup = PeerGroup(blockChain: blockChain)
-let peerGroup.delegate = self
-
-let peerGroup.start()
-```
-
+	//助记词
+	let words = Mnemonic.generate(strength: Mnemonic.Strength.default, language: language)
+	//种子
+	let seed = Mnemonic.seed(mnemonic: words)
+	//网络, 支持 BTC, BCH, LTC...
+	let net = CommonNet(symbol: token.symbol, bip32HeaderPub: token.bip32HeaderPub, bip32HeaderPriv: token.bip32HeaderPriv, wif: token.wif, addressHeader: token.addressHeader, p2shHeader: token.p2shHeader)
+	let hdKeyChain = HDKeychain(seed: seed, network: net)
+	//生成外部地址
+	let path = String(format: "m/44'/%d'/0'/0/%d",coin_type, address_index)
+	let address = derivedKey(path: path).publicKey().toAddress()
+        
 Installation
 ------------
-
-### Carthage
-
-BitcoinKit is available through [Carthage](https://github.com/Carthage/Carthage). To install
-it, simply add the following line to your Cartfile:
-
-`github "kishikawakatsumi/BitcoinKit"`
 
 ### CocoaPods
 
@@ -118,15 +53,6 @@ BitcoinKit builds secp256k1 and OpenSSL itself for security reasons. They requir
 	brew install libtool autoconf automake
 	
 **Make sure you're using the latest version of Xcode**
-
-Contribute
-----------
-
-Feel free to open issues, drop us pull requests or contact us to discuss how to do things.
-
-Email: [kishikawakatsumi@mac.com](mailto:kishikawakatsumi@mac.com)
-
-Twitter: [@k_katsumi](http://twitter.com/k_katsumi)
 
 
 License
