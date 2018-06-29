@@ -15,7 +15,7 @@ public class HDPublicKey {
     public let fingerprint: UInt32
     public let childIndex: UInt32
 
-    let raw: Data
+    public let raw: Data
     let chainCode: Data
 
     init(privateKey: HDPrivateKey, network: Network) {
