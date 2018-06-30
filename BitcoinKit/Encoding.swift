@@ -8,26 +8,26 @@
 
 import Foundation
 
-fileprivate protocol Encoding {
+private protocol Encoding {
     static var baseAlphabets: String { get }
     static var zeroAlphabet: Character { get }
     static var base: Int { get }
-    
+
     // log(256) / log(base), rounded up
     static func sizeFromByte(size: Int) -> Int
     // log(base) / log(256), rounded up
     static func sizeFromBase(size: Int) -> Int
-    
+
     // Public
     static func encode(_ bytes: Data) -> String
     static func decode(_ string: String) -> Data
 }
 
-fileprivate struct _Base32: Encoding {
+private struct _Base32: Encoding {
     static let baseAlphabets = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
     static var zeroAlphabet: Character = "q"
     static var base: Int = 32
-    
+
     static func sizeFromByte(size: Int) -> Int {
         // log(256) / log(32), rounded up
         return size * 8 / 5 + 1
@@ -40,11 +40,11 @@ fileprivate struct _Base32: Encoding {
 
 // The Base58 encoding used is home made, and has some differences. Especially,
 // leading zeros are kept as single zeroes when conversion happens.
-fileprivate struct _Base58: Encoding {
+private struct _Base58: Encoding {
     static let baseAlphabets = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     static var zeroAlphabet: Character = "1"
     static var base: Int = 58
-    
+
     static func sizeFromByte(size: Int) -> Int {
         // log(256) / log(58), rounded up
         return size * 138 / 100 + 1
@@ -78,12 +78,12 @@ extension Encoding {
         var bytes = bytes
         var zerosCount = 0
         var length = 0
-        
+
         for b in bytes {
             if b != 0 { break }
             zerosCount += 1
         }
-        
+
         bytes.removeFirst(zerosCount)
 
         let size = sizeFromByte(size: bytes.count)
@@ -91,44 +91,44 @@ extension Encoding {
         for b in bytes {
             var carry = Int(b)
             var i = 0
-            for j in (0...encodedBytes.count-1).reversed() where carry != 0 || i < length {
+            for j in (0...encodedBytes.count - 1).reversed() where carry != 0 || i < length {
                 carry += 256 * Int(encodedBytes[j])
                 encodedBytes[j] = UInt8(carry % base)
                 carry /= base
                 i += 1
             }
-            
+
             assert(carry == 0)
-            
+
             length = i
         }
-        
+
         var zerosToRemove = 0
         var str = ""
         for b in encodedBytes {
             if b != 0 { break }
             zerosToRemove += 1
         }
-        
+
         encodedBytes.removeFirst(zerosToRemove)
         while 0 < zerosCount {
             str += String(zeroAlphabet)
             zerosCount -= 1
         }
-        
+
         for b in encodedBytes {
             str += String(baseAlphabets[String.Index(encodedOffset: Int(b))])
         }
-        
+
         return str
     }
-    
+
     static func decode(_ string: String) -> Data {
         // remove leading and trailing whitespaces
         let string = string.trimmingCharacters(in: .whitespaces)
-        
+
         guard !string.isEmpty else { return Data() }
-        
+
         var zerosCount = 0
         var length = 0
         for c in string {
@@ -140,7 +140,7 @@ extension Encoding {
         // TODO: whitespaceは既に除去してるので、このwhere条件はいらないことが確認できたら削除
         for c in string where c != " " {
             guard let baseIndex = baseAlphabets.index(of: c) else { return Data() }
-            
+
             var carry = baseIndex.encodedOffset
             var i = 0
             for j in (0...decodedBytes.count - 1).reversed() where carry != 0 || i < length {
@@ -149,21 +149,20 @@ extension Encoding {
                 carry /= 256
                 i += 1
             }
-            
+
             assert(carry == 0)
             length = i
         }
-        
+
         // skip leading zeros
         var zerosToRemove = 0
-        
+
         for b in decodedBytes {
             if b != 0 { break }
             zerosToRemove += 1
         }
         decodedBytes.removeFirst(zerosToRemove)
-        
+
         return Data(repeating: 0, count: zerosCount) + Data(decodedBytes)
     }
 }
-
