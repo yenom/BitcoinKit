@@ -11,7 +11,6 @@
 		1474951F201FBC3E006D1CF8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1474951D201FBC3E006D1CF8 /* Main.storyboard */; };
 		14749521201FBC3E006D1CF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14749520201FBC3E006D1CF8 /* Assets.xcassets */; };
 		14749524201FBC3E006D1CF8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14749522201FBC3E006D1CF8 /* LaunchScreen.storyboard */; };
-		147F9723201FBD330071F49D /* BitcoinKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 147F9721201FBD330071F49D /* BitcoinKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1482B5EC20279B3D0098B612 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5EB20279B3D0098B612 /* HomeViewController.swift */; };
 		1482B5EE20279D3D0098B612 /* ReceiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5ED20279D3D0098B612 /* ReceiveViewController.swift */; };
 		1482B5F020279EAA0098B612 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5EF20279EA90098B612 /* SendViewController.swift */; };
@@ -31,7 +30,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				1482B5FB2028314B0098B612 /* KeychainAccess.framework in Embed Frameworks */,
-				147F9723201FBD330071F49D /* BitcoinKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -45,7 +43,6 @@
 		14749520201FBC3E006D1CF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14749523201FBC3E006D1CF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14749525201FBC3E006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		147F9721201FBD330071F49D /* BitcoinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BitcoinKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1482B5EB20279B3D0098B612 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		1482B5ED20279D3D0098B612 /* ReceiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveViewController.swift; sourceTree = "<group>"; };
 		1482B5EF20279EA90098B612 /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
@@ -107,7 +104,6 @@
 		147F9725201FBD3E0071F49D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				147F9721201FBD330071F49D /* BitcoinKit.framework */,
 				2905C26F20E6515100B43282 /* BitcoinKit.framework */,
 				1482B5F92028314A0098B612 /* KeychainAccess.framework */,
 			);
