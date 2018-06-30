@@ -174,7 +174,7 @@ public class Peer: NSObject, StreamDelegate {
     // swiftlint:disable:next cyclomatic_complexity
     private func readAvailableBytes(stream: InputStream) {
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
-        defer { buffer.deallocate(capacity: bufferSize) }
+        defer { buffer.deallocate() }
         while stream.hasBytesAvailable {
             let numberOfBytesRead = stream.read(buffer, maxLength: bufferSize)
             if numberOfBytesRead <= 0 {
