@@ -104,7 +104,7 @@ public final class HDWallet {
         return try privateKey(index: index).publicKey()
     }
 
-    enum Chain : Int {
+    enum Chain: Int {
         case external
         case `internal`
     }

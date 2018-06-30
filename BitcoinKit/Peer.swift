@@ -8,10 +8,10 @@
 
 import Foundation
 
-private let protocolVersion: Int32 = 70015
+private let protocolVersion: Int32 = 70_015
 private let bufferSize = 4096
 
-public class Peer : NSObject, StreamDelegate {
+public class Peer: NSObject, StreamDelegate {
     public let host: String
     public let port: UInt32
     public let network: Network
@@ -125,13 +125,13 @@ public class Peer : NSObject, StreamDelegate {
         sendTransactionInventory(transaction: transaction)
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     public func stream(_ stream: Stream, handle eventCode: Stream.Event) {
         switch stream {
         case let stream as InputStream:
             switch eventCode {
             case .openCompleted:
                 log("socket connected")
-                break
             case .hasBytesAvailable:
                 readAvailableBytes(stream: stream)
             case .hasSpaceAvailable:
@@ -171,13 +171,14 @@ public class Peer : NSObject, StreamDelegate {
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     private func readAvailableBytes(stream: InputStream) {
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
         defer { buffer.deallocate(capacity: bufferSize) }
         while stream.hasBytesAvailable {
             let numberOfBytesRead = stream.read(buffer, maxLength: bufferSize)
             if numberOfBytesRead <= 0 {
-                if let _ = stream.streamError { break }
+                if stream.streamError != nil { break }
             } else {
                 context.packets += Data(bytesNoCopy: buffer, count: numberOfBytesRead, deallocator: .none)
             }
@@ -274,7 +275,7 @@ public class Peer : NSObject, StreamDelegate {
         guard !filters.isEmpty else { return }
 
         let nTweak = arc4random_uniform(UInt32.max)
-        var filter = BloomFilter(elements: filters.count, falsePositiveRate: 0.00005, randomNonce: nTweak)
+        var filter = BloomFilter(elements: filters.count, falsePositiveRate: 0.000_05, randomNonce: nTweak)
 
         for f in filters {
             filter.insert(f)
@@ -453,7 +454,7 @@ public class Peer : NSObject, StreamDelegate {
     }
 }
 
-public protocol PeerDelegate : class {
+public protocol PeerDelegate: class {
     func peerDidConnect(_ peer: Peer)
     func peerDidDisconnect(_ peer: Peer)
     func peer(_ peer: Peer, didReceiveVersionMessage message: VersionMessage)

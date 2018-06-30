@@ -11,7 +11,7 @@ import Foundation
 /// Integer can be encoded depending on the represented value to save space.
 /// Variable length integers always precede an array/vector of a type of data that may vary in length.
 /// Longer numbers are encoded in little endian.
-public struct VarInt : ExpressibleByIntegerLiteral {
+public struct VarInt: ExpressibleByIntegerLiteral {
     public typealias IntegerLiteralType = UInt64
     public let underlyingValue: UInt64
     let length: UInt8
@@ -68,7 +68,7 @@ public struct VarInt : ExpressibleByIntegerLiteral {
     }
 }
 
-extension VarInt : CustomStringConvertible {
+extension VarInt: CustomStringConvertible {
     public var description: String {
         return "\(underlyingValue)"
     }

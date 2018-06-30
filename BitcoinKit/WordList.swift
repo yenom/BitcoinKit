@@ -8,8 +8,10 @@
 
 import Foundation
 
+// swiftlint:disable type_body_length
+// swiftlint:disable file_length
 class WordList {
-    static var english: [String.SubSequence] =  {
+    static var english: [String.SubSequence] = {
         let words =
             """
             abandon
@@ -4117,7 +4119,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var korean: [String.SubSequence] =  {
+    static var korean: [String.SubSequence] = {
         let words =
             """
             가격
@@ -6171,7 +6173,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var spanish: [String.SubSequence] =  {
+    static var spanish: [String.SubSequence] = {
         let words =
             """
             ábaco
@@ -8225,7 +8227,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var simplifiedChinese: [String.SubSequence] =  {
+    static var simplifiedChinese: [String.SubSequence] = {
         let words =
             """
             的
@@ -10279,7 +10281,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var traditionalChinese: [String.SubSequence] =  {
+    static var traditionalChinese: [String.SubSequence] = {
         let words =
             """
             的
@@ -12333,7 +12335,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var french: [String.SubSequence] =  {
+    static var french: [String.SubSequence] = {
         let words =
             """
             abaisser

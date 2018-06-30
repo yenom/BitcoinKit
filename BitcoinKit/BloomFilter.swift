@@ -18,7 +18,7 @@ public struct BloomFilter {
         return Data(filter)
     }
 
-    let MAX_FILTER_SIZE: UInt32 = 36000
+    let MAX_FILTER_SIZE: UInt32 = 36_000
     let MAX_HASH_FUNCS: UInt32 = 50
 
     public init(elements: Int, falsePositiveRate: Double, randomNonce nTweak: UInt32) {
@@ -37,7 +37,7 @@ public struct BloomFilter {
     }
 }
 
-extension BloomFilter : CustomDebugStringConvertible {
+extension BloomFilter: CustomDebugStringConvertible {
     public var debugDescription: String {
         return filter.flatMap { bits(fromByte: $0).map { $0.description }.joined() }.joined()
     }

@@ -16,7 +16,7 @@ public struct MurmurHash {
     public static func hashValue(_ bytes: Data, _ seed: UInt32) -> UInt32 {
         let c1: UInt32 = 0xcc9e2d51
         let c2: UInt32 = 0x1b873593
-        
+
         let byteCount = bytes.count
 
         var h1 = seed

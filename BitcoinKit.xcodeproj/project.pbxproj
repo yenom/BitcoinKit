@@ -289,6 +289,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 147494DB201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinKit" */;
 			buildPhases = (
+				292B636820E7BF7000F5040A /* ShellScript */,
 				1482B628202954CC0098B612 /* Build Libraries */,
 				147494C2201F9A29006D1CF8 /* Sources */,
 				147494C3201F9A29006D1CF8 /* Frameworks */,
@@ -394,6 +395,19 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ ! -d \"$SRCROOT/Libraries/secp256k1/lib\" ] || [ ! -d \"$SRCROOT/Libraries/openssl/lib\" ]; then\n  env -i PATH=$PATH sh \"$SRCROOT/setup/build_libraries.sh\"\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		292B636820E7BF7000F5040A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 

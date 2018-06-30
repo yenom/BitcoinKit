@@ -14,7 +14,7 @@ public struct Crypto {
     public static func sha256(_ data: Data) -> Data {
         return _Hash.sha256(data)
     }
-    
+
     public static func sha256sha256(_ data: Data) -> Data {
         return sha256(sha256(data))
     }
@@ -55,7 +55,7 @@ public struct Crypto {
     }
 }
 
-public enum CryptoError : Error {
+public enum CryptoError: Error {
     case signFailed
     case noEnoughSpace
 }

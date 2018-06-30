@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class PeerGroup : PeerDelegate {
+public class PeerGroup: PeerDelegate {
     public let blockChain: BlockChain
     public let maxConnections: Int
 
@@ -92,7 +92,7 @@ public class PeerGroup : PeerDelegate {
     }
 }
 
-public protocol PeerGroupDelegate : class {
+public protocol PeerGroupDelegate: class {
     func peerGroupDidStart(_ peerGroup: PeerGroup)
     func peerGroupDidStop(_ peerGroup: PeerGroup)
     func peerGroupDidReceiveTransaction(_ peerGroup: PeerGroup)

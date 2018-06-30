@@ -24,11 +24,13 @@ public struct PrivateKey {
                 0xBF, 0xD2, 0x5E, 0x8C, 0xD0, 0x36, 0x41, 0x40
             ]
             var fIsZero = true
-            for byte in vch {
-                if byte != 0 {
-                    fIsZero = false
-                    break
-                }
+            for byte in vch where byte != 0 {
+                fIsZero = false
+                break
+//                if byte != 0 {
+//                    fIsZero = false
+//                    break
+//                }
             }
             if fIsZero {
                 return false
@@ -66,8 +68,7 @@ public struct PrivateKey {
         // 507A5B8D : checksum
         //
         // 507A5B8DFED0FC6FE8801743720CEDEC06AA5C6FCA72B07C49964492FB98A714 : DoubleSHA256(prefix + privatekey)
-        
-        
+
         let decoded = Base58.decode(wif)
         let checksumDropped = decoded.prefix(decoded.count - 4)
 
@@ -107,18 +108,19 @@ public struct PrivateKey {
     }
 }
 
-extension PrivateKey : Equatable {
+extension PrivateKey: Equatable {
+    // swiftlint:disable operator_whitespace
     public static func ==(lhs: PrivateKey, rhs: PrivateKey) -> Bool {
         return lhs.network == rhs.network && lhs.raw == rhs.raw
     }
 }
 
-extension PrivateKey : CustomStringConvertible {
+extension PrivateKey: CustomStringConvertible {
     public var description: String {
         return raw.hex
     }
 }
 
-public enum PrivateKeyError : Error {
+public enum PrivateKeyError: Error {
     case invalidFormat
 }

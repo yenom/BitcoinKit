@@ -6,6 +6,8 @@
 //  Copyright © 2018 Kishikawa Katsumi. All rights reserved.
 //
 
+// swiftlint:disable closure_end_indentation
+
 import Foundation
 import SQLite3
 
@@ -32,7 +34,7 @@ public protocol BlockStore {
 
 let SQLITE_TRANSIENT = unsafeBitCast(OpaquePointer(bitPattern: -1), to: sqlite3_destructor_type.self)
 
-public class SQLiteBlockStore : BlockStore {
+public class SQLiteBlockStore: BlockStore {
     public static func `default`() throws -> SQLiteBlockStore {
         let cachesDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         return try SQLiteBlockStore(file: cachesDir.appendingPathComponent("blockchain.sqlite"))
@@ -41,7 +43,7 @@ public class SQLiteBlockStore : BlockStore {
     let network: Network
 
     private var database: OpaquePointer?
-    private var statements = [String: OpaquePointer!]()
+    private var statements = [String: OpaquePointer]()
 
     public init(file: URL, network: Network = .testnet) throws {
         self.network = network
@@ -413,6 +415,6 @@ public class SQLiteBlockStore : BlockStore {
     }
 }
 
-enum SQLiteError : Error {
+enum SQLiteError: Error {
     case error(Int32)
 }

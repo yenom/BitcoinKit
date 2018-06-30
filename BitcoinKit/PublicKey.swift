@@ -37,13 +37,14 @@ public struct PublicKey {
     }
 }
 
-extension PublicKey : Equatable {
+extension PublicKey: Equatable {
+    // swiftlint:disable operator_whitespace
     public static func ==(lhs: PublicKey, rhs: PublicKey) -> Bool {
         return lhs.network == rhs.network && lhs.raw == rhs.raw
     }
 }
 
-extension PublicKey : CustomStringConvertible {
+extension PublicKey: CustomStringConvertible {
     public var description: String {
         return raw.hex
     }

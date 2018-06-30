@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ServiceFlags : OptionSet {
+struct ServiceFlags: OptionSet {
     let rawValue: UInt64
     /// Nothing
     static let none = ServiceFlags(rawValue: 0)
@@ -42,7 +42,7 @@ struct ServiceFlags : OptionSet {
     // BIP process.
 }
 
-extension ServiceFlags : CustomStringConvertible {
+extension ServiceFlags: CustomStringConvertible {
     var description: String {
         let strings = ["NODE_NETWORK", "NODE_GETUTXO", "NODE_BLOOM", "NODE_WITNESS", "NODE_XTHIN", "NODE_NETWORK_LIMITED"]
         var members = [String]()

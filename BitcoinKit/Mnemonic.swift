@@ -10,7 +10,7 @@ import Foundation
 import BitcoinKit.Private
 
 public struct Mnemonic {
-    public enum Strength : Int {
+    public enum Strength: Int {
         case `default` = 128
         case low = 160
         case medium = 192
@@ -37,15 +37,15 @@ public struct Mnemonic {
         return generate(entropy: bytes, language: language)
     }
 
-    static func generate(entropy : Data, language: Language = .english) -> [String] {
+    static func generate(entropy: Data, language: Language = .english) -> [String] {
         let list = wordList(for: language)
-        var bin = String(entropy.flatMap { ("00000000" + String($0, radix:2)).suffix(8) })
+        var bin = String(entropy.flatMap { ("00000000" + String($0, radix: 2)).suffix(8) })
 
         let hash = Crypto.sha256(entropy)
         let bits = entropy.count * 8
         let cs = bits / 32
 
-        let hashbits = String(hash.flatMap { ("00000000" + String($0, radix:2)).suffix(8) })
+        let hashbits = String(hash.flatMap { ("00000000" + String($0, radix: 2)).suffix(8) })
         let checksum = String(hashbits.prefix(cs))
         bin += checksum
 
@@ -86,6 +86,6 @@ public struct Mnemonic {
     }
 }
 
-public enum MnemonicError : Error {
+public enum MnemonicError: Error {
     case randomBytesError
 }

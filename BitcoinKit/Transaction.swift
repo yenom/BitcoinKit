@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 // QUESTION: Segwitにはまだ非対応ですかね。
 /// tx describes a bitcoin transaction, in reply to getdata
 public struct Transaction {

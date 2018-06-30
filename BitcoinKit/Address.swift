@@ -64,13 +64,14 @@ public struct Address {
     }
 }
 
-extension Address : Equatable {
+extension Address: Equatable {
+    // swiftlint:disable operator_whitespace
     public static func ==(lhs: Address, rhs: Address) -> Bool {
         return lhs.network == rhs.network && lhs.publicKeyHash == rhs.publicKeyHash
     }
 }
 
-extension Address : CustomStringConvertible {
+extension Address: CustomStringConvertible {
     public var description: String {
         return base58
     }
