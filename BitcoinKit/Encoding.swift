@@ -29,28 +29,22 @@ private struct _Base32: Encoding {
     static var base: Int = 32
 
     static func sizeFromByte(size: Int) -> Int {
-        // log(256) / log(32), rounded up
         return size * 8 / 5 + 1
     }
     static func sizeFromBase(size: Int) -> Int {
-        // log(32) / log(256), rounded up.
         return size * 5 / 8 + 1
     }
 }
 
-// The Base58 encoding used is home made, and has some differences. Especially,
-// leading zeros are kept as single zeroes when conversion happens.
 private struct _Base58: Encoding {
     static let baseAlphabets = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     static var zeroAlphabet: Character = "1"
     static var base: Int = 58
 
     static func sizeFromByte(size: Int) -> Int {
-        // log(256) / log(58), rounded up
         return size * 138 / 100 + 1
     }
     static func sizeFromBase(size: Int) -> Int {
-        // log(58) / log(256), rounded up.
         return size * 733 / 1000 + 1
     }
 }
@@ -73,6 +67,8 @@ public struct Base58 {
     }
 }
 
+// The Base encoding used is home made, and has some differences. Especially,
+// leading zeros are kept as single zeros when conversion happens.
 extension Encoding {
     static func encode(_ bytes: Data) -> String {
         var bytes = bytes

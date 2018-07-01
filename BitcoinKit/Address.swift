@@ -13,9 +13,6 @@ import Foundation
 /// A standard address is built by taking the RIPE-MD160 hash of the public key bytes, with a version prefix and a
 /// checksum suffix, then encoding it textually as base58. The version prefix is used to both denote the network for
 /// which the address is valid.
-
-// このAddressというstructをそのまま使うということはないのかなー。
-
 public struct Address {
     public let network: Network
     public let publicKey: Data?
@@ -65,7 +62,7 @@ public struct Address {
 }
 
 extension Address: Equatable {
-    // swiftlint:disable operator_whitespace
+    // swiftlint:disable:next operator_whitespace
     public static func ==(lhs: Address, rhs: Address) -> Bool {
         return lhs.network == rhs.network && lhs.publicKeyHash == rhs.publicKeyHash
     }

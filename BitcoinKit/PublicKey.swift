@@ -38,7 +38,7 @@ public struct PublicKey {
 }
 
 extension PublicKey: Equatable {
-    // swiftlint:disable operator_whitespace
+    // swiftlint:disable:next operator_whitespace
     public static func ==(lhs: PublicKey, rhs: PublicKey) -> Bool {
         return lhs.network == rhs.network && lhs.raw == rhs.raw
     }

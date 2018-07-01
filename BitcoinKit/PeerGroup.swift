@@ -51,8 +51,7 @@ public class PeerGroup: PeerDelegate {
         publicKeys.append(publicKey)
     }
 
-    // QUESTION: 送るpeerは一つでいいのか？
-    // QUESTION: peerに接続してなかった時のエラー処理、delegateでエラーを返す処理、甘そう。
+    // TODO: 送るpeerは一つじゃなくて全部に送る?
     public func sendTransaction(transaction: Transaction) {
         if let peer = peers.values.first {
             peer.sendTransaction(transaction: transaction)
@@ -62,9 +61,8 @@ public class PeerGroup: PeerDelegate {
         }
     }
 
-    // peerDidConnectがdelegateで呼ばれるからいいっていう事か。わかりづれえな。
     public func peerDidConnect(_ peer: Peer) {
-        // QUESTION: isSyncingのpeerがあったらこのpeerとはstartSyncしなくてもいいのか・・・？
+        // TODO: isSyncingのpeerがあったらこのpeerとはstartSyncしなくてもいいのか・・・？
         if peers.filter({ $0.value.context.isSyncing }).isEmpty {
             let latestBlockHash = blockChain.latestBlockHash()
             peer.startSync(filters: publicKeys, latestBlockHash: latestBlockHash)
@@ -81,7 +79,7 @@ public class PeerGroup: PeerDelegate {
         start()
     }
 
-    // QUESTION: 検証はpeerでしてるのかな？
+    // TODO: Merkle Treeの検証はをすべきでは？
     public func peer(_ peer: Peer, didReceiveMerkleBlockMessage message: MerkleBlockMessage, hash: Data) {
         try! blockChain.addMerkleBlock(message, hash: hash)
     }

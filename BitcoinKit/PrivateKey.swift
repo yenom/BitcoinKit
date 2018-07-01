@@ -11,11 +11,11 @@ import Foundation
 public struct PrivateKey {
     let raw: Data
     public let network: Network
-
     // QUESTION: これランダムに生成する場合かな？
     public init(network: Network = .testnet) {
         self.network = network
 
+        // Check if vch is greater than or equal to max value
         func check(_ vch: [UInt8]) -> Bool {
             let max: [UInt8] = [
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -27,24 +27,18 @@ public struct PrivateKey {
             for byte in vch where byte != 0 {
                 fIsZero = false
                 break
-//                if byte != 0 {
-//                    fIsZero = false
-//                    break
-//                }
             }
             if fIsZero {
                 return false
             }
             for (index, byte) in vch.enumerated() {
                 if byte < max[index] {
-                    // 少しでも上限値より大きかったら、もう一度。
                     return true
                 }
                 if byte > max[index] {
                     return false
                 }
             }
-            // 最後まで上限値と一致（＝上限値）だったらもう一度。
             return true
         }
 
@@ -59,16 +53,6 @@ public struct PrivateKey {
     }
 
     public init(wif: String) throws {
-        // wif : 5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ
-        //
-        // 800C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D507A5B8D : decoded
-        //
-        // 80 : prefix
-        // 0C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D : privatekey
-        // 507A5B8D : checksum
-        //
-        // 507A5B8DFED0FC6FE8801743720CEDEC06AA5C6FCA72B07C49964492FB98A714 : DoubleSHA256(prefix + privatekey)
-
         let decoded = Base58.decode(wif)
         let checksumDropped = decoded.prefix(decoded.count - 4)
 
@@ -109,7 +93,7 @@ public struct PrivateKey {
 }
 
 extension PrivateKey: Equatable {
-    // swiftlint:disable operator_whitespace
+    // swiftlint:disable:next operator_whitespace
     public static func ==(lhs: PrivateKey, rhs: PrivateKey) -> Bool {
         return lhs.network == rhs.network && lhs.raw == rhs.raw
     }
