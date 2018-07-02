@@ -378,7 +378,7 @@ public class SQLiteBlockStore: BlockStore {
             let address = sqlite3_column_text(stmt, 1)!
             let value = sqlite3_column_int64(stmt, 2)
 
-            payments.append(Payment(state: .received, amount: value, from: try! Address(String(cString: address)), to: try! Address(String(cString: address)), transactionHash: Data(bytes: hash!, count: 32)))
+            payments.append(Payment(state: .received, amount: value, from: try! AddressFactory.create(String(cString: address)), to: try! AddressFactory.create(String(cString: address)), transactionHash: Data(bytes: hash!, count: 32)))
         }
 
         try execute { sqlite3_reset(stmt) }

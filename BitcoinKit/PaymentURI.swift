@@ -27,7 +27,7 @@ public struct PaymentURI {
         guard let components = URLComponents(string: string), let scheme = components.scheme, scheme.lowercased() == "bitcoin" else {
             throw PaymentURIError.invalid
         }
-        guard let address = try? Address(components.path) else {
+        guard let address = try? AddressFactory.create(components.path) else {
             throw PaymentURIError.malformed(.address)
         }
         self.address = address
