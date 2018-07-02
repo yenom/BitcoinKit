@@ -62,6 +62,11 @@ public class HDPublicKey {
         return publicKeyHashToAddress(hash)
     }
 
+    public func toCashaddr() -> String {
+        let hash = Data([VersionByte.pubkeyHash160]) + Crypto.sha256ripemd160(raw)
+        return Bech32.encode(hash, prefix: network.scheme)
+    }
+
     public func derived(at index: UInt32) throws -> HDPublicKey {
         // As we use explicit parameter "hardened", do not allow higher bit set.
         if (0x80000000 & index) != 0 {

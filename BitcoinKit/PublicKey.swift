@@ -32,6 +32,11 @@ public struct PublicKey {
         return publicKeyHashToAddress(hash)
     }
 
+    public func toCashaddr() -> String {
+        let hash = Data([VersionByte.pubkeyHash160]) + Crypto.sha256ripemd160(raw)
+        return Bech32.encode(hash, prefix: network.scheme)
+    }
+
     static func from(privateKey raw: Data, compression: Bool = false) -> Data {
         return _Key.computePublicKey(fromPrivateKey: raw, compression: compression)
     }

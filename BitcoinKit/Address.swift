@@ -8,6 +8,7 @@
 
 import Foundation
 
+// TODO: このクラスはPubkeyHash Addressにしか対応していない。ScriptHashとかPrivateとか対応しないなら名前がおかしい。
 /// A Bitcoin address looks like 1MsScoe2fTJoq4ZPdQgqyhgWeoNamYPevy and is derived from an elliptic curve public key
 /// plus a set of network parameters.
 /// A standard address is built by taking the RIPE-MD160 hash of the public key bytes, with a version prefix and a
@@ -18,6 +19,7 @@ public struct Address {
     public let publicKey: Data?
     public let publicKeyHash: Data
     public let base58: Base58Check
+    public let cashaddr: String
     public typealias Base58Check = String
 
     public init(_ publicKey: PublicKey) {
@@ -25,6 +27,7 @@ public struct Address {
         self.publicKey = publicKey.raw
         self.publicKeyHash = Crypto.sha256ripemd160(publicKey.raw)
         self.base58 = publicKey.toAddress()
+        self.cashaddr = publicKey.toCashaddr()
     }
 
     public init(_ publicKey: HDPublicKey) {
@@ -32,6 +35,7 @@ public struct Address {
         self.publicKey = publicKey.raw
         self.publicKeyHash = Crypto.sha256ripemd160(publicKey.raw)
         self.base58 = publicKey.toAddress()
+        self.cashaddr = publicKey.toCashaddr()
     }
 
     public init(_ base58: Base58Check) throws {
@@ -58,6 +62,10 @@ public struct Address {
         self.publicKey = nil
         self.publicKeyHash = pubKeyHash.dropFirst()
         self.base58 = base58
+
+        // cashaddr
+        let hash = Data([VersionByte.pubkeyHash160]) + self.publicKeyHash
+        self.cashaddr = Bech32.encode(hash, prefix: network.scheme)
     }
 }
 

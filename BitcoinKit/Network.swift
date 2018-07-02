@@ -14,6 +14,7 @@ public class Network {
 
     public var name: String { return "" }
     public var alias: String { return "" }
+    public var scheme: String { return "" }
     // 名前はpubkeyhash, privatekey, scripthashとかじゃなくて、version byteとした方が良さげ。
     var pubkeyhash: UInt8 { return 0 }
     var privatekey: UInt8 { return 0 }
@@ -42,6 +43,9 @@ public class Mainnet: Network {
     }
     public override var alias: String {
         return "mainnet"
+    }
+    public override var scheme: String {
+        return "bitcoincash"
     }
     override var pubkeyhash: UInt8 {
         return 0x00
@@ -121,6 +125,9 @@ public class Testnet: Network {
     }
     public override var alias: String {
         return "regtest"
+    }
+    public override var scheme: String {
+        return "bchtest"
     }
     override var pubkeyhash: UInt8 {
         return 0x6f
