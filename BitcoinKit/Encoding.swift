@@ -23,19 +23,6 @@ private protocol Encoding {
     static func decode(_ string: String) -> Data
 }
 
-private struct _Base32: Encoding {
-    static let baseAlphabets = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
-    static var zeroAlphabet: Character = "q"
-    static var base: Int = 32
-
-    static func sizeFromByte(size: Int) -> Int {
-        return size * 8 / 5 + 1
-    }
-    static func sizeFromBase(size: Int) -> Int {
-        return size * 5 / 8 + 1
-    }
-}
-
 private struct _Base58: Encoding {
     static let baseAlphabets = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     static var zeroAlphabet: Character = "1"
@@ -46,15 +33,6 @@ private struct _Base58: Encoding {
     }
     static func sizeFromBase(size: Int) -> Int {
         return size * 733 / 1000 + 1
-    }
-}
-
-public struct Base32 {
-    public static func encode(_ bytes: Data) -> String {
-        return _Base32.encode(bytes)
-    }
-    public static func decode(_ string: String) -> Data {
-        return _Base32.decode(string)
     }
 }
 
@@ -70,20 +48,11 @@ public struct Base58 {
 // The Base encoding used is home made, and has some differences. Especially,
 // leading zeros are kept as single zeros when conversion happens.
 extension Encoding {
-    static func encode(_ bytes: Data) -> String {
-        var bytes = bytes
-        var zerosCount = 0
+    static func convertBytesToBase(_ bytes: Data) -> [UInt8] {
         var length = 0
-
-        for b in bytes {
-            if b != 0 { break }
-            zerosCount += 1
-        }
-
-        bytes.removeFirst(zerosCount)
-
         let size = sizeFromByte(size: bytes.count)
         var encodedBytes: [UInt8] = Array(repeating: 0, count: size)
+
         for b in bytes {
             var carry = Int(b)
             var i = 0
@@ -100,13 +69,29 @@ extension Encoding {
         }
 
         var zerosToRemove = 0
-        var str = ""
         for b in encodedBytes {
             if b != 0 { break }
             zerosToRemove += 1
         }
 
         encodedBytes.removeFirst(zerosToRemove)
+        return encodedBytes
+    }
+
+    static func encode(_ bytes: Data) -> String {
+        var bytes = bytes
+        var zerosCount = 0
+
+        for b in bytes {
+            if b != 0 { break }
+            zerosCount += 1
+        }
+
+        bytes.removeFirst(zerosCount)
+
+        let encodedBytes = convertBytesToBase(bytes)
+
+        var str = ""
         while 0 < zerosCount {
             str += String(zeroAlphabet)
             zerosCount -= 1
@@ -160,5 +145,77 @@ extension Encoding {
         decodedBytes.removeFirst(zerosToRemove)
 
         return Data(repeating: 0, count: zerosCount) + Data(decodedBytes)
+    }
+}
+
+public struct Bech32 {
+    private static let base32Alphabets = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
+
+    public static func encode(_ bytes: Data, prefix: String) -> String {
+        let payload = convertTo5bit(data: bytes, pad: true)
+        let checksum: Data = createChecksum(prefix: prefix, payload: payload) // Data of [UInt5]
+        let combined: Data = payload + checksum // Data of [UInt5]
+        var base32 = ""
+        for b in combined {
+            base32 += String(base32Alphabets[String.Index(encodedOffset: Int(b))])
+        }
+
+        return prefix + ":" + base32
+    }
+
+    private static func expandPrefix(prefix: String) -> Data {
+        var ret: Data = Data()
+        let buf: [UInt8] = Array(prefix.utf8)
+        for b in buf {
+            ret += b & 0x1f
+        }
+        ret += Data(repeating: 0, count: 1)
+        return ret
+    }
+
+    private static func createChecksum(prefix: String, payload: Data) -> Data {
+        let enc: Data = expandPrefix(prefix: prefix) + payload + Data(repeating: 0, count: 8)
+        let mod: UInt64 = PolyMod(enc)
+        var ret: Data = Data()
+        for i in 0..<8 {
+            ret += UInt8((mod >> (5 * (7 - i))) & 0x1f)
+        }
+        return ret
+    }
+
+    private static func PolyMod(_ data: Data) -> UInt64 {
+        var c: UInt64 = 1
+        for d in data {
+            let c0: UInt8 = UInt8(c >> 35)
+            c = ((c & 0x07ffffffff) << 5) ^ UInt64(d)
+            if c0 & 0x01 != 0 { c ^= 0x98f2bc8e61 }
+            if c0 & 0x02 != 0 { c ^= 0x79b76d99e2 }
+            if c0 & 0x04 != 0 { c ^= 0xf33e5fb3c4 }
+            if c0 & 0x08 != 0 { c ^= 0xae2eabe2a8 }
+            if c0 & 0x10 != 0 { c ^= 0x1e4f43e470 }
+        }
+        return c ^ 1
+    }
+
+    private static func convertTo5bit(data: Data, pad: Bool) -> Data {
+        var acc = Int()
+        var bits = UInt8()
+        let maxv: Int = 31
+        var converted: [UInt8] = []
+        for d in [UInt8](data) {
+            acc = (acc << 8) | Int(d)
+            bits += 8
+
+            while bits >= 5 {
+                bits -= 5
+                converted.append(UInt8(acc >> Int(bits) & maxv))
+            }
+        }
+
+        let lastBits: UInt8 = UInt8(acc << (5 - bits) & maxv)
+        if pad && bits > 0 {
+            converted.append(lastBits)
+        }
+        return Data(bytes: converted)
     }
 }
