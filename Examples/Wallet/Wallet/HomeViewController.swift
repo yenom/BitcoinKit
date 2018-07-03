@@ -50,7 +50,7 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
 //                if let publicKey = address.publicKey {
 //                    peerGroup?.addPublickey(publicKey: publicKey)
 //                }
-                peerGroup?.addPublickey(publicKey: address.hash)
+                peerGroup?.addPublickey(publicKey: address.data)
             }
 
             peerGroup?.start()

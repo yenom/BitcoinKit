@@ -12,7 +12,7 @@ import Foundation
 public protocol Address {
     var network: Network { get }
     var type: AddressType { get }
-    var hash: Data { get }
+    var data: Data { get }
     var base58: String { get }
     var cashaddr: String { get }
 }
@@ -20,7 +20,7 @@ public protocol Address {
 public struct LegacyAddress: Address {
     public let network: Network
     public let type: AddressType
-    public let hash: Data
+    public let data: Data
     public let base58: Base58Check
     public let cashaddr: String
     public let publicKey: Data?
@@ -31,7 +31,7 @@ public struct LegacyAddress: Address {
         self.network = publicKey.network
         self.type = .pubkeyHash
         self.publicKey = publicKey.raw
-        self.hash = Crypto.sha256ripemd160(publicKey.raw)
+        self.data = Crypto.sha256ripemd160(publicKey.raw)
         self.base58 = publicKey.toAddress()
         self.cashaddr = publicKey.toCashaddr()
     }
@@ -40,7 +40,7 @@ public struct LegacyAddress: Address {
         self.network = publicKey.network
         self.type = .pubkeyHash
         self.publicKey = publicKey.raw
-        self.hash = Crypto.sha256ripemd160(publicKey.raw)
+        self.data = Crypto.sha256ripemd160(publicKey.raw)
         self.base58 = publicKey.toAddress()
         self.cashaddr = publicKey.toCashaddr()
     }
@@ -78,13 +78,13 @@ public struct LegacyAddress: Address {
         self.network = network
         self.type = type
         self.publicKey = nil
-        self.hash = pubKeyHash.dropFirst()
+        self.data = pubKeyHash.dropFirst()
         self.base58 = base58
 
         // cashaddr
         switch type {
         case .pubkeyHash, .scriptHash:
-            let payload = Data([type.versionByte160]) + self.hash
+            let payload = Data([type.versionByte160]) + self.data
             self.cashaddr = Bech32.encode(payload, prefix: network.scheme)
         default:
             self.cashaddr = ""
@@ -95,7 +95,7 @@ public struct LegacyAddress: Address {
 extension LegacyAddress: Equatable {
     // swiftlint:disable:next operator_whitespace
     public static func ==(lhs: LegacyAddress, rhs: LegacyAddress) -> Bool {
-        return lhs.network == rhs.network && lhs.hash == rhs.hash && lhs.type == rhs.type
+        return lhs.network == rhs.network && lhs.data == rhs.data && lhs.type == rhs.type
     }
 }
 
@@ -108,7 +108,7 @@ extension LegacyAddress: CustomStringConvertible {
 public struct Cashaddr: Address {
     public let network: Network
     public let type: AddressType
-    public let hash: Data
+    public let data: Data
     public let base58: String
     public let cashaddr: Bech32Check
     public let publicKey: Data?
@@ -119,7 +119,7 @@ public struct Cashaddr: Address {
         self.network = publicKey.network
         self.type = .pubkeyHash
         self.publicKey = publicKey.raw
-        self.hash = Crypto.sha256ripemd160(publicKey.raw)
+        self.data = Crypto.sha256ripemd160(publicKey.raw)
         self.base58 = publicKey.toAddress()
         self.cashaddr = publicKey.toCashaddr()
     }
@@ -128,7 +128,7 @@ public struct Cashaddr: Address {
         self.network = publicKey.network
         self.type = .pubkeyHash
         self.publicKey = publicKey.raw
-        self.hash = Crypto.sha256ripemd160(publicKey.raw)
+        self.data = Crypto.sha256ripemd160(publicKey.raw)
         self.base58 = publicKey.toAddress()
         self.cashaddr = publicKey.toCashaddr()
     }
@@ -156,18 +156,18 @@ public struct Cashaddr: Address {
 //        self.network = network
 //        self.type = type
 //        self.publicKey = nil
-//        self.hash = pubKeyHash.dropFirst()
+//        self.data = pubKeyHash.dropFirst()
 //        self.cashaddr = bech32
 //        
 //        // base58
-//        self.base58 = publicKeyHashToAddress(Data([network.pubkeyhash]) + hash)
+//        self.base58 = publicKeyHashToAddress(Data([network.pubkeyhash]) + data)
 //    }
 }
 
 extension Cashaddr: Equatable {
     // swiftlint:disable:next operator_whitespace
     public static func ==(lhs: Cashaddr, rhs: Cashaddr) -> Bool {
-        return lhs.network == rhs.network && lhs.hash == rhs.hash && lhs.type == rhs.type
+        return lhs.network == rhs.network && lhs.data == rhs.data && lhs.type == rhs.type
     }
 }
 
