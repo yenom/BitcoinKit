@@ -10,6 +10,14 @@ import Foundation
 
 public struct AddressFactory {
     static func create(_ plainAddress: String) throws -> Address {
-        return try LegacyAddress(plainAddress)
+        do {
+            return try Cashaddr(plainAddress)
+        } catch AddressError.invalidVersionByte {
+            throw AddressError.invalidVersionByte
+        } catch AddressError.wrongNetwork {
+            throw AddressError.wrongNetwork
+        } catch AddressError.invalid {
+            return try LegacyAddress(plainAddress)
+        }
     }
 }
