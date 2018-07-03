@@ -140,7 +140,7 @@ public struct Cashaddr: Address {
             throw AddressError.invalid
         }
         let (prefix, raw) = (decoded.prefix, decoded.data)
-        
+
         let network: Network
         switch prefix {
         case Network.mainnet.scheme:

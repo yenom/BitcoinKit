@@ -165,7 +165,7 @@ public struct Bech32 {
     }
 
     // string : "bitcoincash:qql8zpwglr3q5le9jnjxkmypefaku39dkygsx29fzk"
-    public static func decode(_ string: String) -> (prefix: String, data:Data)? {
+    public static func decode(_ string: String) -> (prefix: String, data: Data)? {
         // TODO: 不要なら削除する
         // remove leading and trailing whitespaces
         let string = string.trimmingCharacters(in: .whitespaces)
@@ -175,7 +175,7 @@ public struct Bech32 {
         guard !string.isEmpty && [string.lowercased(), string.uppercased()].contains(string) else {
             return nil
         }
-        
+
         let components = string.components(separatedBy: ":")
         // We can only handle string contains both scheme and base32
         guard components.count == 2 else {
