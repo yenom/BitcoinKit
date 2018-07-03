@@ -20,7 +20,7 @@ private protocol Encoding {
 
     // Public
     static func encode(_ bytes: Data) -> String
-    static func decode(_ string: String) -> Data
+    static func decode(_ string: String) -> Data?
 }
 
 private struct _Base58: Encoding {
@@ -40,7 +40,7 @@ public struct Base58 {
     public static func encode(_ bytes: Data) -> String {
         return _Base58.encode(bytes)
     }
-    public static func decode(_ string: String) -> Data {
+    public static func decode(_ string: String) -> Data? {
         return _Base58.decode(string)
     }
 }
@@ -104,11 +104,12 @@ extension Encoding {
         return str
     }
 
-    static func decode(_ string: String) -> Data {
+    static func decode(_ string: String) -> Data? {
+        // TODO: 不要なら削除する
         // remove leading and trailing whitespaces
         let string = string.trimmingCharacters(in: .whitespaces)
 
-        guard !string.isEmpty else { return Data() }
+        guard !string.isEmpty else { return nil }
 
         var zerosCount = 0
         var length = 0
@@ -120,7 +121,7 @@ extension Encoding {
         var decodedBytes: [UInt8] = Array(repeating: 0, count: size)
         // TODO: whitespaceは既に除去してるので、このwhere条件はいらないことが確認できたら削除
         for c in string where c != " " {
-            guard let baseIndex = baseAlphabets.index(of: c) else { return Data() }
+            guard let baseIndex = baseAlphabets.index(of: c) else { return nil }
 
             var carry = baseIndex.encodedOffset
             var i = 0
@@ -163,7 +164,49 @@ public struct Bech32 {
         return prefix + ":" + base32
     }
 
-    private static func expandPrefix(prefix: String) -> Data {
+    // string : "bitcoincash:qql8zpwglr3q5le9jnjxkmypefaku39dkygsx29fzk"
+    public static func decode(_ string: String) -> (prefix: String, data:Data)? {
+        // TODO: 不要なら削除する
+        // remove leading and trailing whitespaces
+        let string = string.trimmingCharacters(in: .whitespaces)
+
+        // We can't have empty string.
+        // We can't have both upper case and lowercase.
+        guard !string.isEmpty && [string.lowercased(), string.uppercased()].contains(string) else {
+            return nil
+        }
+        
+        let components = string.components(separatedBy: ":")
+        // We can only handle string contains both scheme and base32
+        guard components.count == 2 else {
+            return nil
+        }
+        let (prefix, base32) = (components[0], components[1])
+
+        var decodedBytes: [UInt8] = [UInt8]()
+        for c in base32.lowercased() {
+            // We can't have characters other than base32 alphabets.
+            guard let baseIndex = base32Alphabets.index(of: c)?.encodedOffset else {
+                return nil
+            }
+            decodedBytes.append(UInt8(baseIndex))
+        }
+
+        // We can't have invalid checksum
+        let payload = Data(bytes: decodedBytes)
+        guard verifyChecksum(prefix: prefix, payload: payload) else {
+            return nil
+        }
+
+        // Drop checksum
+        return (prefix, payload.dropLast(8))
+    }
+
+    private static func verifyChecksum(prefix: String, payload: Data) -> Bool {
+        return PolyMod(expand(prefix) + payload) == 0
+    }
+
+    private static func expand(_ prefix: String) -> Data {
         var ret: Data = Data()
         let buf: [UInt8] = Array(prefix.utf8)
         for b in buf {
@@ -174,7 +217,7 @@ public struct Bech32 {
     }
 
     private static func createChecksum(prefix: String, payload: Data) -> Data {
-        let enc: Data = expandPrefix(prefix: prefix) + payload + Data(repeating: 0, count: 8)
+        let enc: Data = expand(prefix) + payload + Data(repeating: 0, count: 8)
         let mod: UInt64 = PolyMod(enc)
         var ret: Data = Data()
         for i in 0..<8 {

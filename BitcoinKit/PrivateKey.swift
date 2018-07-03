@@ -53,7 +53,9 @@ public struct PrivateKey {
     }
 
     public init(wif: String) throws {
-        let decoded = Base58.decode(wif)
+        guard let decoded = Base58.decode(wif) else {
+            throw PrivateKeyError.invalidFormat
+        }
         let checksumDropped = decoded.prefix(decoded.count - 4)
 
         let addressPrefix = checksumDropped[0]

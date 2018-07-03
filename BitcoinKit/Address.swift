@@ -46,7 +46,9 @@ public struct LegacyAddress: Address {
     }
 
     public init(_ base58: Base58Check) throws {
-        let raw = Base58.decode(base58)
+        guard let raw = Base58.decode(base58) else {
+            throw AddressError.invalid
+        }
         let checksum = raw.suffix(4)
         let pubKeyHash = raw.dropLast(4)
         let checksumConfirm = Crypto.sha256sha256(pubKeyHash).prefix(4)
@@ -110,10 +112,10 @@ public struct Cashaddr: Address {
     public let type: AddressType
     public let data: Data
     public let base58: String
-    public let cashaddr: Bech32Check
+    public let cashaddr: CashaddrWithScheme
     public let publicKey: Data?
 
-    public typealias Bech32Check = String
+    public typealias CashaddrWithScheme = String
 
     public init(_ publicKey: PublicKey) {
         self.network = publicKey.network
@@ -133,35 +135,42 @@ public struct Cashaddr: Address {
         self.cashaddr = publicKey.toCashaddr()
     }
 
-    // TODO: Bech32.decode
-//    public init(_ bech32: Bech32Check) throws {
-//        do {
-//            let prefix, pubKeyHash = try Bech32.decode(bech32)
-//        } catch {
-//            throw AddressError.invalid
-//        }
-//        
-//        let network: Network
-//        let type: AddressType
-//        let versionByte = pubKeyHash[0]
-//        switch versionByte {
-//        case 0:
-//            type = .pubkeyHash
-//        case 8:
-//            type = .scriptHash
-//        default:
-//            throw AddressError.wrongNetwork
-//        }
-//        
-//        self.network = network
-//        self.type = type
-//        self.publicKey = nil
-//        self.data = pubKeyHash.dropFirst()
-//        self.cashaddr = bech32
-//        
-//        // base58
-//        self.base58 = publicKeyHashToAddress(Data([network.pubkeyhash]) + data)
-//    }
+    public init(_ cashaddr: CashaddrWithScheme) throws {
+        guard let decoded = Bech32.decode(cashaddr) else {
+            throw AddressError.invalid
+        }
+        let (prefix, raw) = (decoded.prefix, decoded.data)
+        
+        let network: Network
+        switch prefix {
+        case Network.mainnet.scheme:
+            network = .mainnet
+        case Network.testnet.scheme:
+            network = .testnet
+        default:
+            throw AddressError.wrongNetwork
+        }
+
+        let versionByte = raw[0]
+        let type: AddressType
+        switch versionByte {
+        case 0...7:
+            type = .pubkeyHash
+        case 8...15:
+            type = .scriptHash
+        default:
+            throw AddressError.invalidVersionByte
+        }
+
+        self.network = network
+        self.type = type
+        self.publicKey = nil
+        self.data = raw.dropFirst()
+        self.cashaddr = cashaddr
+
+        // base58
+        self.base58 = publicKeyHashToAddress(Data([network.pubkeyhash]) + data)
+    }
 }
 
 extension Cashaddr: Equatable {
@@ -180,4 +189,5 @@ extension Cashaddr: CustomStringConvertible {
 public enum AddressError: Error {
     case invalid
     case wrongNetwork
+    case invalidVersionByte
 }
