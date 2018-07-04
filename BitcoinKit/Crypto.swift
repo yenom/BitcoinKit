@@ -12,7 +12,7 @@ import secp256k1
 
 public struct Crypto {
     public static func sha256(_ data: Data) -> Data {
-        return _Hash.sha256(data)
+        return BitcoinKitInternal.sha256(data)
     }
     
     public static func sha256sha256(_ data: Data) -> Data {
@@ -20,7 +20,7 @@ public struct Crypto {
     }
 
     public static func ripemd160(_ data: Data) -> Data {
-        return _Hash.ripemd160(data)
+        return BitcoinKitInternal.ripemd160(data)
     }
 
     public static func sha256ripemd160(_ data: Data) -> Data {
@@ -28,7 +28,7 @@ public struct Crypto {
     }
 
     public static func hmacsha512(data: Data, key: Data) -> Data {
-        return _Hash.hmacsha512(data, key: key)
+        return BitcoinKitInternal.hmacsha512(data, key: key)
     }
 
     public static func sign(_ data: Data, privateKey: PrivateKey) throws -> Data {
@@ -52,6 +52,27 @@ public struct Crypto {
         der.count = length
 
         return der
+    }
+    
+    public static func signCompact(_ data: Data, privateKey: PrivateKey) throws -> Data {
+        let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN))!
+        defer { secp256k1_context_destroy(ctx) }
+        let signature = UnsafeMutablePointer<secp256k1_ecdsa_signature>.allocate(capacity: 1)
+        defer { signature.deallocate(capacity: 1) }
+        let status = data.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
+            privateKey.raw.withUnsafeBytes {
+                secp256k1_ecdsa_sign(ctx, signature, ptr, $0, nil, nil)
+            }
+        }
+        guard status == 1 else { throw CryptoError.signFailed }
+        let normalizedsig = UnsafeMutablePointer<secp256k1_ecdsa_signature>.allocate(capacity: 1)
+        defer { normalizedsig.deallocate(capacity: 1) }
+        secp256k1_ecdsa_signature_normalize(ctx, normalizedsig, signature)
+        var length: size_t = 64
+        var compact = Data(count: length)
+        guard compact.withUnsafeMutableBytes( { return secp256k1_ecdsa_signature_serialize_compact(ctx, $0, normalizedsig) }) == 1 else { throw CryptoError.noEnoughSpace }
+        compact.count = length
+        return compact
     }
 }
 
