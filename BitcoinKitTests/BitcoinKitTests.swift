@@ -767,7 +767,7 @@ class BitcoinKitTests: XCTestCase {
         // if there are correspond output transactions, set script to copy
         let subScript = Data(hex: "76a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac")!
         let inputForSign = TransactionInput(previousOutput: outpoint, scriptLength: VarInt(subScript.count), signatureScript: subScript, sequence: UInt32.max)
-        let _tx = Transaction(version: 1, txInCount: 1, inputs: [inputForSign], txOutCount: 2, outputs: [sending, payback], lockTime: 0)
+        let _tx = Transaction(version: 1, inputs: [inputForSign], outputs: [sending, payback], lockTime: 0)
 
         let _txHash = Crypto.sha256sha256(_tx.serialized() + UInt32(Signature.SIGHASH_ALL).littleEndian)
         guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
@@ -779,7 +779,7 @@ class BitcoinKitTests: XCTestCase {
         // scriptSig: <sig> <pubKey>
         let unlockingScript: Data = Data([UInt8(signature.count + 1)]) + signature + Signature.SIGHASH_ALL + UInt8(fromPublicKey.raw.count) + fromPublicKey.raw
         let input = TransactionInput(previousOutput: outpoint, scriptLength: VarInt(unlockingScript.count), signatureScript: unlockingScript, sequence: UInt32.max)
-        let transaction = Transaction(version: 1, txInCount: 1, inputs: [input], txOutCount: 2, outputs: [sending, payback], lockTime: 0)
+        let transaction = Transaction(version: 1, inputs: [input], outputs: [sending, payback], lockTime: 0)
         
         let utxoToSign = TransactionOutput(value: 169012961, scriptLength: VarInt(subScript.count), lockingScript: subScript)
         let sighash = transaction.signatureHashLegacy(for: utxoToSign, inputIndex: 0, hashType: Signature.SIGHASH_ALL)
