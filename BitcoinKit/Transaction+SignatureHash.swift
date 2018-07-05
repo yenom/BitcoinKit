@@ -29,14 +29,14 @@ extension Transaction {
             inputsToSign[i] = txin.sigChanged(with: script)
         }
 
-        switch hashType & Signature.SIGHASH_OUTPUT_MASK {
-        case Signature.SIGHASH_NONE:
+        switch hashType & SighashType.SIGHASH_OUTPUT_MASK {
+        case SighashType.SIGHASH_NONE:
             // Wildcard payee - we can pay anywhere.
             outputsToSign = []
 
             // Blank out others' input sequence numbers to let others update transaction at will.
             inputsToSign = inputsToSign.map { $0.sequenceChanged(with: 0) }
-        case Signature.SIGHASH_SINGLE:
+        case SighashType.SIGHASH_SINGLE:
             // Single mode assumes we sign an output at the same index as an input.
             // Outputs before the one we need are blanked out. All outputs after are simply removed.
             // Only lock-in the txout payee at same index as txin.
@@ -64,7 +64,7 @@ extension Transaction {
             ()
         }
 
-        if (hashType & Signature.SIGHASH_ANYONECANPAY) != 0 {
+        if (hashType & SighashType.SIGHASH_ANYONECANPAY) != 0 {
             let input = inputsToSign[inputIndex]
             inputsToSign = [input]
         }
@@ -121,7 +121,7 @@ private extension TransactionInput {
 
 private extension Array where Element == TransactionInput {
     func hashPrevouts(_ hashType: UInt8) -> Data {
-        if (hashType & Signature.SIGHASH_ANYONECANPAY) == 0 {
+        if (hashType & SighashType.SIGHASH_ANYONECANPAY) == 0 {
             // If the ANYONECANPAY flag is not set, hashPrevouts is the double SHA256 of the serialization of all input outpoints
             let serializedPrevouts: Data = reduce(Data()) { $0 + $1.previousOutput.serialized() }
             return Crypto.sha256sha256(serializedPrevouts)
@@ -132,9 +132,9 @@ private extension Array where Element == TransactionInput {
     }
 
     func hashSequence(_ hashType: UInt8) -> Data {
-        if (hashType & Signature.SIGHASH_ANYONECANPAY) == 0
-            && (hashType & 0x1f) != Signature.SIGHASH_SINGLE
-            && (hashType & 0x1f) != Signature.SIGHASH_NONE {
+        if (hashType & SighashType.SIGHASH_ANYONECANPAY) == 0
+            && (hashType & 0x1f) != SighashType.SIGHASH_SINGLE
+            && (hashType & 0x1f) != SighashType.SIGHASH_NONE {
             // If none of the ANYONECANPAY, SINGLE, NONE sighash type is set, hashSequence is the double SHA256 of the serialization of nSequence of all inputs
             let serializedSequence: Data = reduce(Data()) { $0 + $1.sequence }
             return Crypto.sha256sha256(serializedSequence)
@@ -147,13 +147,13 @@ private extension Array where Element == TransactionInput {
 
 private extension Array where Element == TransactionOutput {
     func hashOutputs(_ hashType: UInt8, inputIndex: Int) -> Data {
-        if (hashType & 0x1f) != Signature.SIGHASH_SINGLE
-            && (hashType & 0x1f) != Signature.SIGHASH_NONE {
+        if (hashType & 0x1f) != SighashType.SIGHASH_SINGLE
+            && (hashType & 0x1f) != SighashType.SIGHASH_NONE {
             // If the sighash type is neither SINGLE nor NONE, hashOutputs is the double SHA256 of the serialization of all output amounts (8-byte little endian) paired up with their scriptPubKey (serialized as scripts inside CTxOuts)
             let serializedOutputs: Data = reduce(Data()) { $0 + $1.serialized() }
             return Crypto.sha256sha256(serializedOutputs)
 
-        } else if (hashType & 0x1f) == Signature.SIGHASH_SINGLE && inputIndex < count {
+        } else if (hashType & 0x1f) == SighashType.SIGHASH_SINGLE && inputIndex < count {
             // If sighash type is SINGLE and the input index is smaller than the number of outputs, hashOutputs is the double SHA256 of the output amount with scriptPubKey of the same index as the input
             let serializedOutput = self[inputIndex].serialized()
             return Crypto.sha256sha256(serializedOutput)

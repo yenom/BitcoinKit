@@ -769,7 +769,7 @@ class BitcoinKitTests: XCTestCase {
         let inputForSign = TransactionInput(previousOutput: outpoint, signatureScript: subScript, sequence: UInt32.max)
         let _tx = Transaction(version: 1, inputs: [inputForSign], outputs: [sending, payback], lockTime: 0)
 
-        let _txHash = Crypto.sha256sha256(_tx.serialized() + UInt32(Signature.SIGHASH_ALL).littleEndian)
+        let _txHash = Crypto.sha256sha256(_tx.serialized() + UInt32(SighashType.SIGHASH_ALL).littleEndian)
         guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
             XCTFail("failed to sign")
             return
@@ -777,12 +777,12 @@ class BitcoinKitTests: XCTestCase {
         XCTAssertEqual(signature.hex, "3044022074ddd327544e982d8dd53514406a77a96de47f40c186e58cafd650dd71ea522702204f67c558cc8e771581c5dda630d0dfff60d15e43bf13186669392936ec539d03")
 
         // scriptSig: <sig> <pubKey>
-        let unlockingScript: Data = Data([UInt8(signature.count + 1)]) + signature + Signature.SIGHASH_ALL + UInt8(fromPublicKey.raw.count) + fromPublicKey.raw
+        let unlockingScript: Data = Data([UInt8(signature.count + 1)]) + signature + SighashType.SIGHASH_ALL + UInt8(fromPublicKey.raw.count) + fromPublicKey.raw
         let input = TransactionInput(previousOutput: outpoint, signatureScript: unlockingScript, sequence: UInt32.max)
         let transaction = Transaction(version: 1, inputs: [input], outputs: [sending, payback], lockTime: 0)
         
         let utxoToSign = TransactionOutput(value: 169012961, lockingScript: subScript)
-        let sighash = transaction.signatureHashLegacy(for: utxoToSign, inputIndex: 0, hashType: Signature.SIGHASH_ALL)
+        let sighash = transaction.signatureHashLegacy(for: utxoToSign, inputIndex: 0, hashType: SighashType.SIGHASH_ALL)
         XCTAssertEqual(sighash.hex, _txHash.hex)
         let expect = Data(hex: "010000000131820866b6f840db0eeec1b5ecc44092869ebc72d4ff5e76b46690eb4eca2415010000008a473044022074ddd327544e982d8dd53514406a77a96de47f40c186e58cafd650dd71ea522702204f67c558cc8e771581c5dda630d0dfff60d15e43bf13186669392936ec539d030141047e000cc16c9a4d38cb1572b9dc34c1452626aa170b46150d0e806be1b42517f0832c8a58f543128083ffb8632bae94dd5f3e1e89fad0a17f64ed8bbbb90b5753ffffffff0280f0fa02000000001976a9149f9a7abd600c0caa03983a77c8c3df8e062cb2fa88ace1677f06000000001976a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac00000000")!
         XCTAssertEqual(transaction.serialized().hex, expect.hex)
