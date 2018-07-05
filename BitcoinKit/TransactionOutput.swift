@@ -16,6 +16,13 @@ public struct TransactionOutput {
     /// Usually contains the public key as a Bitcoin script setting up conditions to claim this output
     public let lockingScript: Data
 
+    public func scriptCode() -> Data {
+        var data = Data()
+        data += scriptLength.serialized()
+        data += lockingScript
+        return data
+    }
+
     public func serialized() -> Data {
         var data = Data()
         data += value
