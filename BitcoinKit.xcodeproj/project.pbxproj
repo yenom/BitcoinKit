@@ -63,6 +63,7 @@
 		297DB97320EB12E60077EEEE /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* AddressType.swift */; };
 		297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97420EB13320077EEEE /* AddressFactory.swift */; };
 		CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF120F0CF9100AD4020 /* Base58Tests.swift */; };
+		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,7 @@
 		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
 		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
 		CF432AF120F0CF9100AD4020 /* Base58Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58Tests.swift; sourceTree = "<group>"; };
+		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 				14839A96202FE6D000A6CB34 /* BlockMessage.swift */,
 				14839A98202FE6E700A6CB34 /* MerkleBlockMessage.swift */,
 				14F37A3920209B5400D34748 /* Transaction.swift */,
+				299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */,
 				14839A9A202FE71200A6CB34 /* TransactionInput.swift */,
 				14839A9C202FE72600A6CB34 /* TransactionOutPoint.swift */,
 				14839A9E202FE73B00A6CB34 /* TransactionOutput.swift */,
@@ -446,6 +449,7 @@
 				14839A8F202FE68000A6CB34 /* PongMessage.swift in Sources */,
 				14CDC3862021824200C01556 /* Wallet.swift in Sources */,
 				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
+				299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */,
 				14839A85202FE60E00A6CB34 /* InventoryMessage.swift in Sources */,
 				14839AA7202FE7C700A6CB34 /* VarInt.swift in Sources */,
 				14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */,
