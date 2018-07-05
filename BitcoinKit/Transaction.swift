@@ -37,6 +37,15 @@ public struct Transaction {
         return Data(internalTxID.reversed()).hex
     }
 
+    init(version: Int32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
+        self.version = version
+        self.txInCount = VarInt(inputs.count)
+        self.inputs = inputs
+        self.txOutCount = VarInt(outputs.count)
+        self.outputs = outputs
+        self.lockTime = lockTime
+    }
+
     public func serialized() -> Data {
         var data = Data()
         data += version
@@ -66,7 +75,7 @@ public struct Transaction {
             outputs.append(TransactionOutput.deserialize(byteStream))
         }
         let lockTime = byteStream.read(UInt32.self)
-        return Transaction(version: version, txInCount: txInCount, inputs: inputs, txOutCount: txOutCount, outputs: outputs, lockTime: lockTime)
+        return Transaction(version: version, inputs: inputs, outputs: outputs, lockTime: lockTime)
     }
 }
 
@@ -138,7 +147,7 @@ extension Transaction {
             copiedInputs = [input]
         }
 
-        let tx = Transaction(version: version, txInCount: VarInt(copiedInputs.count), inputs: copiedInputs, txOutCount: VarInt(copiedOutputs.count), outputs: copiedOutputs, lockTime: lockTime)
+        let tx = Transaction(version: version, inputs: copiedInputs, outputs: copiedOutputs, lockTime: lockTime)
         var data = Data()
         data += tx.serialized()
         data += UInt32(hashType).littleEndian
