@@ -8,6 +8,7 @@
 
 import Foundation
 
+// TODO: scriptLengthはcomputed propertyで良いのではと思ったけど、deserializeするときには必要なのか。initするときには必要なくしたい。
 public struct TransactionInput {
     /// The previous output transaction reference, as an OutPoint structure
     public let previousOutput: TransactionOutPoint
@@ -18,7 +19,6 @@ public struct TransactionInput {
     /// Transaction version as defined by the sender. Intended for "replacement" of transactions when information is updated before inclusion into a block.
     public let sequence: UInt32
 
-    // TODO: BitcoinCashのTxにおいてはこれは使わないかもしれない。
     public func serialized() -> Data {
         var data = Data()
         data += previousOutput.serialized()
