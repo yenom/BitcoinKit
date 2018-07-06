@@ -245,7 +245,7 @@ public struct Bech32 {
         var bits = UInt8()
         let maxv: Int = 31
         var converted: [UInt8] = []
-        for d in [UInt8](data) {
+        for d in data {
             acc = (acc << 8) | Int(d)
             bits += 8
 
