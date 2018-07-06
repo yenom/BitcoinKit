@@ -63,6 +63,7 @@
 		297DB97320EB12E60077EEEE /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* AddressType.swift */; };
 		297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97420EB13320077EEEE /* AddressFactory.swift */; };
 		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
+		299CB47120EF843200B1245C /* Transaction+SignatureHashLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB47020EF843200B1245C /* Transaction+SignatureHashLegacy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,7 @@
 		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
 		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
+		299CB47020EF843200B1245C /* Transaction+SignatureHashLegacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHashLegacy.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +262,7 @@
 				14F37A3B20209F9200D34748 /* Script.swift */,
 				14F37A3D2020A02000D34748 /* SighashType.swift */,
 				299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */,
+				299CB47020EF843200B1245C /* Transaction+SignatureHashLegacy.swift */,
 				14839AA4202FE7A100A6CB34 /* ByteStream.swift */,
 				147F9728201FC89E0071F49D /* BloomFilter.swift */,
 				147494ED201FADAC006D1CF8 /* MurmurHash.swift */,
@@ -477,6 +480,7 @@
 				14839A99202FE6E700A6CB34 /* MerkleBlockMessage.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
 				14839A8D202FE66A00A6CB34 /* PingMessage.swift in Sources */,
+				299CB47120EF843200B1245C /* Transaction+SignatureHashLegacy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
