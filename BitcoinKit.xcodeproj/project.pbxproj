@@ -57,7 +57,7 @@
 		14CDC3882021855200C01556 /* PeerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3872021855200C01556 /* PeerGroup.swift */; };
 		14CDC38A2021881A00C01556 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3892021881A00C01556 /* Address.swift */; };
 		14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC38B2021EF5000C01556 /* Helpers.swift */; };
-		14F37A3A20209B5400D34748 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3920209B5400D34748 /* Transaction.swift */; };
+		14F37A3A20209B5400D34748 /* TransactionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3920209B5400D34748 /* TransactionMessage.swift */; };
 		14F37A3C20209F9200D34748 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3B20209F9200D34748 /* Script.swift */; };
 		14F37A3E2020A02000D34748 /* SighashType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* SighashType.swift */; };
 		297DB97320EB12E60077EEEE /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* AddressType.swift */; };
@@ -131,7 +131,7 @@
 		14CDC3872021855200C01556 /* PeerGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerGroup.swift; sourceTree = "<group>"; };
 		14CDC3892021881A00C01556 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		14CDC38B2021EF5000C01556 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		14F37A3920209B5400D34748 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		14F37A3920209B5400D34748 /* TransactionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionMessage.swift; sourceTree = "<group>"; };
 		14F37A3B20209F9200D34748 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
 		14F37A3D2020A02000D34748 /* SighashType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SighashType.swift; sourceTree = "<group>"; };
 		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
@@ -221,7 +221,7 @@
 				14839A94202FE6BE00A6CB34 /* GetBlocksMessage.swift */,
 				14839A96202FE6D000A6CB34 /* BlockMessage.swift */,
 				14839A98202FE6E700A6CB34 /* MerkleBlockMessage.swift */,
-				14F37A3920209B5400D34748 /* Transaction.swift */,
+				14F37A3920209B5400D34748 /* TransactionMessage.swift */,
 				14839A9A202FE71200A6CB34 /* TransactionInput.swift */,
 				14839A9C202FE72600A6CB34 /* TransactionOutPoint.swift */,
 				14839A9E202FE73B00A6CB34 /* TransactionOutput.swift */,
@@ -429,7 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1482B5EA20273B8A0098B612 /* HDPublicKey.swift in Sources */,
-				14F37A3A20209B5400D34748 /* Transaction.swift in Sources */,
+				14F37A3A20209B5400D34748 /* TransactionMessage.swift in Sources */,
 				1482B5E42026F2590098B612 /* WordList.swift in Sources */,
 				14839A93202FE6AC00A6CB34 /* FilterLoadMessage.swift in Sources */,
 				14839A9D202FE72600A6CB34 /* TransactionOutPoint.swift in Sources */,

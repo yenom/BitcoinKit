@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Transaction {
+extension TransactionMessage {
     public func signatureHash(for utxoToSign: TransactionOutput, inputIndex: Int, hashType: SighashType) -> Data {
         // Can't have index greater than num of inputs
         guard inputIndex < inputs.count else {

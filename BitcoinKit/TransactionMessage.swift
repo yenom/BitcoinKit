@@ -1,5 +1,5 @@
 //
-//  Transaction.swift
+//  TransactionMessage.swift
 //  BitcoinKit
 //
 //  Created by Kishikawa Katsumi on 2018/01/30.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// tx describes a bitcoin transaction, in reply to getdata
-public struct Transaction {
+public struct TransactionMessage {
     /// Transaction data format version (note, this is signed)
     public let version: Int32
     /// If present, always 0001, and indicates the presence of witness data
@@ -31,12 +31,12 @@ public struct Transaction {
     /// The block number or timestamp at which this transaction is unlocked:
     public let lockTime: UInt32
 
-    public var internalTxID: Data {
+    public var txHash: Data {
         return Crypto.sha256sha256(serialized())
     }
 
     public var txID: String {
-        return Data(internalTxID.reversed()).hex
+        return Data(txHash.reversed()).hex
     }
 
     init(version: Int32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
@@ -57,12 +57,12 @@ public struct Transaction {
         return data
     }
 
-    public static func deserialize(_ data: Data) -> Transaction {
+    public static func deserialize(_ data: Data) -> TransactionMessage {
         let byteStream = ByteStream(data)
         return deserialize(byteStream)
     }
 
-    static func deserialize(_ byteStream: ByteStream) -> Transaction {
+    static func deserialize(_ byteStream: ByteStream) -> TransactionMessage {
         let version = byteStream.read(Int32.self)
         let txInCount = byteStream.read(VarInt.self)
         var inputs = [TransactionInput]()
@@ -75,6 +75,6 @@ public struct Transaction {
             outputs.append(TransactionOutput.deserialize(byteStream))
         }
         let lockTime = byteStream.read(UInt32.self)
-        return Transaction(version: version, inputs: inputs, outputs: outputs, lockTime: lockTime)
+        return TransactionMessage(version: version, inputs: inputs, outputs: outputs, lockTime: lockTime)
     }
 }
