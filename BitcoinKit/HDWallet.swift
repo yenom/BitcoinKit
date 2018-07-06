@@ -11,11 +11,11 @@ import Foundation
 public final class HDWallet {
     public let network: Network
 
-    public var transactions: [TransactionMessage] {
+    public var transactions: [Transaction] {
         return []
     }
 
-    public var unspentTransactions: [TransactionMessage] {
+    public var unspentTransactions: [Transaction] {
         return []
     }
 

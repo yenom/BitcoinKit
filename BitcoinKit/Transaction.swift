@@ -1,5 +1,5 @@
 //
-//  TransactionMessage.swift
+//  Transaction.swift
 //  BitcoinKit
 //
 //  Created by Kishikawa Katsumi on 2018/01/30.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// tx describes a bitcoin transaction, in reply to getdata
-public struct TransactionMessage {
+public struct Transaction {
     /// Transaction data format version (note, this is signed)
     public let version: Int32
     /// If present, always 0001, and indicates the presence of witness data
@@ -57,12 +57,12 @@ public struct TransactionMessage {
         return data
     }
 
-    public static func deserialize(_ data: Data) -> TransactionMessage {
+    public static func deserialize(_ data: Data) -> Transaction {
         let byteStream = ByteStream(data)
         return deserialize(byteStream)
     }
 
-    static func deserialize(_ byteStream: ByteStream) -> TransactionMessage {
+    static func deserialize(_ byteStream: ByteStream) -> Transaction {
         let version = byteStream.read(Int32.self)
         let txInCount = byteStream.read(VarInt.self)
         var inputs = [TransactionInput]()
@@ -75,6 +75,6 @@ public struct TransactionMessage {
             outputs.append(TransactionOutput.deserialize(byteStream))
         }
         let lockTime = byteStream.read(UInt32.self)
-        return TransactionMessage(version: version, inputs: inputs, outputs: outputs, lockTime: lockTime)
+        return Transaction(version: version, inputs: inputs, outputs: outputs, lockTime: lockTime)
     }
 }

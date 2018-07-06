@@ -17,7 +17,7 @@ public class PeerGroup: PeerDelegate {
     var peers = [String: Peer]()
 
     private var publicKeys = [Data]()
-    private var transactions = [TransactionMessage]()
+    private var transactions = [Transaction]()
 
     public init(blockChain: BlockChain, maxConnections: Int = 1) {
         self.blockChain = blockChain
@@ -53,7 +53,7 @@ public class PeerGroup: PeerDelegate {
     }
 
     // TODO: 送るpeerは一つじゃなくて全部に送る?
-    public func sendTransaction(transaction: TransactionMessage) {
+    public func sendTransaction(transaction: Transaction) {
         if let peer = peers.values.first {
             peer.sendTransaction(transaction: transaction)
         } else {
@@ -85,7 +85,7 @@ public class PeerGroup: PeerDelegate {
         try! blockChain.addMerkleBlock(message, hash: hash)
     }
 
-    public func peer(_ peer: Peer, didReceiveTransaction transaction: TransactionMessage, hash: Data) {
+    public func peer(_ peer: Peer, didReceiveTransaction transaction: Transaction, hash: Data) {
         try! blockChain.addTransaction(transaction, hash: hash)
         delegate?.peerGroupDidReceiveTransaction(self)
     }

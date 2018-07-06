@@ -25,7 +25,7 @@ public class BlockChain {
         try blockStore.addMerkleBlock(merkleBlock, hash: hash)
     }
 
-    public func addTransaction(_ transaction: TransactionMessage, hash: Data) throws {
+    public func addTransaction(_ transaction: Transaction, hash: Data) throws {
         try blockStore.addTransaction(transaction, hash: hash)
     }
 

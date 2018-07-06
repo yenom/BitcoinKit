@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension TransactionMessage {
+extension Transaction {
     public func signatureHashLegacy(for utxoToSign: TransactionOutput, inputIndex: Int, hashType: SighashType) -> Data {
         // Can't have index greater than num of inputs
         guard inputIndex < inputs.count else {
@@ -17,7 +17,7 @@ extension TransactionMessage {
         var inputsToSign: [TransactionInput] = inputs
         var outputsToSign: [TransactionOutput] = outputs
         var sighash: Data {
-            let tx = TransactionMessage(version: version, inputs: inputsToSign, outputs: outputsToSign, lockTime: lockTime)
+            let tx = Transaction(version: version, inputs: inputsToSign, outputs: outputsToSign, lockTime: lockTime)
             let unsignedRawTx: Data = tx.serialized() + UInt32(hashType)
             return Crypto.sha256sha256(unsignedRawTx)
         }

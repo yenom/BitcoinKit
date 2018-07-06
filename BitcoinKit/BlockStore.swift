@@ -27,7 +27,7 @@ public struct Payment {
 public protocol BlockStore {
     func addBlock(_ block: BlockMessage, hash: Data) throws
     func addMerkleBlock(_ merkleBlock: MerkleBlockMessage, hash: Data) throws
-    func addTransaction(_ transaction: TransactionMessage, hash: Data) throws
+    func addTransaction(_ transaction: Transaction, hash: Data) throws
     func calculateBlance(address: Address) throws -> Int64
     func latestBlockHash() throws -> Data?
 }
@@ -286,7 +286,7 @@ public class SQLiteBlockStore: BlockStore {
         try execute { sqlite3_reset(stmt) }
     }
 
-    public func addTransaction(_ transaction: TransactionMessage, hash: Data) throws {
+    public func addTransaction(_ transaction: Transaction, hash: Data) throws {
         let stmt = statements["addTransaction"]
 
         try execute { hash.withUnsafeBytes { sqlite3_bind_blob(stmt, 1, $0, Int32(hash.count), SQLITE_TRANSIENT) } }

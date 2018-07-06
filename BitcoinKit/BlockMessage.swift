@@ -24,7 +24,7 @@ public struct BlockMessage {
     /// Number of transaction entries
     public let transactionCount: VarInt
     /// Block transactions, in format of "tx" command
-    public let transactions: [TransactionMessage]
+    public let transactions: [Transaction]
 
     public func serialized() -> Data {
         var data = Data()
@@ -50,9 +50,9 @@ public struct BlockMessage {
         let bits = byteStream.read(UInt32.self)
         let nonce = byteStream.read(UInt32.self)
         let transactionCount = byteStream.read(VarInt.self)
-        var transactions = [TransactionMessage]()
+        var transactions = [Transaction]()
         for _ in 0..<transactionCount.underlyingValue {
-            transactions.append(TransactionMessage.deserialize(byteStream))
+            transactions.append(Transaction.deserialize(byteStream))
         }
         return BlockMessage(version: version, prevBlock: prevBlock, merkleRoot: merkleRoot, timestamp: timestamp, bits: bits, nonce: nonce, transactionCount: transactionCount, transactions: transactions)
     }
