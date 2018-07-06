@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// tx describesa bitcoin transaction, in reply to getdata
+/// tx describes a bitcoin transaction, in reply to getdata
 public struct Transaction {
     /// Transaction data format version (note, this is signed)
     public let version: Int32
