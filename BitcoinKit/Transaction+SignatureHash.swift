@@ -52,11 +52,7 @@ extension Transaction {
             // All outputs before the one we need are blanked out. All outputs after are simply removed.
             // This is equivalent to replacing outputs with (i-1) empty outputs and a i-th original one.
             let myOutput = outputs[outputIndex]
-            outputsToSign = []
-            for _ in 0..<outputIndex {
-                outputsToSign.append(TransactionOutput())
-            }
-            outputsToSign.append(myOutput)
+            outputsToSign = Array(repeating: TransactionOutput(), count: outputIndex) + [myOutput]
 
             // Blank out others' input sequence numbers to let others update transaction at will.
             inputsToSign = inputsToSign.map { $0.sequenceChanged(with: 0) }
