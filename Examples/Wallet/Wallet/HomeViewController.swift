@@ -46,10 +46,9 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
             peerGroup?.delegate = self
 
             for address in usedAddresses() {
-                // TODO: Cashaddrになったらここも復活
-//                if let publicKey = address.publicKey {
-//                    peerGroup?.addPublickey(publicKey: publicKey)
-//                }
+                if let publicKey = address.publicKey {
+                    peerGroup?.addPublickey(publicKey: publicKey)
+                }
                 peerGroup?.addPublickey(publicKey: address.data)
             }
 
@@ -93,7 +92,6 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
         updateBalance()
     }
 
-    // TODO: Casahaddrにしよう
     private func usedAddresses() -> [Address] {
         var addresses = [Address]()
         guard let wallet = AppController.shared.wallet else {

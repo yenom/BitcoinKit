@@ -15,6 +15,7 @@ public protocol Address {
     var data: Data { get }
     var base58: String { get }
     var cashaddr: String { get }
+    var publicKey: Data? { get }
 }
 
 public struct LegacyAddress: Address {

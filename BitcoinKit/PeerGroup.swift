@@ -47,6 +47,7 @@ public class PeerGroup: PeerDelegate {
         delegate?.peerGroupDidStop(self)
     }
 
+    // TODO: public key hashじゃなくて良いのか？
     public func addPublickey(publicKey: Data) {
         publicKeys.append(publicKey)
     }
