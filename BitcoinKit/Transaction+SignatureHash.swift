@@ -9,65 +9,6 @@
 import Foundation
 
 extension Transaction {
-    public func signatureHashLegacy(for utxoToSign: TransactionOutput, inputIndex: Int, hashType: UInt8) -> Data {
-        // Can't have index greater than num of inputs
-        guard inputIndex < inputs.count else {
-            return Data()
-        }
-
-        var inputsToSign: [TransactionInput] = inputs
-        var outputsToSign: [TransactionOutput] = outputs
-        var sighash: Data {
-            let tx = Transaction(version: version, inputs: inputsToSign, outputs: outputsToSign, lockTime: lockTime)
-            let unsignedRawTx: Data = tx.serialized() + UInt32(hashType)
-            return Crypto.sha256sha256(unsignedRawTx)
-        }
-
-        for i in 0..<inputsToSign.count {
-            let txin = inputsToSign[i]
-            let script: Data = (i == inputIndex) ? utxoToSign.lockingScript : Data()
-            inputsToSign[i] = txin.sigChanged(with: script)
-        }
-
-        switch hashType & SighashType.SIGHASH_OUTPUT_MASK {
-        case SighashType.SIGHASH_NONE:
-            // Wildcard payee - we can pay anywhere.
-            outputsToSign = []
-
-            // Blank out others' input sequence numbers to let others update transaction at will.
-            inputsToSign = inputsToSign.map { $0.sequenceChanged(with: 0) }
-        case SighashType.SIGHASH_SINGLE:
-            // Single mode assumes we sign an output at the same index as an input.
-            // Outputs before the one we need are blanked out. All outputs after are simply removed.
-            // Only lock-in the txout payee at same index as txin.
-            let outputIndex = inputIndex
-
-            // If outputIndex is out of bounds, BitcoinQT is returning a 256-bit little-endian 0x01 instead of failing with error.
-            // We should do the same to stay compatible.
-            guard outputIndex < outputs.count else {
-                // 0x0100000000000000000000000000000000000000000000000000000000000000
-                return Data(repeating: 1, count: 1) + Data(repeating: 0, count: 31)
-            }
-
-            // All outputs before the one we need are blanked out. All outputs after are simply removed.
-            // This is equivalent to replacing outputs with (i-1) empty outputs and a i-th original one.
-            let myOutput = outputs[outputIndex]
-            outputsToSign = Array(repeating: TransactionOutput(), count: outputIndex) + [myOutput]
-
-            // Blank out others' input sequence numbers to let others update transaction at will.
-            inputsToSign = inputsToSign.map { $0.sequenceChanged(with: 0) }
-        default:
-            ()
-        }
-
-        if (hashType & SighashType.SIGHASH_ANYONECANPAY) != 0 {
-            let input = inputsToSign[inputIndex]
-            inputsToSign = [input]
-        }
-
-        return sighash
-    }
-
     public func signatureHash(for utxoToSign: TransactionOutput, inputIndex: Int, hashType: UInt8) -> Data {
         // Can't have index greater than num of inputs
         guard inputIndex < inputs.count else {
@@ -102,16 +43,6 @@ extension Transaction {
 
         let hash = Crypto.sha256sha256(data)
         return hash
-    }
-}
-
-private extension TransactionInput {
-    func sigChanged(with script: Data) -> TransactionInput {
-        return TransactionInput(previousOutput: previousOutput, signatureScript: script, sequence: sequence)
-    }
-
-    func sequenceChanged(with seq: UInt32) -> TransactionInput {
-        return TransactionInput(previousOutput: previousOutput, signatureScript: signatureScript, sequence: seq)
     }
 }
 
