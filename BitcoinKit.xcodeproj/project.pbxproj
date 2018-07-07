@@ -62,6 +62,7 @@
 		14F37A3E2020A02000D34748 /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* Signature.swift */; };
 		297DB97320EB12E60077EEEE /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* AddressType.swift */; };
 		297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97420EB13320077EEEE /* AddressFactory.swift */; };
+		CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF120F0CF9100AD4020 /* Base58Tests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +135,7 @@
 		14F37A3D2020A02000D34748 /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signature.swift; sourceTree = "<group>"; };
 		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
 		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
+		CF432AF120F0CF9100AD4020 /* Base58Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58Tests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
+				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
 				147494D7201F9A29006D1CF8 /* Info.plist */,
 			);
 			path = BitcoinKitTests;
@@ -481,6 +484,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				147494D6201F9A29006D1CF8 /* BitcoinKitTests.swift in Sources */,
+				CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
