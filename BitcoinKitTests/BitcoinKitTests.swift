@@ -68,20 +68,21 @@ class BitcoinKitTests: XCTestCase {
     }
 
     func testAddress() {
-        // Mainnet
+        // LegacyAddress (Mainnet)
         do {
             let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
             let publicKey = privateKey.publicKey()
 
-            let address1 = Address(publicKey)
+            let address1 = LegacyAddress(publicKey)
             XCTAssertEqual("\(address1)", publicKey.toAddress())
 
-            let address2 = try? Address("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
+            let address2 = try? LegacyAddress("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
             XCTAssertNotNil(address2)
+            XCTAssertEqual(address2?.cashaddr, "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
             XCTAssertEqual(address1, address2)
 
             do {
-                _ = try Address("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W")
+                _ = try LegacyAddress("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W")
                 XCTFail("Should throw invalid checksum error.")
             } catch AddressError.invalid {
                 // Success
@@ -90,18 +91,23 @@ class BitcoinKitTests: XCTestCase {
             }
         }
 
-        // Testnet
+        // LegacyAddress (Testnet)
         do {
             let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
             let publicKey = privateKey.publicKey()
 
-            let address1 = Address(publicKey)
+            let address1 = LegacyAddress(publicKey)
             XCTAssertEqual("\(address1)", publicKey.toAddress())
 
-            let address2 = try? Address("mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
+            let address2 = try? LegacyAddress("mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
             XCTAssertNotNil(address2)
+            XCTAssertEqual(address2?.cashaddr, "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
             XCTAssertEqual(address1, address2)
         }
+        
+        // Cashaddr (Mainnet)
+        
+        // Cashaddr (Testnet)
     }
 
     func testHDKey1() {
@@ -749,7 +755,7 @@ class BitcoinKitTests: XCTestCase {
 
         let fromPublicKey = privateKey.publicKey()
         let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.raw)
-        let toPubKeyHash = Base58.decode(toAddress).dropFirst().dropLast(4)
+        let toPubKeyHash = Base58.decode(toAddress)!.dropFirst().dropLast(4)
 
         let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: toPubKeyHash)
         let lockingScript2 = Script.buildPublicKeyHashOut(pubKeyHash: fromPubKeyHash)
@@ -785,7 +791,7 @@ class BitcoinKitTests: XCTestCase {
 
         let fromPublicKey = privateKey.publicKey()
         let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.raw)
-        let toPubKeyHash = Base58.decode(toAddress).dropFirst().dropLast(4)
+        let toPubKeyHash = Base58.decode(toAddress)!.dropFirst().dropLast(4)
 
         let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: fromPubKeyHash)
         let lockingScript2 = Script.buildPublicKeyHashOut(pubKeyHash: toPubKeyHash)
@@ -795,9 +801,9 @@ class BitcoinKitTests: XCTestCase {
     }
 
     func testBase58_1() {
-        XCTAssertEqual(Base58.decode("1EVEDmVcV7iPvTkaw2gk89yVcCzPzaS6B7").hex, "0093f051563b089897cb430602a7c35cd93b3cc8e9dfac9a96")
-        XCTAssertEqual(Base58.decode("11ujQcjgoMNmbmcBkk8CXLWQy8ZerMtuN").hex, "00002c048b88f56727538eadb2a81cfc350355ee4c466740d9")
-        XCTAssertEqual(Base58.decode("111oeV7wjVNCQttqY63jLFsg817aMEmTw").hex, "000000abdda9e604c965f5a2fe8c082b14fafecdc39102f5b2")
+        XCTAssertEqual(Base58.decode("1EVEDmVcV7iPvTkaw2gk89yVcCzPzaS6B7")!.hex, "0093f051563b089897cb430602a7c35cd93b3cc8e9dfac9a96")
+        XCTAssertEqual(Base58.decode("11ujQcjgoMNmbmcBkk8CXLWQy8ZerMtuN")!.hex, "00002c048b88f56727538eadb2a81cfc350355ee4c466740d9")
+        XCTAssertEqual(Base58.decode("111oeV7wjVNCQttqY63jLFsg817aMEmTw")!.hex, "000000abdda9e604c965f5a2fe8c082b14fafecdc39102f5b2")
     }
 
     func testBase58_2() {
@@ -807,7 +813,7 @@ class BitcoinKitTests: XCTestCase {
             let encoded = Base58.encode(original)
             XCTAssertEqual(encoded, "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM")
 
-            let decoded = Base58.decode(encoded)
+            let decoded = Base58.decode(encoded)!
             XCTAssertEqual(decoded.hex, original.hex)
         }
     }

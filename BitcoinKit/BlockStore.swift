@@ -6,6 +6,8 @@
 //  Copyright © 2018 Kishikawa Katsumi. All rights reserved.
 //
 
+// swiftlint:disable closure_end_indentation
+
 import Foundation
 import SQLite3
 
@@ -32,7 +34,7 @@ public protocol BlockStore {
 
 let SQLITE_TRANSIENT = unsafeBitCast(OpaquePointer(bitPattern: -1), to: sqlite3_destructor_type.self)
 
-public class SQLiteBlockStore : BlockStore {
+public class SQLiteBlockStore: BlockStore {
     public static func `default`() throws -> SQLiteBlockStore {
         let cachesDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         return try SQLiteBlockStore(file: cachesDir.appendingPathComponent("blockchain.sqlite"))
@@ -41,7 +43,7 @@ public class SQLiteBlockStore : BlockStore {
     let network: Network
 
     private var database: OpaquePointer?
-    private var statements = [String: OpaquePointer!]()
+    private var statements = [String: OpaquePointer]()
 
     public init(file: URL, network: Network = .testnet) throws {
         self.network = network
@@ -376,7 +378,7 @@ public class SQLiteBlockStore : BlockStore {
             let address = sqlite3_column_text(stmt, 1)!
             let value = sqlite3_column_int64(stmt, 2)
 
-            payments.append(Payment(state: .received, amount: value, from: try! Address(String(cString: address)), to: try! Address(String(cString: address)), transactionHash: Data(bytes: hash!, count: 32)))
+            payments.append(Payment(state: .received, amount: value, from: try! AddressFactory.create(String(cString: address)), to: try! AddressFactory.create(String(cString: address)), transactionHash: Data(bytes: hash!, count: 32)))
         }
 
         try execute { sqlite3_reset(stmt) }
@@ -413,6 +415,6 @@ public class SQLiteBlockStore : BlockStore {
     }
 }
 
-enum SQLiteError : Error {
+enum SQLiteError: Error {
     case error(Int32)
 }

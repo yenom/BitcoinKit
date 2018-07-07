@@ -32,18 +32,24 @@ public struct PublicKey {
         return publicKeyHashToAddress(hash)
     }
 
+    public func toCashaddr() -> String {
+        let hash = Data([VersionByte.pubkeyHash160]) + Crypto.sha256ripemd160(raw)
+        return Bech32.encode(hash, prefix: network.scheme)
+    }
+
     static func from(privateKey raw: Data, compression: Bool = false) -> Data {
         return _Key.computePublicKey(fromPrivateKey: raw, compression: compression)
     }
 }
 
-extension PublicKey : Equatable {
+extension PublicKey: Equatable {
+    // swiftlint:disable:next operator_whitespace
     public static func ==(lhs: PublicKey, rhs: PublicKey) -> Bool {
         return lhs.network == rhs.network && lhs.raw == rhs.raw
     }
 }
 
-extension PublicKey : CustomStringConvertible {
+extension PublicKey: CustomStringConvertible {
     public var description: String {
         return raw.hex
     }

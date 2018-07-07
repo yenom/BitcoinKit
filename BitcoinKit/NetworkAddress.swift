@@ -40,7 +40,7 @@ public struct NetworkAddress {
     }
 }
 
-extension NetworkAddress : CustomStringConvertible {
+extension NetworkAddress: CustomStringConvertible {
     public var description: String {
         return "[\(address)]:\(port.bigEndian) \(ServiceFlags(rawValue: services))"
     }

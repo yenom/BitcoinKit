@@ -11,10 +11,11 @@ import Foundation
 public struct PrivateKey {
     let raw: Data
     public let network: Network
-
+    // QUESTION: これランダムに生成する場合かな？
     public init(network: Network = .testnet) {
         self.network = network
 
+        // Check if vch is greater than or equal to max value
         func check(_ vch: [UInt8]) -> Bool {
             let max: [UInt8] = [
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -23,11 +24,9 @@ public struct PrivateKey {
                 0xBF, 0xD2, 0x5E, 0x8C, 0xD0, 0x36, 0x41, 0x40
             ]
             var fIsZero = true
-            for byte in vch {
-                if byte != 0 {
-                    fIsZero = false
-                    break
-                }
+            for byte in vch where byte != 0 {
+                fIsZero = false
+                break
             }
             if fIsZero {
                 return false
@@ -54,7 +53,9 @@ public struct PrivateKey {
     }
 
     public init(wif: String) throws {
-        let decoded = Base58.decode(wif)
+        guard let decoded = Base58.decode(wif) else {
+            throw PrivateKeyError.invalidFormat
+        }
         let checksumDropped = decoded.prefix(decoded.count - 4)
 
         let addressPrefix = checksumDropped[0]
@@ -93,18 +94,19 @@ public struct PrivateKey {
     }
 }
 
-extension PrivateKey : Equatable {
+extension PrivateKey: Equatable {
+    // swiftlint:disable:next operator_whitespace
     public static func ==(lhs: PrivateKey, rhs: PrivateKey) -> Bool {
         return lhs.network == rhs.network && lhs.raw == rhs.raw
     }
 }
 
-extension PrivateKey : CustomStringConvertible {
+extension PrivateKey: CustomStringConvertible {
     public var description: String {
         return raw.hex
     }
 }
 
-public enum PrivateKeyError : Error {
+public enum PrivateKeyError: Error {
     case invalidFormat
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 /// Variable length string can be stored using a variable length integer followed by the string itself.
-public struct VarString : ExpressibleByStringLiteral {
+public struct VarString: ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
     public let length: VarInt
     public let value: String
@@ -31,7 +31,7 @@ public struct VarString : ExpressibleByStringLiteral {
     }
 }
 
-extension VarString : CustomStringConvertible {
+extension VarString: CustomStringConvertible {
     public var description: String {
         return "\(value)"
     }

@@ -73,6 +73,6 @@ public class HDPrivateKey {
     }
 }
 
-public enum DerivationError : Error {
+public enum DerivationError: Error {
     case derivateionFailed
 }

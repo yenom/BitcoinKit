@@ -44,7 +44,7 @@ public struct InventoryItem {
         }
     }
 
-    public enum ObjectType : Int32 {
+    public enum ObjectType: Int32 {
         /// Any data of with this number may be ignored
         case error = 0
         /// Hash is related to a transaction

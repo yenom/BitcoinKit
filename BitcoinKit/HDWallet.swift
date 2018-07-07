@@ -71,11 +71,11 @@ public final class HDWallet {
     }
 
     public func receiveAddress() throws -> Address {
-        return Address(try publicKey())
+        return Cashaddr(try publicKey())
     }
 
     public func receiveAddress(index: UInt32) throws -> Address {
-        return Address(try publicKey(index: index))
+        return Cashaddr(try publicKey(index: index))
     }
 
     public func changeAddress() throws -> Address {
@@ -84,7 +84,7 @@ public final class HDWallet {
 
     public func changeAddress(index: UInt32) throws -> Address {
         let privateKey = try keychain.derivedKey(path: "m/\(purpose)'/\(coinType)'/\(account)'/\(Chain.internal.rawValue)/\(index)")
-        return Address(privateKey.publicKey())
+        return Cashaddr(privateKey.publicKey())
     }
 
     public func privateKey() throws -> HDPrivateKey {
@@ -104,7 +104,7 @@ public final class HDWallet {
         return try privateKey(index: index).publicKey()
     }
 
-    enum Chain : Int {
+    enum Chain: Int {
         case external
         case `internal`
     }

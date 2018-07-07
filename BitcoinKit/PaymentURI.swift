@@ -16,7 +16,7 @@ public struct PaymentURI {
     public let others: [String: String]
     public let uri: URL
 
-    public enum Keys : String {
+    public enum Keys: String {
         case address
         case label
         case message
@@ -27,7 +27,7 @@ public struct PaymentURI {
         guard let components = URLComponents(string: string), let scheme = components.scheme, scheme.lowercased() == "bitcoin" else {
             throw PaymentURIError.invalid
         }
-        guard let address = try? Address(components.path) else {
+        guard let address = try? AddressFactory.create(components.path) else {
             throw PaymentURIError.malformed(.address)
         }
         self.address = address
@@ -70,7 +70,7 @@ public struct PaymentURI {
     }
 }
 
-enum PaymentURIError : Error {
+enum PaymentURIError: Error {
     case invalid
     case malformed(PaymentURI.Keys)
 }

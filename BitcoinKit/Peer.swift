@@ -8,10 +8,10 @@
 
 import Foundation
 
-private let protocolVersion: Int32 = 70015
+private let protocolVersion: Int32 = 70_015
 private let bufferSize = 4096
 
-public class Peer : NSObject, StreamDelegate {
+public class Peer: NSObject, StreamDelegate {
     public let host: String
     public let port: UInt32
     public let network: Network
@@ -24,7 +24,7 @@ public class Peer : NSObject, StreamDelegate {
     class Context {
         var packets = Data()
         /// Transactions to be sent
-        var transactions = [Data: Transaction]()
+        var transactions = [Data: Transaction]() // TODO: これPeerGroupで使ってないやんけ。使うべき感すごいあるけど。
 
         var pingTime = Date()
         var estimatedHeight: Int32 = 0
@@ -55,6 +55,7 @@ public class Peer : NSObject, StreamDelegate {
         self.init(host: host, port: Int(network.port), network: network)
     }
 
+    // TODO: Networkがport持ってるんだからportって必要なくないか・・・？
     public init(host: String, port: Int, network: Network = .testnet) {
         self.host = host
         self.port = UInt32(port)
@@ -104,6 +105,7 @@ public class Peer : NSObject, StreamDelegate {
         self.latestBlockHash = latestBlockHash
         context.isSyncing = true
 
+        // TODO: syncするときは、その前に、sendFilterLoadMessage, sendMemoryPoolMessageっていうのをやるのか。それぞれ何なんだろう。
         if !self.context.sentFilterLoad {
             sendFilterLoadMessage(filters: filters)
             self.context.sentFilterLoad = true
@@ -119,13 +121,13 @@ public class Peer : NSObject, StreamDelegate {
         sendTransactionInventory(transaction: transaction)
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     public func stream(_ stream: Stream, handle eventCode: Stream.Event) {
         switch stream {
         case let stream as InputStream:
             switch eventCode {
             case .openCompleted:
                 log("socket connected")
-                break
             case .hasBytesAvailable:
                 readAvailableBytes(stream: stream)
             case .hasSpaceAvailable:
@@ -164,13 +166,14 @@ public class Peer : NSObject, StreamDelegate {
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     private func readAvailableBytes(stream: InputStream) {
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
-        defer { buffer.deallocate(capacity: bufferSize) }
+        defer { buffer.deallocate() }
         while stream.hasBytesAvailable {
             let numberOfBytesRead = stream.read(buffer, maxLength: bufferSize)
             if numberOfBytesRead <= 0 {
-                if let _ = stream.streamError { break }
+                if stream.streamError != nil { break }
             } else {
                 context.packets += Data(bytesNoCopy: buffer, count: numberOfBytesRead, deallocator: .none)
             }
@@ -231,7 +234,9 @@ public class Peer : NSObject, StreamDelegate {
         _ = data.withUnsafeBytes { outputStream.write($0, maxLength: data.count) }
     }
 
+    // TODO: checksum多用するので、functionかDataのextensionにしても良さそう。
     private func sendVersionMessage() {
+        // TODO: yourAddressとmyAddressとは・・・
         let version = VersionMessage(version: protocolVersion,
                                      services: 0x00,
                                      timestamp: Int64(Date().timeIntervalSince1970),
@@ -264,7 +269,7 @@ public class Peer : NSObject, StreamDelegate {
         guard !filters.isEmpty else { return }
 
         let nTweak = arc4random_uniform(UInt32.max)
-        var filter = BloomFilter(elements: filters.count, falsePositiveRate: 0.00005, randomNonce: nTweak)
+        var filter = BloomFilter(elements: filters.count, falsePositiveRate: 0.000_05, randomNonce: nTweak)
 
         for f in filters {
             filter.insert(f)
@@ -440,7 +445,7 @@ public class Peer : NSObject, StreamDelegate {
     }
 }
 
-public protocol PeerDelegate : class {
+public protocol PeerDelegate: class {
     func peerDidConnect(_ peer: Peer)
     func peerDidDisconnect(_ peer: Peer)
     func peer(_ peer: Peer, didReceiveVersionMessage message: VersionMessage)

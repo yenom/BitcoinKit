@@ -60,6 +60,8 @@
 		14F37A3A20209B5400D34748 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3920209B5400D34748 /* Transaction.swift */; };
 		14F37A3C20209F9200D34748 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3B20209F9200D34748 /* Script.swift */; };
 		14F37A3E2020A02000D34748 /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* Signature.swift */; };
+		297DB97320EB12E60077EEEE /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* AddressType.swift */; };
+		297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97420EB13320077EEEE /* AddressFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +132,8 @@
 		14F37A3920209B5400D34748 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		14F37A3B20209F9200D34748 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
 		14F37A3D2020A02000D34748 /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signature.swift; sourceTree = "<group>"; };
+		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
+		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +244,8 @@
 				1482B5E7202721FF0098B612 /* HDPrivateKey.swift */,
 				1482B5E920273B8A0098B612 /* HDPublicKey.swift */,
 				14CDC3892021881A00C01556 /* Address.swift */,
+				297DB97220EB12E60077EEEE /* AddressType.swift */,
+				297DB97420EB13320077EEEE /* AddressFactory.swift */,
 				147494EB201F9E4F006D1CF8 /* Network.swift */,
 				1463E6B52025E99C0033DAAE /* BlockChain.swift */,
 				1463E6B32025E9480033DAAE /* BlockStore.swift */,
@@ -289,6 +295,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 147494DB201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinKit" */;
 			buildPhases = (
+				292B636820E7BF7000F5040A /* ShellScript */,
 				1482B628202954CC0098B612 /* Build Libraries */,
 				147494C2201F9A29006D1CF8 /* Sources */,
 				147494C3201F9A29006D1CF8 /* Frameworks */,
@@ -329,7 +336,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Kishikawa Katsumi";
 				TargetAttributes = {
 					147494C6201F9A29006D1CF8 = {
@@ -395,6 +402,19 @@
 			shellScript = "if [ ! -d \"$SRCROOT/Libraries/secp256k1/lib\" ] || [ ! -d \"$SRCROOT/Libraries/openssl/lib\" ]; then\n  env -i PATH=$PATH sh \"$SRCROOT/setup/build_libraries.sh\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		292B636820E7BF7000F5040A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -410,9 +430,11 @@
 				147494E6201F9BF0006D1CF8 /* Encoding.swift in Sources */,
 				14839A7F202FE58800A6CB34 /* VersionMessage.swift in Sources */,
 				14839AAB202FE7F000A6CB34 /* NetworkAddress.swift in Sources */,
+				297DB97320EB12E60077EEEE /* AddressType.swift in Sources */,
 				14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */,
 				147494EC201F9E4F006D1CF8 /* Network.swift in Sources */,
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
+				297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */,
 				14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */,
 				14F37A3C20209F9200D34748 /* Script.swift in Sources */,
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
@@ -487,6 +509,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -494,6 +517,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -547,6 +571,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -554,6 +579,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

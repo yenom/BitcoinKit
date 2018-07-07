@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class PeerGroup : PeerDelegate {
+public class PeerGroup: PeerDelegate {
     public let blockChain: BlockChain
     public let maxConnections: Int
 
@@ -26,8 +26,8 @@ public class PeerGroup : PeerDelegate {
 
     public func start() {
         let network = blockChain.network
-        for i in peers.count..<maxConnections {
-            let peer = Peer(host: network.dnsSeeds[1], network: network)
+        for _ in peers.count..<maxConnections {
+            let peer = Peer(host: network.dnsSeeds[1], network: network) // TODO: ベタ打ちのdnsSeed[1]で良いのか？よくなさそう。同じpeerにどんどん繋がりそう / 特定のDNSへのトラストをしていることになりそう
             peer.delegate = self
             peer.connect()
 
@@ -47,10 +47,12 @@ public class PeerGroup : PeerDelegate {
         delegate?.peerGroupDidStop(self)
     }
 
+    // TODO: public key hashじゃなくて良いのか？
     public func addPublickey(publicKey: Data) {
         publicKeys.append(publicKey)
     }
 
+    // TODO: 送るpeerは一つじゃなくて全部に送る?
     public func sendTransaction(transaction: Transaction) {
         if let peer = peers.values.first {
             peer.sendTransaction(transaction: transaction)
@@ -61,6 +63,7 @@ public class PeerGroup : PeerDelegate {
     }
 
     public func peerDidConnect(_ peer: Peer) {
+        // TODO: isSyncingのpeerがあったらこのpeerとはstartSyncしなくてもいいのか・・・？
         if peers.filter({ $0.value.context.isSyncing }).isEmpty {
             let latestBlockHash = blockChain.latestBlockHash()
             peer.startSync(filters: publicKeys, latestBlockHash: latestBlockHash)
@@ -77,6 +80,7 @@ public class PeerGroup : PeerDelegate {
         start()
     }
 
+    // TODO: Merkle Treeの検証はをすべきでは？
     public func peer(_ peer: Peer, didReceiveMerkleBlockMessage message: MerkleBlockMessage, hash: Data) {
         try! blockChain.addMerkleBlock(message, hash: hash)
     }
@@ -87,7 +91,7 @@ public class PeerGroup : PeerDelegate {
     }
 }
 
-public protocol PeerGroupDelegate : class {
+public protocol PeerGroupDelegate: class {
     func peerGroupDidStart(_ peerGroup: PeerGroup)
     func peerGroupDidStop(_ peerGroup: PeerGroup)
     func peerGroupDidReceiveTransaction(_ peerGroup: PeerGroup)
