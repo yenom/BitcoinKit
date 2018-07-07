@@ -14,7 +14,7 @@ class Base58Tests: XCTestCase {
     func testAll() {
         XCTAssertNil(Base58.decode(""))
         XCTAssertNil(Base58.decode(" "))
-        XCTAssertNil(Base58.decode("lLoO"))
+        XCTAssertNil(Base58.decode("lO"))
         XCTAssertNil(Base58.decode("l"))
         XCTAssertNil(Base58.decode("O"))
         XCTAssertNil(Base58.decode("öまи"))
