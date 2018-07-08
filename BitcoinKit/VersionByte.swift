@@ -18,6 +18,30 @@ public class VersionByte {
     public var type: TypeBits { return .pubkeyHash }
     public var size: SizeBits { return .size160 }
 
+    public static func getSize(from versionByte: UInt8) -> Int {
+        guard let sizeBits = SizeBits(rawValue: versionByte & 0x07) else {
+            return 0
+        }
+        switch sizeBits {
+        case .size160:
+            return 20
+        case .size192:
+            return 24
+        case .size224:
+            return 28
+        case .size256:
+            return 32
+        case .size320:
+            return 40
+        case .size384:
+            return 48
+        case .size448:
+            return 56
+        case .size512:
+            return 64
+        }
+    }
+
     // First 1 bit is zero
     // Next 4bits
     public enum TypeBits: UInt8 {

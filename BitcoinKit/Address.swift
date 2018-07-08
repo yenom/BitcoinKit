@@ -141,7 +141,6 @@ public struct Cashaddr: Address {
             throw AddressError.invalid
         }
         let (prefix, raw) = (decoded.prefix, decoded.data)
-        self.data = raw.dropFirst()
         self.cashaddr = cashaddr
         self.publicKey = nil
 
@@ -155,15 +154,23 @@ public struct Cashaddr: Address {
         }
 
         let versionByte = raw[0]
-        switch versionByte {
-        case 0...7:
+        let hash = raw.dropFirst()
+
+        guard hash.count == VersionByte.getSize(from: versionByte) else {
+            throw AddressError.invalidVersionByte
+        }
+        self.data = hash
+        guard let typeBits = VersionByte.TypeBits(rawValue: (versionByte & 0b01111000)) else {
+            throw AddressError.invalidVersionByte
+        }
+
+        switch typeBits {
+        case .pubkeyHash:
             type = .pubkeyHash
             base58 = publicKeyHashToAddress(Data([network.pubkeyhash]) + data)
-        case 8...15:
+        case .scriptHash:
             type = .scriptHash
             base58 = publicKeyHashToAddress(Data([network.scripthash]) + data)
-        default:
-            throw AddressError.invalidVersionByte
         }
     }
 }
