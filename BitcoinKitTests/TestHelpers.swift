@@ -9,6 +9,10 @@
 import Foundation
 @testable import BitcoinKit
 
+enum CommonError: Error {
+    case insufficientUtxos
+}
+
 extension Array {
     // Slice Array
     // [0,1,2,3,4,5,6,7,8,9].eachSlices(3)
@@ -26,7 +30,24 @@ extension Array where Element == UnspentTransaction {
     }
 }
 
-public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64) -> (utxos: [UnspentTransaction], fee: Int64) {
+public struct Fee {
+    public static let feePerByte: Int64 = 1
+    public static let dust: Int64 = 3 * 182 * feePerByte
+    
+    // size for txin(P2PKH) : 148 bytes
+    // size for txout(P2PKH) : 34 bytes
+    // cf. size for txin(P2SH) : not determined to one
+    // cf. size for txout(P2SH) : 32 bytes
+    // cf. size for txout(OP_RETURN + String) : Roundup([#characters]/32) + [#characters] + 11 bytes
+    public static func calculate(nIn: Int, nOut: Int = 2, extraOutputSize: Int = 0, feePerByte: Int64 = 1) -> Int64 {
+        var txsize: Int {
+            return ((148 * nIn) + (34 * nOut) + 10) + extraOutputSize
+        }
+        return Int64(txsize) * feePerByte
+    }
+}
+
+public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64, dustThreshhold: Int64 = Fee.dust) throws -> (utxos: [UnspentTransaction], fee: Int64) {
     // if target value is zero, fee is zero
     guard targetValue > 0 else {
         return ([], 0)
@@ -38,7 +59,7 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64) -> (u
     var numOutputs = 2 // if allow multiple output, it will be changed.
     var numInputs = 2
     var fee: Int64 {
-        return calculateFee(nIn: numInputs, nOut: numOutputs, feePerByte: feePerByte)
+        return Fee.calculate(nIn: numInputs, nOut: numOutputs, feePerByte: feePerByte)
     }
     var targetWithFee: Int64 {
         return targetValue + fee
@@ -48,12 +69,11 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64) -> (u
         return targetWithFee + dustThreshhold
     }
     
-    let payableUtxos: [UnspentTransaction] = utxos.sorted(by: { $0.output.value < $1.output.value })
-    //let payableUtxos: [UnspentTransaction] = sortedUtxos.filter( { $0.script.isPayToPublicKeyHashScript } )
+    let sortedUtxos: [UnspentTransaction] = utxos.sorted(by: { $0.output.value < $1.output.value })
     
-    // total values of utxos should be more than targetValue
-    guard payableUtxos.sum() >= targetValue && payableUtxos.count > 0 else {
-        return ([], 0) // TODO: throw error
+    // total values of utxos should be greater than targetValue
+    guard sortedUtxos.sum() >= targetValue && sortedUtxos.count > 0 else {
+        throw CommonError.insufficientUtxos
     }
     
     // difference from 2x targetValue
@@ -61,14 +81,14 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64) -> (u
         return abs(val - doubleTargetValue)
     }
     
-    // 2. Find a combination of the fewest outputs that is
+    // 1. Find a combination of the fewest outputs that is
     //    (1) bigger than what we need
     //    (2) closer to 2x the amount,
     //    (3) and does not produce dust change.
     txN:do {
-        for numTx in (1...payableUtxos.count) {
+        for numTx in (1...sortedUtxos.count) {
             numInputs = numTx
-            let nOutputsSlices = payableUtxos.eachSlices(numInputs)
+            let nOutputsSlices = sortedUtxos.eachSlices(numInputs)
             var nOutputsInRange = nOutputsSlices.filter { $0.sum() >= targetWithFeeAndDust }
             nOutputsInRange.sort { distFrom2x($0.sum()) < distFrom2x($1.sum()) }
             if let nOutputs = nOutputsInRange.first {
@@ -77,11 +97,11 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64) -> (u
         }
     }
     
-    // 3. If not, find a combination of outputs that may produce dust change.
+    // 2. If not, find a combination of outputs that may produce dust change.
     txDiscardDust:do {
-        for numTx in (1...payableUtxos.count) {
+        for numTx in (1...sortedUtxos.count) {
             numInputs = numTx
-            let nOutputsSlices = payableUtxos.eachSlices(numInputs)
+            let nOutputsSlices = sortedUtxos.eachSlices(numInputs)
             let nOutputsInRange = nOutputsSlices.filter {
                 return $0.sum() >= targetWithFee
             }
@@ -91,24 +111,11 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64) -> (u
         }
     }
     
-    // どっちかというとtxが多すぎて手数料が高くなって不足
-    return ([], 0) // TODO: throw error
-}
-
-// size for txin(P2PKH) : 148 bytes
-// size for txout(P2PKH) : 34 bytes
-// cf. size for txin(P2SH) : not determined to one
-// cf. size for txout(P2SH) : 32 bytes
-// cf. size for txout(OP_RETURN + String) : Roundup([#characters]/32) + [#characters] + 11 bytes
-public func calculateFee(nIn: Int, nOut: Int = 2, extraOutputSize: Int = 0, feePerByte: Int64 = 1) -> Int64 {
-    var txsize: Int {
-        return ((148 * nIn) + (34 * nOut) + 10) + extraOutputSize
-    }
-    return Int64(txsize) * feePerByte
+    throw CommonError.insufficientUtxos
 }
 
 public func createUnsignedTx(toAddress: Address, amount: Int64, changeAddress: Address, utxos: [UnspentTransaction]) -> UnsignedTransaction {
-    let (utxos, fee) = selectTx(from: utxos, targetValue: amount)
+    let (utxos, fee) = try! selectTx(from: utxos, targetValue: amount)
     let totalAmount: Int64 = utxos.reduce(0) { $0 + $1.output.value }
     let change: Int64 = totalAmount - amount - fee
     
