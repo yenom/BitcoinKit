@@ -15,17 +15,36 @@ public struct Transaction {
     /// If present, always 0001, and indicates the presence of witness data
     // public let flag: UInt16 // If present, always 0001, and indicates the presence of witness data
     /// Number of Transaction inputs (never zero)
-    public let txInCount: VarInt
+    public var txInCount: VarInt {
+        return VarInt(inputs.count)
+    }
     /// A list of 1 or more transaction inputs or sources for coins
     public let inputs: [TransactionInput]
     /// Number of Transaction outputs
-    public let txOutCount: VarInt
+    public var txOutCount: VarInt {
+        return VarInt(outputs.count)
+    }
     /// A list of 1 or more transaction outputs or destinations for coins
     public let outputs: [TransactionOutput]
     /// A list of witnesses, one for each input; omitted if flag is omitted above
     // public let witnesses: [TransactionWitness] // A list of witnesses, one for each input; omitted if flag is omitted above
     /// The block number or timestamp at which this transaction is unlocked:
     public let lockTime: UInt32
+
+    public var internalTxID: Data {
+        return Crypto.sha256sha256(serialized())
+    }
+
+    public var txID: String {
+        return Data(internalTxID.reversed()).hex
+    }
+
+    init(version: Int32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
+        self.version = version
+        self.inputs = inputs
+        self.outputs = outputs
+        self.lockTime = lockTime
+    }
 
     public func serialized() -> Data {
         var data = Data()
@@ -56,6 +75,6 @@ public struct Transaction {
             outputs.append(TransactionOutput.deserialize(byteStream))
         }
         let lockTime = byteStream.read(UInt32.self)
-        return Transaction(version: version, txInCount: txInCount, inputs: inputs, txOutCount: txOutCount, outputs: outputs, lockTime: lockTime)
+        return Transaction(version: version, inputs: inputs, outputs: outputs, lockTime: lockTime)
     }
 }

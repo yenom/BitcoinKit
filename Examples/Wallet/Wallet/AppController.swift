@@ -56,5 +56,6 @@ class AppController {
 extension Notification.Name {
     struct AppController {
         static let walletChanged = Notification.Name("AppController.walletChanged")
+        
     }
 }
