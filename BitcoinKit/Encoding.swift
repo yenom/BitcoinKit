@@ -198,11 +198,11 @@ public struct Bech32 {
             return nil
         }
 
-        // Drop checksum and convert to byte(8-bits)
-        guard let decodedBytes = try? convertFrom5bit(data: payload.dropLast(8)) else {
+        // Drop checksum
+        guard let bytes = try? convertFrom5bit(data: payload.dropLast(8)) else {
             return nil
         }
-        return (prefix, decodedBytes)
+        return (prefix, Data(bytes))
     }
 
     private static func verifyChecksum(prefix: String, payload: Data) -> Bool {
@@ -265,10 +265,7 @@ public struct Bech32 {
         return Data(bytes: converted)
     }
 
-    private static func convertFrom5bit(data: Data) throws -> Data {
-        guard (data.count * 5) % 8 == 0 else {
-            throw DecodeError.invalidBits
-        }
+    internal static func convertFrom5bit(data: Data) throws -> Data {
         var acc = Int()
         var bits = UInt8()
         let maxv: Int = 255 // 255 = 0xff = 11111111
@@ -284,6 +281,11 @@ public struct Bech32 {
                 bits -= 8
                 converted.append(UInt8(acc >> Int(bits) & maxv))
             }
+        }
+
+        let lastBits: UInt8 = UInt8(acc << (8 - bits) & maxv)
+        guard bits < 5 && lastBits == 0  else {
+            throw DecodeError.invalidBits
         }
 
         return Data(bytes: converted)
