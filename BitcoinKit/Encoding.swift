@@ -183,23 +183,26 @@ public struct Bech32 {
         }
         let (prefix, base32) = (components[0], components[1])
 
-        var decodedBytes: [UInt8] = [UInt8]()
+        var decodedIn5bit: [UInt8] = [UInt8]()
         for c in base32.lowercased() {
             // We can't have characters other than base32 alphabets.
             guard let baseIndex = base32Alphabets.index(of: c)?.encodedOffset else {
                 return nil
             }
-            decodedBytes.append(UInt8(baseIndex))
+            decodedIn5bit.append(UInt8(baseIndex))
         }
 
         // We can't have invalid checksum
-        let payload = Data(bytes: decodedBytes)
+        let payload = Data(bytes: decodedIn5bit)
         guard verifyChecksum(prefix: prefix, payload: payload) else {
             return nil
         }
 
-        // Drop checksum
-        return (prefix, payload.dropLast(8))
+        // Drop checksum and convert to byte(8-bits)
+        guard let decodedBytes = try? convertFrom5bit(data: payload.dropLast(8)) else {
+            return nil
+        }
+        return (prefix, decodedBytes)
     }
 
     private static func verifyChecksum(prefix: String, payload: Data) -> Bool {
@@ -243,7 +246,7 @@ public struct Bech32 {
     private static func convertTo5bit(data: Data, pad: Bool) -> Data {
         var acc = Int()
         var bits = UInt8()
-        let maxv: Int = 31
+        let maxv: Int = 31 // 31 = 0x1f = 00011111
         var converted: [UInt8] = []
         for d in data {
             acc = (acc << 8) | Int(d)
@@ -260,5 +263,34 @@ public struct Bech32 {
             converted.append(lastBits)
         }
         return Data(bytes: converted)
+    }
+
+    private static func convertFrom5bit(data: Data) throws -> Data {
+        guard (data.count * 5) % 8 == 0 else {
+            throw DecodeError.invalidBits
+        }
+        var acc = Int()
+        var bits = UInt8()
+        let maxv: Int = 255 // 255 = 0xff = 11111111
+        var converted: [UInt8] = []
+        for d in data {
+            guard (d >> 5) == 0 else {
+                throw DecodeError.invalidCharacter
+            }
+            acc = (acc << 5) | Int(d)
+            bits += 5
+
+            while bits >= 8 {
+                bits -= 8
+                converted.append(UInt8(acc >> Int(bits) & maxv))
+            }
+        }
+
+        return Data(bytes: converted)
+    }
+
+    private enum DecodeError: Error {
+        case invalidCharacter
+        case invalidBits
     }
 }
