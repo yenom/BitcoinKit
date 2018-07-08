@@ -8,85 +8,106 @@
 
 import Foundation
 
+private let zero: Data = Data(repeating: 0, count: 32)
+private let one: Data = Data(repeating: 1, count: 1) + Data(repeating: 0, count: 31)
+
 extension Transaction {
-    public func signatureHash(for utxoToSign: TransactionOutput, inputIndex: Int, hashType: SighashType) -> Data {
-        // Can't have index greater than num of inputs
+    internal func getPrevoutHash(hashType: SighashType) -> Data {
+        if !hashType.isAnyoneCanPay {
+            // If the ANYONECANPAY flag is not set, hashPrevouts is the double SHA256 of the serialization of all input outpoints
+            let serializedPrevouts: Data = inputs.reduce(Data()) { $0 + $1.previousOutput.serialized() }
+            return Crypto.sha256sha256(serializedPrevouts)
+        } else {
+            // if ANYONECANPAY then uint256 of 0x0000......0000.
+            return zero
+        }
+    }
+
+    internal func getSequenceHash(hashType: SighashType) -> Data {
+        if !hashType.isAnyoneCanPay
+            && !hashType.isSingle
+            && !hashType.isNone {
+            // If none of the ANYONECANPAY, SINGLE, NONE sighash type is set, hashSequence is the double SHA256 of the serialization of nSequence of all inputs
+            let serializedSequence: Data = inputs.reduce(Data()) { $0 + $1.sequence }
+            return Crypto.sha256sha256(serializedSequence)
+        } else {
+            // Otherwise, hashSequence is a uint256 of 0x0000......0000
+            return zero
+        }
+    }
+
+    internal func getOutputsHash(index: Int, hashType: SighashType) -> Data {
+        if !hashType.isSingle
+            && !hashType.isNone {
+            // If the sighash type is neither SINGLE nor NONE, hashOutputs is the double SHA256 of the serialization of all output amounts (8-byte little endian) paired up with their scriptPubKey (serialized as scripts inside CTxOuts)
+            let serializedOutputs: Data = outputs.reduce(Data()) { $0 + $1.serialized() }
+            return Crypto.sha256sha256(serializedOutputs)
+        } else if hashType.isSingle && index < outputs.count {
+            // If sighash type is SINGLE and the input index is smaller than the number of outputs, hashOutputs is the double SHA256 of the output amount with scriptPubKey of the same index as the input
+            let serializedOutput = outputs[index].serialized()
+            return Crypto.sha256sha256(serializedOutput)
+        } else {
+            // Otherwise, hashOutputs is a uint256 of 0x0000......0000.
+            return zero
+        }
+    }
+
+    internal func signatureHashLegacy(for utxo: TransactionOutput, inputIndex: Int, hashType: SighashType) -> Data {
+        // If inputIndex is out of bounds, BitcoinABC is returning a 256-bit little-endian 0x01 instead of failing with error.
         guard inputIndex < inputs.count else {
-            return Data()
+            //  tx.inputs[inputIndex] out of range
+            return one
         }
 
-        // input and utxoToSign is basically the same thing.
-        // input is txin of this tx, whereas utxoToSign is txout of the prev tx
-        let input = inputs[inputIndex]
+        // Check for invalid use of SIGHASH_SINGLE
+        guard !(hashType.isSingle && inputIndex < outputs.count) else {
+            //  tx.outputs[inputIndex] out of range
+            return one
+        }
+
+        // Transaction is struct(value type), so it's ok to use self as an arg
+        let txSigSerializer = TransactionSignatureSerializer(tx: self, utxo: utxo, inputIndex: inputIndex, hashType: hashType)
+        var data: Data = txSigSerializer.serialize()
+        data += UInt32(hashType)
+        let hash = Crypto.sha256sha256(data)
+        return hash
+    }
+
+    public func signatureHash(for utxo: TransactionOutput, inputIndex: Int, hashType: SighashType) -> Data {
+        // If hashType doesn't have a fork id, use legacy signature hash
+        guard hashType.hasForkId else {
+            return signatureHashLegacy(for: utxo, inputIndex: inputIndex, hashType: hashType)
+        }
+
+        // TODO: Check if there is no need for handling this error when hashType has fork id?
+
+        // "txin" ≒ "utxo"
+        // "txin" is an input of this tx
+        // "utxo" is an output of the prev tx
+        let txin = inputs[inputIndex]
 
         var data = Data()
         // 1. nVersion (4-byte)
         data += version
         // 2. hashPrevouts
-        data += inputs.hashPrevouts(hashType)
+        data += getPrevoutHash(hashType: hashType)
         // 3. hashSequence
-        data += inputs.hashSequence(hashType)
+        data += getSequenceHash(hashType: hashType)
         // 4. outpoint [of the input txin]
-        data += input.previousOutput.serialized()
+        data += txin.previousOutput.serialized()
         // 5. scriptCode [of the input txout]
-        data += utxoToSign.scriptCode()
+        data += utxo.scriptCode()
         // 6. value [of the input txout] (8-byte)
-        data += utxoToSign.value
+        data += utxo.value
         // 7. nSequence [of the input txin] (4-byte)
-        data += input.sequence
+        data += txin.sequence
         // 8. hashOutputs
-        data += outputs.hashOutputs(hashType, inputIndex: inputIndex)
+        data += getOutputsHash(index: inputIndex, hashType: hashType)
         // 9. nLocktime (4-byte)
         data += lockTime
         // 10. Sighash types [This time input] (4-byte)
         data += UInt32(hashType)
-
         let hash = Crypto.sha256sha256(data)
         return hash
-    }
-}
-
-private extension Array where Element == TransactionInput {
-    func hashPrevouts(_ hashType: SighashType) -> Data {
-        if !hashType.isAnyoneCanPay {
-            // If the ANYONECANPAY flag is not set, hashPrevouts is the double SHA256 of the serialization of all input outpoints
-            let serializedPrevouts: Data = reduce(Data()) { $0 + $1.previousOutput.serialized() }
-            return Crypto.sha256sha256(serializedPrevouts)
-        } else {
-            // if ANYONECANPAY then uint256 of 0x0000......0000.
-            return Data(repeating: 0, count: 32)
-        }
-    }
-
-    func hashSequence(_ hashType: SighashType) -> Data {
-        if !hashType.isAnyoneCanPay
-            && !hashType.isSingle
-            && !hashType.isNone {
-            // If none of the ANYONECANPAY, SINGLE, NONE sighash type is set, hashSequence is the double SHA256 of the serialization of nSequence of all inputs
-            let serializedSequence: Data = reduce(Data()) { $0 + $1.sequence }
-            return Crypto.sha256sha256(serializedSequence)
-        } else {
-            // Otherwise, hashSequence is a uint256 of 0x0000......0000
-            return Data(repeating: 0, count: 32)
-        }
-    }
-}
-
-private extension Array where Element == TransactionOutput {
-    func hashOutputs(_ hashType: SighashType, inputIndex: Int) -> Data {
-        if !hashType.isSingle
-            && !hashType.isNone {
-            // If the sighash type is neither SINGLE nor NONE, hashOutputs is the double SHA256 of the serialization of all output amounts (8-byte little endian) paired up with their scriptPubKey (serialized as scripts inside CTxOuts)
-            let serializedOutputs: Data = reduce(Data()) { $0 + $1.serialized() }
-            return Crypto.sha256sha256(serializedOutputs)
-
-        } else if hashType.isSingle && inputIndex < count {
-            // If sighash type is SINGLE and the input index is smaller than the number of outputs, hashOutputs is the double SHA256 of the output amount with scriptPubKey of the same index as the input
-            let serializedOutput = self[inputIndex].serialized()
-            return Crypto.sha256sha256(serializedOutput)
-        } else {
-            // Otherwise, hashOutputs is a uint256 of 0x0000......0000.
-            return Data(repeating: 0, count: 32)
-        }
     }
 }
