@@ -11,9 +11,12 @@ import Foundation
 public struct PrivateKey {
     let raw: Data
     public let network: Network
+    public let isPublicKeyCompressed: Bool
+
     // QUESTION: これランダムに生成する場合かな？
-    public init(network: Network = .testnet) {
+    public init(network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
         self.network = network
+        self.isPublicKeyCompressed = isPublicKeyCompressed
 
         // Check if vch is greater than or equal to max value
         func check(_ vch: [UInt8]) -> Bool {
@@ -57,6 +60,9 @@ public struct PrivateKey {
             throw PrivateKeyError.invalidFormat
         }
         let checksumDropped = decoded.prefix(decoded.count - 4)
+        guard checksumDropped.count == (1 + 32) || checksumDropped.count == (1 + 32 + 1) else {
+            throw PrivateKeyError.invalidFormat
+        }
 
         let addressPrefix = checksumDropped[0]
         switch addressPrefix {
@@ -74,21 +80,31 @@ public struct PrivateKey {
         guard calculatedChecksum == originalChecksum else {
             throw PrivateKeyError.invalidFormat
         }
-        let privateKey = checksumDropped.dropFirst()
-        raw = Data(privateKey)
+
+        // The life is not always easy. Somehow some people added one extra byte to a private key in Base58 to
+        // let us know that the resulting public key must be compressed.
+        self.isPublicKeyCompressed = (checksumDropped.count == (1 + 32 + 1))
+
+        // Private key itself is always 32 bytes.
+        raw = checksumDropped.dropFirst().prefix(32)
     }
 
-    public init(data: Data, network: Network = .testnet) {
+    public init(data: Data, network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
         raw = data
         self.network = network
+        self.isPublicKeyCompressed = isPublicKeyCompressed
     }
 
     public func publicKey() -> PublicKey {
-        return PublicKey(privateKey: self, network: network)
+        return PublicKey(privateKey: self)
     }
 
     public func toWIF() -> String {
-        let data = Data([network.privatekey]) + raw
+        var data = Data([network.privatekey]) + raw
+        if isPublicKeyCompressed {
+            // Add extra byte 0x01 in the end.
+            data += Int8(1)
+        }
         let checksum = Crypto.sha256sha256(data).prefix(4)
         return Base58.encode(data + checksum)
     }

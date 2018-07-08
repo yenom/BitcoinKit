@@ -8,7 +8,6 @@
 
 import Foundation
 
-// TODO: scriptLengthはcomputed propertyで良いのではと思ったけど、deserializeするときには必要なのか。initするときには必要なくしたい。
 public struct TransactionInput {
     /// The previous output transaction reference, as an OutPoint structure
     public let previousOutput: TransactionOutPoint

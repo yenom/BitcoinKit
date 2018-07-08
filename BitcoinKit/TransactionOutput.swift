@@ -8,7 +8,6 @@
 
 import Foundation
 
-// TODO: scriptLengthはcomputed propertyで良いのではと思ったけど、deserializeするときには必要なのか。initするときには必要なくしたい。
 public struct TransactionOutput {
     /// Transaction Value
     public let value: Int64

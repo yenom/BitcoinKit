@@ -31,12 +31,12 @@ public struct Transaction {
     /// The block number or timestamp at which this transaction is unlocked:
     public let lockTime: UInt32
 
-    public var internalTxID: Data {
+    public var txHash: Data {
         return Crypto.sha256sha256(serialized())
     }
 
     public var txID: String {
-        return Data(internalTxID.reversed()).hex
+        return Data(txHash.reversed()).hex
     }
 
     init(version: Int32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {

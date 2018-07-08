@@ -42,7 +42,6 @@ extension Transaction {
             // If the sighash type is neither SINGLE nor NONE, hashOutputs is the double SHA256 of the serialization of all output amounts (8-byte little endian) paired up with their scriptPubKey (serialized as scripts inside CTxOuts)
             let serializedOutputs: Data = outputs.reduce(Data()) { $0 + $1.serialized() }
             return Crypto.sha256sha256(serializedOutputs)
-
         } else if hashType.isSingle && index < outputs.count {
             // If sighash type is SINGLE and the input index is smaller than the number of outputs, hashOutputs is the double SHA256 of the output amount with scriptPubKey of the same index as the input
             let serializedOutput = outputs[index].serialized()
