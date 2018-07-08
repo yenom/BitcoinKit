@@ -75,7 +75,7 @@ extension Transaction {
     }
 
     public func signatureHash(for utxo: TransactionOutput, inputIndex: Int, hashType: SighashType) -> Data {
-        // If hashType don't have fork id, use legacy signature hash
+        // If hashType doesn't have a fork id, use legacy signature hash
         guard hashType.hasForkId else {
             return signatureHashLegacy(for: utxo, inputIndex: inputIndex, hashType: hashType)
         }
