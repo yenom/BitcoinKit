@@ -30,7 +30,7 @@ public func createUnsignedTx(toAddress: Address, amount: Int64, changeAddress: A
     
     // この後、signatureScriptやsequenceは更新される
     let unsignedInputs = utxos.map { TransactionInput(previousOutput: $0.outpoint, signatureScript: Data(), sequence: UInt32.max) }
-    let tx = Transaction(version: 1, inputs: unsignedInputs, outputs: [changeOutput, toOutput], lockTime: 0)
+    let tx = Transaction(version: 1, inputs: unsignedInputs, outputs: [toOutput, changeOutput], lockTime: 0)
     return UnsignedTransaction(tx: tx, utxos: utxos)
 }
 

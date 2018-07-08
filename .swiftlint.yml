@@ -19,14 +19,10 @@ opt_in_rules:
   - prohibited_super_call
   - fatal_error_message
 disabled_rules:
-  # - unused_closure_parameter
   - function_body_length
   - identifier_name
   - force_try
   - fallthrough
-  # - todo # tmp
-  # - nesting # tmp
-  # - function_parameter_count # tmp
 
 type_name:
   max_length: 100

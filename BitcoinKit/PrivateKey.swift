@@ -83,8 +83,7 @@ public struct PrivateKey {
 
         // The life is not always easy. Somehow some people added one extra byte to a private key in Base58 to
         // let us know that the resulting public key must be compressed.
-         let compressed: Bool = checksumDropped.count == (1 + 32 + 1)
-        self.isPublicKeyCompressed = compressed
+        self.isPublicKeyCompressed = (checksumDropped.count == (1 + 32 + 1))
 
         // Private key itself is always 32 bytes.
         raw = checksumDropped.dropFirst().prefix(32)
