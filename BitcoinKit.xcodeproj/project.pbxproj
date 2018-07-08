@@ -62,6 +62,8 @@
 		14F37A3E2020A02000D34748 /* SighashType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* SighashType.swift */; };
 		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
+		2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920320F22A1500D078B6 /* TestHelpers.swift */; };
+		2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */; };
 		297DB97320EB12E60077EEEE /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* AddressType.swift */; };
 		297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97420EB13320077EEEE /* AddressFactory.swift */; };
 		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
@@ -139,6 +141,8 @@
 		14F37A3D2020A02000D34748 /* SighashType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SighashType.swift; sourceTree = "<group>"; };
 		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
+		2949920320F22A1500D078B6 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
 		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
 		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
@@ -201,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
+				2949920320F22A1500D078B6 /* TestHelpers.swift */,
 				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
 				147494D7201F9A29006D1CF8 /* Info.plist */,
 			);
@@ -272,6 +277,7 @@
 				299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */,
 				299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */,
 				2949920120F228B400D078B6 /* UnspentTransaction.swift */,
+				2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */,
 				14839AA4202FE7A100A6CB34 /* ByteStream.swift */,
 				147F9728201FC89E0071F49D /* BloomFilter.swift */,
 				147494ED201FADAC006D1CF8 /* MurmurHash.swift */,
@@ -484,6 +490,7 @@
 				141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */,
 				14839A97202FE6D000A6CB34 /* BlockMessage.swift in Sources */,
 				1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */,
+				2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */,
 				14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */,
 				147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */,
 				14839A8B202FE64D00A6CB34 /* GetDataMessage.swift in Sources */,
@@ -501,6 +508,7 @@
 			files = (
 				147494D6201F9A29006D1CF8 /* BitcoinKitTests.swift in Sources */,
 				CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */,
+				2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
