@@ -16,7 +16,7 @@ public struct TransactionOutPoint {
 
     public func serialized() -> Data {
         var data = Data()
-        data += hash.reversed()
+        data += hash
         data += index
         return data
     }

@@ -742,7 +742,9 @@ class BitcoinKitTests: XCTestCase {
     func testSignTransaction1() {
         // Transaction in testnet3
         // https://api.blockcypher.com/v1/btc/test3/txs/0189910c263c4d416d5c5c2cf70744f9f6bcd5feaf0b149b02e5d88afbe78992
-        let hash = Data(hex: "1524ca4eeb9066b4765effd472bc9e869240c4ecb5c1ee0edb40f8b666088231")!
+        let prevTxID = "1524ca4eeb9066b4765effd472bc9e869240c4ecb5c1ee0edb40f8b666088231"
+        // hash.reversed = txid
+        let hash = Data(Data(hex: prevTxID)!.reversed())
         let index: UInt32 = 1
         let outpoint = TransactionOutPoint(hash: hash, index: index)
 
@@ -790,7 +792,7 @@ class BitcoinKitTests: XCTestCase {
         XCTAssertEqual(transaction.serialized().hex, expect.hex)
         XCTAssertEqual(transaction.txID, "0189910c263c4d416d5c5c2cf70744f9f6bcd5feaf0b149b02e5d88afbe78992")
     }
-
+    
     func testScript() {
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
         let toAddress = "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB" // https://testnet.coinfaucet.eu/en/
