@@ -11,99 +11,91 @@ import XCTest
 
 class AddressTests: XCTestCase {
     
-    func testAddress() {
-        // LegacyAddress (Mainnet)
+    func testMainnetLegacyAddress() {
+        let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
+        let publicKey = privateKey.publicKey()
+        let addressFromPublicKey = LegacyAddress(publicKey)
+        XCTAssertEqual("\(addressFromPublicKey)", publicKey.toAddress())
+        XCTAssertEqual("\(addressFromPublicKey.cashaddr)", publicKey.toCashaddr())
+        
+        let addressFromFormattedAddress = try? LegacyAddress("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
+        XCTAssertNotNil(addressFromFormattedAddress)
+        XCTAssertEqual("\(addressFromFormattedAddress!)", "1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
+        XCTAssertEqual(addressFromFormattedAddress!.cashaddr, "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
+        
+        // invalid checksum error
         do {
-            let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
-            let publicKey = privateKey.publicKey()
-            let address1 = LegacyAddress(publicKey)
-            XCTAssertEqual("\(address1)", publicKey.toAddress())
-            
-            let address2 = try? LegacyAddress("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
-            XCTAssertNotNil(address2)
-            XCTAssertEqual(address2!.cashaddr, "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
-            XCTAssertEqual(address1, address2)
-            
-            do {
-                _ = try LegacyAddress("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W")
-                XCTFail("Should throw invalid checksum error.")
-            } catch AddressError.invalid {
-                // Success
-            } catch {
-                XCTFail("Should throw invalid checksum error.")
-            }
+            _ = try LegacyAddress("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W")
+            XCTFail("Should throw invalid checksum error.")
+        } catch AddressError.invalid {
+            // Success
+        } catch {
+            XCTFail("Should throw invalid checksum error.")
+        }
+    }
+    
+    func testTestnetLegacyAddress() {
+        let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
+        let publicKey = privateKey.publicKey()
+        let addressFromPublicKey = LegacyAddress(publicKey)
+        XCTAssertEqual("\(addressFromPublicKey)", publicKey.toAddress())
+        XCTAssertEqual("\(addressFromPublicKey.cashaddr)", publicKey.toCashaddr())
+        
+        let addressFromFormattedAddress = try? LegacyAddress("mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
+        XCTAssertNotNil(addressFromFormattedAddress)
+        XCTAssertEqual("\(addressFromFormattedAddress!)", "mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
+        XCTAssertEqual(addressFromFormattedAddress!.cashaddr, "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
+    }
+    
+    func testMainnetCashaddr() {
+        let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
+        let publicKey = privateKey.publicKey()
+        let addressFromPublicKey = Cashaddr(publicKey)
+        XCTAssertEqual("\(addressFromPublicKey)", publicKey.toCashaddr())
+        
+        let addressFromFormattedAddress = try? Cashaddr("bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
+        XCTAssertNotNil(addressFromFormattedAddress)
+        XCTAssertEqual("\(addressFromFormattedAddress!)", "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
+        
+        // invalid address
+        do {
+            _ = try Cashaddr("bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978💦😆")
+            XCTFail("Should throw invalid checksum error.")
+        } catch AddressError.invalid {
+            // Success
+        } catch {
+            XCTFail("Should throw invalid checksum error.")
         }
         
-        // LegacyAddress (Testnet)
+        // mismatch scheme and address
         do {
-            let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
-            let publicKey = privateKey.publicKey()
-            
-            let address1 = LegacyAddress(publicKey)
-            XCTAssertEqual("\(address1)", publicKey.toAddress())
-            
-            let address2 = try? LegacyAddress("mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
-            XCTAssertNotNil(address2)
-            XCTAssertEqual(address2!.cashaddr, "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
-            XCTAssertEqual(address1, address2)
+            _ = try Cashaddr("bchtest:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
+            XCTFail("Should throw invalid checksum error.")
+        } catch AddressError.invalid {
+            // Success
+        } catch {
+            XCTFail("Should throw invalid checksum error.")
         }
         
-        // Cashaddr (Mainnet)
+        // wrong network
         do {
-            let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
-            let publicKey = privateKey.publicKey()
-            let address1 = Cashaddr(publicKey)
-            XCTAssertEqual("\(address1)", publicKey.toCashaddr())
-            
-            let address2 = try? Cashaddr("bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
-            XCTAssertNotNil(address2)
-            XCTAssertEqual("\(address2!)", "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
-            
-            // invalid address
-            do {
-                _ = try Cashaddr("bitcoincash:qzdvr2hn0xrz99fcp6hkjxzk848rjvvhgytv4fket8💦😆")
-                XCTFail("Should throw invalid checksum error.")
-            } catch AddressError.invalid {
-                // Success
-            } catch {
-                XCTFail("Should throw invalid checksum error.")
-            }
-            
-            // wrong network
-            do {
-                _ = try Cashaddr("pref:pr6m7j9njldwwzlg9v7v53unlr4jkmx6ey65nvtks5")
-                XCTFail("Should throw invalid checksum error.")
-            } catch AddressError.wrongNetwork {
-                // Success
-            } catch {
-                XCTFail("Should throw invalid checksum error.")
-            }
+            _ = try Cashaddr("pref:pr6m7j9njldwwzlg9v7v53unlr4jkmx6ey65nvtks5")
+            XCTFail("Should throw wrong network.")
+        } catch AddressError.wrongNetwork {
+            // Success
+        } catch {
+            XCTFail("Should throw wrong network.")
         }
+    }
+    
+    func testTestnetCashaddr() {
+        let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
+        let publicKey = privateKey.publicKey()
+        let addressFromPublicKey = Cashaddr(publicKey)
+        XCTAssertEqual("\(addressFromPublicKey)", publicKey.toCashaddr())
         
-        // Cashaddr (Testnet)
-        do {
-            let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
-            let publicKey = privateKey.publicKey()
-            
-            let address1 = Cashaddr(publicKey)
-            XCTAssertEqual("\(address1)", publicKey.toCashaddr())
-            
-            let address2 = try? Cashaddr("bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
-            XCTAssertNotNil(address2)
-            XCTAssertEqual("\(address2!)", "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
-        }
-        
-        // AddressFactory
-        do {
-            // Cashaddr
-            let cashaddr = try? AddressFactory.create("bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
-            XCTAssertNotNil(cashaddr)
-            XCTAssertEqual("\(cashaddr!)", "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
-            
-            // LegacyAddress
-            let legacyAddress = try? AddressFactory.create("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
-            XCTAssertNotNil(legacyAddress)
-            XCTAssertEqual(legacyAddress!.cashaddr, "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
-        }
+        let addressFromFormattedAddress = try? Cashaddr("bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
+        XCTAssertNotNil(addressFromFormattedAddress)
+        XCTAssertEqual("\(addressFromFormattedAddress!)", "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
     }
 }
