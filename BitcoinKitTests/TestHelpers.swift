@@ -9,8 +9,8 @@
 import Foundation
 @testable import BitcoinKit
 
-enum CommonError: Error {
-    case insufficientUtxos
+enum UtxoSelectError: Error {
+    case insufficient
 }
 
 extension Array {
@@ -71,7 +71,7 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64, dustT
     
     // total values of utxos should be greater than targetValue
     guard sortedUtxos.sum() >= targetValue && sortedUtxos.count > 0 else {
-        throw CommonError.insufficientUtxos
+        throw UtxoSelectError.insufficient
     }
     
     // difference from 2x targetValue
@@ -109,7 +109,7 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64, dustT
         }
     }
     
-    throw CommonError.insufficientUtxos
+    throw UtxoSelectError.insufficient
 }
 
 public func createUnsignedTx(toAddress: Address, amount: Int64, changeAddress: Address, utxos: [UnspentTransaction]) -> UnsignedTransaction {

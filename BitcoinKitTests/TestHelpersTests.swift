@@ -110,7 +110,7 @@ class TestHelpersTests: XCTestCase {
             do {
                 _ = try selectTx(from: utxos, targetValue: 15000)
                 XCTFail("Should throw 'insufficientUtxos'")
-            } catch CommonError.insufficientUtxos {
+            } catch UtxoSelectError.insufficient {
                 // Success
             } catch {
                 XCTFail("Unknown error occurred")
@@ -127,7 +127,7 @@ class TestHelpersTests: XCTestCase {
             do {
                 _ = try selectTx(from: utxos, targetValue: 12000)
                 XCTFail("Should throw 'insufficientUtxos'")
-            } catch CommonError.insufficientUtxos {
+            } catch UtxoSelectError.insufficient {
                 // Success
             } catch {
                 XCTFail("Unknown error occurred")
