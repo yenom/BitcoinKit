@@ -196,19 +196,11 @@ class TestHelpersTests: XCTestCase {
         XCTAssertEqual(Fee.calculate(nIn: 3), 522)
         
         // 2. default feePerByte
-        XCTAssertEqual(Fee.calculate(nIn: 1, nOut: 1, feePerByte: 1), 192)
-        XCTAssertEqual(Fee.calculate(nIn: 1, nOut: 2, feePerByte: 1), 226)
-        XCTAssertEqual(Fee.calculate(nIn: 2, nOut: 1, feePerByte: 1), 340)
-        XCTAssertEqual(Fee.calculate(nIn: 2, nOut: 2, feePerByte: 1), 374)
-        XCTAssertEqual(Fee.calculate(nIn: 3, nOut: 1, feePerByte: 1), 488)
-        XCTAssertEqual(Fee.calculate(nIn: 3, nOut: 2, feePerByte: 1), 522)
-        
-        // 3. custom feePerByte
-        XCTAssertEqual(Fee.calculate(nIn: 1, nOut: 1, feePerByte: 2), 192*2)
-        XCTAssertEqual(Fee.calculate(nIn: 1, nOut: 2, feePerByte: 2), 226*2)
-        XCTAssertEqual(Fee.calculate(nIn: 2, nOut: 1, feePerByte: 3), 340*3)
-        XCTAssertEqual(Fee.calculate(nIn: 2, nOut: 2, feePerByte: 3), 374*3)
-        XCTAssertEqual(Fee.calculate(nIn: 3, nOut: 1, feePerByte: 4), 488*4)
-        XCTAssertEqual(Fee.calculate(nIn: 3, nOut: 2, feePerByte: 4), 522*4)
+        XCTAssertEqual(Fee.calculate(nIn: 1, nOut: 1), 192)
+        XCTAssertEqual(Fee.calculate(nIn: 1, nOut: 2), 226)
+        XCTAssertEqual(Fee.calculate(nIn: 2, nOut: 1), 340)
+        XCTAssertEqual(Fee.calculate(nIn: 2, nOut: 2), 374)
+        XCTAssertEqual(Fee.calculate(nIn: 3, nOut: 1), 488)
+        XCTAssertEqual(Fee.calculate(nIn: 3, nOut: 2), 522)
     }
 }

@@ -31,7 +31,7 @@ extension Array where Element == UnspentTransaction {
 }
 
 public struct Fee {
-    public static let feePerByte: Int64 = 1
+    public static let feePerByte: Int64 = 1 // ideally get this value from Bitcoin node
     public static let dust: Int64 = 3 * 182 * feePerByte
     
     // size for txin(P2PKH) : 148 bytes
@@ -39,7 +39,7 @@ public struct Fee {
     // cf. size for txin(P2SH) : not determined to one
     // cf. size for txout(P2SH) : 32 bytes
     // cf. size for txout(OP_RETURN + String) : Roundup([#characters]/32) + [#characters] + 11 bytes
-    public static func calculate(nIn: Int, nOut: Int = 2, extraOutputSize: Int = 0, feePerByte: Int64 = 1) -> Int64 {
+    public static func calculate(nIn: Int, nOut: Int = 2, extraOutputSize: Int = 0) -> Int64 {
         var txsize: Int {
             return ((148 * nIn) + (34 * nOut) + 10) + extraOutputSize
         }
@@ -55,17 +55,15 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64, dustT
     
     // definitions for the following caluculation
     let doubleTargetValue = targetValue * 2
-    let feePerByte: Int64 = 1 // ideally get this value from Bitcoin node
     var numOutputs = 2 // if allow multiple output, it will be changed.
     var numInputs = 2
     var fee: Int64 {
-        return Fee.calculate(nIn: numInputs, nOut: numOutputs, feePerByte: feePerByte)
+        return Fee.calculate(nIn: numInputs, nOut: numOutputs)
     }
     var targetWithFee: Int64 {
         return targetValue + fee
     }
     var targetWithFeeAndDust: Int64 {
-        let dustThreshhold = 3 * 182 * feePerByte
         return targetWithFee + dustThreshhold
     }
     
