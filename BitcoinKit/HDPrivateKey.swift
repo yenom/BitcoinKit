@@ -43,7 +43,11 @@ public class HDPrivateKey {
         self.childIndex = childIndex
     }
 
-    public func publicKey() -> HDPublicKey {
+    public func privateKey() -> PrivateKey {
+        return PrivateKey(data: raw, network: network, isPublicKeyCompressed: true)
+    }
+
+    public func extendedPublicKey() -> HDPublicKey {
         return HDPublicKey(privateKey: self, chainCode: chainCode, network: network, depth: depth, fingerprint: fingerprint, childIndex: childIndex)
     }
 
@@ -66,7 +70,7 @@ public class HDPrivateKey {
             fatalError("invalid child index")
         }
 
-        guard let derivedKey = _HDKey(privateKey: raw, publicKey: publicKey().raw, chainCode: chainCode, depth: depth, fingerprint: fingerprint, childIndex: childIndex).derived(at: index, hardened: hardened) else {
+        guard let derivedKey = _HDKey(privateKey: raw, publicKey: extendedPublicKey().raw, chainCode: chainCode, depth: depth, fingerprint: fingerprint, childIndex: childIndex).derived(at: index, hardened: hardened) else {
             throw DerivationError.derivateionFailed
         }
         return HDPrivateKey(privateKey: derivedKey.privateKey!, chainCode: derivedKey.chainCode, network: network, depth: derivedKey.depth, fingerprint: derivedKey.fingerprint, childIndex: derivedKey.childIndex)
