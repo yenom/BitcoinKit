@@ -9,7 +9,7 @@
 import Foundation
 
 public struct AddressFactory {
-    static func create(_ plainAddress: String) throws -> Address {
+    public static func create(_ plainAddress: String) throws -> Address {
         do {
             return try Cashaddr(plainAddress)
         } catch AddressError.invalidVersionByte {

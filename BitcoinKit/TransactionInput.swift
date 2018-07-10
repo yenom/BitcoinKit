@@ -20,7 +20,7 @@ public struct TransactionInput {
     /// Transaction version as defined by the sender. Intended for "replacement" of transactions when information is updated before inclusion into a block.
     public let sequence: UInt32
 
-    init(previousOutput: TransactionOutPoint, signatureScript: Data, sequence: UInt32) {
+    public init(previousOutput: TransactionOutPoint, signatureScript: Data, sequence: UInt32) {
         self.previousOutput = previousOutput
         self.signatureScript = signatureScript
         self.sequence = sequence

@@ -25,12 +25,12 @@ public struct TransactionOutput {
         return data
     }
 
-    init(value: Int64, lockingScript: Data) {
+    public init(value: Int64, lockingScript: Data) {
         self.value = value
         self.lockingScript = lockingScript
     }
 
-    init() {
+    public init() {
         self.init(value: 0, lockingScript: Data())
     }
 

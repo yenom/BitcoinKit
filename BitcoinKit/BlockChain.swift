@@ -29,8 +29,8 @@ public class BlockChain {
         try blockStore.addTransaction(transaction, hash: hash)
     }
 
-    public func calculateBlance(address: Address) throws -> Int64 {
-        return try blockStore.calculateBlance(address: address)
+    public func calculateBalance(address: Address) throws -> Int64 {
+        return try blockStore.calculateBalance(address: address)
     }
 
     public func latestBlockHash() -> Data {

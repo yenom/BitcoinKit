@@ -18,17 +18,18 @@ public struct Payment {
     }
 
     public let state: State
+    public let index: Int64
     public let amount: Int64
     public let from: Address
     public let to: Address
-    public let transactionHash: Data
+    public let txid: Data
 }
 
 public protocol BlockStore {
     func addBlock(_ block: BlockMessage, hash: Data) throws
     func addMerkleBlock(_ merkleBlock: MerkleBlockMessage, hash: Data) throws
     func addTransaction(_ transaction: Transaction, hash: Data) throws
-    func calculateBlance(address: Address) throws -> Int64
+    func calculateBalance(address: Address) throws -> Int64
     func latestBlockHash() throws -> Data?
 }
 
@@ -93,6 +94,7 @@ public class SQLiteBlockStore: BlockStore {
                                    FOREIGN KEY(tx_id) REFERENCES tx(id)
                                );
                                CREATE TABLE IF NOT EXISTS txout (
+                                   out_index INTEGER NOT NULL,
                                    value INTEGER NOT NULL,
                                    pk_script_length INTEGER NOT NULL,
                                    pk_script BLOB NOT NULL,
@@ -101,11 +103,11 @@ public class SQLiteBlockStore: BlockStore {
                                    FOREIGN KEY(tx_id) REFERENCES tx(id)
                                );
                                CREATE VIEW IF NOT EXISTS view_tx AS
-                                  SELECT tx.id, txout.address_id, txout.value, txin.txout_id from tx
+                                  SELECT tx.id, txout.address_id, txout.out_index, txout.value, txin.txout_id from tx
                                   LEFT JOIN txout on id = txout.tx_id
                                   LEFT JOIN txin on id = txin.txout_id;
                                CREATE VIEW IF NOT EXISTS view_utxo AS
-                                  SELECT tx.id, txout.address_id, txout.value, txin.txout_id from tx
+                                  SELECT tx.id, txout.address_id, txout.out_index, txout.value, txin.txout_id from tx
                                   LEFT JOIN txout on id = txout.tx_id
                                   LEFT JOIN txin on id = txin.txout_id
                                   WHERE txout_id IS NULL;
@@ -175,9 +177,9 @@ public class SQLiteBlockStore: BlockStore {
             try execute { sqlite3_prepare_v2(database,
                                              """
                                              INSERT INTO txout
-                                                 (value, pk_script_length, pk_script, tx_id, address_id)
+                                                 (out_index, value, pk_script_length, pk_script, tx_id, address_id)
                                                  VALUES
-                                                 (?,     ?,                ?,         ?,     ?);
+                                                 (?, ?,     ?,                ?,         ?,     ?);
                                              """,
                                              -1,
                                              &statement,
@@ -206,7 +208,7 @@ public class SQLiteBlockStore: BlockStore {
                                              nil) }
             return statement
         }()
-        statements["calculateBlance"] = try {
+        statements["calculateBalance"] = try {
             var statement: OpaquePointer?
             try execute { sqlite3_prepare_v2(database,
                                              """
@@ -239,6 +241,17 @@ public class SQLiteBlockStore: BlockStore {
                                              nil) }
             return statement
         }()
+        statements["unspentTransactions"] = try {
+            var statement: OpaquePointer?
+            try execute { sqlite3_prepare_v2(database,
+                                             """
+                                             SELECT * FROM view_utxo WHERE address_id == ?;
+                                             """,
+                                             -1,
+                                             &statement,
+                                             nil) }
+            return statement
+            }()
     }
 
     deinit {
@@ -304,8 +317,8 @@ public class SQLiteBlockStore: BlockStore {
             try addTransactionInput(input, txId: hash)
         }
         try deleteTransactionOutput(txId: hash)
-        for output in transaction.outputs {
-            try addTransactionOutput(output, txId: hash)
+        for (i, output) in transaction.outputs.enumerated() {
+            try addTransactionOutput(index: i, output: output, txId: hash)
         }
     }
 
@@ -322,17 +335,18 @@ public class SQLiteBlockStore: BlockStore {
         try execute { sqlite3_reset(stmt) }
     }
 
-    public func addTransactionOutput(_ output: TransactionOutput, txId: Data) throws {
+    public func addTransactionOutput(index: Int, output: TransactionOutput, txId: Data) throws {
         let stmt = statements["addTransactionOutput"]
 
-        try execute { sqlite3_bind_int64(stmt, 1, sqlite3_int64(bitPattern: UInt64(truncatingIfNeeded: output.value))) }
-        try execute { sqlite3_bind_int64(stmt, 2, sqlite3_int64(bitPattern: output.scriptLength.underlyingValue)) }
-        try execute { output.lockingScript.withUnsafeBytes { sqlite3_bind_blob(stmt, 3, $0, Int32(output.lockingScript.count), SQLITE_TRANSIENT) } }
-        try execute { txId.withUnsafeBytes { sqlite3_bind_blob(stmt, 4, $0, Int32(txId.count), SQLITE_TRANSIENT) } }
+        try execute { sqlite3_bind_int64(stmt, 1, sqlite3_int64(bitPattern: UInt64(truncatingIfNeeded: index))) }
+        try execute { sqlite3_bind_int64(stmt, 2, sqlite3_int64(bitPattern: UInt64(truncatingIfNeeded: output.value))) }
+        try execute { sqlite3_bind_int64(stmt, 3, sqlite3_int64(bitPattern: output.scriptLength.underlyingValue)) }
+        try execute { output.lockingScript.withUnsafeBytes { sqlite3_bind_blob(stmt, 4, $0, Int32(output.lockingScript.count), SQLITE_TRANSIENT) } }
+        try execute { txId.withUnsafeBytes { sqlite3_bind_blob(stmt, 5, $0, Int32(txId.count), SQLITE_TRANSIENT) } }
         if Script.isPublicKeyHashOut(output.lockingScript) {
             let pubKeyHash = Script.getPublicKeyHash(from: output.lockingScript)
             let address = publicKeyHashToAddress(Data([network.pubkeyhash]) + pubKeyHash)
-            try execute { sqlite3_bind_text(stmt, 5, address, -1, nil) }
+            try execute { sqlite3_bind_text(stmt, 6, address, -1, nil) }
         }
 
         try executeUpdate { sqlite3_step(stmt) }
@@ -353,8 +367,8 @@ public class SQLiteBlockStore: BlockStore {
         try execute { sqlite3_reset(stmt) }
     }
 
-    public func calculateBlance(address: Address) throws -> Int64 {
-        let stmt = statements["calculateBlance"]
+    public func calculateBalance(address: Address) throws -> Int64 {
+        let stmt = statements["calculateBalance"]
         try execute { sqlite3_bind_text(stmt, 1, address.base58, -1, SQLITE_TRANSIENT) }
 
         var balance: Int64 = 0
@@ -374,11 +388,29 @@ public class SQLiteBlockStore: BlockStore {
 
         var payments = [Payment]()
         while sqlite3_step(stmt) == SQLITE_ROW {
-            let hash = sqlite3_column_blob(stmt, 0)
+            let txid = sqlite3_column_blob(stmt, 0)
             let address = sqlite3_column_text(stmt, 1)!
-            let value = sqlite3_column_int64(stmt, 2)
+            let index = sqlite3_column_int64(stmt, 2)
+            let value = sqlite3_column_int64(stmt, 3)
+            payments.append(Payment(state: .received, index: index, amount: value, from: try! AddressFactory.create(String(cString: address)), to: try! AddressFactory.create(String(cString: address)), txid: Data(bytes: txid!, count: 32)))
+        }
 
-            payments.append(Payment(state: .received, amount: value, from: try! AddressFactory.create(String(cString: address)), to: try! AddressFactory.create(String(cString: address)), transactionHash: Data(bytes: hash!, count: 32)))
+        try execute { sqlite3_reset(stmt) }
+
+        return payments
+    }
+
+    public func unspentTransactions(address: Address) throws -> [Payment] {
+        let stmt = statements["unspentTransactions"]
+        try execute { sqlite3_bind_text(stmt, 1, address.base58, -1, SQLITE_TRANSIENT) }
+
+        var payments = [Payment]()
+        while sqlite3_step(stmt) == SQLITE_ROW {
+            let txid = sqlite3_column_blob(stmt, 0)
+            let address = sqlite3_column_text(stmt, 1)!
+            let index = sqlite3_column_int64(stmt, 2)
+            let value = sqlite3_column_int64(stmt, 3)
+            payments.append(Payment(state: .received, index: index, amount: value, from: try! AddressFactory.create(String(cString: address)), to: try! AddressFactory.create(String(cString: address)), txid: Data(bytes: txid!, count: 32)))
         }
 
         try execute { sqlite3_reset(stmt) }
