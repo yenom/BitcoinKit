@@ -23,6 +23,13 @@ public struct Script {
         return tmp + OP_CHECKSIG
     }
 
+    public static func buildPublicKeyUnlockingScript(signature: Data, pubkey: PublicKey, hashType: SighashType) -> Data {
+        var data: Data = Data([UInt8(signature.count + 1)]) + signature + UInt8(hashType)
+        data += VarInt(pubkey.raw.count).serialized()
+        data += pubkey.raw
+        return data
+    }
+
     public static func isPublicKeyHashOut(_ script: Data) -> Bool {
         return script.count == 25 &&
             script[0] == OP_DUP && script[1] == OP_HASH160 && script[2] == OP_0 &&
