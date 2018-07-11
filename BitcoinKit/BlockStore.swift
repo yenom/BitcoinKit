@@ -25,6 +25,13 @@ public struct Payment {
     public let txid: Data
 }
 
+extension Payment: Equatable {
+    // swiftlint:disable:next operator_whitespace
+    static public func ==(lhs: Payment, rhs: Payment) -> Bool {
+        return lhs.txid == rhs.txid
+    }
+}
+
 public protocol BlockStore {
     func addBlock(_ block: BlockMessage, hash: Data) throws
     func addMerkleBlock(_ merkleBlock: MerkleBlockMessage, hash: Data) throws
