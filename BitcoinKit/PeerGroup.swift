@@ -27,7 +27,7 @@ public class PeerGroup: PeerDelegate {
     public func start() {
         let network = blockChain.network
         for _ in peers.count..<maxConnections {
-            let peer = Peer(host: network.dnsSeeds[1], network: network) // TODO: ベタ打ちのdnsSeed[1]で良いのか？よくなさそう。同じpeerにどんどん繋がりそう / 特定のDNSへのトラストをしていることになりそう
+            let peer = Peer(network: network)
             peer.delegate = self
             peer.connect()
 
@@ -78,6 +78,13 @@ public class PeerGroup: PeerDelegate {
     public func peerDidDisconnect(_ peer: Peer) {
         peers[peer.host] = nil
         start()
+    }
+
+    public func peer(_ peer: Peer, didReceiveVersionMessage message: VersionMessage) {
+        if message.userAgent?.value.contains("Bitcoin ABC:0.16") == true {
+            print("it's old version. Let's try to disconnect and connect to aother peer.")
+            peer.disconnect()
+        }
     }
 
     // TODO: Merkle Treeの検証はをすべきでは？
