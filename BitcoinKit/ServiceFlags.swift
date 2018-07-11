@@ -29,6 +29,8 @@ struct ServiceFlags: OptionSet {
     /// NODE_XTHIN means the node supports Xtreme Thinblocks
     /// If this is turned off then the node will not service nor make xthin requests
     static let xthin = ServiceFlags(rawValue: 1 << 4)
+    /// NODE_BITCOINCASH means that it is a Bitcoin Cash nodes.
+    static let bitcoincash = ServiceFlags(rawValue: 1 << 5)
     /// NODE_NETWORK_LIMITED means the same as NODE_NETWORK with the limitation of only
     /// serving the last 288 (2 day) blocks
     /// See BIP159 for details on how this is implemented.
@@ -44,7 +46,7 @@ struct ServiceFlags: OptionSet {
 
 extension ServiceFlags: CustomStringConvertible {
     var description: String {
-        let strings = ["NODE_NETWORK", "NODE_GETUTXO", "NODE_BLOOM", "NODE_WITNESS", "NODE_XTHIN", "NODE_NETWORK_LIMITED"]
+        let strings = ["NODE_NETWORK", "NODE_GETUTXO", "NODE_BLOOM", "NODE_WITNESS", "NODE_XTHIN", "NODE_BITCOIN_CASH", "NODE_NETWORK_LIMITED"]
         var members = [String]()
         for (flag, string) in strings.enumerated() where self.contains(ServiceFlags(rawValue: 1 << (UInt8(flag)))) {
             members.append(string)
