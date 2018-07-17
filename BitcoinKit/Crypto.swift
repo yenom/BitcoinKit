@@ -3,7 +3,7 @@
 //  BitcoinKit
 //
 //  Created by Kishikawa Katsumi on 2018/01/30.
-//  Copyright © 2018 Kishikawa Katsumi. All rights reserved.
+//  Copyright © 2018 Kishikawa Katsumi
 //  Copyright © 2018 Shun Usami
 //  Copyright © 2018 BitcoinKit-cash developers
 //  Licensed under the Apache License, Version 2.0 (the "License");
