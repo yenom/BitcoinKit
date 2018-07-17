@@ -11,7 +11,7 @@ import BitcoinKit.Private
 
 public struct PublicKey {
     let raw: Data
-    var pubkeyHash: Data {
+    public var pubkeyHash: Data {
         return Crypto.sha256ripemd160(raw)
     }
     public let network: Network

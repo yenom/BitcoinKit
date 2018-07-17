@@ -39,7 +39,7 @@ public struct Transaction {
         return Data(txHash.reversed()).hex
     }
 
-    init(version: Int32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
+    public init(version: Int32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
         self.version = version
         self.inputs = inputs
         self.outputs = outputs

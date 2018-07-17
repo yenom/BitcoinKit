@@ -11,4 +11,9 @@ import Foundation
 public struct UnsignedTransaction {
     public let tx: Transaction
     public let utxos: [UnspentTransaction]
+
+    public init(tx: Transaction, utxos: [UnspentTransaction]) {
+        self.tx = tx
+        self.utxos = utxos
+    }
 }

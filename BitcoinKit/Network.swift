@@ -9,8 +9,10 @@
 import Foundation
 
 public class Network {
-    public static let mainnet: Network = Mainnet()
-    public static let testnet: Network = Testnet()
+    public static let mainnet: Network = BCHMainnet()
+    public static let testnet: Network = BCHTestnet()
+    public static let mainnetBTC: Network = BTCMainnet()
+    public static let testnetBTC: Network = BTCTestnet()
 
     public var name: String { return "" }
     public var alias: String { return "" }
@@ -37,15 +39,116 @@ extension Network: Equatable {
     }
 }
 
+struct Checkpoint {
+    let height: Int32
+    let hash: Data
+    let timestamp: UInt32
+    let target: UInt32
+}
+
+public class BTCMainnet: Mainnet {
+    public override var scheme: String {
+        return "bitcoin"
+    }
+    override var magic: UInt32 {
+        return 0xf9beb4d9
+    }
+    public override var dnsSeeds: [String] {
+        return [
+            "seed.bitcoin.sipa.be",         // Pieter Wuille
+            "dnsseed.bluematt.me",          // Matt Corallo
+            "dnsseed.bitcoin.dashjr.org",   // Luke Dashjr
+            "seed.bitcoinstats.com",        // Chris Decker
+            "seed.bitnodes.io",             // Addy Yeow
+            "bitseed.xf2.org",              // Jeff Garzik
+            "seed.bitcoin.jonasschnelli.ch", // Jonas Schnelli
+            "bitcoin.bloqseeds.net",        // Bloq
+            "seed.ob1.io"                  // OpenBazaar
+        ]
+    }
+    override var checkpoints: [Checkpoint] {
+        return super.checkpoints + [
+            Checkpoint(height: 463_680, hash: Data(Data(hex: "000000000000000000431a2f4619afe62357cd16589b638bb638f2992058d88e")!.reversed()), timestamp: 1_493_259_601, target: 0x18021b3e)
+        ]
+    }
+}
+
+public class BTCTestnet: Testnet {
+    public override var scheme: String {
+        return "bitcoin"
+    }
+    override var magic: UInt32 {
+        return 0x0b110907
+    }
+    public override var dnsSeeds: [String] {
+        return [
+            "testnet-seed.bitcoin.jonasschnelli.ch", // Jonas Schnelli
+            "testnet-seed.bluematt.me",              // Matt Corallo
+            "testnet-seed.bitcoin.petertodd.org",    // Peter Todd
+            "testnet-seed.bitcoin.schildbach.de",    // Andreas Schildbach
+            "bitcoin-testnet.bloqseeds.net"         // Bloq
+        ]
+    }
+    override var checkpoints: [Checkpoint] {
+        return super.checkpoints + [
+            Checkpoint(height: 1_108_800, hash: Data(Data(hex: "00000000000288d9a219419d0607fb67cc324d4b6d2945ca81eaa5e739fab81e")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0)
+        ]
+    }
+}
+
+public class BCHMainnet: Mainnet {
+    public override var scheme: String {
+        return "bitcoincash"
+    }
+    override var magic: UInt32 {
+        return 0xe3e1f3e8
+    }
+    public override var dnsSeeds: [String] {
+        return [
+            "seed.bitcoinabc.org", // - Bitcoin ABC seeder
+            "seed-abc.bitcoinforks.org", // - bitcoinforks seeders
+            "seed.bitcoinunlimited.info", // - BU seeder
+            "seed.bitprim.org", // - Bitprim
+            "seed.deadalnix.me" // - Amaury SÉCHET
+        ]
+    }
+    override var checkpoints: [Checkpoint] {
+        return super.checkpoints + [
+            Checkpoint(height: 478_559, hash: Data(Data(hex: "000000000000000000651ef99cb9fcbe0dadde1d424bd9f15ff20136191a5eec")!.reversed()), timestamp: 1_501_611_161, target: 0x18021b3e)
+        ]
+    }
+}
+
+public class BCHTestnet: Testnet {
+    public override var scheme: String {
+        return "bchtest"
+    }
+    override var magic: UInt32 {
+        return 0xf4e5f3f4
+    }
+    public override var dnsSeeds: [String] {
+        return [
+            "testnet-seed.bitcoinabc.org",
+            "testnet-seed-abc.bitcoinforks.org",
+            "testnet-seed.bitprim.org",
+            "testnet-seed.deadalnix.me",
+            "testnet-seeder.criptolayer.net"
+        ]
+    }
+    override var checkpoints: [Checkpoint] {
+        return super.checkpoints + [
+            Checkpoint(height: 1_200_000, hash: Data(Data(hex: "00000000d91bdbb5394bcf457c0f0b7a7e43eb978e2d881b6c2a4c2756abc558")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0),
+            Checkpoint(height: 1_240_000, hash: Data(Data(hex: "0000000002a2bbefefa5aa5f0b7e95957537693808e753f4b4a8e26c5257891d")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0)
+        ]
+    }
+}
+
 public class Mainnet: Network {
     public override var name: String {
         return "livenet"
     }
     public override var alias: String {
         return "mainnet"
-    }
-    public override var scheme: String {
-        return "bitcoincash"
     }
     override var pubkeyhash: UInt8 {
         return 0x00
@@ -62,24 +165,8 @@ public class Mainnet: Network {
     override var xprivkey: UInt32 {
         return 0x0488ade4
     }
-    override var magic: UInt32 {
-        return 0xf9beb4d9
-    }
     public override var port: UInt32 {
         return 8333
-    }
-    public override var dnsSeeds: [String] {
-        return [
-            "seed.bitcoin.sipa.be",         // Pieter Wuille
-            "dnsseed.bluematt.me",          // Matt Corallo
-            "dnsseed.bitcoin.dashjr.org",   // Luke Dashjr
-            "seed.bitcoinstats.com",        // Chris Decker
-            "seed.bitnodes.io",             // Addy Yeow
-            "bitseed.xf2.org",              // Jeff Garzik
-            "seed.bitcoin.jonasschnelli.ch", // Jonas Schnelli
-            "bitcoin.bloqseeds.net",        // Bloq
-            "seed.ob1.io"                  // OpenBazaar
-        ]
     }
     /// blockchain checkpoints - these are also used as starting points for partial chain downloads, so they need to be at
     /// difficulty transition boundaries in order to verify the block difficulty at the immediately following transition
@@ -115,8 +202,6 @@ public class Mainnet: Network {
     override var genesisBlock: Data {
         return Data(Data(hex: "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f")!.reversed())
     }
-
-    fileprivate override init() {}
 }
 
 public class Testnet: Network {
@@ -125,9 +210,6 @@ public class Testnet: Network {
     }
     public override var alias: String {
         return "regtest"
-    }
-    public override var scheme: String {
-        return "bchtest"
     }
     override var pubkeyhash: UInt8 {
         return 0x6f
@@ -144,20 +226,8 @@ public class Testnet: Network {
     override var xprivkey: UInt32 {
         return 0x04358394
     }
-    override var magic: UInt32 {
-        return 0x0b110907
-    }
     public override var port: UInt32 {
         return 18_333
-    }
-    public override var dnsSeeds: [String] {
-        return [
-            "testnet-seed.bitcoin.jonasschnelli.ch", // Jonas Schnelli
-            "testnet-seed.bluematt.me",              // Matt Corallo
-            "testnet-seed.bitcoin.petertodd.org",    // Peter Todd
-            "testnet-seed.bitcoin.schildbach.de",    // Andreas Schildbach
-            "bitcoin-testnet.bloqseeds.net"         // Bloq
-        ]
     }
     override var checkpoints: [Checkpoint] {
         return [
@@ -170,21 +240,11 @@ public class Testnet: Network {
             Checkpoint(height: 604_800, hash: Data(Data(hex: "00000000000008653c7e5c00c703c5a9d53b318837bb1b3586a3d060ce6fff2e")!.reversed()), timestamp: 1_455_728_685, target: 0x1a092a20),
             Checkpoint(height: 705_600, hash: Data(Data(hex: "00000000004ee3bc2e2dd06c31f2d7a9c3e471ec0251924f59f222e5e9c37e12")!.reversed()), timestamp: 1_462_006_183, target: 0x1c0ffff0),
             Checkpoint(height: 806_400, hash: Data(Data(hex: "0000000000000faf114ff29df6dbac969c6b4a3b407cd790d3a12742b50c2398")!.reversed()), timestamp: 1_469_705_562, target: 0x1a34e280),
-            Checkpoint(height: 907_200, hash: Data(Data(hex: "0000000000166938e6f172a21fe69fe335e33565539e74bf74eeb00d2022c226")!.reversed()), timestamp: 1_476_926_743, target: 0x1c00ffff),
-            Checkpoint(height: 1_008_000, hash: Data(Data(hex: "000000000000390aca616746a9456a0d64c1bd73661fd60a51b5bf1c92bae5a0")!.reversed()), timestamp: 1_490_751_239, target: 0x1a52ccc0),
-            Checkpoint(height: 1_108_800, hash: Data(Data(hex: "00000000000288d9a219419d0607fb67cc324d4b6d2945ca81eaa5e739fab81e")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0)
+            Checkpoint(height: 907_200, hash: Data(Data(hex: "0000000000166938e6f172a21fe69fe335e33565539e74bf74eeb00d2022c226")!.reversed()), timestamp: 1_476_926_743, target: 0x1c00ffff ),
+            Checkpoint(height: 1_008_000, hash: Data(Data(hex: "000000000000390aca616746a9456a0d64c1bd73661fd60a51b5bf1c92bae5a0")!.reversed()), timestamp: 1_490_751_239, target: 0x1a52ccc0)
         ]
     }
     override var genesisBlock: Data {
         return Data(Data(hex: "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943")!.reversed())
     }
-
-    fileprivate override init() {}
-}
-
-struct Checkpoint {
-    let height: Int32
-    let hash: Data
-    let timestamp: UInt32
-    let target: UInt32
 }

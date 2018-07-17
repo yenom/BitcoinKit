@@ -22,6 +22,7 @@ class ReceiveViewController: UIViewController {
     }
 
     @IBAction func copyAddress(_ sender: UIButton) {
+        print(receiveAddress())
         UIPasteboard.general.string = receiveAddress()
     }
 

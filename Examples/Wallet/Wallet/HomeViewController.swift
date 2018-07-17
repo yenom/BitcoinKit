@@ -36,9 +36,11 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
 
     @IBAction func sync(_ sender: UIButton) {
         if let peerGroup = peerGroup {
+            print("stop sync")
             peerGroup.stop()
             syncButton.setTitle("Sync", for: .normal)
         } else {
+            print("start sync")
             let blockStore = try! SQLiteBlockStore.default()
             let blockChain = BlockChain(network: AppController.shared.network, blockStore: blockStore)
 
@@ -56,7 +58,7 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
             syncButton.setTitle("Stop", for: .normal)
         }
     }
-
+    
     @objc
     func walletChanged(notification: Notification) {
         tableView.reloadData()
@@ -77,8 +79,13 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "transactionCell", for: indexPath)
 
-        let peymant = payments[indexPath.row]
-        cell.textLabel?.text = "Received: \(peymant.amount)"
+        let payment = payments[indexPath.row]
+        let decimal = Decimal(payment.amount)
+        let amountCoinValue = decimal / Decimal(100000000)
+        let txid = payment.txid.hex
+        cell.textLabel?.text = "\(amountCoinValue) BCH"
+        cell.detailTextLabel?.text = txid
+        print(txid, amountCoinValue, payment.from, payment.to)
 
         return cell
     }
@@ -109,13 +116,16 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
         }
         return addresses
     }
-
+    
     func transactions() -> [Payment] {
         let blockStore = try! SQLiteBlockStore.default()
 
         var payments = [Payment]()
         for address in usedAddresses() {
-            payments.append(contentsOf: try! blockStore.transactions(address: address))
+            let newPayments = try! blockStore.transactions(address: address)
+            for p in newPayments where !payments.contains(p){
+                payments.append(p)
+            }
         }
         return payments
     }
@@ -125,13 +135,14 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
 
         var balance: Int64 = 0
         for address in usedAddresses() {
-            balance += try! blockStore.calculateBlance(address: address)
+            balance += try! blockStore.calculateBalance(address: address)
         }
 
         let decimal = Decimal(balance)
-        balanceLabel.text = "\(decimal / Decimal(100000000)) BTC"
+        balanceLabel.text = "\(decimal / Decimal(100000000)) BCH"
 
         payments = transactions()
         tableView.reloadData()
     }
+    
 }

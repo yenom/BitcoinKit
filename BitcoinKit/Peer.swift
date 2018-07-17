@@ -99,13 +99,13 @@ public class Peer: NSObject, StreamDelegate {
         writeStream = nil
 
         log("disconnected")
+        self.delegate?.peerDidDisconnect(self)
     }
 
     public func startSync(filters: [Data] = [], latestBlockHash: Data) {
         self.latestBlockHash = latestBlockHash
         context.isSyncing = true
 
-        // TODO: syncするときは、その前に、sendFilterLoadMessage, sendMemoryPoolMessageっていうのをやるのか。それぞれ何なんだろう。
         if !self.context.sentFilterLoad {
             sendFilterLoadMessage(filters: filters)
             self.context.sentFilterLoad = true
@@ -384,9 +384,18 @@ public class Peer: NSObject, StreamDelegate {
         log("got inv with \(inventory.count) item(s)")
         delegate?.peer(self, didReceiveInventoryMessage: inventory)
 
-        let filterdBlockItems = inventory.inventoryItems.filter { $0.objectType == .blockMessage }.map { InventoryItem(type: InventoryItem.ObjectType.filteredBlockMessage.rawValue, hash: $0.hash) }
-        sendGetDataMessage(message: InventoryMessage(count: inventory.count, inventoryItems: filterdBlockItems))
-        for item in filterdBlockItems {
+        // 1. filteredBlockMessageとtransactionsは受け取る
+        let transactionItems: [InventoryItem] = inventory.inventoryItems.filter { $0.objectType == .transactionMessage } // TODO: Filter only txs that we don't have yet
+        let blockItems: [InventoryItem] = inventory.inventoryItems
+            .filter { $0.objectType == .blockMessage || $0.objectType == .filteredBlockMessage }
+            .map { InventoryItem(type: InventoryItem.ObjectType.filteredBlockMessage.rawValue, hash: $0.hash) } // TODO: Filter only blocks that we don't have yet
+        let filterdItems: [InventoryItem] = transactionItems + blockItems
+
+        guard !filterdItems.isEmpty else {
+            return
+        }
+        sendGetDataMessage(message: InventoryMessage(count: VarInt(filterdItems.count), inventoryItems: filterdItems))
+        for item in filterdItems {
             context.inventoryItems[Data(item.hash.reversed())] = item
         }
     }
@@ -436,7 +445,8 @@ public class Peer: NSObject, StreamDelegate {
 
     private func handleRejectMessage(payload: Data) {
         let reject = RejectMessage.deserialize(payload)
-        log("rejected \(reject.message) code: 0x\(String(reject.ccode, radix: 16)) reason: \(reject.reason)")
+
+        log("rejected \(reject.message) code: 0x\(String(reject.ccode, radix: 16)) reason: \(reject.reason), data: \(reject.data.hex)")
         delegate?.peer(self, didReceiveRejectMessage: reject)
     }
 

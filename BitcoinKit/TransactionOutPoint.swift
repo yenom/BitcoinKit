@@ -14,6 +14,11 @@ public struct TransactionOutPoint {
     /// The index of the specific output in the transaction. The first output is 0, etc.
     public let index: UInt32
 
+    public init(hash: Data, index: UInt32) {
+        self.hash = hash
+        self.index = index
+    }
+
     public func serialized() -> Data {
         var data = Data()
         data += hash

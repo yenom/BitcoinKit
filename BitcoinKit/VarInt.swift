@@ -27,10 +27,10 @@ public struct VarInt: ExpressibleByIntegerLiteral {
      0xfe : 254
      0xff : 255
      
-     0~252 : 0x00 ~ 0xfc
-     253 ~ 65535: 0xfdfd ~ 0xfdffff
-     65536 ~ 4294967295 : 0xfe10000 ~ 0xfeffffffff
-     4294967296 ~ 1.84467441e19 : 0xff100000000 ~ 0xfeffffffffffffffff
+     0~252 : 1-byte(0x00 ~ 0xfc)
+     253 ~ 65535: 3-byte(0xfd00fd ~ 0xfdffff)
+     65536 ~ 4294967295 : 5-byte(0xfe010000 ~ 0xfeffffffff)
+     4294967296 ~ 1.84467441e19 : 9-byte(0xff0000000100000000 ~ 0xfeffffffffffffffff)
     */
     public init(_ value: UInt64) {
         underlyingValue = value
