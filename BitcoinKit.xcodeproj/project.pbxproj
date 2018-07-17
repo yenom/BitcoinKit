@@ -370,7 +370,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = "Kishikawa Katsumi";
+				ORGANIZATIONNAME = "BitcoinKit-cash developers";
 				TargetAttributes = {
 					147494C6201F9A29006D1CF8 = {
 						CreatedOnToolsVersion = 9.2;
