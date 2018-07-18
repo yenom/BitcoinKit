@@ -4,7 +4,7 @@
 //
 //  Created by Shun Usami on 2018/07/08.
 //  Copyright © 2018 Shun Usami
-//  Copyright © 2018 BitcoinKit-cash developers
+//  Copyright © 2018 BitcoinCashKit developers
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  You may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
@@ -17,7 +17,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  This file has been modified by the BitcoinKit-cash developers for the BitcoinKit-cash project.
+//  This file has been modified by the BitcoinCashKit developers for the BitcoinCashKit project.
 //  The original file was from the bitcoinj project (https://github.com/kishikawakatsumi/BitcoinKit).
 //
 
