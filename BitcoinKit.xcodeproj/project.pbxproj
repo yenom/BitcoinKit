@@ -60,6 +60,7 @@
 		14F37A3A20209B5400D34748 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3920209B5400D34748 /* Transaction.swift */; };
 		14F37A3C20209F9200D34748 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3B20209F9200D34748 /* Script.swift */; };
 		14F37A3E2020A02000D34748 /* Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* Signature.swift */; };
+		48AC5D2320FF739B00AE4B77 /* MultiplicationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC5D2220FF739B00AE4B77 /* MultiplicationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +131,7 @@
 		14F37A3920209B5400D34748 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		14F37A3B20209F9200D34748 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
 		14F37A3D2020A02000D34748 /* Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signature.swift; sourceTree = "<group>"; };
+		48AC5D2220FF739B00AE4B77 /* MultiplicationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplicationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 		147494D4201F9A29006D1CF8 /* BitcoinKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				48AC5D2120FF738C00AE4B77 /* PerformanceTests */,
 				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
 				147494D7201F9A29006D1CF8 /* Info.plist */,
 			);
@@ -270,6 +273,14 @@
 			name = Networking;
 			sourceTree = "<group>";
 		};
+		48AC5D2120FF738C00AE4B77 /* PerformanceTests */ = {
+			isa = PBXGroup;
+			children = (
+				48AC5D2220FF739B00AE4B77 /* MultiplicationTests.swift */,
+			);
+			path = PerformanceTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -335,11 +346,11 @@
 					147494C6201F9A29006D1CF8 = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 0920;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					147494CF201F9A29006D1CF8 = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -459,6 +470,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				147494D6201F9A29006D1CF8 /* BitcoinKitTests.swift in Sources */,
+				48AC5D2320FF739B00AE4B77 /* MultiplicationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,9 +604,8 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 27AEDK3C9F;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -626,9 +637,8 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 27AEDK3C9F;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -657,13 +667,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 27AEDK3C9F;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Libraries/crypto/include";
 				INFOPLIST_FILE = BitcoinKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -673,13 +684,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 27AEDK3C9F;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Libraries/crypto/include";
 				INFOPLIST_FILE = BitcoinKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

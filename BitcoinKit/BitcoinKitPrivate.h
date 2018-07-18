@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface _Key : NSObject
-
++ (NSData *)curveOrderMinus:(NSInteger)smallNumber;
 + (NSData *)computePublicKeyFromPrivateKey:(NSData *)privateKey compression:(BOOL)compression;
 + (NSData *)deriveKey:(NSData *)password salt:(NSData *)salt iterations:(NSInteger)iterations keyLength:(NSInteger)keyLength;
 
