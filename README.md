@@ -6,8 +6,6 @@ The BitcoinCashKit library is a Swift implementation of the Bitcoin cash protoco
 
 It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.
 
-For support and discussion please join us on the [mailing list](https://groups.google.com/forum/#!forum/bitcoinj-cash).
-
 Release notes are [here](CHANGELOG.md).
 
 <img src="https://user-images.githubusercontent.com/40610/35793683-0d497b4e-0a96-11e8-8e49-2b0ce09211a4.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/40610/35793685-0da36a32-0a96-11e8-855b-ecbc3ce1474c.png" width="320px" />
