@@ -1,12 +1,14 @@
 BitcoinKit
 ===========
-[![CI Status](http://img.shields.io/travis/kishikawakatsumi/BitcoinKit.svg)](https://travis-ci.org/kishikawakatsumi/BitcoinKit)
-[![codecov](https://codecov.io/gh/kishikawakatsumi/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/kishikawakatsumi/BitcoinKit)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Version](https://img.shields.io/cocoapods/v/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
-[![Platform](https://img.shields.io/cocoapods/p/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
+### Welcome to BitcoinCashKit
 
-BitcoinKit implements Bitcoin protocol in Swift. It is an implementation of the Bitcoin SPV protocol written (almost) entirely in swift.
+The BitcoinCashKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system.
+
+It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.
+
+For support and discussion please join us on the [mailing list](https://groups.google.com/forum/#!forum/bitcoinj-cash).
+
+Release notes are [here](CHANGELOG.md).
 
 <img src="https://user-images.githubusercontent.com/40610/35793683-0d497b4e-0a96-11e8-8e49-2b0ce09211a4.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/40610/35793685-0da36a32-0a96-11e8-855b-ecbc3ce1474c.png" width="320px" />
 
@@ -15,7 +17,7 @@ Features
 
 - Send/receive transactions.
 - See current balance in a wallet.
-- Encoding/decoding addresses: P2PKH, WIF format.
+- Encoding/decoding addresses: P2PKH, P2SH, WIF format.
 - Transaction building blocks: inputs, outputs, scripts.
 - EC keys and signatures.
 - BIP32, BIP44 hierarchical deterministic wallets.
@@ -101,26 +103,12 @@ Installation
 BitcoinKit is available through [Carthage](https://github.com/Carthage/Carthage). To install
 it, simply add the following line to your Cartfile:
 
-`github "kishikawakatsumi/BitcoinKit"`
-
-### CocoaPods
-
-BitcoinKit is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following lines to your Podfile:
-
-```ruby
-use_frameworks!
-pod 'BitcoinKit'
-```
+`github "BitcoinCashKit/BitcoinKit"`
 
 Contribute
 ----------
-
-Feel free to open issues, drop us pull requests or contact us to discuss how to do things.
-
-Email: [kishikawakatsumi@mac.com](mailto:kishikawakatsumi@mac.com)
-
-Twitter: [@k_katsumi](http://twitter.com/k_katsumi)
+Contributions to BitcoinCashKit are welcome and encouraged!
+Feel free to open issues, drop us pull requests.
 
 
 License
