@@ -22,19 +22,38 @@
 import Foundation
 
 public class Script {
-    private var chunks: [ScriptChunk] // An array of Data objects (pushing data) or UInt8 objects (containing opcodes)
+    // An array of Data objects (pushing data) or UInt8 objects (containing opcodes)
+    private var chunks: [ScriptChunk]
 
-    // TODO: need to be cached
     // Cached serialized representations for -data and -string methods.
+    private var dataCache: Data?
+    private var stringCache: String?
+
     public var data: Data {
         // When we calculate data from scratch, it's important to respect actual offsets in the chunks as they may have been copied or shifted in subScript* methods.
-        return chunks.reduce(Data()) { $0 + $1.chunkData }
+        if let cache = dataCache {
+            return cache
+        }
+        dataCache = chunks.reduce(Data()) { $0 + $1.chunkData }
+        return dataCache!
     }
 
-    public typealias MultisigRequirements = (nSigRequired: UInt, publickeys: [PublicKey])
+    public var string: String {
+        if let cache = stringCache {
+            return cache
+        }
+        stringCache = chunks.map { $0.string }.joined(separator: " ")
+        return stringCache!
+    }
+
+    public var hex: String {
+        return data.hex
+    }
+
     // Multisignature script attribute.
     // If multisig script is not detected, this is nil
-    public var multisigRequirements: MultisigRequirements?
+    public typealias MultisigVariables = (nSigRequired: UInt, publickeys: [PublicKey])
+    public var multisigRequirements: MultisigVariables?
 
     init() {
         self.chunks = [ScriptChunk]()
@@ -127,15 +146,6 @@ public class Script {
 
         self.init(data: scriptData)
         self.multisigRequirements = (signaturesRequired, publicKeys)
-    }
-
-    public var hex: String {
-        return self.data.hex
-    }
-
-    // TODO: need to be cached
-    public var string: String {
-        return chunks.map { $0.string }.joined(separator: " ")
     }
 
     private static func parseData(_ data: Data) -> [ScriptChunk]? {
@@ -319,19 +329,24 @@ public class Script {
     }
 
     public func invalidateSerialization() {
-        // TODO: set nil for cached self.data and self.string
+        dataCache = nil
+        stringCache = nil
         multisigRequirements = nil
+    }
+
+    private func update(with updatedData: Data) {
+        guard let updatedChunks = Script.parseData(updatedData) else {
+            return
+        }
+        chunks = updatedChunks
+        invalidateSerialization()
     }
 
     // TODO: check if OP_PUSHDATAs
     public func append(opcode: UInt8) {
         var updatedData: Data = data
         updatedData += opcode
-        guard let updatedChunks = Script.parseData(updatedData) else {
-            return
-        }
-        chunks = updatedChunks
-        invalidateSerialization()
+        update(with: updatedData)
     }
 
     public func append(data: Data) {
@@ -345,11 +360,7 @@ public class Script {
             return
         }
         updatedData += addedScriptData
-        guard let updatedChunks = Script.parseData(updatedData) else {
-            return
-        }
-        chunks = updatedChunks
-        invalidateSerialization()
+        update(with: updatedData)
     }
 
     public func append(otherScript: Script) {
@@ -359,11 +370,7 @@ public class Script {
 
         var updatedData: Data = self.data
         updatedData += otherScript.data
-        guard let updatedChunks = Script.parseData(updatedData) else {
-            return
-        }
-        chunks = updatedChunks
-        invalidateSerialization()
+        update(with: updatedData)
     }
 
     public func deleteOccurrences(of data: Data) {
@@ -372,20 +379,12 @@ public class Script {
         }
 
         let updatedData = chunks.filter { $0.pushedData != data }.reduce(Data()) { $0 + $1.chunkData }
-        guard let updatedChunks = Script.parseData(updatedData) else {
-            return
-        }
-
-        chunks = updatedChunks
+        update(with: updatedData)
     }
 
     public func deleteOccurrences(of opcode: UInt8) {
         let updatedData = chunks.filter { $0.opcode != opcode }.reduce(Data()) { $0 + $1.chunkData }
-        guard let updatedChunks = Script.parseData(updatedData) else {
-            return
-        }
-
-        chunks = updatedChunks
+        update(with: updatedData)
     }
 
     public func subScript(from index: Int) -> Script? {
