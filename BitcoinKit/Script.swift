@@ -327,7 +327,8 @@ public class Script {
         }
         return nil
     }
-
+    
+    // MARK: - Modification
     public func invalidateSerialization() {
         dataCache = nil
         stringCache = nil
@@ -399,6 +400,7 @@ public class Script {
         return Script(data: updatedData)
     }
 
+    // MARK: - Utility methods
     // Raise exception if index is out of bounds
     public func chunk(at index: Int) -> ScriptChunk {
         return chunks[index < 0 ? chunks.count + index : index]
@@ -421,9 +423,6 @@ public class Script {
     // Raises exception if index is out of bounds.
     public func pushedData(at index: Int) -> Data? {
         let chunk = self.chunk(at: index)
-        guard chunk is DataChunk else {
-            return nil
-        }
         return chunk.pushedData
     }
 }
