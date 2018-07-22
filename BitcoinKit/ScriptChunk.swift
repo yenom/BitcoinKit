@@ -17,9 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  This file has been modified by the BitcoinCashKit developers for the BitcoinCashKit project.
-//  The original file was from the bitcoinj project (https://github.com/kishikawakatsumi/BitcoinKit).
-//
 
 import Foundation
 
