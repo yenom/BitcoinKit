@@ -73,6 +73,9 @@
 		CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF520F0ED4500AD4020 /* AddressTests.swift */; };
 		CF432AFA20F222B400AD4020 /* AddressFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */; };
 		CF432AFC20F25E0000AD4020 /* TestHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */; };
+		CFA2906C2101CD96001A1BAB /* ScriptChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */; };
+		CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA2906D2101CDA3001A1BAB /* Opcode.swift */; };
+		CFA290702101CDCA001A1BAB /* ScriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,6 +159,9 @@
 		CF432AF520F0ED4500AD4020 /* AddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTests.swift; sourceTree = "<group>"; };
 		CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactoryTests.swift; sourceTree = "<group>"; };
 		CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpersTests.swift; sourceTree = "<group>"; };
+		CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptChunk.swift; sourceTree = "<group>"; };
+		CFA2906D2101CDA3001A1BAB /* Opcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opcode.swift; sourceTree = "<group>"; };
+		CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +222,7 @@
 				2949920320F22A1500D078B6 /* TestHelpers.swift */,
 				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
 				CF432AF520F0ED4500AD4020 /* AddressTests.swift */,
+				CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */,
 				CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */,
 				CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */,
 				CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */,
@@ -284,7 +291,9 @@
 				147494E3201F9B85006D1CF8 /* Crypto.swift */,
 				147494E5201F9BEF006D1CF8 /* Encoding.swift */,
 				147494EF201FAE30006D1CF8 /* Serialization.swift */,
+				CFA2906D2101CDA3001A1BAB /* Opcode.swift */,
 				14F37A3B20209F9200D34748 /* Script.swift */,
+				CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */,
 				14F37A3D2020A02000D34748 /* SighashType.swift */,
 				299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */,
 				299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */,
@@ -470,7 +479,9 @@
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
 				297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */,
 				14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */,
+				CFA2906C2101CD96001A1BAB /* ScriptChunk.swift in Sources */,
 				14F37A3C20209F9200D34748 /* Script.swift in Sources */,
+				CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */,
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,
 				14F37A3E2020A02000D34748 /* SighashType.swift in Sources */,
@@ -522,6 +533,7 @@
 				CF432AFA20F222B400AD4020 /* AddressFactoryTests.swift in Sources */,
 				CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */,
 				CF432AFC20F25E0000AD4020 /* TestHelpersTests.swift in Sources */,
+				CFA290702101CDCA001A1BAB /* ScriptTests.swift in Sources */,
 				CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */,
 				CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */,
 				2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */,
