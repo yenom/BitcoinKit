@@ -49,7 +49,7 @@ class ScriptMachine {
 
     // An index of the tx input in the `transaction`.
     // Required parameter.
-    public var inputIndex: Int?
+    public var inputIndex: Int
 
     // Overrides inputScript from transaction.inputs[inputIndex].
     // Useful for testing, but useless if you need to test CHECKSIG operations. In latter case you still need a full transaction.
@@ -96,6 +96,11 @@ class ScriptMachine {
     private var opFailed: Bool = false
 
     init() {
+        inputIndex = 0xFFFFFFFF
+        resetStack()
+    }
+
+    public func resetStack() {
         stack = [Data()]
         altStack = [Data()]
         conditionStack = [Bool]()
@@ -104,10 +109,6 @@ class ScriptMachine {
     // This will return nil if the transaction is nil, or inputIndex is out of bounds.
     // You can use -init if you want to run scripts without signature verification (so no transaction is needed).
     convenience init?(tx: Transaction, inputIndex: Int) {
-        guard !tx.serialized().isEmpty else {
-            return nil
-        }
-
         // BitcoinQT would crash right before VerifyScript if the input index was out of bounds.
         // So even though it returns 1 from SignatureHash() function when checking for this condition,
         // it never actually happens. So we too will not check for it when calculating a hash.
@@ -117,12 +118,6 @@ class ScriptMachine {
         self.init()
         self.transaction = tx
         self.inputIndex = inputIndex
-    }
-
-    public func resetStack() {
-        stack = [Data()]
-        altStack = [Data()]
-        conditionStack = [Bool]()
     }
 
     public var shouldVerifyP2SH: Bool {
@@ -137,7 +132,7 @@ class ScriptMachine {
             inputScript = script
         } else {
             // Sanity check: transaction and its input should be consistent.
-            guard let tx = self.transaction, let inputIndex = self.inputIndex, inputIndex < tx.inputs.count else {
+            guard let tx = self.transaction, inputIndex < tx.inputs.count else {
                 print("transaction and valid inputIndex are required for script verification.")
                 return false
             }
@@ -918,7 +913,7 @@ class ScriptMachine {
         let pureSignature = signature.subdata(in: Range(0..<signature.count - 1))
         print("pureSignature", pureSignature.hex, pureSignature)
 
-        guard let transaction = self.transaction, let inputIndex = self.inputIndex else {
+        guard let transaction = self.transaction else {
             return false
         }
 
