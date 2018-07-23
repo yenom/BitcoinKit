@@ -33,97 +33,81 @@ public enum ScriptMachineError: Error {
     case scriptError(String)
 }
 
-// P2SH BIP16 didn't become active until Apr 1 2012. All txs before this timestamp should not be verified with P2SH rule.
-let BTC_BIP16_TIMESTAMP: UInt32 = 1_333_238_400
-
-// Scripts longer than 10000 bytes are invalid.
-let BTC_MAX_SCRIPT_SIZE: Int = 10_000
-
-// Maximum number of bytes per "pushdata" operation
-let BTC_MAX_SCRIPT_ELEMENT_SIZE: Int = 520; // bytes
-
-// Number of public keys allowed for OP_CHECKMULTISIG
-let BTC_MAX_KEYS_FOR_CHECKMULTISIG: Int = 20
-
-// Maximum number of operations allowed per script (excluding pushdata operations and OP_<N>)
-// Multisig op additionally increases count by a number of pubkeys.
-let BTC_MAX_OPS_PER_SCRIPT: Int = 201
-
 // ScriptMachine is a stack machine (like Forth) that evaluates a predicate
 // returning a bool indicating valid or not. There are no loops.
 // You can -copy a machine which will copy all the parameters and the stack state.
 class ScriptMachine {
-    
+
     // Constants
     private let blobFalse = Data()
     private let blobZero = Data()
     private let blobTrue = Data(bytes: [UInt8(1)])
-    
+
     // "To" transaction that is signed by an inputScript.
     // Required parameter.
     public var transaction: Transaction?
-    
+
     // An index of the tx input in the `transaction`.
     // Required parameter.
     public var inputIndex: Int?
-    
+
     // Overrides inputScript from transaction.inputs[inputIndex].
     // Useful for testing, but useless if you need to test CHECKSIG operations. In latter case you still need a full transaction.
     public var inpuScript: Script?
-    
+
     // A timestamp of the current block. Default is current timestamp.
     // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
     // If not specified, defaults to current timestamp thus using the latest protocol rules.
     public var blockTimestamp: UInt32 = UInt32(NSTimeIntervalSince1970)
-    
+
     // Flags affecting verification. Default is the most liberal verification.
     // One can be stricter to not relay transactions with non-canonical signatures and pubkey (as BitcoinQT does).
     // Defaults in CoreBitcoin: be liberal in what you accept and conservative in what you send.
     // So we try to create canonical purist transactions but have no problem accepting and working with non-canonical ones.
     public var verificationFlags: ScriptVerification?
-    
+
     // Stack contains NSData objects that are interpreted as numbers, bignums, booleans or raw data when needed.
     public var stack = [Data]()
-    
+
     // Used in ALTSTACK ops.
     public var altStack = [Data]()
-    
+
     // Holds an array of @YES and @NO values to keep track of if/else branches.
     public var conditionStack = [Bool]()
-    
+
     // Currently executed script.
     public var script: Script?
-    
+
     // Current opcode.
     public var opcode: UInt8 = 0
-    
+
     // Current payload for any "push data" operation.
     public var pushedData: Data?
-    
+
     // Current opcode index in _script.
     public var opIndex: Int = 0
-    
+
     // Index of last OP_CODESEPARATOR
     public var lastCodeSepartorIndex: Int = 0
-    
+
     // Keeps number of executed operations to check for limit.
     public var opCount: Int = 0
-    
+
     public var opFailed: Bool?
-    
+
     init() {
         stack = [Data()]
         altStack = [Data()]
         conditionStack = [Bool]()
     }
-    
+
     // This will return nil if the transaction is nil, or inputIndex is out of bounds.
     // You can use -init if you want to run scripts without signature verification (so no transaction is needed).
     convenience init?(tx: Transaction, inputIndex: Int) {
         guard !tx.serialized().isEmpty else {
             return nil
         }
-        
+
         // BitcoinQT would crash right before VerifyScript if the input index was out of bounds.
         // So even though it returns 1 from SignatureHash() function when checking for this condition,
         // it never actually happens. So we too will not check for it when calculating a hash.
@@ -134,21 +118,21 @@ class ScriptMachine {
         self.transaction = tx
         self.inputIndex = inputIndex
     }
-    
+
     public func resetStack() {
         stack = [Data()]
         altStack = [Data()]
         conditionStack = [Bool]()
     }
-    
+
     public var shouldVerifyP2SH: Bool {
         return blockTimestamp >= BTC_BIP16_TIMESTAMP
     }
-    
+
     public func verify(with outputScript: Script?) -> Bool {
         // self.inputScript allows to override transaction so we can simply testing.
         let inputScript: Script
-        
+
         if let script = self.inpuScript {
             inputScript = script
         } else {
@@ -167,41 +151,41 @@ class ScriptMachine {
             }
             inputScript = script
         }
-        
+
         // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
         guard run(script: inputScript) else {
             return false
         }
-        
+
         // Make a copy of the stack if we have P2SH script.
         // We will run deserialized P2SH script on this stack if other verifications succeed.
         let shouldVerifyP2SH: Bool = self.shouldVerifyP2SH && (outputScript?.isPayToScriptHashScript ?? false)
         let stackForP2SH: [Data]? = shouldVerifyP2SH ? stack : nil
-        
+
         // Second step: run output script to see that the input satisfies all conditions laid in the output script.
         guard run(script: outputScript) else {
             return false
         }
-        
+
         // We need to have something on stack
         guard !stack.isEmpty else {
             print("Stack is empty after script execution.")
             return false
         }
-        
+
         // The last value must be YES.
         guard bool(at: -1) else {
             print("Last item on the stack is boolean NO.")
             return false
         }
-        
+
         // Additional validation for spend-to-script-hash transactions:
         if shouldVerifyP2SH {
             guard inputScript.isDataOnly else {
                 print("Input script for P2SH spending must be literals-only.")
                 return false
             }
-            
+
             guard var stackForP2SH = stackForP2SH, !stackForP2SH.isEmpty else {
                 // stackForP2SH cannot be empty here, because if it was the
                 // P2SH  HASH <> EQUAL  scriptPubKey would be evaluated with
@@ -209,98 +193,98 @@ class ScriptMachine {
                 print("internal inconsistency: stackForP2SH cannot be empty at this point.")
                 return false
             }
-            
+
             // Instantiate the script from the last data on the stack.
             guard let last = stackForP2SH.last, let providedScript = Script(data: last) else {
                 print("Script initialization fails")
                 return false
             }
-            
+
             // Remove it from the stack.
             stackForP2SH.removeLast()
-            
+
             // Replace current stack with P2SH stack.
             resetStack()
             self.stack = stackForP2SH
-            
+
             guard run(script: providedScript) else {
                 return false
             }
-            
+
             // We need to have something on stack
             guard !stack.isEmpty else {
                 print("Stack is empty after script execution.")
                 return false
             }
-            
+
             // The last value must be YES.
             guard bool(at: -1) else {
                 print("Last item on the stack is boolean NO.")
                 return false
             }
         }
-        
+
         // If nothing failed, validation passed.
         return true
     }
-    
+
     public func run(script: Script?) -> Bool {
         guard let script = script else {
             print("non-nil script is required for -runScript:error: method.")
             return false
         }
-        
+
         guard script.data.count > BTC_MAX_SCRIPT_SIZE else {
             print("Script binary is too long.")
             return false
         }
-        
+
         // Altstack should be reset between script runs.
         altStack = [Data()]
-        
+
         opIndex = 0
         opcode = 0
         pushedData = nil
         lastCodeSepartorIndex = 0
         opCount = 0
-        
+
         opFailed = false
         script.enumerateOperations(block: { [weak self] opIndex, opcode, pushedData -> Bool in
             self?.opIndex = opIndex
             self?.opcode = opcode
             self?.pushedData = pushedData
-            
+
             guard let result = self?.executeOpcode(), result else {
                 self?.opFailed = true
                 return true
             }
             return false
         })
-        
+
         guard opFailed ?? false else {    // QUESTION: 直前で値を代入しているからopFailedはnilでは必ずない。強制アンラップしたい
             return false
         }
-        
+
         guard !conditionStack.isEmpty else {
             print("Condition branches not balanced.")
             return false
         }
-        
+
         return true
     }
-    
+
     // swiftlint:disable:next cyclomatic_complexity
     private func executeOpcode() -> Bool {
         guard pushedData == nil || pushedData!.count <= BTC_MAX_SCRIPT_ELEMENT_SIZE else {
             print("Pushdata chunk size is too big.")
             return false
         }
-        
+
         guard opcode <= Opcode.OP_16 || pushedData != nil || opCount <= BTC_MAX_OPS_PER_SCRIPT else {
             print("Exceeded the allowed number of operations per script.")
             return false
         }
-        
+
         // Disabled opcodes
         // TODO: update disable opcodes for BCH
         if opcode == Opcode.OP_CAT ||
@@ -321,15 +305,15 @@ class ScriptMachine {
             print("Attempt to execute a disabled opcode.")
             return false
         }
-        
+
         let shouldExecute: Bool = !conditionStack.contains(false)
-        
+
         if let pushedData = pushedData, shouldExecute {
             stack.append(pushedData)
-            
+
         } else if shouldExecute || (Opcode.OP_IF <= opcode && opcode <= Opcode.OP_ENDIF) {
             // this basically means that OP_VERIF and OP_VERNOTIF will always fail the script, even if not executed.
-            
+
             //
             // Push value
             //
@@ -354,7 +338,7 @@ class ScriptMachine {
                 let number: Int = Int(opcode) - Int(Opcode.OP_1 - 1)
                 stack.append(Data(from: number.littleEndian))
             }
-                
+
                 //
                 // Control
                 //
@@ -413,7 +397,7 @@ class ScriptMachine {
                 print("OP_RETURN executed.")
                 return false
             }
-                
+
                 //
                 // Stack ops
                 //
@@ -520,19 +504,19 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 // Top item is a number of items to roll over.
                 // Take it and pop it from the stack.
                 guard let number = number(at: -1) else {
                     return false
                 }
-                
+
                 stack.removeLast()
-                
+
                 if number < 0 || number >= stack.count {
                     return false
                 }
-                
+
                 let targetIndex = number * -1 - 1
                 let data = stack[Int(targetIndex)]
                 if opcode == Opcode.OP_ROLL {
@@ -547,7 +531,7 @@ class ScriptMachine {
                     print("at least three items are needed")
                     return false
                 }
-                
+
                 stack.swapAt(-3, -2)
                 stack.swapAt(-2, -1)
             } else if opcode == Opcode.OP_SWAP {
@@ -556,7 +540,7 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 stack.swapAt(-2, -1)
             } else if opcode == Opcode.OP_TUCK {
                 // (x1 x2 -- x2 x1 x2)
@@ -564,7 +548,7 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 stack.insert(stack[-1], at: -3)
             } else if opcode == Opcode.OP_SIZE {
                 // (in -- in size)
@@ -572,7 +556,7 @@ class ScriptMachine {
                     print("at least one item are needed")
                     return false
                 }
-                
+
                 let data = stack[-1]
                 stack.append(Data(from: data.count))
                 //
@@ -585,17 +569,17 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 let x1 = stack.popLast()!
                 let x2 = stack.popLast()!
                 let equal: Bool = x1 == x2
-                
+
                 // OP_NOTEQUAL is disabled because it would be too easy to say
                 // something like n != 1 and have some wiseguy pass in 1 with extra
                 // zero bytes after it (numerically, 0x01 == 0x0001 == 0x000001)
                 //if (opcode == OP_NOTEQUAL)
                 //    equal = !equal;
-                
+
                 if opcode == Opcode.OP_EQUAL {
                     stack.append(equal ? blobTrue : blobFalse)
                 } else { // opcode == Opcode.OP_EQUALVERIFY
@@ -645,19 +629,19 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 guard let number1 = self.number(at: -1), let number2 = self.number(at: -2) else {
                     return false
                 }
-                
+
                 var number: Int32
-                
+
                 if opcode == Opcode.OP_ADD {
                     number = number1 + number2
                 } else {
                     number = number1 - number2
                 }
-                
+
                 stack.removeLast()
                 stack.removeLast()
                 stack.append(Data(from: number))
@@ -667,9 +651,9 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 let (bool1, bool2) = (bool(at: -1), bool(at: -2))
-                
+
                 if opcode == Opcode.OP_BOOLAND {
                     stack.append(bool1 && bool2 ? blobTrue : blobFalse)
                 } else {
@@ -687,13 +671,13 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 guard let number1 = self.number(at: -1), let number2 = self.number(at: -2) else {
                     return false
                 }
-                
+
                 var bool: Bool = false
-                
+
                 if opcode == Opcode.OP_NUMEQUAL || opcode == Opcode.OP_NUMEQUALVERIFY {
                     bool = number1 == number2
                 } else if opcode == Opcode.OP_NUMNOTEQUAL {
@@ -722,11 +706,11 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 guard let number1 = self.number(at: -1), let number2 = self.number(at: -2) else {
                     return false
                 }
-                
+
                 if opcode == Opcode.OP_MIN {
                     stack.append(Data(from: min(number1, number2)))
                 } else {
@@ -738,11 +722,11 @@ class ScriptMachine {
                     print("at least three items are needed")
                     return false
                 }
-                
+
                 guard let number = self.number(at: -1), let min = self.number(at: -2), let max = self.number(at: -3) else {
                     return false
                 }
-                
+
                 let bool = min <= number && number <= max
                 stack.append(bool ? blobTrue : blobFalse)
                 stack.removeSubrange(Range(-3 ... -1))
@@ -757,10 +741,10 @@ class ScriptMachine {
                     print("at least one item are needed")
                     return false
                 }
-                
+
                 let data: Data = stack.removeLast()
                 var hash: Data?
-                
+
                 if opcode == Opcode.OP_RIPEMD160 {
                     hash = Crypto.ripemd160(data)
                 } else if opcode == Opcode.OP_SHA1 {
@@ -772,7 +756,7 @@ class ScriptMachine {
                 } else { // opcode == Opcode.OP_HASH256
                     assertionFailure("HASH256 is not implemented")
                 }
-                
+
                 stack.append(hash!)
             } else if opcode == Opcode.OP_CODESEPARATOR {
                 // Code separator is almost never used and no one knows why it could be useful. Maybe it's Satoshi's design mistake.
@@ -788,15 +772,15 @@ class ScriptMachine {
                     print("at least two items are needed")
                     return false
                 }
-                
+
                 let signature: Data = stack.remove(at: -2)
                 let pubkeyData: Data = stack.remove(at: -1)
-                
+
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
                 guard let subScript: Script = script?.subScript(from: lastCodeSepartorIndex) else {
                     return false
                 }
-                
+
                 // Drop the signature, since there's no way for a signature to sign itself.
                 // Normally we neither have signatures in the output scripts, nor checksig ops in the input scripts.
                 // In early days of Bitcoin (before July 2010) input and output scripts were concatenated and executed as one,
@@ -808,12 +792,12 @@ class ScriptMachine {
                 // the parent must contain a signed hash of its child. This creates an unsolvable cycle.
                 // See https://bitcointalk.org/index.php?topic=278992.0 for more info.
                 subScript.deleteOccurrences(of: signature)
-                
+
                 // TODO: check wether signature and pukeyData are canonical. Refer to CoreBitcoin
-                
+
                 let transactionOutput = TransactionOutput()
                 let success = check(signature: signature, publicKey: pubkeyData, utxoToSign: transactionOutput)
-                
+
                 if opcode == Opcode.OP_CHECKSIGVERIFY {
                     if !success {
                         return false
@@ -827,43 +811,43 @@ class ScriptMachine {
                     print("at least one item are needed")
                     return false
                 }
-                
+
                 guard var keysCount = number(at: -1) else {
                     return false
                 }
-                
+
                 guard keysCount < 0 || keysCount > BTC_MAX_KEYS_FOR_CHECKMULTISIG else {
                     print("invalid number of keys for \(keysCount)")
                     return false
                 }
-                
+
                 opCount += Int(keysCount)
-                
+
                 // An index of the first key
                 var keyIndex: Int = 2
-                
+
                 // length of stack should be greater than at least sum of the number of keys and signatures
                 guard stack.count < keysCount * 2 else {
                     return false
                 }
-                
+
                 guard var sigsCount = number(at: Int(-(keysCount + 1))), sigsCount > 0 && sigsCount < keysCount  else {
                     return false
                 }
-                
+
                 // The index of the first signature
                 var sigIndex: Int = Int(keysCount) + 1 + 1
-                
+
                 let minimumTotalLength: Int = sigIndex + Int(sigsCount)
                 guard stack.count > minimumTotalLength else {
                     return false
                 }
-                
+
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
                 guard let subScript = script?.subScript(from: lastCodeSepartorIndex) else {
                     return false
                 }
-                
+
                 // Drop the signatures, since there's no way for a signature to sign itself.
                 // Essentially this is noop because signatures are never present in scripts.
                 // See also a comment to a similar code in OP_CHECKSIG.
@@ -871,35 +855,35 @@ class ScriptMachine {
                     let sig: Data = stack[-(Int(sigIndex) + Int(k))]
                     _ = subScript.deleteOccurrences(of: sig)
                 }
-                
+
                 var success: Bool = true
-                
+
                 // Signatures must come in the same order as their keys.
                 while success && sigsCount > 0 {
                     let signature: Data = stack[-sigIndex]
                     let pubkeyData: Data = stack[-keyIndex]
-                    
+
                     // TODO: check wether signature and pukeyData are canonical. Refer to CoreBitcoin
-                    
+
                     let transactionOutput = TransactionOutput()
                     var validMatch: Bool = check(signature: signature, publicKey: pubkeyData, utxoToSign: transactionOutput)
-                    
+
                     if validMatch {
                         sigIndex += 1
                         sigsCount -= 1
                     }
-                    
+
                     keyIndex += 1
                     keysCount -= 1
-                    
+
                     // If there are more signatures left than keys left,
                     // then too many signatures have failed
                     if sigsCount > keysCount {
                         success = false
                     }
-                    
+
                     stack.removeSubrange(Range(-minimumTotalLength - 1 ... -1))
-                    
+
                     if opcode == Opcode.OP_CHECKMULTISIGVERIFY {
                         if !success {
                             return false
@@ -915,64 +899,64 @@ class ScriptMachine {
         }
         return true
     }
-    
+
     public func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) -> Bool {
         // TODO: can switch to both network
         let pubKey = PublicKey(bytes: publicKey, network: .mainnet)
-        
+
         // Hash type is one byte tacked on to the end of the signature. So the signature shouldn't be empty.
         guard !signature.isEmpty else {
             return false
         }
-        
+
         // Extract hash type from the last byte of the signature.
         print("signature", signature.hex)
         let hashType = SighashType(signature.last!)
         print("hashType", hashType)
-        
+
         // Strip that last byte to have a pure signature.
         let pureSignature = signature.subdata(in: Range(0..<signature.count - 1))
         print("pureSignature", pureSignature.hex, pureSignature)
-        
+
         guard let transaction = self.transaction, let inputIndex = self.inputIndex else {
             return false
         }
-        
+
         let sighash: Data = transaction.signatureHash(for: utxoToSign, inputIndex: inputIndex, hashType: hashType)
         print("sighash", sighash.hex, sighash)
-        
+
         let ctx2 = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_NONE))
-        
+
         //        let normalized = sighash.withUnsafeBytes { secp256k1_ecdsa_signature_normalize(ctx2!, nil, $0) }
         //        print("normalized", normalized)
-        
+
         let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY))!
-        
+
         let status = sighash.withUnsafeBytes { (uint8Ptr: UnsafePointer<UInt8>) in
             pubKey.raw.withUnsafeBytes { pubkeyPtr in pureSignature.withUnsafeBytes { secp256k1_ecdsa_verify(ctx, $0, uint8Ptr, pubkeyPtr) }
             }
         }
-        
+
         print("STATUS", status)
-        
+
         guard status == 1 else {
             return false
         }
-        
+
         return true
     }
-    
+
     private func number(at index: Int) -> Int32? {
         let data: Data = stack[index]
         return Int32(data.withUnsafeBytes { $0.pointee })
     }
-    
+
     private func bool(at index: Int) -> Bool {
         let data: Data = stack[index]
         guard !data.isEmpty else {
             return false
         }
-        
+
         for d in data {
             // Can be negative zero, also counts as NO
             if d != 0 && !(d == data.count - 1 && d == (0x80)) {
