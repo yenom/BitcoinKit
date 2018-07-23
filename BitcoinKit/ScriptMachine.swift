@@ -67,33 +67,33 @@ class ScriptMachine {
     public var verificationFlags: ScriptVerification?
 
     // Stack contains NSData objects that are interpreted as numbers, bignums, booleans or raw data when needed.
-    public var stack = [Data]()
+    public private(set) var stack = [Data]()
 
     // Used in ALTSTACK ops.
-    public var altStack = [Data]()
+    public private(set) var altStack = [Data]()
 
     // Holds an array of @YES and @NO values to keep track of if/else branches.
-    public var conditionStack = [Bool]()
+    private var conditionStack = [Bool]()
 
     // Currently executed script.
-    public var script: Script?
+    private var script: Script?
 
     // Current opcode.
-    public var opcode: UInt8 = 0
+    private var opcode: UInt8 = 0
 
     // Current payload for any "push data" operation.
-    public var pushedData: Data?
+    private var pushedData: Data?
 
     // Current opcode index in _script.
-    public var opIndex: Int = 0
+    private var opIndex: Int = 0
 
     // Index of last OP_CODESEPARATOR
-    public var lastCodeSepartorIndex: Int = 0
+    private var lastCodeSepartorIndex: Int = 0
 
     // Keeps number of executed operations to check for limit.
-    public var opCount: Int = 0
+    private var opCount: Int = 0
 
-    public var opFailed: Bool?
+    private var opFailed: Bool = false
 
     init() {
         stack = [Data()]
@@ -255,17 +255,17 @@ class ScriptMachine {
             self?.pushedData = pushedData
 
             guard let result = self?.executeOpcode(), result else {
-                self?.opFailed = true
+                opFailed = true
                 return true
             }
             return false
         })
 
-        guard opFailed ?? false else {    // QUESTION: 直前で値を代入しているからopFailedはnilでは必ずない。強制アンラップしたい
+        guard !opFailed else {    // QUESTION: 直前で値を代入しているからopFailedはnilでは必ずない。強制アンラップしたい
             return false
         }
 
-        guard !conditionStack.isEmpty else {
+        guard conditionStack.isEmpty else {
             print("Condition branches not balanced.")
             return false
         }
