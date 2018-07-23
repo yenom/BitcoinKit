@@ -30,7 +30,10 @@ enum ScriptVerification {
 }
 
 public enum ScriptMachineError: Error {
-    case scriptError(String)
+    case exception(String)
+    case error(String)
+    case opcodeRequiresItemsOnStack(Int)
+    case invalidBignum
 }
 
 // ScriptMachine is a stack machine (like Forth) that evaluates a predicate
@@ -50,10 +53,6 @@ class ScriptMachine {
     // An index of the tx input in the `transaction`.
     // Required parameter.
     public var inputIndex: Int
-
-    // Overrides inputScript from transaction.inputs[inputIndex].
-    // Useful for testing, but useless if you need to test CHECKSIG operations. In latter case you still need a full transaction.
-    public var inpuScript: Script?
 
     // A timestamp of the current block. Default is current timestamp.
     // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
@@ -95,12 +94,12 @@ class ScriptMachine {
 
     private var opFailed: Bool = false
 
-    init() {
+    public init() {
         inputIndex = 0xFFFFFFFF
         resetStack()
     }
 
-    public func resetStack() {
+    private func resetStack() {
         stack = [Data()]
         altStack = [Data()]
         conditionStack = [Bool]()
@@ -108,7 +107,7 @@ class ScriptMachine {
 
     // This will return nil if the transaction is nil, or inputIndex is out of bounds.
     // You can use -init if you want to run scripts without signature verification (so no transaction is needed).
-    convenience init?(tx: Transaction, inputIndex: Int) {
+    public convenience init?(tx: Transaction, inputIndex: Int) {
         // BitcoinQT would crash right before VerifyScript if the input index was out of bounds.
         // So even though it returns 1 from SignatureHash() function when checking for this condition,
         // it never actually happens. So we too will not check for it when calculating a hash.
@@ -120,79 +119,51 @@ class ScriptMachine {
         self.inputIndex = inputIndex
     }
 
-    public var shouldVerifyP2SH: Bool {
+    private func shouldVerifyP2SH() -> Bool {
         return blockTimestamp >= BTC_BIP16_TIMESTAMP
     }
 
-    public func verify(with outputScript: Script?) -> Bool {
-        // self.inputScript allows to override transaction so we can simply testing.
-        let inputScript: Script
-
-        if let script = self.inpuScript {
-            inputScript = script
-        } else {
-            // Sanity check: transaction and its input should be consistent.
-            guard let tx = self.transaction, inputIndex < tx.inputs.count else {
-                print("transaction and valid inputIndex are required for script verification.")
-                return false
-            }
-            guard outputScript != nil else {
-                print("non-nil outputScript is required for script verification.")
-                return false
-            }
-            let txInput: TransactionInput = tx.inputs[inputIndex]
-            guard let script = Script(data: txInput.signatureScript) else {
-                return false
-            }
-            inputScript = script
+    public func verify(with lockScript: Script) throws -> Bool {
+        // Sanity check: transaction and its input should be consistent.
+        guard let tx = transaction, inputIndex < tx.inputs.count else {
+            throw ScriptMachineError.exception("transaction and valid inputIndex are required for script verification.")
         }
+        let txInput: TransactionInput = tx.inputs[inputIndex]
+        // TODO: txinput.signatureScript should be Script class
+        // let unlockScript: Script = txInput.signatureScript
+        let unlockScript: Script = Script(data: txInput.signatureScript)!
 
         // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
-        guard run(script: inputScript) else {
-            return false
-        }
-
-        // Make a copy of the stack if we have P2SH script.
-        // We will run deserialized P2SH script on this stack if other verifications succeed.
-        let shouldVerifyP2SH: Bool = self.shouldVerifyP2SH && (outputScript?.isPayToScriptHashScript ?? false)
-        let stackForP2SH: [Data]? = shouldVerifyP2SH ? stack : nil
+        try runScript(unlockScript)
 
         // Second step: run output script to see that the input satisfies all conditions laid in the output script.
-        guard run(script: outputScript) else {
-            return false
-        }
+        try runScript(lockScript)
 
         // We need to have something on stack
         guard !stack.isEmpty else {
-            print("Stack is empty after script execution.")
-            return false
+            throw ScriptMachineError.error("Stack is empty after script execution.")
         }
 
-        // The last value must be YES.
+        // The last value must be true.
         guard bool(at: -1) else {
-            print("Last item on the stack is boolean NO.")
-            return false
+            throw ScriptMachineError.error("Last item on the stack is false.")
         }
 
         // Additional validation for spend-to-script-hash transactions:
-        if shouldVerifyP2SH {
-            guard inputScript.isDataOnly else {
-                print("Input script for P2SH spending must be literals-only.")
-                return false
+        if shouldVerifyP2SH() && lockScript.isPayToScriptHashScript {
+            guard unlockScript.isDataOnly else {
+                throw ScriptMachineError.error("Input script for P2SH spending must be literals-only.")
             }
+            // Make a copy of the stack if we have P2SH script.
+            // We will run deserialized P2SH script on this stack.
+            var stackForP2SH: [Data] = stack
 
-            guard var stackForP2SH = stackForP2SH, !stackForP2SH.isEmpty else {
+            // Instantiate the script from the last data on the stack.
+            guard let last = stackForP2SH.last, let deserializedLockScript = Script(data: last) else {
                 // stackForP2SH cannot be empty here, because if it was the
                 // P2SH  HASH <> EQUAL  scriptPubKey would be evaluated with
                 // an empty stack and the runScript: above would return NO.
-                print("internal inconsistency: stackForP2SH cannot be empty at this point.")
-                return false
-            }
-
-            // Instantiate the script from the last data on the stack.
-            guard let last = stackForP2SH.last, let providedScript = Script(data: last) else {
-                print("Script initialization fails")
-                return false
+                throw ScriptMachineError.exception("internal inconsistency: stackForP2SH cannot be empty at this point.")
             }
 
             // Remove it from the stack.
@@ -202,20 +173,16 @@ class ScriptMachine {
             resetStack()
             self.stack = stackForP2SH
 
-            guard run(script: providedScript) else {
-                return false
-            }
+            try runScript(deserializedLockScript)
 
             // We need to have something on stack
             guard !stack.isEmpty else {
-                print("Stack is empty after script execution.")
-                return false
+                throw ScriptMachineError.error("Stack is empty after script execution.")
             }
 
             // The last value must be YES.
             guard bool(at: -1) else {
-                print("Last item on the stack is boolean NO.")
-                return false
+                throw ScriptMachineError.error("Last item on the stack is false.")
             }
         }
 
@@ -223,15 +190,9 @@ class ScriptMachine {
         return true
     }
 
-    public func run(script: Script?) -> Bool {
-        guard let script = script else {
-            print("non-nil script is required for -runScript:error: method.")
-            return false
-        }
-
+    public func runScript(_ script: Script) throws {
         guard script.data.count > BTC_MAX_SCRIPT_SIZE else {
-            print("Script binary is too long.")
-            return false
+            throw ScriptMachineError.exception("Script binary is too long.")
         }
 
         // Altstack should be reset between script runs.
@@ -256,16 +217,14 @@ class ScriptMachine {
             return false
         })
 
-        guard !opFailed else {    // QUESTION: 直前で値を代入しているからopFailedはnilでは必ずない。強制アンラップしたい
-            return false
+        guard !opFailed else {
+            // TODO: Error should be set by executeOpcode()
+            throw ScriptMachineError.error("Error should be set by executeOpcode.")
         }
 
         guard conditionStack.isEmpty else {
-            print("Condition branches not balanced.")
-            return false
+            throw ScriptMachineError.error("Condition branches not balanced.")
         }
-
-        return true
     }
 
     // swiftlint:disable:next cyclomatic_complexity
