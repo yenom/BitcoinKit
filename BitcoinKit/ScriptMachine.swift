@@ -42,9 +42,14 @@ public enum ScriptMachineError: Error {
 class ScriptMachine {
 
     // Constants
-    private let blobFalse = Data()
-    private let blobZero = Data()
-    private let blobTrue = Data(bytes: [UInt8(1)])
+    private let blobFalse: Data = Data()
+    private let blobZero: Data = Data()
+    private let blobTrue: Data = Data(bytes: [UInt8(1)])
+    // TODO: check later
+    private let bigNumberZero: Data = Data() + UInt64(0)
+    private let bigNumberOne: Data = Data() + UInt64(1)
+    private let bigNumberFalse: Data = Data() + UInt64(0)
+    private let bigNumberTrue: Data = Data() + UInt64(1)
 
     // "To" transaction that is signed by an inputScript.
     // Required parameter.
