@@ -18,30 +18,42 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  This file has been modified by the BitcoinCashKit developers for the BitcoinCashKit project.
-//  The original file was from the bitcoinj project (https://github.com/kishikawakatsumi/BitcoinKit).
-//
 
 import Foundation
 
 public class Script {
-    public var chunks: [ScriptChunk] // An array of Data objects (pushing data) or UInt8 objects (containing opcodes)
+    // An array of Data objects (pushing data) or UInt8 objects (containing opcodes)
+    private var chunks: [ScriptChunk]
 
-    // TODO: need to be cached
     // Cached serialized representations for -data and -string methods.
+    private var dataCache: Data?
+    private var stringCache: String?
+
     public var data: Data {
         // When we calculate data from scratch, it's important to respect actual offsets in the chunks as they may have been copied or shifted in subScript* methods.
-        var md = Data()
-        for chunk in self.chunks {
-            md += chunk.chunkData
+        if let cache = dataCache {
+            return cache
         }
-        return md
+        dataCache = chunks.reduce(Data()) { $0 + $1.chunkData }
+        return dataCache!
     }
 
-    public typealias MultisigRequirements = (nSigRequired: UInt, publickeys: [PublicKey])
-    // Multisignature script attributes.
-    // If multisig script is not detected, both are NULL.
-    public var multisigRequirements: MultisigRequirements?
+    public var string: String {
+        if let cache = stringCache {
+            return cache
+        }
+        stringCache = chunks.map { $0.string }.joined(separator: " ")
+        return stringCache!
+    }
+
+    public var hex: String {
+        return data.hex
+    }
+
+    // Multisignature script attribute.
+    // If multisig script is not detected, this is nil
+    public typealias MultisigVariables = (nSigRequired: UInt, publickeys: [PublicKey])
+    public var multisigRequirements: MultisigVariables?
 
     init() {
         self.chunks = [ScriptChunk]()
@@ -61,41 +73,41 @@ public class Script {
     }
 
     convenience init?(hex: String) {
-        guard let data = Data(hex: hex) else {
+        guard let scriptData = Data(hex: hex) else {
             return nil
         }
-        self.init(data: data)
+        self.init(data: scriptData)
     }
 
     convenience init?(address: Address) {
-        var resultData: Data = Data()
+        var scriptData: Data = Data()
 
         switch address.type {
         case .pubkeyHash:
             // OP_DUP OP_HASH160 <hash> OP_EQUALVERIFY OP_CHECKSIG
-            resultData += Opcode.OP_DUP
-            resultData += Opcode.OP_HASH160
+            scriptData += Opcode.OP_DUP
+            scriptData += Opcode.OP_HASH160
 
-            resultData += VarInt(address.data.count).serialized()
-            resultData += address.data
+            scriptData += VarInt(address.data.count).serialized()
+            scriptData += address.data
 
-            resultData += Opcode.OP_EQUALVERIFY
-            resultData += Opcode.OP_CHECKSIG
+            scriptData += Opcode.OP_EQUALVERIFY
+            scriptData += Opcode.OP_CHECKSIG
         case .scriptHash:
             // OP_HASH160 <hash> OP_EQUAL
-            resultData += Opcode.OP_HASH160
+            scriptData += Opcode.OP_HASH160
 
-            resultData += VarInt(address.data.count).serialized()
-            resultData += address.data
+            scriptData += VarInt(address.data.count).serialized()
+            scriptData += address.data
 
-            resultData += Opcode.OP_EQUAL
+            scriptData += Opcode.OP_EQUAL
         default:
             return nil
         }
-        self.init(data: resultData)
+        self.init(data: scriptData)
     }
 
-    //    // OP_<M> <pubkey1> ... <pubkeyN> OP_<N> OP_CHECKMULTISIG
+    // OP_<M> <pubkey1> ... <pubkeyN> OP_<N> OP_CHECKMULTISIG
     convenience init?(publicKeys: [PublicKey], signaturesRequired: UInt) {
         // First make sure the arguments make sense.
         // We need at least one signature
@@ -104,7 +116,7 @@ public class Script {
         }
 
         // And we cannot have more signatures than available pubkeys.
-        guard publicKeys.count > signaturesRequired else {
+        guard publicKeys.count >= signaturesRequired else {
             return nil
         }
 
@@ -119,36 +131,21 @@ public class Script {
             return nil
         }
 
-        var data: Data = Data()
-        data += mOpcode
+        var scriptData: Data = Data()
+        scriptData += mOpcode
 
         for pubkey in publicKeys {
-            guard let d = ScriptChunk.scriptData(for: pubkey.raw, preferredLengthEncoding: -1) else {
+            guard let pubkeyScriptData = ScriptChunkHelper.scriptData(for: pubkey.raw, preferredLengthEncoding: -1) else {
                 return nil // invalid data
             }
-            data += d
+            scriptData += pubkeyScriptData
         }
 
-        data += nOpcode
-        data += Opcode.OP_CHECKMULTISIG
+        scriptData += nOpcode
+        scriptData += Opcode.OP_CHECKMULTISIG
 
-        self.init(data: data)
+        self.init(data: scriptData)
         self.multisigRequirements = (signaturesRequired, publicKeys)
-    }
-
-    public var hex: String {
-        return self.data.hex
-    }
-
-    // TODO: need to be cached
-    public var string: String {
-        var buffer = [String]()
-        for chunk in self.chunks {
-            if let string = chunk.string {
-                buffer.append(string)
-            }
-        }
-        return buffer.joined(separator: " ")
     }
 
     private static func parseData(_ data: Data) -> [ScriptChunk]? {
@@ -163,7 +160,7 @@ public class Script {
 
         while i < count {
             // Exit if failed to parse
-            guard let chunk = ScriptChunk.parseChunk(from: data, offset: i) else {
+            guard let chunk = ScriptChunkHelper.parseChunk(from: data, offset: i) else {
                 return nil
             }
             chunks.append(chunk)
@@ -194,10 +191,11 @@ public class Script {
         guard chunks.count == 5 else {
             return false
         }
-        let dataChunk = chunk(at: 2)
+        guard let dataChunk = chunk(at: 2) as? DataChunk else {
+            return false
+        }
         return opcode(at: 0) == Opcode.OP_DUP
             && opcode(at: 1) == Opcode.OP_HASH160
-            && !dataChunk.isOpcode
             && dataChunk.range.count == 21
             && opcode(at: 3) == Opcode.OP_EQUALVERIFY
             && opcode(at: 4) == Opcode.OP_CHECKSIG
@@ -237,16 +235,17 @@ public class Script {
     }
 
     public var isMultisignatureScript: Bool {
-        if multisigRequirements?.nSigRequired == 0 {
-            detectMultisigScript()
-        }
-        guard let nSingRequired = multisigRequirements?.nSigRequired else {
+        guard let requirements = multisigRequirements else {
             return false
         }
-        return nSingRequired > 0
+        if requirements.nSigRequired == 0 {
+            detectMultisigScript()
+        }
+
+        return requirements.nSigRequired > 0
     }
 
-    // If typical multisig tx is detected, sets two ivars:
+    // If typical multisig tx is detected, sets requirements:
     private func detectMultisigScript() {
         // multisig script must have at least 4 ops ("OP_1 <pubkey> OP_1 OP_CHECKMULTISIG")
         guard chunks.count >= 4 else {
@@ -286,8 +285,7 @@ public class Script {
         }
 
         // Now we extracted all pubkeys and verified the numbers.
-        multisigRequirements?.nSigRequired = UInt(m)
-        multisigRequirements?.publickeys = pubkeys
+        multisigRequirements = (UInt(m), pubkeys)
     }
 
     // Include both PUSHDATA ops and OP_0..OP_16 literals.
@@ -301,11 +299,11 @@ public class Script {
 
     public func enumerateOperations(block: (_ opIndex: Int, _ opcode: UInt8, _ pushData: Data?) -> Bool) {
         for (opIndex, chunk) in chunks.enumerated() {
-            if chunk.isOpcode {
+            if chunk is OpcodeChunk {
                 if block(opIndex, chunk.opcode, nil) {
                     return
                 }
-            } else {
+            } else if chunk is DataChunk {
                 if block(opIndex, Opcode.OP_INVALIDOPCODE, chunk.pushedData) {
                     return
                 }
@@ -315,141 +313,79 @@ public class Script {
 
     public var standardAddress: Address? {
         if isPayToPublicKeyHashScript {
-            guard chunks.count == 5 else {
+            guard let dataChunk = chunk(at: 2) as? DataChunk else {
                 return nil
             }
-            let dataChunk = chunk(at: 2)
-
-            if !dataChunk.isOpcode && dataChunk.range.count == 21 {
-                // return [BTCPublicKeyAddress addressWithData:dataChunk.pushdata];
-                // TODO: Addressでdata, type, networkを引数にとるinitializerが必要
-
-            }
+            // return [BTCPublicKeyAddress addressWithData:dataChunk.pushdata];
+            // TODO: Addressでdata, type, networkを引数にとるinitializerが必要
         } else if isPayToScriptHashScript {
-            guard chunks.count == 3 else {
+            guard let dataChunk = chunk(at: 1) as? DataChunk else {
                 return nil
             }
-            let dataChunk = chunk(at: 1)
-
-            if !dataChunk.isOpcode && dataChunk.range.count == 21 {
-                // return [BTCScriptHashAddress addressWithData:dataChunk.pushdata];
-                // TODO: Addressでdata, type, networkを引数にとるinitializerが必要
-            }
+            // return [BTCScriptHashAddress addressWithData:dataChunk.pushdata];
+            // TODO: Addressでdata, type, networkを引数にとるinitializerが必要
         }
         return nil
     }
-
+    
+    // MARK: - Modification
     public func invalidateSerialization() {
-        // TODO: set nil for cached self.data and self.string
+        dataCache = nil
+        stringCache = nil
         multisigRequirements = nil
     }
 
-    public func append(opcode: UInt8) -> Script {
-        var scriptData: Data = data
-        scriptData += opcode
-
-        var updatedChunks = [ScriptChunk]()
-
-        // Update reference to a new data for all chunks.
-        // ScriptChunkがStructなので、updateするためには新たにScriptChunkを作る必要がある
-        for chunk in chunks {
-            let updatedChunk = ScriptChunk(scriptData: scriptData, range: chunk.range)
-            updatedChunks.append(updatedChunk)
+    private func update(with updatedData: Data) {
+        guard let updatedChunks = Script.parseData(updatedData) else {
+            return
         }
-
-        let range = Range(scriptData.count - MemoryLayout.size(ofValue: opcode)..<scriptData.count)
-        let chunk = ScriptChunk(scriptData: scriptData, range: range)
-        updatedChunks.append(chunk)
-
         chunks = updatedChunks
         invalidateSerialization()
-
-        return self
     }
 
-    public func append(data: Data) -> Script {
+    // TODO: check if OP_PUSHDATAs
+    public func append(opcode: UInt8) {
+        var updatedData: Data = data
+        updatedData += opcode
+        update(with: updatedData)
+    }
+
+    public func append(data: Data) {
         guard !data.isEmpty else {
-            return self
+            return
         }
 
-        var scriptData: Data = self.data
+        var updatedData: Data = self.data
 
-        guard let addedScriptData = ScriptChunk.scriptData(for: data, preferredLengthEncoding: -1) else {
-            return self
+        guard let addedScriptData = ScriptChunkHelper.scriptData(for: data, preferredLengthEncoding: -1) else {
+            return
         }
-        scriptData.append(addedScriptData)
-
-        var updatedChunks = [ScriptChunk]()
-
-        // Update reference to a new data for all chunks.
-        for chunk in chunks {
-            let updatedChunk = ScriptChunk(scriptData: scriptData, range: chunk.range)
-            updatedChunks.append(updatedChunk)
-        }
-
-        let range = Range(scriptData.count - addedScriptData.count..<scriptData.count)
-        let chunk = ScriptChunk(scriptData: scriptData, range: range)
-        updatedChunks.append(chunk)
-
-        chunks = updatedChunks
-        invalidateSerialization()
-
-        return self
+        updatedData += addedScriptData
+        update(with: updatedData)
     }
 
-    public func append(otherScript: Script) -> Script {
+    public func append(otherScript: Script) {
         guard !otherScript.data.isEmpty else {
-            return self
+            return
         }
 
-        var scriptData: Data = self.data
-
-        let offset: Int = scriptData.count
-
-        scriptData.append(otherScript.data)
-
-        var updatedChunks = [ScriptChunk]()
-
-        // Update reference to a new data for all chunks.
-        for chunk in chunks {
-            let updatedChunk = ScriptChunk(scriptData: scriptData, range: chunk.range)
-            updatedChunks.append(updatedChunk)
-        }
-
-        for chunk in otherScript.chunks {
-            let range = Range(chunk.range.lowerBound + offset..<scriptData.count)
-            let chunk2 = ScriptChunk(scriptData: scriptData, range: range)
-            updatedChunks.append(chunk2)
-        }
-
-        chunks = updatedChunks
-        invalidateSerialization()
-
-        return self
+        var updatedData: Data = self.data
+        updatedData += otherScript.data
+        update(with: updatedData)
     }
 
-    public func deleteOccurrences(of data: Data) -> Script {
+    public func deleteOccurrences(of data: Data) {
         guard !data.isEmpty else {
-            return self
+            return
         }
 
         let updatedData = chunks.filter { $0.pushedData != data }.reduce(Data()) { $0 + $1.chunkData }
-        guard let updatedChunks = Script.parseData(updatedData) else {
-            return self
-        }
-
-        chunks = updatedChunks
-        return self
+        update(with: updatedData)
     }
 
-    public func deleteOccurrences(of opcode: UInt8) -> Script {
+    public func deleteOccurrences(of opcode: UInt8) {
         let updatedData = chunks.filter { $0.opcode != opcode }.reduce(Data()) { $0 + $1.chunkData }
-        guard let updatedChunks = Script.parseData(updatedData) else {
-            return self
-        }
-
-        chunks = updatedChunks
-        return self
+        update(with: updatedData)
     }
 
     public func subScript(from index: Int) -> Script? {
@@ -464,6 +400,7 @@ public class Script {
         return Script(data: updatedData)
     }
 
+    // MARK: - Utility methods
     // Raise exception if index is out of bounds
     public func chunk(at index: Int) -> ScriptChunk {
         return chunks[index < 0 ? chunks.count + index : index]
@@ -475,20 +412,17 @@ public class Script {
     public func opcode(at index: Int) -> UInt8 {
         let chunk = self.chunk(at: index)
         // If the chunk is not actually an opcode, return invalid opcode.
-        guard chunk.isOpcode else {
+        guard chunk is OpcodeChunk else {
             return Opcode.OP_INVALIDOPCODE
         }
         return chunk.opcode
     }
 
-    // Returns NSData in a chunk.
+    // Returns Data in a chunk.
     // If chunk is actually an opcode, returns nil.
     // Raises exception if index is out of bounds.
     public func pushedData(at index: Int) -> Data? {
         let chunk = self.chunk(at: index)
-        guard !chunk.isOpcode else {
-            return nil
-        }
         return chunk.pushedData
     }
 }
