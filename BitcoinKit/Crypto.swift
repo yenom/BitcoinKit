@@ -69,6 +69,19 @@ public struct Crypto {
 
         return der
     }
+
+    public static func verifySignature(_ signature: Data, message: Data, publicKey: Data) -> Bool {
+        let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY))!
+        let status = message.withUnsafeBytes { messagePtr in
+            publicKey.withUnsafeBytes { pubkeyPtr in
+                signature.withUnsafeBytes { sigPtr in
+                    secp256k1_ecdsa_verify(ctx, sigPtr, messagePtr, pubkeyPtr)
+                }
+            }
+        }
+
+        return status == 1
+    }
 }
 
 public enum CryptoError: Error {

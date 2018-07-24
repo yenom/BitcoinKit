@@ -710,103 +710,117 @@ class ScriptMachine {
 
                 // TODO: check wether signature and pukeyData are canonical. Refer to CoreBitcoin
 
-                let transactionOutput = TransactionOutput()
-                let success = check(signature: signature, publicKey: pubkeyData, utxoToSign: transactionOutput)
-
-                if opcode == Opcode.OP_CHECKSIGVERIFY {
-                    if !success {
-                        throw ScriptMachineError.error("Signature check failed. (sigerror here)")
+                // TODO: put valid value
+                let transactionOutput = TransactionOutput(value: 0, lockingScript: subScript.data)
+                do {
+                    try check(signature: signature, publicKey: pubkeyData, utxoToSign: transactionOutput)
+                    if opcode == Opcode.OP_CHECKSIG {
+                        stack.append(blobTrue)
                     }
-                } else {
-                    stack.append(success ? blobTrue : blobFalse)
+                } catch (let err) {
+                    if opcode == Opcode.OP_CHECKSIGVERIFY {
+                        throw ScriptMachineError.error("Signature check failed. \(err)")
+                    }
+                    stack.append(blobFalse)
                 }
             } else if opcode == Opcode.OP_CHECKMULTISIG || opcode == Opcode.OP_CHECKMULTISIGVERIFY {
                 // ([sig ...] num_of_signatures [pubkey ...] num_of_pubkeys -- bool)
-                guard stack.count >= 1 else {
-                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
+                var i: Int = 1
+                guard stack.count >= i else {
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(i)
                 }
 
                 guard var keysCount = number(at: -1) else {
                     throw ScriptMachineError.invalidBignum
                 }
 
-                guard keysCount < 0 || keysCount > BTC_MAX_KEYS_FOR_CHECKMULTISIG else {
-                    throw ScriptMachineError.error("Invalid number of keys for \(Opcode.getOpcodeName(with: opcode)): \(keysCount)")
+                guard keysCount > 0 && keysCount <= BTC_MAX_KEYS_FOR_CHECKMULTISIG else {
+                    throw ScriptMachineError.error("Invalid number of keys for \(Opcode.getOpcodeName(with: opcode)): \(keysCount).")
                 }
 
                 opCount += Int(keysCount)
 
-                // An index of the first key
-                var keyIndex: Int = 2
+                guard opCount <= BTC_MAX_OPS_PER_SCRIPT else {
+                    throw ScriptMachineError.error("Exceeded allowed number of operations per script.")
+                }
+                i += 1
+                var ikey: Int = i
+                i += Int(keysCount)
 
-                // length of stack should be greater than at least sum of the number of keys and signatures
-                guard stack.count < keysCount * 2 else {
-                    // TODO: Fix
-                    throw ScriptMachineError.opcodeRequiresItemsOnStack(Int(keysCount * 2))
+                guard stack.count >= i else {
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(i)
                 }
 
-                guard var sigsCount = number(at: Int(-(keysCount + 1))), sigsCount > 0 && sigsCount < keysCount  else {
+                guard var sigsCount = number(at: -i) else {
                     throw ScriptMachineError.error("TODO")
                 }
 
-                // The index of the first signature
-                var sigIndex: Int = Int(keysCount) + 1 + 1
+                guard sigsCount > 0 && sigsCount <= keysCount else {
+                    throw ScriptMachineError.error("Invalid number of signatures \(Opcode.getOpcodeName(with: opcode)): \(sigsCount).")
+                }
 
-                let minimumTotalLength: Int = sigIndex + Int(sigsCount)
-                guard stack.count > minimumTotalLength else {
-                    throw ScriptMachineError.error("TODO")
+                i += 1
+                var iSig: Int = i
+                i += Int(sigsCount)
+
+                guard stack.count >= i else {
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(i)
                 }
 
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
                 let subScript = script.subScript(from: lastCodeSepartorIndex)
-
-                // Drop the signatures, since there's no way for a signature to sign itself.
-                // Essentially this is noop because signatures are never present in scripts.
-                // See also a comment to a similar code in OP_CHECKSIG.
-                for k in 0..<sigsCount {
-                    let sig: Data = stack[-(Int(sigIndex) + Int(k))]
-                    _ = subScript.deleteOccurrences(of: sig)
+                for k in 0..<Int(sigsCount) {
+                    let sig = data(at: -iSig - k)
+                    subScript.deleteOccurrences(of: sig)
                 }
-
+                
                 var success: Bool = true
-
-                // Signatures must come in the same order as their keys.
-                while success && sigsCount > 0 {
-                    let signature: Data = stack[-sigIndex]
-                    let pubkeyData: Data = stack[-keyIndex]
-
-                    // TODO: check wether signature and pukeyData are canonical. Refer to CoreBitcoin
-
-                    let transactionOutput = TransactionOutput()
-                    var validMatch: Bool = check(signature: signature, publicKey: pubkeyData, utxoToSign: transactionOutput)
-
-                    if validMatch {
-                        sigIndex += 1
+                var firstSigError: Error? = nil
+                while sigsCount > 0 {
+                    let signature = data(at: -iSig)
+                    let pubkeyData = data(at: -ikey)
+                    // TODO: check if publickey and signature are canonical
+                    
+                    // TODO: set proper value
+                    let utxo = TransactionOutput(value: 0, lockingScript: subScript.data)
+                    do {
+                        try check(signature: signature, publicKey: pubkeyData, utxoToSign: utxo)
+                        iSig += 1
                         sigsCount -= 1
+                    } catch (let sigError) {
+                        
+                        if firstSigError == nil {
+                            firstSigError = sigError
+                        }
                     }
-
-                    keyIndex += 1
+                    ikey += 1
                     keysCount -= 1
-
+                    
                     // If there are more signatures left than keys left,
                     // then too many signatures have failed
-                    if sigsCount > keysCount {
+                    guard keysCount <= sigsCount else {
                         success = false
-                    }
-
-                    stack.removeSubrange(Range(-minimumTotalLength - 1 ... -1))
-
-                    if opcode == Opcode.OP_CHECKMULTISIGVERIFY {
-                        if !success {
-                            throw ScriptMachineError.error("Multisignature check failed.")
-                        }
-                    } else {
-                        stack.append(success ? blobTrue : blobFalse)
+                        break
                     }
                 }
+                // Remove all signatures, counts and pubkeys from stack.
+                // Note: 'i' points past the signatures. Due to postfix decrement (i--) this loop will pop one extra item from the stack.
+                // We can't change this code to use prefix decrement (--i) until every node does the same.
+                // This means that to redeem multisig script you have to prepend a dummy OP_0 item before all signatures so it can be popped here.
+                while i > 0 {
+                    stack.removeLast()
+                    i -= 1
+                }
+                stack.append(success ? blobTrue : blobFalse)
+                if opcode == Opcode.OP_CHECKMULTISIGVERIFY {
+                    stack.removeLast()
+                    guard success else {
+                        throw ScriptMachineError.error("Multisignature check failed. \(firstSigError)")
+                    }
+                }
+            }  else {
+                throw ScriptMachineError.error("Unknown opcode \(opcode) \(Opcode.getOpcodeName(with: opcode)).")
             }
-        } else {
-            throw ScriptMachineError.error("Unknown opcode \(opcode) \(Opcode.getOpcodeName(with: opcode)).")
         }
         guard stack.count + altStack.count <= 1000 else {
             throw ScriptMachineError.error("Too many items on stack.")
@@ -814,59 +828,45 @@ class ScriptMachine {
         // Do nothing if everything is okay.
     }
 
-    public func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) -> Bool {
-        // TODO: can switch to both network
-        let pubKey = PublicKey(bytes: publicKey, network: .mainnet)
+    public func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) throws {
+        // TODO: pubkey data validation
+//        guard publicKey is valid data else {
+//            ScriptMachineError.error("Public key is not valid: \(publicKey.hex).")
+//        }
 
         // Hash type is one byte tacked on to the end of the signature. So the signature shouldn't be empty.
         guard !signature.isEmpty else {
-            return false
+            throw ScriptMachineError.error("Signature is empty.")
         }
 
         // Extract hash type from the last byte of the signature.
-        print("signature", signature.hex)
         let hashType = SighashType(signature.last!)
-        print("hashType", hashType)
 
         // Strip that last byte to have a pure signature.
-        let pureSignature = signature.subdata(in: Range(0..<signature.count - 1))
-        print("pureSignature", pureSignature.hex, pureSignature)
+        let signature = signature.dropLast()
 
-        guard let transaction = self.transaction else {
-            return false
+        guard let tx = transaction else {
+            throw ScriptMachineError.error("transaction should not be nil.")
         }
 
-        let sighash: Data = transaction.signatureHash(for: utxoToSign, inputIndex: inputIndex, hashType: hashType)
-        print("sighash", sighash.hex, sighash)
-
-        let ctx2 = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_NONE))
-
-        //        let normalized = sighash.withUnsafeBytes { secp256k1_ecdsa_signature_normalize(ctx2!, nil, $0) }
-        //        print("normalized", normalized)
-
-        let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY))!
-
-        let status = sighash.withUnsafeBytes { (uint8Ptr: UnsafePointer<UInt8>) in
-            pubKey.raw.withUnsafeBytes { pubkeyPtr in pureSignature.withUnsafeBytes { secp256k1_ecdsa_verify(ctx, $0, uint8Ptr, pubkeyPtr) }
-            }
+        let sighash: Data = tx.signatureHash(for: utxoToSign, inputIndex: inputIndex, hashType: hashType)
+        if Crypto.verifySignature(signature, message: sighash, publicKey: publicKey) == false {
+            throw ScriptMachineError.error("Signature is not valid.")
         }
-
-        print("STATUS", status)
-
-        guard status == 1 else {
-            return false
-        }
-
-        return true
     }
 
+    private func data(at index: Int) -> Data {
+        return stack[normalized: index]
+    }
+
+    // TODO: fix this!
     private func number(at index: Int) -> Int32? {
-        let data: Data = stack[index]
+        let data: Data = stack[normalized: index]
         return Int32(data.withUnsafeBytes { $0.pointee })
     }
 
     private func bool(at index: Int) -> Bool {
-        let data: Data = stack[index]
+        let data: Data = stack[normalized: index]
         guard !data.isEmpty else {
             return false
         }
@@ -878,5 +878,11 @@ class ScriptMachine {
             }
         }
         return false
+    }
+}
+
+private extension Array {
+    subscript (normalized index: Int) -> Element {
+        return (index < 0) ? self[count + index] : self[index]
     }
 }
