@@ -80,7 +80,7 @@ class ScriptMachine {
     private var conditionStack = [Bool]()
 
     // Currently executed script.
-    private var script: Script?
+    private var script: Script = Script()
 
     // Current opcode.
     private var opcode: UInt8 = 0
@@ -97,7 +97,7 @@ class ScriptMachine {
     // Keeps number of executed operations to check for limit.
     private var opCount: Int = 0
 
-    private var opFailed: Bool = false
+//    private var opFailed: Bool = false
 
     public init() {
         inputIndex = 0xFFFFFFFF
@@ -209,23 +209,13 @@ class ScriptMachine {
         lastCodeSepartorIndex = 0
         opCount = 0
 
-        opFailed = false
-        script.enumerateOperations(block: { [weak self] opIndex, opcode, pushedData -> Bool in
+        try script.enumerateOperations(block: { [weak self] opIndex, opcode, pushedData in
             self?.opIndex = opIndex
             self?.opcode = opcode
             self?.pushedData = pushedData
 
-            guard let result = self?.executeOpcode(), result else {
-                opFailed = true
-                return true
-            }
-            return false
+            try self?.executeOpcode()
         })
-
-        guard !opFailed else {
-            // TODO: Error should be set by executeOpcode()
-            throw ScriptMachineError.error("Error should be set by executeOpcode.")
-        }
 
         guard conditionStack.isEmpty else {
             throw ScriptMachineError.error("Condition branches not balanced.")
@@ -233,15 +223,15 @@ class ScriptMachine {
     }
 
     // swiftlint:disable:next cyclomatic_complexity
-    private func executeOpcode() -> Bool {
+    private func executeOpcode() throws {
+        // only push data
         guard pushedData == nil || pushedData!.count <= BTC_MAX_SCRIPT_ELEMENT_SIZE else {
-            print("Pushdata chunk size is too big.")
-            return false
+            throw ScriptMachineError.error("Pushdata chunk size is too big.")
         }
 
+        // only opcode
         guard opcode <= Opcode.OP_16 || pushedData != nil || opCount <= BTC_MAX_OPS_PER_SCRIPT else {
-            print("Exceeded the allowed number of operations per script.")
-            return false
+            throw ScriptMachineError.error("Exceeded the allowed number of operations per script.")
         }
 
         // Disabled opcodes
@@ -261,8 +251,7 @@ class ScriptMachine {
             opcode == Opcode.OP_MOD ||
             opcode == Opcode.OP_LSHIFT ||
             opcode == Opcode.OP_RSHIFT {
-            print("Attempt to execute a disabled opcode.")
-            return false
+            throw ScriptMachineError.error("Attempt to execute a disabled opcode.")
         }
 
         let shouldExecute: Bool = !conditionStack.contains(false)
@@ -318,8 +307,7 @@ class ScriptMachine {
                 var value: Bool = false
                 if shouldExecute {
                     guard stack.count >= 1 else {
-                        print("at least one item is needed")
-                        return false
+                        throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                     }
                     value = opcode == Opcode.OP_IF ? bool(at: -1) : !bool(at: -1)
                     stack.removeLast()
@@ -328,33 +316,28 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_ELSE {
                 // Invert last condition.
                 guard !conditionStack.isEmpty else {
-                    print("Expected an OP_IF or OP_NOTIF branch before OP_ELSE.")
-                    return false
+                    throw ScriptMachineError.error("Expected an OP_IF or OP_NOTIF branch before OP_ELSE.")
                 }
                 let last = conditionStack.popLast()!
                 conditionStack.append(!last)
             } else if opcode == Opcode.OP_ENDIF {
                 guard !conditionStack.isEmpty else {
-                    print("Expected an OP_IF or OP_NOTIF branch before OP_ENDIF.")
-                    return false
+                    throw ScriptMachineError.error("Expected an OP_IF or OP_NOTIF branch before OP_ENDIF.")
                 }
                 conditionStack.removeLast()
             } else if opcode == Opcode.OP_VERIFY {
                 // (true -- ) or
                 // (false -- false) and return
                 guard stack.count >= 1 else {
-                    print("at least one item is needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
                 if bool(at: -1) {
                     stack.removeLast()
                 } else {
-                    print("OP_VERIFY failed.")
-                    return false
+                    throw ScriptMachineError.error("OP_VERIFY failed.")
                 }
             } else if opcode == Opcode.OP_RETURN {
-                print("OP_RETURN executed.")
-                return false
+                throw ScriptMachineError.error("OP_RETURN executed.")
             }
 
                 //
@@ -362,37 +345,32 @@ class ScriptMachine {
                 //
             else if opcode == Opcode.OP_TOALTSTACK {
                 guard stack.count >= 1 else {
-                    print("at least one item is needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
                 altStack.append(stack.popLast()!)
             } else if opcode == Opcode.OP_FROMALTSTACK {
                 guard altStack.count >= 1 else {
-                    print("at least one item is needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
                 stack.append(altStack.popLast()!)
             } else if opcode == Opcode.OP_2DROP {
                 // (x1 x2 -- )
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
                 stack.removeLast()
                 stack.removeLast()
             } else if opcode == Opcode.OP_2DUP {
                 // (x1 x2 -- x1 x2 x1 x2)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
                 stack.append(stack[-2])
                 stack.append(stack[-1])
             } else if opcode == Opcode.OP_3DUP {
                 // (x1 x2 x3 -- x1 x2 x3 x1 x2 x3)
                 guard stack.count >= 3 else {
-                    print("at least three items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(3)
                 }
                 stack.append(stack[-3])
                 stack.append(stack[-2])
@@ -400,24 +378,21 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_2OVER {
                 // (x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2)
                 guard stack.count >= 4 else {
-                    print("at least four items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(4)
                 }
                 stack.append(stack[-4])
                 stack.append(stack[-3])
             } else if opcode == Opcode.OP_2ROT {
                 // (x1 x2 x3 x4 x5 x6 -- x3 x4 x5 x6 x1 x2)
                 guard stack.count >= 6 else {
-                    print("at least six items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(6)
                 }
                 stack.append(stack.remove(at: -6))
                 stack.append(stack.remove(at: -6))
             } else if opcode == Opcode.OP_2SWAP {
                 // (x1 x2 x3 x4 -- x3 x4 x1 x2)
                 guard stack.count >= 4 else {
-                    print("at least four items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(4)
                 }
                 stack.swapAt(-4, -2)
                 stack.swapAt(-3, -1)
@@ -425,8 +400,7 @@ class ScriptMachine {
                 // (x -- x x)
                 // (0 -- 0)
                 guard stack.count >= 1 else {
-                    print("at least one item are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
                 if bool(at: -1) {
                     stack.append(stack[-1])
@@ -438,42 +412,38 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_DUP {
                 // (x -- x x)
                 guard stack.count >= 1 else {
-                    print("at least one item are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
                 stack.append(stack[-1])
             } else if opcode == Opcode.OP_NIP {
                 // (x1 x2 -- x2)
                 guard stack.count >= 2 else {
-                    print("at least two item are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
                 stack.remove(at: -2)
             } else if opcode == Opcode.OP_OVER {
                 // (x1 x2 -- x1 x2 x1)
                 guard stack.count >= 2 else {
-                    print("at least two item are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
                 stack.append(stack[-2])
             } else if opcode == Opcode.OP_PICK || opcode == Opcode.OP_ROLL {
                 // pick: (xn ... x2 x1 x0 n -- xn ... x2 x1 x0 xn)
                 // roll: (xn ... x2 x1 x0 n --    ... x2 x1 x0 xn)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 // Top item is a number of items to roll over.
                 // Take it and pop it from the stack.
                 guard let number = number(at: -1) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
 
                 stack.removeLast()
 
                 if number < 0 || number >= stack.count {
-                    return false
+                    throw ScriptMachineError.error("Invalid number of items for \(Opcode.getOpcodeName(with: opcode)): \(number).")
                 }
 
                 let targetIndex = number * -1 - 1
@@ -487,8 +457,7 @@ class ScriptMachine {
                 //  x2 x1 x3  after first swap
                 //  x2 x3 x1  after second swap
                 guard stack.count >= 3 else {
-                    print("at least three items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(3)
                 }
 
                 stack.swapAt(-3, -2)
@@ -496,24 +465,21 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_SWAP {
                 // (x1 x2 -- x2 x1)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 stack.swapAt(-2, -1)
             } else if opcode == Opcode.OP_TUCK {
                 // (x1 x2 -- x2 x1 x2)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 stack.insert(stack[-1], at: -3)
             } else if opcode == Opcode.OP_SIZE {
                 // (in -- in size)
                 guard stack.count >= 1 else {
-                    print("at least one item are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
 
                 let data = stack[-1]
@@ -525,8 +491,7 @@ class ScriptMachine {
                 //} else if opcode == OP_NOTEQUAL: // use OP_NUMNOTEQUAL
                 // (x1 x2 - bool)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 let x1 = stack.popLast()!
@@ -543,7 +508,7 @@ class ScriptMachine {
                     stack.append(equal ? blobTrue : blobFalse)
                 } else { // opcode == Opcode.OP_EQUALVERIFY
                     guard equal else {
-                        return false
+                        throw ScriptMachineError.error("OP_EQUALVERIFY failed.")
                     }
                 }
                 //
@@ -555,7 +520,7 @@ class ScriptMachine {
                 opcode == Opcode.OP_ABS {
                 // (in -- out)
                 guard var number = number(at: -1) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
                 if opcode == Opcode.OP_1ADD {
                     number += 1
@@ -571,26 +536,25 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_NOT {
                 // (in -- out)
                 guard let number = number(at: -1) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
                 let equal = number == 0 ? blobTrue : blobFalse
                 stack.append(equal)
             } else if opcode == Opcode.OP_0NOTEQUAL {
                 // (in -- out)
                 guard let number = number(at: -1) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
                 let equal = number != 0 ? blobTrue : blobFalse
                 stack.append(equal)
             } else if opcode == Opcode.OP_ADD || opcode == Opcode.OP_SUB {
                 // (x1 x2 -- out)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 guard let number1 = self.number(at: -1), let number2 = self.number(at: -2) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
 
                 var number: Int32
@@ -607,8 +571,7 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_BOOLAND || opcode == Opcode.OP_BOOLAND {
                 // (x1 x2 -- out)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 let (bool1, bool2) = (bool(at: -1), bool(at: -2))
@@ -627,12 +590,11 @@ class ScriptMachine {
                 opcode == Opcode.OP_GREATERTHANOREQUAL {
                 // (x1 x2 -- out)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 guard let number1 = self.number(at: -1), let number2 = self.number(at: -2) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
 
                 var bool: Bool = false
@@ -654,7 +616,7 @@ class ScriptMachine {
                 stack.removeLast()
                 if opcode == Opcode.OP_NUMEQUALVERIFY {
                     if !self.bool(at: -1) {
-                        return false
+                        throw ScriptMachineError.error("OP_NUMEQUALVERIFY failed.")
                     }
                 } else {
                     stack.append(bool ? blobTrue : blobFalse)
@@ -662,12 +624,11 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_MIN || opcode == Opcode.OP_MAX {
                 // (x1 x2 -- out)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 guard let number1 = self.number(at: -1), let number2 = self.number(at: -2) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
 
                 if opcode == Opcode.OP_MIN {
@@ -678,12 +639,11 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_WITHIN {
                 // (x min max -- out)
                 guard stack.count >= 3 else {
-                    print("at least three items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(3)
                 }
 
                 guard let number = self.number(at: -1), let min = self.number(at: -2), let max = self.number(at: -3) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
 
                 let bool = min <= number && number <= max
@@ -697,8 +657,7 @@ class ScriptMachine {
                 opcode == Opcode.OP_HASH256 {
                 // (in -- hash)
                 guard stack.count >= 1 else {
-                    print("at least one item are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
 
                 let data: Data = stack.removeLast()
@@ -728,17 +687,14 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_CHECKSIG || opcode == Opcode.OP_CHECKSIGVERIFY {
                 // (sig pubkey -- bool)
                 guard stack.count >= 2 else {
-                    print("at least two items are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
                 let signature: Data = stack.remove(at: -2)
                 let pubkeyData: Data = stack.remove(at: -1)
 
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
-                guard let subScript: Script = script?.subScript(from: lastCodeSepartorIndex) else {
-                    return false
-                }
+                let subScript = script.subScript(from: lastCodeSepartorIndex)
 
                 // Drop the signature, since there's no way for a signature to sign itself.
                 // Normally we neither have signatures in the output scripts, nor checksig ops in the input scripts.
@@ -759,7 +715,7 @@ class ScriptMachine {
 
                 if opcode == Opcode.OP_CHECKSIGVERIFY {
                     if !success {
-                        return false
+                        throw ScriptMachineError.error("Signature check failed. (sigerror here)")
                     }
                 } else {
                     stack.append(success ? blobTrue : blobFalse)
@@ -767,17 +723,15 @@ class ScriptMachine {
             } else if opcode == Opcode.OP_CHECKMULTISIG || opcode == Opcode.OP_CHECKMULTISIGVERIFY {
                 // ([sig ...] num_of_signatures [pubkey ...] num_of_pubkeys -- bool)
                 guard stack.count >= 1 else {
-                    print("at least one item are needed")
-                    return false
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
 
                 guard var keysCount = number(at: -1) else {
-                    return false
+                    throw ScriptMachineError.invalidBignum
                 }
 
                 guard keysCount < 0 || keysCount > BTC_MAX_KEYS_FOR_CHECKMULTISIG else {
-                    print("invalid number of keys for \(keysCount)")
-                    return false
+                    throw ScriptMachineError.error("Invalid number of keys for \(Opcode.getOpcodeName(with: opcode)): \(keysCount)")
                 }
 
                 opCount += Int(keysCount)
@@ -787,11 +741,12 @@ class ScriptMachine {
 
                 // length of stack should be greater than at least sum of the number of keys and signatures
                 guard stack.count < keysCount * 2 else {
-                    return false
+                    // TODO: Fix
+                    throw ScriptMachineError.opcodeRequiresItemsOnStack(Int(keysCount * 2))
                 }
 
                 guard var sigsCount = number(at: Int(-(keysCount + 1))), sigsCount > 0 && sigsCount < keysCount  else {
-                    return false
+                    throw ScriptMachineError.error("TODO")
                 }
 
                 // The index of the first signature
@@ -799,13 +754,11 @@ class ScriptMachine {
 
                 let minimumTotalLength: Int = sigIndex + Int(sigsCount)
                 guard stack.count > minimumTotalLength else {
-                    return false
+                    throw ScriptMachineError.error("TODO")
                 }
 
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
-                guard let subScript = script?.subScript(from: lastCodeSepartorIndex) else {
-                    return false
-                }
+                let subScript = script.subScript(from: lastCodeSepartorIndex)
 
                 // Drop the signatures, since there's no way for a signature to sign itself.
                 // Essentially this is noop because signatures are never present in scripts.
@@ -845,18 +798,20 @@ class ScriptMachine {
 
                     if opcode == Opcode.OP_CHECKMULTISIGVERIFY {
                         if !success {
-                            return false
+                            throw ScriptMachineError.error("Multisignature check failed.")
                         }
                     } else {
                         stack.append(success ? blobTrue : blobFalse)
                     }
                 }
             }
+        } else {
+            throw ScriptMachineError.error("Unknown opcode \(opcode) \(Opcode.getOpcodeName(with: opcode)).")
         }
         guard stack.count + altStack.count <= 1000 else {
-            return false
+            throw ScriptMachineError.error("Too many items on stack.")
         }
-        return true
+        // Do nothing if everything is okay.
     }
 
     public func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) -> Bool {

@@ -297,16 +297,12 @@ public class Script {
         return chunks
     }
 
-    public func enumerateOperations(block: (_ opIndex: Int, _ opcode: UInt8, _ pushData: Data?) -> Bool) {
+    public func enumerateOperations(block: (_ opIndex: Int, _ opcode: UInt8, _ pushData: Data?) throws -> Void) throws {
         for (opIndex, chunk) in chunks.enumerated() {
             if chunk is OpcodeChunk {
-                if block(opIndex, chunk.opcode, nil) {
-                    return
-                }
+                try block(opIndex, chunk.opcode, nil)
             } else if chunk is DataChunk {
-                if block(opIndex, Opcode.OP_INVALIDOPCODE, chunk.pushedData) {
-                    return
-                }
+                try block(opIndex, Opcode.OP_INVALIDOPCODE, chunk.pushedData)
             }
         }
     }
@@ -327,7 +323,7 @@ public class Script {
         }
         return nil
     }
-    
+
     // MARK: - Modification
     public func invalidateSerialization() {
         dataCache = nil
@@ -388,16 +384,20 @@ public class Script {
         update(with: updatedData)
     }
 
-    public func subScript(from index: Int) -> Script? {
-        let subChunks = chunks[Range(index..<chunks.count)]
-        let updatedData = subChunks.reduce(Data()) { $0 + $1.chunkData }
-        return Script(data: updatedData)
+    public func subScript(from index: Int) -> Script {
+        let subScript: Script = Script()
+        for chunk in chunks[Range(index..<chunks.count)] {
+            subScript.append(data: chunk.chunkData)
+        }
+        return subScript
     }
 
-    public func subScript(to index: Int) -> Script? {
-        let subChunks = chunks[Range(0..<index)]
-        let updatedData = subChunks.reduce(Data()) { $0 + $1.chunkData }
-        return Script(data: updatedData)
+    public func subScript(to index: Int) -> Script {
+        let subScript: Script = Script()
+        for chunk in chunks[Range(0..<index)] {
+            subScript.append(data: chunk.chunkData)
+        }
+        return subScript
     }
 
     // MARK: - Utility methods
