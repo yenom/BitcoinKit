@@ -58,9 +58,17 @@ class ScriptMachineTests: XCTestCase {
         }
         
         do {
-            try scriptMachine.verify(with: Script(data: utxoToSign.lockingScript)!)
+            try scriptMachine.testCheck(signature: signature + UInt8(hashType), publicKey: fromPublicKey.raw, utxoToSign: utxoToSign)
+            // success
         } catch (let err) {
-            XCTFail("signature is invalid. \(err)")
+            XCTFail("Script machine check failed. \(err)")
+        }
+
+        do {
+            _ = try scriptMachine.verify(with: utxoToSign)
+            // success
+        } catch (let err) {
+            XCTFail("Script machine verify failed. \(err)")
         }
     }
 }

@@ -97,7 +97,8 @@ class ScriptMachine {
     // Keeps number of executed operations to check for limit.
     private var opCount: Int = 0
 
-//    private var opFailed: Bool = false
+    // New!
+    private var utxoToVerify: TransactionOutput?
 
     public init() {
         inputIndex = 0xFFFFFFFF
@@ -128,7 +129,7 @@ class ScriptMachine {
         return blockTimestamp >= BTC_BIP16_TIMESTAMP
     }
 
-    public func verify(with lockScript: Script) throws -> Bool {
+    public func verify(with utxo: TransactionOutput) throws -> Bool {
         // Sanity check: transaction and its input should be consistent.
         guard let tx = transaction, inputIndex < tx.inputs.count else {
             throw ScriptMachineError.exception("transaction and valid inputIndex are required for script verification.")
@@ -137,6 +138,8 @@ class ScriptMachine {
         // TODO: txinput.signatureScript should be Script class
         // let unlockScript: Script = txInput.signatureScript
         let unlockScript: Script = Script(data: txInput.signatureScript)!
+        let lockScript: Script = Script(data: utxo.lockingScript)!
+        utxoToVerify = utxo
 
         // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
         try runScript(unlockScript)
@@ -710,11 +713,11 @@ class ScriptMachine {
                 subScript.deleteOccurrences(of: signature)
 
                 // TODO: check wether signature and pukeyData are canonical. Refer to CoreBitcoin
-
-                // TODO: put valid value
-                let transactionOutput = TransactionOutput(value: 0, lockingScript: subScript.data)
+                guard let utxoToSign = utxoToVerify else {
+                    throw ScriptMachineError.error("The utxo to verify is not set.")
+                }
                 do {
-                    try check(signature: signature, publicKey: pubkeyData, utxoToSign: transactionOutput)
+                    try check(signature: signature, publicKey: pubkeyData, utxoToSign: utxoToSign)
                     if opcode == Opcode.OP_CHECKSIG {
                         stack.append(blobTrue)
                     }
@@ -782,10 +785,11 @@ class ScriptMachine {
                     let pubkeyData = data(at: -ikey)
                     // TODO: check if publickey and signature are canonical
 
-                    // TODO: set proper value
-                    let utxo = TransactionOutput(value: 0, lockingScript: subScript.data)
+                    guard let utxoToSign = utxoToVerify else {
+                        throw ScriptMachineError.error("The utxo to verify is not set.")
+                    }
                     do {
-                        try check(signature: signature, publicKey: pubkeyData, utxoToSign: utxo)
+                        try check(signature: signature, publicKey: pubkeyData, utxoToSign: utxoToSign)
                         iSig += 1
                         sigsCount -= 1
                     } catch let sigError {
@@ -826,6 +830,10 @@ class ScriptMachine {
             throw ScriptMachineError.error("Too many items on stack.")
         }
         // Do nothing if everything is okay.
+    }
+
+    internal func testCheck(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) throws {
+        try check(signature: signature, publicKey: publicKey, utxoToSign: utxoToSign)
     }
 
     private func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) throws {
