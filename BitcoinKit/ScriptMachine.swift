@@ -773,29 +773,28 @@ class ScriptMachine {
                     let sig = data(at: -iSig - k)
                     subScript.deleteOccurrences(of: sig)
                 }
-                
+
                 var success: Bool = true
                 var firstSigError: Error? = nil
                 while sigsCount > 0 {
                     let signature = data(at: -iSig)
                     let pubkeyData = data(at: -ikey)
                     // TODO: check if publickey and signature are canonical
-                    
+
                     // TODO: set proper value
                     let utxo = TransactionOutput(value: 0, lockingScript: subScript.data)
                     do {
                         try check(signature: signature, publicKey: pubkeyData, utxoToSign: utxo)
                         iSig += 1
                         sigsCount -= 1
-                    } catch (let sigError) {
-                        
+                    } catch let sigError {
                         if firstSigError == nil {
                             firstSigError = sigError
                         }
                     }
                     ikey += 1
                     keysCount -= 1
-                    
+
                     // If there are more signatures left than keys left,
                     // then too many signatures have failed
                     guard keysCount <= sigsCount else {
@@ -815,10 +814,10 @@ class ScriptMachine {
                 if opcode == Opcode.OP_CHECKMULTISIGVERIFY {
                     stack.removeLast()
                     guard success else {
-                        throw ScriptMachineError.error("Multisignature check failed. \(firstSigError)")
+                        throw ScriptMachineError.error("Multisignature check failed. \(firstSigError?.localizedDescription)")
                     }
                 }
-            }  else {
+            } else {
                 throw ScriptMachineError.error("Unknown opcode \(opcode) \(Opcode.getOpcodeName(with: opcode)).")
             }
         }
@@ -829,11 +828,6 @@ class ScriptMachine {
     }
 
     public func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) throws {
-        // TODO: pubkey data validation
-//        guard publicKey is valid data else {
-//            ScriptMachineError.error("Public key is not valid: \(publicKey.hex).")
-//        }
-
         // Hash type is one byte tacked on to the end of the signature. So the signature shouldn't be empty.
         guard !signature.isEmpty else {
             throw ScriptMachineError.error("Signature is empty.")
@@ -850,7 +844,7 @@ class ScriptMachine {
         }
 
         let sighash: Data = tx.signatureHash(for: utxoToSign, inputIndex: inputIndex, hashType: hashType)
-        if Crypto.verifySignature(signature, message: sighash, publicKey: publicKey) == false {
+        if try Crypto.verifySignature(signature, message: sighash, publicKey: publicKey) == false {
             throw ScriptMachineError.error("Signature is not valid.")
         }
     }

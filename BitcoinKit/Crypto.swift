@@ -70,21 +70,33 @@ public struct Crypto {
         return der
     }
 
-    public static func verifySignature(_ signature: Data, message: Data, publicKey: Data) -> Bool {
+    public static func verifySignature(_ signature: Data, message: Data, publicKey: Data) throws -> Bool {
         let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY))!
-        let status = message.withUnsafeBytes { messagePtr in
-            publicKey.withUnsafeBytes { pubkeyPtr in
-                signature.withUnsafeBytes { sigPtr in
-                    secp256k1_ecdsa_verify(ctx, sigPtr, messagePtr, pubkeyPtr)
-                }
-            }
+        defer { secp256k1_context_destroy(ctx) }
+
+        let signaturePointer = UnsafeMutablePointer<secp256k1_ecdsa_signature>.allocate(capacity: 1)
+        defer { signaturePointer.deallocate() }
+        guard signature.withUnsafeBytes({ secp256k1_ecdsa_signature_parse_der(ctx, signaturePointer, $0, signature.count) }) == 1 else {
+            throw CryptoError.signatureParseFailed
         }
 
-        return status == 1
+        let pubkeyPointer = UnsafeMutablePointer<secp256k1_pubkey>.allocate(capacity: 1)
+        defer { pubkeyPointer.deallocate() }
+        guard publicKey.withUnsafeBytes({ secp256k1_ec_pubkey_parse(ctx, pubkeyPointer, $0, publicKey.count) }) == 1 else {
+            throw CryptoError.publicKeyParseFailed
+        }
+
+        guard message.withUnsafeBytes ({ secp256k1_ecdsa_verify(ctx, signaturePointer, $0, pubkeyPointer) }) == 1 else {
+            return false
+        }
+
+        return true
     }
 }
 
 public enum CryptoError: Error {
     case signFailed
     case noEnoughSpace
+    case signatureParseFailed
+    case publicKeyParseFailed
 }

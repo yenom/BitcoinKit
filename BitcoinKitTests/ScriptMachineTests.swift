@@ -40,18 +40,23 @@ class ScriptMachineTests: XCTestCase {
         let inputForSign = TransactionInput(previousOutput: outpoint, signatureScript: subScript, sequence: UInt32.max)
         let _tx = Transaction(version: 1, inputs: [inputForSign], outputs: [sending, payback], lockTime: 0)
         let hashType: SighashType = SighashType.BTC.ALL
-        let _txHash = Crypto.sha256sha256(_tx.serialized() + UInt32(hashType).littleEndian)
+        let utxoToSign = TransactionOutput(value: balance, lockingScript: subScript)
+        let _txHash = _tx.signatureHash(for: utxoToSign, inputIndex: 0, hashType: hashType)
         guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
             XCTFail("failed to sign")
             return
         }
+        XCTAssertEqual(fromPublicKey.pubkeyHash.hex, "2a539adfd7aefcc02e0196b4ccf76aea88a1f470")
         let signatureWithHashType: Data = signature + UInt8(hashType)
-        let utxoToSign = TransactionOutput(value: 169012961, lockingScript: subScript)
         
         guard let scriptMachine = ScriptMachine(tx: _tx, inputIndex: 0) else {
             XCTFail("failed to sign")
             return
         }
-        XCTAssertTrue(scriptMachine.check(signature: signatureWithHashType, publicKey: fromPublicKey.raw, utxoToSign: utxoToSign), "signature is invalid")
+        do {
+            try scriptMachine.check(signature: signatureWithHashType, publicKey: fromPublicKey.raw, utxoToSign: utxoToSign)
+        } catch (let err) {
+            XCTFail("signature is invalid. \(err)")
+        }
     }
 }
