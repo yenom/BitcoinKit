@@ -57,7 +57,7 @@ class ScriptMachine {
 
     // An index of the tx input in the `transaction`.
     // Required parameter.
-    public var inputIndex: Int
+    public var inputIndex: UInt32
 
     // A timestamp of the current block. Default is current timestamp.
     // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
@@ -112,7 +112,7 @@ class ScriptMachine {
 
     // This will return nil if the transaction is nil, or inputIndex is out of bounds.
     // You can use -init if you want to run scripts without signature verification (so no transaction is needed).
-    public convenience init?(tx: Transaction, inputIndex: Int) {
+    public convenience init?(tx: Transaction, inputIndex: UInt32) {
         // BitcoinQT would crash right before VerifyScript if the input index was out of bounds.
         // So even though it returns 1 from SignatureHash() function when checking for this condition,
         // it never actually happens. So we too will not check for it when calculating a hash.
@@ -133,7 +133,7 @@ class ScriptMachine {
         guard let tx = transaction, inputIndex < tx.inputs.count else {
             throw ScriptMachineError.exception("transaction and valid inputIndex are required for script verification.")
         }
-        let txInput: TransactionInput = tx.inputs[inputIndex]
+        let txInput: TransactionInput = tx.inputs[Int(inputIndex)]
         // TODO: txinput.signatureScript should be Script class
         // let unlockScript: Script = txInput.signatureScript
         let unlockScript: Script = Script(data: txInput.signatureScript)!
@@ -843,8 +843,8 @@ class ScriptMachine {
             throw ScriptMachineError.error("transaction should not be nil.")
         }
 
-        let sighash: Data = tx.signatureHash(for: utxoToSign, inputIndex: inputIndex, hashType: hashType)
-        if try Crypto.verifySignature(signature, message: sighash, publicKey: publicKey) == false {
+        let sighash: Data = tx.signatureHash(for: utxoToSign, inputIndex: Int(inputIndex), hashType: hashType)
+        guard try Crypto.verifySignature(signature, message: sighash, publicKey: publicKey) else {
             throw ScriptMachineError.error("Signature is not valid.")
         }
     }
