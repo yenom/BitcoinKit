@@ -43,7 +43,7 @@ public struct TransactionOutPoint {
     }
 
     static func deserialize(_ byteStream: ByteStream) -> TransactionOutPoint {
-        let hash = Data(byteStream.read(Data.self, count: 32).reversed())
+        let hash = Data(byteStream.read(Data.self, count: 32))
         let index = byteStream.read(UInt32.self)
         return TransactionOutPoint(hash: hash, index: index)
     }
