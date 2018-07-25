@@ -196,7 +196,7 @@ class ScriptMachine {
     }
 
     public func runScript(_ script: Script) throws {
-        guard script.data.count > BTC_MAX_SCRIPT_SIZE else {
+        guard script.data.count <= BTC_MAX_SCRIPT_SIZE else {
             throw ScriptMachineError.exception("Script binary is too long.")
         }
 
@@ -365,23 +365,23 @@ class ScriptMachine {
                 guard stack.count >= 2 else {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
-                stack.append(stack[-2])
-                stack.append(stack[-1])
+                stack.append(stack[normalized: -2])
+                stack.append(stack[normalized: -1])
             } else if opcode == Opcode.OP_3DUP {
                 // (x1 x2 x3 -- x1 x2 x3 x1 x2 x3)
                 guard stack.count >= 3 else {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(3)
                 }
-                stack.append(stack[-3])
-                stack.append(stack[-2])
-                stack.append(stack[-1])
+                stack.append(stack[normalized: -3])
+                stack.append(stack[normalized: -2])
+                stack.append(stack[normalized: -1])
             } else if opcode == Opcode.OP_2OVER {
                 // (x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2)
                 guard stack.count >= 4 else {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(4)
                 }
-                stack.append(stack[-4])
-                stack.append(stack[-3])
+                stack.append(stack[normalized: -4])
+                stack.append(stack[normalized: -3])
             } else if opcode == Opcode.OP_2ROT {
                 // (x1 x2 x3 x4 x5 x6 -- x3 x4 x5 x6 x1 x2)
                 guard stack.count >= 6 else {
@@ -403,7 +403,7 @@ class ScriptMachine {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
                 if bool(at: -1) {
-                    stack.append(stack[-1])
+                    stack.append(stack[normalized: -1])
                 }
             } else if opcode == Opcode.OP_DEPTH {
                 // -- stacksize
@@ -414,7 +414,7 @@ class ScriptMachine {
                 guard stack.count >= 1 else {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
-                stack.append(stack[-1])
+                stack.append(stack[normalized: -1])
             } else if opcode == Opcode.OP_NIP {
                 // (x1 x2 -- x2)
                 guard stack.count >= 2 else {
@@ -426,7 +426,7 @@ class ScriptMachine {
                 guard stack.count >= 2 else {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
-                stack.append(stack[-2])
+                stack.append(stack[normalized: -2])
             } else if opcode == Opcode.OP_PICK || opcode == Opcode.OP_ROLL {
                 // pick: (xn ... x2 x1 x0 n -- xn ... x2 x1 x0 xn)
                 // roll: (xn ... x2 x1 x0 n --    ... x2 x1 x0 xn)
@@ -475,14 +475,14 @@ class ScriptMachine {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
-                stack.insert(stack[-1], at: -3)
+                stack.insert(stack[normalized: -1], at: -3)
             } else if opcode == Opcode.OP_SIZE {
                 // (in -- in size)
                 guard stack.count >= 1 else {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
                 }
 
-                let data = stack[-1]
+                let data = stack[normalized: -1]
                 stack.append(Data(from: data.count))
                 //
                 // Bitwise logic
@@ -497,6 +497,7 @@ class ScriptMachine {
                 let x1 = stack.popLast()!
                 let x2 = stack.popLast()!
                 let equal: Bool = x1 == x2
+                print("OP_EAUAL | OP_EQUALVERIFY : \(x1.hex), \(x2.hex)")
 
                 // OP_NOTEQUAL is disabled because it would be too easy to say
                 // something like n != 1 and have some wiseguy pass in 1 with extra
@@ -670,9 +671,9 @@ class ScriptMachine {
                 } else if opcode == Opcode.OP_SHA256 {
                     hash = Crypto.sha256(data)
                 } else if opcode == Opcode.OP_HASH160 {
-                    assertionFailure("HASH160 is not implemented")
-                } else { // opcode == Opcode.OP_HASH256
-                    assertionFailure("HASH256 is not implemented")
+                    hash = Crypto.sha256ripemd160(data)
+                } else if opcode == Opcode.OP_HASH256 {
+                    hash = Crypto.sha256sha256(data)
                 }
 
                 stack.append(hash!)
@@ -690,8 +691,8 @@ class ScriptMachine {
                     throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
                 }
 
-                let signature: Data = stack.remove(at: -2)
-                let pubkeyData: Data = stack.remove(at: -1)
+                let pubkeyData: Data = stack.removeLast()
+                let signature: Data = stack.removeLast()
 
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
                 let subScript = script.subScript(from: lastCodeSepartorIndex)
@@ -827,7 +828,7 @@ class ScriptMachine {
         // Do nothing if everything is okay.
     }
 
-    public func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) throws {
+    private func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) throws {
         // Hash type is one byte tacked on to the end of the signature. So the signature shouldn't be empty.
         guard !signature.isEmpty else {
             throw ScriptMachineError.error("Signature is empty.")

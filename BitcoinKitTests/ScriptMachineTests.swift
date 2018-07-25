@@ -47,14 +47,18 @@ class ScriptMachineTests: XCTestCase {
             return
         }
         XCTAssertEqual(fromPublicKey.pubkeyHash.hex, "2a539adfd7aefcc02e0196b4ccf76aea88a1f470")
-        let signatureWithHashType: Data = signature + UInt8(hashType)
-        
-        guard let scriptMachine = ScriptMachine(tx: _tx, inputIndex: 0) else {
+        let unlockScript: Script = Script()
+        unlockScript.append(data: signature + UInt8(hashType))
+        unlockScript.append(data: fromPublicKey.raw)
+        let txin = TransactionInput(previousOutput: outpoint, signatureScript: unlockScript.data, sequence: UInt32.max)
+        let transaction = Transaction(version: 1, inputs: [txin], outputs: [sending, payback], lockTime: 0)
+        guard let scriptMachine = ScriptMachine(tx: transaction, inputIndex: 0) else {
             XCTFail("failed to sign")
             return
         }
+        
         do {
-            try scriptMachine.check(signature: signatureWithHashType, publicKey: fromPublicKey.raw, utxoToSign: utxoToSign)
+            try scriptMachine.verify(with: Script(data: utxoToSign.lockingScript)!)
         } catch (let err) {
             XCTFail("signature is invalid. \(err)")
         }

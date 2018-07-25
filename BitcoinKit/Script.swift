@@ -333,6 +333,7 @@ public class Script {
 
     private func update(with updatedData: Data) {
         guard let updatedChunks = Script.parseData(updatedData) else {
+            print("update parse data failed. : \(updatedData.hex)")
             return
         }
         chunks = updatedChunks
@@ -348,12 +349,14 @@ public class Script {
 
     public func append(data: Data) {
         guard !data.isEmpty else {
+            print("data is empty")
             return
         }
 
         var updatedData: Data = self.data
 
         guard let addedScriptData = ScriptChunkHelper.scriptData(for: data, preferredLengthEncoding: -1) else {
+            print("script data is nil")
             return
         }
         updatedData += addedScriptData
