@@ -24,7 +24,7 @@
 import Foundation
 import secp256k1
 
-enum ScriptVerification {
+public enum ScriptVerification {
     case StrictEncoding // enforce strict conformance to DER and SEC2 for signatures and pubkeys (aka SCRIPT_VERIFY_STRICTENC)
     case EvenS // enforce lower S values (below curve halforder) in signatures (aka SCRIPT_VERIFY_EVEN_S, depends on STRICTENC)
 }

@@ -47,10 +47,17 @@ public protocol ScriptChunk {
     // This means, you'll never be able to parse a sane-looking script into only one binary.
     // So forget about relying on parsing this thing exactly. Typically, we either have very small numbers (0..16),
     // or very big numbers (hashes and pubkeys).
+
+    var opCode: OP_CODE { get }
     var string: String { get }
 }
 
 extension ScriptChunk {
+    public var opCode: OP_CODE {
+        // TODO: Fix this
+        return OP_.EXAMPLE
+    }
+
     public var opcode: UInt8 {
         return UInt8(scriptData[range.lowerBound])
     }

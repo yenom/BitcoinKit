@@ -428,6 +428,13 @@ public class Script {
         let chunk = self.chunk(at: index)
         return chunk.pushedData
     }
+
+    public func execute(transaction: Transaction?, inputIndex: Int?, stack: [Data], verifyFlags: ScriptVerification?) throws {
+        let context = ScriptExecutionContext()
+        for chunk in chunks {
+            try chunk.opCode.execute(context)
+        }
+    }
 }
 
 extension Script {
