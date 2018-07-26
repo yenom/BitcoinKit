@@ -261,7 +261,6 @@ class ScriptMachine {
 
         if let pushedData = pushedData, shouldExecute {
             stack.append(pushedData)
-
         } else if shouldExecute || (Opcode.OP_IF <= opcode && opcode <= Opcode.OP_ENDIF) {
             // this basically means that OP_VERIF and OP_VERNOTIF will always fail the script, even if not executed.
 
@@ -695,7 +694,7 @@ class ScriptMachine {
                 }
 
                 let pubkeyData: Data = stack.removeLast()
-                let signature: Data = stack.removeLast()
+                let sigData: Data = stack.removeLast()
 
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
                 let subScript = script.subScript(from: lastCodeSepartorIndex)
@@ -710,14 +709,10 @@ class ScriptMachine {
                 // But the second tx must contain a valid hash to its parent while
                 // the parent must contain a signed hash of its child. This creates an unsolvable cycle.
                 // See https://bitcointalk.org/index.php?topic=278992.0 for more info.
-                subScript.deleteOccurrences(of: signature)
+                subScript.deleteOccurrences(of: sigData)
 
-                // TODO: check wether signature and pukeyData are canonical. Refer to CoreBitcoin
-                guard let utxoToSign = utxoToVerify else {
-                    throw ScriptMachineError.error("The utxo to verify is not set.")
-                }
                 do {
-                    try check(signature: signature, publicKey: pubkeyData, utxoToSign: utxoToSign)
+                    try checkSig(sigData: sigData, pubKeyData: pubkeyData)
                     if opcode == Opcode.OP_CHECKSIG {
                         stack.append(blobTrue)
                     }
@@ -781,15 +776,11 @@ class ScriptMachine {
                 var success: Bool = true
                 var firstSigError: Error? = nil
                 while sigsCount > 0 {
-                    let signature = data(at: -iSig)
+                    let sigData = data(at: -iSig)
                     let pubkeyData = data(at: -ikey)
-                    // TODO: check if publickey and signature are canonical
 
-                    guard let utxoToSign = utxoToVerify else {
-                        throw ScriptMachineError.error("The utxo to verify is not set.")
-                    }
                     do {
-                        try check(signature: signature, publicKey: pubkeyData, utxoToSign: utxoToSign)
+                        try checkSig(sigData: sigData, pubKeyData: pubkeyData)
                         iSig += 1
                         sigsCount -= 1
                     } catch let sigError {
@@ -832,28 +823,12 @@ class ScriptMachine {
         // Do nothing if everything is okay.
     }
 
-    internal func testCheck(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) throws {
-        try check(signature: signature, publicKey: publicKey, utxoToSign: utxoToSign)
-    }
-
-    private func check(signature: Data, publicKey: Data, utxoToSign: TransactionOutput) throws {
-        // Hash type is one byte tacked on to the end of the signature. So the signature shouldn't be empty.
-        guard !signature.isEmpty else {
-            throw ScriptMachineError.error("Signature is empty.")
+    private func checkSig(sigData: Data, pubKeyData: Data) throws {
+        guard let tx = transaction, let utxo = utxoToVerify else {
+            throw ScriptMachineError.error("The transaction or the utxo to verify is not set.")
         }
 
-        // Extract hash type from the last byte of the signature.
-        let hashType = SighashType(signature.last!)
-
-        // Strip that last byte to have a pure signature.
-        let signature = signature.dropLast()
-
-        guard let tx = transaction else {
-            throw ScriptMachineError.error("transaction should not be nil.")
-        }
-
-        let sighash: Data = tx.signatureHash(for: utxoToSign, inputIndex: Int(inputIndex), hashType: hashType)
-        guard try Crypto.verifySignature(signature, message: sighash, publicKey: publicKey) else {
+        guard try Crypto.verifySigData(for: tx, inputIndex: Int(inputIndex), utxo: utxo, sigData: sigData, pubKeyData: pubKeyData) else {
             throw ScriptMachineError.error("Signature is not valid.")
         }
     }

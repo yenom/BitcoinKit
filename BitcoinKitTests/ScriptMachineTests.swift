@@ -31,6 +31,7 @@ class ScriptMachineTests: XCTestCase {
         let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.raw)
         let toPubKeyHash = Base58.decode(toAddress)!.dropFirst().dropLast(4)
         
+        // unsigned tx
         let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: toPubKeyHash)
         let lockingScript2 = Script.buildPublicKeyHashOut(pubKeyHash: fromPubKeyHash)
         
@@ -38,35 +39,45 @@ class ScriptMachineTests: XCTestCase {
         let payback = TransactionOutput(value: balance - amount - fee, lockingScript: lockingScript2)
         let subScript = Data(hex: "76a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac")!
         let inputForSign = TransactionInput(previousOutput: outpoint, signatureScript: subScript, sequence: UInt32.max)
-        let _tx = Transaction(version: 1, inputs: [inputForSign], outputs: [sending, payback], lockTime: 0)
+        let unsignedTx = Transaction(version: 1, inputs: [inputForSign], outputs: [sending, payback], lockTime: 0)
+        
+        // sign
         let hashType: SighashType = SighashType.BTC.ALL
         let utxoToSign = TransactionOutput(value: balance, lockingScript: subScript)
-        let _txHash = _tx.signatureHash(for: utxoToSign, inputIndex: 0, hashType: hashType)
+        let _txHash = unsignedTx.signatureHash(for: utxoToSign, inputIndex: 0, hashType: hashType)
         guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
-            XCTFail("failed to sign")
+            XCTFail("Failed to sign tx.")
             return
         }
+        
+        // unlock script
         XCTAssertEqual(fromPublicKey.pubkeyHash.hex, "2a539adfd7aefcc02e0196b4ccf76aea88a1f470")
         let unlockScript: Script = Script()
         unlockScript.append(data: signature + UInt8(hashType))
         unlockScript.append(data: fromPublicKey.raw)
+        
+        // signed tx
         let txin = TransactionInput(previousOutput: outpoint, signatureScript: unlockScript.data, sequence: UInt32.max)
-        let transaction = Transaction(version: 1, inputs: [txin], outputs: [sending, payback], lockTime: 0)
-        guard let scriptMachine = ScriptMachine(tx: transaction, inputIndex: 0) else {
-            XCTFail("failed to sign")
+        let signedTx = Transaction(version: 1, inputs: [txin], outputs: [sending, payback], lockTime: 0)
+        
+        // verify
+        guard let scriptMachine = ScriptMachine(tx: signedTx, inputIndex: 0) else {
+            XCTFail("Failed to initialize ScriptMachine.")
             return
         }
         
         do {
-            try scriptMachine.testCheck(signature: signature + UInt8(hashType), publicKey: fromPublicKey.raw, utxoToSign: utxoToSign)
-            // success
+            let sigData: Data = signature + UInt8(hashType)
+            let pubkeyData: Data = fromPublicKey.raw
+            let result = try Crypto.verifySigData(for: signedTx, inputIndex: 0, utxo: utxoToSign, sigData: sigData, pubKeyData: pubkeyData)
+            XCTAssertTrue(result)
         } catch (let err) {
-            XCTFail("Script machine check failed. \(err)")
+            XCTFail("Crypto verifySigData failed. \(err)")
         }
 
         do {
-            _ = try scriptMachine.verify(with: utxoToSign)
-            // success
+            let result = try scriptMachine.verify(with: utxoToSign)
+            XCTAssertTrue(result)
         } catch (let err) {
             XCTFail("Script machine verify failed. \(err)")
         }
