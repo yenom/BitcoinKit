@@ -67,6 +67,12 @@ extension String: BinaryConvertible {
     }
 }
 
+extension OpCode: BinaryConvertible {
+    static func +(lhs: Data, rhs: OpCode) -> Data {
+        return lhs + rhs.value
+    }
+}
+
 extension Data: BinaryConvertible {
     static func +(lhs: Data, rhs: Data) -> Data {
         var data = Data()

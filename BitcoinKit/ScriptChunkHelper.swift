@@ -26,17 +26,17 @@ struct ScriptChunkHelper {
     public static func scriptData(for data: Data, preferredLengthEncoding: Int) -> Data? {
         var scriptData: Data = Data()
 
-        if data.count < Opcode.OP_PUSHDATA1 && preferredLengthEncoding <= 0 {
+        if data.count < OpCode.OP_PUSHDATA1 && preferredLengthEncoding <= 0 {
             // do nothing
             scriptData += UInt8(data.count)
         } else if data.count <= (0xff) && (preferredLengthEncoding == -1 || preferredLengthEncoding == 1) {
-            scriptData += Opcode.OP_PUSHDATA1
+            scriptData += OpCode.OP_PUSHDATA1
             scriptData += UInt8(data.count)
         } else if data.count <= (0xffff) && (preferredLengthEncoding == -1 || preferredLengthEncoding == 2) {
-            scriptData += Opcode.OP_PUSHDATA2
+            scriptData += OpCode.OP_PUSHDATA2
             scriptData += UInt16(data.count)
         } else if UInt64(data.count) <= 0xffffffff && (preferredLengthEncoding == -1 || preferredLengthEncoding == 4) {
-            scriptData += Opcode.OP_PUSHDATA4
+            scriptData += OpCode.OP_PUSHDATA4
             scriptData += UInt64(data.count)
         } else {
             // Invalid preferredLength encoding or data size is too big.
@@ -54,7 +54,7 @@ struct ScriptChunkHelper {
 
         let opcode: UInt8 = scriptData[offset]
 
-        guard opcode <= Opcode.OP_PUSHDATA4 else {
+        guard opcode <= OpCode.OP_PUSHDATA4 else {
             // simple opcode
             let range = Range(offset..<offset + MemoryLayout.size(ofValue: opcode))
             return OpcodeChunk(scriptData: scriptData, range: range)
@@ -63,10 +63,10 @@ struct ScriptChunkHelper {
         let count: Int = scriptData.count
         let chunkLength: Int
 
-        if opcode < Opcode.OP_PUSHDATA1 {
+        if opcode < OpCode.OP_PUSHDATA1 {
             let dataLength = opcode
             chunkLength = MemoryLayout.size(ofValue: opcode) + Int(dataLength)
-        } else if opcode == Opcode.OP_PUSHDATA1 {
+        } else if opcode == OpCode.OP_PUSHDATA1 {
             var dataLength = UInt8()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
                 return nil
@@ -75,7 +75,7 @@ struct ScriptChunkHelper {
                 memcpy(&dataLength, $0 + offset + MemoryLayout.size(ofValue: opcode), MemoryLayout.size(ofValue: dataLength))
             }
             chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
-        } else if opcode == Opcode.OP_PUSHDATA2 {
+        } else if opcode == OpCode.OP_PUSHDATA2 {
             var dataLength = UInt16()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
                 return nil
@@ -85,7 +85,7 @@ struct ScriptChunkHelper {
             }
             dataLength = CFSwapInt16LittleToHost(dataLength)
             chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
-        } else if opcode == Opcode.OP_PUSHDATA4 {
+        } else if opcode == OpCode.OP_PUSHDATA4 {
             var dataLength = UInt32()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
                 return nil

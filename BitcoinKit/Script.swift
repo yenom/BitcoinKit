@@ -85,22 +85,22 @@ public class Script {
         switch address.type {
         case .pubkeyHash:
             // OP_DUP OP_HASH160 <hash> OP_EQUALVERIFY OP_CHECKSIG
-            scriptData += Opcode.OP_DUP
-            scriptData += Opcode.OP_HASH160
+            scriptData += OpCode.OP_DUP
+            scriptData += OpCode.OP_HASH160
 
             scriptData += VarInt(address.data.count).serialized()
             scriptData += address.data
 
-            scriptData += Opcode.OP_EQUALVERIFY
-            scriptData += Opcode.OP_CHECKSIG
+            scriptData += OpCode.OP_EQUALVERIFY
+            scriptData += OpCode.OP_CHECKSIG
         case .scriptHash:
             // OP_HASH160 <hash> OP_EQUAL
-            scriptData += Opcode.OP_HASH160
+            scriptData += OpCode.OP_HASH160
 
             scriptData += VarInt(address.data.count).serialized()
             scriptData += address.data
 
-            scriptData += Opcode.OP_EQUAL
+            scriptData += OpCode.OP_EQUAL
         default:
             return nil
         }
@@ -121,13 +121,13 @@ public class Script {
         }
 
         // Both M and N should map to OP_<1..16>
-        let mOpcode: UInt8 = Opcode.opcodeForSmallInteger(smallInteger: Int(signaturesRequired))
-        let nOpcode: UInt8 = Opcode.opcodeForSmallInteger(smallInteger: publicKeys.count)
+        let mOpcode: OpCode = OpCodeFactory.opcodeForSmallInteger(smallInteger: Int(signaturesRequired))
+        let nOpcode: OpCode = OpCodeFactory.opcodeForSmallInteger(smallInteger: publicKeys.count)
 
-        guard mOpcode != Opcode.OP_INVALIDOPCODE else {
+        guard mOpcode != OpCode.OP_INVALIDOPCODE else {
             return nil
         }
-        guard nOpcode != Opcode.OP_INVALIDOPCODE else {
+        guard nOpcode != OpCode.OP_INVALIDOPCODE else {
             return nil
         }
 
@@ -142,7 +142,7 @@ public class Script {
         }
 
         scriptData += nOpcode
-        scriptData += Opcode.OP_CHECKMULTISIG
+        scriptData += OpCode.OP_CHECKMULTISIG
 
         self.init(data: scriptData)
         self.multisigRequirements = (signaturesRequired, publicKeys)
@@ -184,7 +184,7 @@ public class Script {
         guard let pushdata = pushedData(at: 0) else {
             return false
         }
-        return pushdata.count > 1 && opcode(at: 1) == Opcode.OP_CHECKSIG
+        return pushdata.count > 1 && opcode(at: 1) == OpCode.OP_CHECKSIG
     }
 
     public var isPayToPublicKeyHashScript: Bool {
@@ -194,11 +194,11 @@ public class Script {
         guard let dataChunk = chunk(at: 2) as? DataChunk else {
             return false
         }
-        return opcode(at: 0) == Opcode.OP_DUP
-            && opcode(at: 1) == Opcode.OP_HASH160
+        return opcode(at: 0) == OpCode.OP_DUP
+            && opcode(at: 1) == OpCode.OP_HASH160
             && dataChunk.range.count == 21
-            && opcode(at: 3) == Opcode.OP_EQUALVERIFY
-            && opcode(at: 4) == Opcode.OP_CHECKSIG
+            && opcode(at: 3) == OpCode.OP_EQUALVERIFY
+            && opcode(at: 4) == OpCode.OP_CHECKSIG
     }
 
     // TODO: check against the original serialized form instead of parsed chunks because BIP16 defines
@@ -208,9 +208,9 @@ public class Script {
         guard chunks.count == 3 else {
             return false
         }
-        return opcode(at: 0) == Opcode.OP_HASH160
+        return opcode(at: 0) == OpCode.OP_HASH160
             && pushedData(at: 1)?.count == 20 // this is enough to match the exact byte template, any other encoding will be larger.
-            && opcode(at: 2) == Opcode.OP_EQUAL
+            && opcode(at: 2) == OpCode.OP_EQUAL
     }
 
     // Returns true if the script ends with P2SH check.
@@ -219,9 +219,9 @@ public class Script {
         guard chunks.count >= 3 else {
             return false
         }
-        return opcode(at: -3) == Opcode.OP_HASH160
+        return opcode(at: -3) == OpCode.OP_HASH160
             && pushedData(at: -2)?.count == 20
-            && opcode(at: -1) == Opcode.OP_EQUAL
+            && opcode(at: -1) == OpCode.OP_EQUAL
     }
 
     public var isStandardMultisignatureScript: Bool {
@@ -253,15 +253,15 @@ public class Script {
         }
 
         // The last op is multisig check.
-        guard opcode(at: -1) == Opcode.OP_CHECKMULTISIG else {
+        guard opcode(at: -1) == OpCode.OP_CHECKMULTISIG else {
             return
         }
 
-        let mOpcode: UInt8 = opcode(at: 0)
-        let nOpcode: UInt8 = opcode(at: -2)
+        let mOpcode: OpCode = opcode(at: 0)
+        let nOpcode: OpCode = opcode(at: -2)
 
-        let m: Int = Opcode.smallIntegerFromOpcode(opcode: mOpcode)
-        let n: Int = Opcode.smallIntegerFromOpcode(opcode: nOpcode)
+        let m: Int = OpCodeFactory.smallIntegerFromOpcode(opcode: mOpcode)
+        let n: Int = OpCodeFactory.smallIntegerFromOpcode(opcode: nOpcode)
 
         guard m > 0 && m != Int.max else {
             return
@@ -290,22 +290,22 @@ public class Script {
 
     // Include both PUSHDATA ops and OP_0..OP_16 literals.
     public var isDataOnly: Bool {
-        return !chunks.contains { $0.opcode > Opcode.OP_16 }
+        return !chunks.contains { $0.opCode > OpCode.OP_16 }
     }
 
     public var scriptChunks: [ScriptChunk] {
         return chunks
     }
 
-    public func enumerateOperations(block: (_ opIndex: Int, _ opcode: UInt8, _ pushData: Data?) throws -> Void) throws {
-        for (opIndex, chunk) in chunks.enumerated() {
-            if chunk is OpcodeChunk {
-                try block(opIndex, chunk.opcode, nil)
-            } else if chunk is DataChunk {
-                try block(opIndex, Opcode.OP_INVALIDOPCODE, chunk.pushedData)
-            }
-        }
-    }
+//    public func enumerateOperations(block: (_ opIndex: Int, _ opcode: UInt8, _ pushData: Data?) throws -> Void) throws {
+//        for (opIndex, chunk) in chunks.enumerated() {
+//            if chunk is OpcodeChunk {
+//                try block(opIndex, chunk.opCode, nil)
+//            } else if chunk is DataChunk {
+//                try block(opIndex, OpCode.OP_INVALIDOPCODE, chunk.pushedData)
+//            }
+//        }
+//    }
 
     public var standardAddress: Address? {
         if isPayToPublicKeyHashScript {
@@ -383,7 +383,7 @@ public class Script {
     }
 
     public func deleteOccurrences(of opcode: UInt8) {
-        let updatedData = chunks.filter { $0.opcode != opcode }.reduce(Data()) { $0 + $1.chunkData }
+        let updatedData = chunks.filter { $0.opCode != opcode }.reduce(Data()) { $0 + $1.chunkData }
         update(with: updatedData)
     }
 
@@ -412,13 +412,13 @@ public class Script {
     // Returns an opcode in a chunk.
     // If the chunk is data, not an opcode, returns OP_INVALIDOPCODE
     // Raises exception if index is out of bounds.
-    public func opcode(at index: Int) -> UInt8 {
+    public func opcode(at index: Int) -> OpCode {
         let chunk = self.chunk(at: index)
         // If the chunk is not actually an opcode, return invalid opcode.
         guard chunk is OpcodeChunk else {
-            return Opcode.OP_INVALIDOPCODE
+            return OpCode.OP_INVALIDOPCODE
         }
-        return chunk.opcode
+        return chunk.opCode
     }
 
     // Returns Data in a chunk.
@@ -429,10 +429,19 @@ public class Script {
         return chunk.pushedData
     }
 
-    public func execute(transaction: Transaction?, inputIndex: Int?, stack: [Data], verifyFlags: ScriptVerification?) throws {
-        let context = ScriptExecutionContext()
+    public func execute(with context: ScriptExecutionContext) throws {
         for chunk in chunks {
-            try chunk.opCode.execute(context)
+            if chunk is OpcodeChunk {
+                try chunk.opCode.execute(context)
+            } else if chunk is DataChunk {
+                // TODO: push data to context
+            } else {
+                throw ScriptMachineError.error("Unknown chunk")
+            }
+        }
+
+        guard context.conditionStack.isEmpty else {
+            throw ScriptMachineError.error("Condition branches not balanced.")
         }
     }
 }
@@ -441,8 +450,8 @@ extension Script {
     // Standard Transaction to Bitcoin address (pay-to-pubkey-hash)
     // scriptPubKey: OP_DUP OP_HASH160 OP_0 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
     public static func buildPublicKeyHashOut(pubKeyHash: Data) -> Data {
-        let tmp: Data = Data() + Opcode.OP_DUP + Opcode.OP_HASH160 + Opcode.OP_0 + pubKeyHash + Opcode.OP_EQUALVERIFY
-        return tmp + Opcode.OP_CHECKSIG
+        let tmp: Data = Data() + OpCode.OP_DUP + OpCode.OP_HASH160 + OpCode.OP_0 + pubKeyHash + OpCode.OP_EQUALVERIFY
+        return tmp + OpCode.OP_CHECKSIG
     }
 
     public static func buildPublicKeyUnlockingScript(signature: Data, pubkey: PublicKey, hashType: SighashType) -> Data {
@@ -454,8 +463,8 @@ extension Script {
 
     public static func isPublicKeyHashOut(_ script: Data) -> Bool {
         return script.count == 25 &&
-            script[0] == Opcode.OP_DUP && script[1] == Opcode.OP_HASH160 && script[2] == Opcode.OP_0 &&
-            script[23] == Opcode.OP_EQUALVERIFY && script[24] == Opcode.OP_CHECKSIG
+            script[0] == OpCode.OP_DUP && script[1] == OpCode.OP_HASH160 && script[2] == OpCode.OP_0 &&
+            script[23] == OpCode.OP_EQUALVERIFY && script[24] == OpCode.OP_CHECKSIG
     }
 
     public static func getPublicKeyHash(from script: Data) -> Data {
