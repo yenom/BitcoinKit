@@ -64,51 +64,9 @@ class ScriptMachine {
     // If not specified, defaults to current timestamp thus using the latest protocol rules.
     public var blockTimestamp: UInt32 = UInt32(NSTimeIntervalSince1970)
 
-    // Flags affecting verification. Default is the most liberal verification.
-    // One can be stricter to not relay transactions with non-canonical signatures and pubkey (as BitcoinQT does).
-    // Defaults in CoreBitcoin: be liberal in what you accept and conservative in what you send.
-    // So we try to create canonical purist transactions but have no problem accepting and working with non-canonical ones.
-    public var verificationFlags: ScriptVerification?
-
-    // Stack contains NSData objects that are interpreted as numbers, bignums, booleans or raw data when needed.
-    public private(set) var stack = [Data]()
-
-    // Used in ALTSTACK ops.
-    public private(set) var altStack = [Data]()
-
-    // Holds an array of @YES and @NO values to keep track of if/else branches.
-    private var conditionStack = [Bool]()
-
-    // Currently executed script.
-    private var script: Script = Script()
-
-    // Current opcode.
-    private var opcode: UInt8 = 0
-
-    // Current payload for any "push data" operation.
-    private var pushedData: Data?
-
-    // Current opcode index in _script.
-    private var opIndex: Int = 0
-
-    // Index of last OP_CODESEPARATOR
-    private var lastCodeSepartorIndex: Int = 0
-
-    // Keeps number of executed operations to check for limit.
-    private var opCount: Int = 0
-
-    // New!
-    private var utxoToVerify: TransactionOutput?
-
+    private var context: ScriptExecutionContext = ScriptExecutionContext()
     public init() {
         inputIndex = 0xFFFFFFFF
-        resetStack()
-    }
-
-    private func resetStack() {
-        stack = [Data()]
-        altStack = [Data()]
-        conditionStack = [Bool]()
     }
 
     // This will return nil if the transaction is nil, or inputIndex is out of bounds.
@@ -132,14 +90,15 @@ class ScriptMachine {
     public func verify(with utxo: TransactionOutput) throws -> Bool {
         // Sanity check: transaction and its input should be consistent.
         guard let tx = transaction, inputIndex < tx.inputs.count else {
-            throw ScriptMachineError.exception("transaction and valid inputIndex are required for script verification.")
+            throw ScriptMachineError.exception("Transaction and valid inputIndex are required for script verification.")
         }
+        context.transaction = transaction
+        context.utxoToVerify = utxo
+        context.inputIndex = inputIndex
+
         let txInput: TransactionInput = tx.inputs[Int(inputIndex)]
-        // TODO: txinput.signatureScript should be Script class
-        // let unlockScript: Script = txInput.signatureScript
-        let unlockScript: Script = Script(data: txInput.signatureScript)!
-        let lockScript: Script = Script(data: utxo.lockingScript)!
-        utxoToVerify = utxo
+        let unlockScript: Script = Script(data: txInput.signatureScript)! // TODO: txinput.signatureScript should be Script class
+        let lockScript: Script = Script(data: utxo.lockingScript)! // TODO: utxo.lockingScript should be Script class
 
         // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
         try runScript(unlockScript)
@@ -148,12 +107,12 @@ class ScriptMachine {
         try runScript(lockScript)
 
         // We need to have something on stack
-        guard !stack.isEmpty else {
+        guard !context.stack.isEmpty else {
             throw ScriptMachineError.error("Stack is empty after script execution.")
         }
 
         // The last value must be true.
-        guard bool(at: -1) else {
+        guard context.bool(at: -1) else {
             throw ScriptMachineError.error("Last item on the stack is false.")
         }
 
@@ -162,34 +121,16 @@ class ScriptMachine {
             guard unlockScript.isDataOnly else {
                 throw ScriptMachineError.error("Input script for P2SH spending must be literals-only.")
             }
-            // Make a copy of the stack if we have P2SH script.
-            // We will run deserialized P2SH script on this stack.
-            var stackForP2SH: [Data] = stack
-
-            // Instantiate the script from the last data on the stack.
-            guard let last = stackForP2SH.last, let deserializedLockScript = Script(data: last) else {
-                // stackForP2SH cannot be empty here, because if it was the
-                // P2SH  HASH <> EQUAL  scriptPubKey would be evaluated with
-                // an empty stack and the runScript: above would return NO.
-                throw ScriptMachineError.exception("internal inconsistency: stackForP2SH cannot be empty at this point.")
-            }
-
-            // Remove it from the stack.
-            stackForP2SH.removeLast()
-
-            // Replace current stack with P2SH stack.
-            resetStack()
-            self.stack = stackForP2SH
-
+            let deserializedLockScript = try context.deserializeP2SHLockScript()
             try runScript(deserializedLockScript)
 
             // We need to have something on stack
-            guard !stack.isEmpty else {
+            guard !context.stack.isEmpty else {
                 throw ScriptMachineError.error("Stack is empty after script execution.")
             }
 
             // The last value must be YES.
-            guard bool(at: -1) else {
+            guard context.bool(at: -1) else {
                 throw ScriptMachineError.error("Last item on the stack is false.")
             }
         }
@@ -204,43 +145,7 @@ class ScriptMachine {
         }
 
         // Altstack should be reset between script runs.
-        let context: ScriptExecutionContext = ScriptExecutionContext()
         try script.execute(with: context)
-    }
-
-    private func checkSig(sigData: Data, pubKeyData: Data) throws {
-        guard let tx = transaction, let utxo = utxoToVerify else {
-            throw ScriptMachineError.error("The transaction or the utxo to verify is not set.")
-        }
-
-        guard try Crypto.verifySigData(for: tx, inputIndex: Int(inputIndex), utxo: utxo, sigData: sigData, pubKeyData: pubKeyData) else {
-            throw ScriptMachineError.error("Signature is not valid.")
-        }
-    }
-
-    private func data(at index: Int) -> Data {
-        return stack[normalized: index]
-    }
-
-    // TODO: fix this!
-    private func number(at index: Int) -> Int32? {
-        let data: Data = stack[normalized: index]
-        return Int32(data.withUnsafeBytes { $0.pointee })
-    }
-
-    private func bool(at index: Int) -> Bool {
-        let data: Data = stack[normalized: index]
-        guard !data.isEmpty else {
-            return false
-        }
-
-        for d in data {
-            // Can be negative zero, also counts as NO
-            if d != 0 && !(d == data.count - 1 && d == (0x80)) {
-                return true
-            }
-        }
-        return false
     }
 }
 

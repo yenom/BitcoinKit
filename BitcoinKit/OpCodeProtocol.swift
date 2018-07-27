@@ -16,18 +16,6 @@ public protocol OpCodeProtocol {
     func execute(_ context: ScriptExecutionContext) throws
 }
 
-public class ScriptExecutionContext {
-    public fileprivate(set) var stack = [Data]()
-    public fileprivate(set) var altStack = [Data]()
-    public fileprivate(set) var conditionStack = [Bool]()
-
-    public fileprivate(set) var opCode: OpCode = OpCode.OP_0
-    public fileprivate(set) var opIndex: Int = 0
-    public fileprivate(set) var opCount: Int = 0
-    public fileprivate(set) var lastCodeSepartorIndex: Int = 0
-    // Getters and setter...
-}
-
 extension OpCodeProtocol {
     // ==
     static func == <Other: BinaryInteger>(lhs: Self, rhs: Other) -> Bool {

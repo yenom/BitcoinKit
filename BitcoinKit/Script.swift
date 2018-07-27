@@ -88,8 +88,10 @@ public class Script {
             scriptData += OpCode.OP_DUP
             scriptData += OpCode.OP_HASH160
 
-            scriptData += VarInt(address.data.count).serialized()
-            scriptData += address.data
+            guard let addressData = ScriptChunkHelper.scriptData(for: address.data, preferredLengthEncoding: -1) else {
+                return nil
+            }
+            scriptData += addressData
 
             scriptData += OpCode.OP_EQUALVERIFY
             scriptData += OpCode.OP_CHECKSIG
@@ -97,8 +99,10 @@ public class Script {
             // OP_HASH160 <hash> OP_EQUAL
             scriptData += OpCode.OP_HASH160
 
-            scriptData += VarInt(address.data.count).serialized()
-            scriptData += address.data
+            guard let addressData = ScriptChunkHelper.scriptData(for: address.data, preferredLengthEncoding: -1) else {
+                return nil
+            }
+            scriptData += addressData
 
             scriptData += OpCode.OP_EQUAL
         default:
@@ -297,16 +301,6 @@ public class Script {
         return chunks
     }
 
-//    public func enumerateOperations(block: (_ opIndex: Int, _ opcode: UInt8, _ pushData: Data?) throws -> Void) throws {
-//        for (opIndex, chunk) in chunks.enumerated() {
-//            if chunk is OpcodeChunk {
-//                try block(opIndex, chunk.opCode, nil)
-//            } else if chunk is DataChunk {
-//                try block(opIndex, OpCode.OP_INVALIDOPCODE, chunk.pushedData)
-//            }
-//        }
-//    }
-
     public var standardAddress: Address? {
         if isPayToPublicKeyHashScript {
             guard let dataChunk = chunk(at: 2) as? DataChunk else {
@@ -378,7 +372,7 @@ public class Script {
             return
         }
 
-        let updatedData = chunks.filter { $0.pushedData != data }.reduce(Data()) { $0 + $1.chunkData }
+        let updatedData = chunks.filter { ($0 as? DataChunk)?.pushedData != data }.reduce(Data()) { $0 + $1.chunkData }
         update(with: updatedData)
     }
 
@@ -426,15 +420,15 @@ public class Script {
     // Raises exception if index is out of bounds.
     public func pushedData(at index: Int) -> Data? {
         let chunk = self.chunk(at: index)
-        return chunk.pushedData
+        return (chunk as? DataChunk)?.pushedData
     }
 
     public func execute(with context: ScriptExecutionContext) throws {
         for chunk in chunks {
-            if chunk is OpcodeChunk {
-                try chunk.opCode.execute(context)
-            } else if chunk is DataChunk {
-                // TODO: push data to context
+            if let opChunk = chunk as? OpcodeChunk {
+                try opChunk.opCode.execute(context)
+            } else if let dataChunk = chunk as? DataChunk {
+                try context.pushData(dataChunk.pushedData)
             } else {
                 throw ScriptMachineError.error("Unknown chunk")
             }
@@ -450,7 +444,7 @@ extension Script {
     // Standard Transaction to Bitcoin address (pay-to-pubkey-hash)
     // scriptPubKey: OP_DUP OP_HASH160 OP_0 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
     public static func buildPublicKeyHashOut(pubKeyHash: Data) -> Data {
-        let tmp: Data = Data() + OpCode.OP_DUP + OpCode.OP_HASH160 + OpCode.OP_0 + pubKeyHash + OpCode.OP_EQUALVERIFY
+        let tmp: Data = Data() + OpCode.OP_DUP + OpCode.OP_HASH160 + UInt8(pubKeyHash.count) + pubKeyHash + OpCode.OP_EQUALVERIFY
         return tmp + OpCode.OP_CHECKSIG
     }
 

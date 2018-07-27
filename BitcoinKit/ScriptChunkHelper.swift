@@ -46,6 +46,7 @@ struct ScriptChunkHelper {
         return scriptData
     }
 
+    // TODO: Make it throws and non-optional
     public static func parseChunk(from scriptData: Data, offset: Int) -> ScriptChunk? {
         // Data should fit at least one opcode.
         guard scriptData.count > offset else {
@@ -54,30 +55,39 @@ struct ScriptChunkHelper {
 
         let opcode: UInt8 = scriptData[offset]
 
-        guard opcode <= OpCode.OP_PUSHDATA4 else {
+        if opcode > OpCode.OP_PUSHDATA4 {
             // simple opcode
             let range = Range(offset..<offset + MemoryLayout.size(ofValue: opcode))
             return OpcodeChunk(scriptData: scriptData, range: range)
+        } else {
+            // push data
+            return parseDataChunk(from: scriptData, offset: offset, opcode: opcode)
         }
+    }
 
+    private static func parseDataChunk(from scriptData: Data, offset: Int, opcode: UInt8) -> DataChunk? {
+        // for range
         let count: Int = scriptData.count
         let chunkLength: Int
 
-        if opcode < OpCode.OP_PUSHDATA1 {
+        switch opcode {
+        case 0..<OpCode.OP_PUSHDATA1.value:
             let dataLength = opcode
             chunkLength = MemoryLayout.size(ofValue: opcode) + Int(dataLength)
-        } else if opcode == OpCode.OP_PUSHDATA1 {
+        case OpCode.OP_PUSHDATA1.value:
             var dataLength = UInt8()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
+                print("\(opcode), OP_PUSHDATA1 error")
                 return nil
             }
             _ = scriptData.withUnsafeBytes {
                 memcpy(&dataLength, $0 + offset + MemoryLayout.size(ofValue: opcode), MemoryLayout.size(ofValue: dataLength))
             }
             chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
-        } else if opcode == OpCode.OP_PUSHDATA2 {
+        case OpCode.OP_PUSHDATA2.value:
             var dataLength = UInt16()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
+                print("\(opcode), OP_PUSHDATA2 error")
                 return nil
             }
             _ = scriptData.withUnsafeBytes {
@@ -85,9 +95,10 @@ struct ScriptChunkHelper {
             }
             dataLength = CFSwapInt16LittleToHost(dataLength)
             chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
-        } else if opcode == OpCode.OP_PUSHDATA4 {
+        case OpCode.OP_PUSHDATA4.value:
             var dataLength = UInt32()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
+                print("\(opcode), OP_PUSHDATA4 error")
                 return nil
             }
             _ = scriptData.withUnsafeBytes {
@@ -95,9 +106,9 @@ struct ScriptChunkHelper {
             }
             dataLength = CFSwapInt32LittleToHost(dataLength) // CoreBitcoin uses CFSwapInt16LittleToHost(dataLength)
             chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
-        } else {
-            return nil  // never comes here
-            // because opcode is surely OP_PUSHDATA1, OP_PUSHDATA2, or OP_PUSHDATA4
+        default:
+            // cannot happen because it's opcode
+            return nil
         }
 
         guard offset + chunkLength <= count else {

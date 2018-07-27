@@ -777,6 +777,8 @@ class BitcoinKitTests: XCTestCase {
 
         let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: toPubKeyHash)
         let lockingScript2 = Script.buildPublicKeyHashOut(pubKeyHash: fromPubKeyHash)
+        XCTAssertEqual(lockingScript1.hex, "76a9149f9a7abd600c0caa03983a77c8c3df8e062cb2fa88ac")
+        XCTAssertEqual(lockingScript2.hex, "76a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac")
 
         let sending = TransactionOutput(value: amount, lockingScript: lockingScript1)
         let payback = TransactionOutput(value: balance - amount - fee, lockingScript: lockingScript2)
@@ -788,6 +790,7 @@ class BitcoinKitTests: XCTestCase {
         let _tx = Transaction(version: 1, inputs: [inputForSign], outputs: [sending, payback], lockTime: 0)
         let hashType: SighashType = SighashType.BTC.ALL
         let _txHash = Crypto.sha256sha256(_tx.serialized() + UInt32(hashType).littleEndian)
+        XCTAssertEqual(_txHash.hex, "fd2f20da1c28b008abcce8a8ac7e1a7687fc944e001a24fc3aacb6a7570a3d0f")
         guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
             XCTFail("failed to sign")
             return
