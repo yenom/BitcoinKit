@@ -15,14 +15,14 @@ public struct OpCodeFactory {
         }
         return item
     }
-    
+
     public static func get(with name: String) -> OpCode {
         guard let item = (OpCode.list.first { $0.name == name }) else {
             return OpCode.OP_INVALIDOPCODE
         }
         return item
     }
-    
+
     // Returns OP_1NEGATE, OP_0 .. OP_16 for ints from -1 to 16.
     // Returns OP_INVALIDOPCODE for other ints.
     public static func opcodeForSmallInteger(smallInteger: Int) -> OpCode {
@@ -37,7 +37,7 @@ public struct OpCodeFactory {
             return OpCode.OP_INVALIDOPCODE
         }
     }
-    
+
     // Converts opcode OP_<N> or OP_1NEGATE to an integer value.
     // If incorrect opcode is given, Int.max is returned.
     public static func smallIntegerFromOpcode(opcode: OpCode) -> Int {
