@@ -60,12 +60,7 @@ class ScriptMachineTests: XCTestCase {
         let txin = TransactionInput(previousOutput: outpoint, signatureScript: unlockScript.data, sequence: UInt32.max)
         let signedTx = Transaction(version: 1, inputs: [txin], outputs: [sending, payback], lockTime: 0)
         
-        // verify
-        guard let scriptMachine = ScriptMachine(tx: signedTx, inputIndex: 0) else {
-            XCTFail("Failed to initialize ScriptMachine.")
-            return
-        }
-        
+        // crypto verify
         do {
             let sigData: Data = signature + UInt8(hashType)
             let pubkeyData: Data = fromPublicKey.raw
@@ -73,6 +68,12 @@ class ScriptMachineTests: XCTestCase {
             XCTAssertTrue(result)
         } catch (let err) {
             XCTFail("Crypto verifySigData failed. \(err)")
+        }
+        
+        // script machine verify
+        guard let scriptMachine = ScriptMachine(tx: signedTx, inputIndex: 0) else {
+            XCTFail("Failed to initialize ScriptMachine.")
+            return
         }
 
         do {

@@ -28,11 +28,11 @@ public protocol ScriptChunk {
 
     // Portion of scriptData defined by range.
     var chunkData: Data { get }
-    // Data being pushed. Returns nil if the opcode is not OP_PUSHDATA*.
-    var pushedData: Data? { get }
-    // Operation to be executed.
-    var opcode: UInt8 { get }
+    // OP_CODE of scriptData defined by range.
+    var opCode: OpCode { get }
     // String representation of a chunk.
+    var string: String { get }
+
     // OP_1NEGATE, OP_0, OP_1..OP_16 are represented as a decimal number.
     // Most compactly represented pushdata chunks >=128 bit are encoded as <hex string>
     // Smaller most compactly represented data is encoded as [<hex string>]
@@ -47,11 +47,14 @@ public protocol ScriptChunk {
     // This means, you'll never be able to parse a sane-looking script into only one binary.
     // So forget about relying on parsing this thing exactly. Typically, we either have very small numbers (0..16),
     // or very big numbers (hashes and pubkeys).
-    var string: String { get }
 }
 
 extension ScriptChunk {
-    public var opcode: UInt8 {
+    public var opCode: OpCode {
+        return OpCodeFactory.get(with: opcodeValue)
+    }
+
+    private var opcodeValue: UInt8 {
         return UInt8(scriptData[range.lowerBound])
     }
 
@@ -86,10 +89,8 @@ public struct OpcodeChunk: ScriptChunk {
         self.range = range
     }
 
-    public let pushedData: Data? = nil
-
     public var string: String {
-        return Opcode.getOpcodeName(with: opcode)
+        return opCode.name
     }
 }
 
@@ -102,17 +103,17 @@ public struct DataChunk: ScriptChunk {
         self.range = range
     }
 
-    public var pushedData: Data? {
+    public var pushedData: Data {
         return data
     }
 
     private var data: Data {
         var loc: Int = 1
-        if opcode == Opcode.OP_PUSHDATA1 {
+        if opCode == OpCode.OP_PUSHDATA1 {
             loc += 1
-        } else if opcode == Opcode.OP_PUSHDATA2 {
+        } else if opCode == OpCode.OP_PUSHDATA2 {
             loc += 2
-        } else if opcode == Opcode.OP_PUSHDATA4 {
+        } else if opCode == OpCode.OP_PUSHDATA4 {
             loc += 4
         }
 
@@ -145,7 +146,11 @@ public struct DataChunk: ScriptChunk {
         // Non-compact data is prefixed with an appropriate length prefix.
         if !isDataCompact {
             var prefix = 1
-            if opcode == Opcode.OP_PUSHDATA2 { prefix = 2 } else if opcode == Opcode.OP_PUSHDATA4 { prefix = 4 }
+            if opCode == OpCode.OP_PUSHDATA2 {
+                prefix = 2
+            } else if opCode == OpCode.OP_PUSHDATA4 {
+                prefix = 4
+            }
 
             string = String(prefix) + ":" + string
         }
@@ -154,14 +159,14 @@ public struct DataChunk: ScriptChunk {
 
     // Returns true if the data is represented with the most compact opcode.
     public var isDataCompact: Bool {
-        switch opcode {
-        case ...Opcode.OP_PUSHDATA1:
+        switch opCode.value {
+        case ...OpCode.OP_PUSHDATA1.value:
             return true // length fits in one byte under OP_PUSHDATA1.
-        case Opcode.OP_PUSHDATA1:
-            return data.count >= Opcode.OP_PUSHDATA1 // length should not be less than OP_PUSHDATA1
-        case Opcode.OP_PUSHDATA2:
+        case OpCode.OP_PUSHDATA1.value:
+            return data.count >= OpCode.OP_PUSHDATA1.value // length should not be less than OP_PUSHDATA1
+        case OpCode.OP_PUSHDATA2.value:
             return data.count > (0xff) // length should not fit in one byte
-        case Opcode.OP_PUSHDATA4:
+        case OpCode.OP_PUSHDATA4.value:
             return data.count > (0xffff) // length should not fit in two bytes
         default:
             return false

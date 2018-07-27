@@ -102,9 +102,9 @@ public struct Crypto {
         let hashType = SighashType(sigData.last!)
         // Strip that last byte to have a pure signature.
         let signature = sigData.dropLast()
-        
+
         let sighash: Data = tx.signatureHash(for: utxo, inputIndex: inputIndex, hashType: hashType)
-        
+
         return try Crypto.verifySignature(signature, message: sighash, publicKey: pubKeyData)
     }
 }
