@@ -22,7 +22,7 @@ extension OpCodeProtocol {
         return lhs.value == rhs
     }
     static func == <Other: BinaryInteger>(lhs: Other, rhs: Self) -> Bool {
-        return rhs == rhs.value
+        return lhs == rhs.value
     }
 
     // !=
