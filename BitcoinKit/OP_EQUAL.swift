@@ -13,9 +13,10 @@ public struct OpEqual: OpCodeProtocol {
     public var name: String { return "OP_EQUAL" }
 
     public func execute(_ context: ScriptExecutionContext) throws {
+        try prepareExecute(context)
         // (x1 x2 - bool)
         guard context.stack.count >= 2 else {
-            throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
+            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(2)
         }
 
         let x1 = context.stack.popLast()!

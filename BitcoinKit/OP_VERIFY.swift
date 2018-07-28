@@ -13,13 +13,14 @@ public struct OpVerify: OpCodeProtocol {
     public var name: String { return "OP_VERIFY" }
 
     public func execute(_ context: ScriptExecutionContext) throws {
+        try prepareExecute(context)
         // (true -- ) or
         // (false -- false) and return
         guard context.stack.count >= 1 else {
-            throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
+            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(1)
         }
         guard context.bool(at: -1) else {
-            throw ScriptMachineError.error("OP_VERIFY failed.")
+            throw OpCodeExecutionError.error("OP_VERIFY failed.")
         }
         context.stack.removeLast()
     }

@@ -23,7 +23,7 @@ extension OpCodeProtocol {
     public func prepareExecute(_ context: ScriptExecutionContext) throws {
         context.opCount += 1
         guard context.opCount <= BTC_MAX_OPS_PER_SCRIPT else {
-            throw ScriptMachineError.error("Exceeded the allowed number of operations per script.")
+            throw OpCodeExecutionError.error("Exceeded the allowed number of operations per script.")
         }
     }
 
@@ -33,127 +33,74 @@ extension OpCodeProtocol {
     }
 }
 
-func == (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
+enum OpCodeExecutionError: Error {
+    case error(String)
+    case opcodeRequiresItemsOnStack(Int)
+}
+
+// ==
+public func == (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
     return lhs.value == rhs.value
 }
-func == <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
+public func == <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
     return lhs.value == rhs
 }
-func == <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
+public func == <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
     return lhs == rhs.value
 }
 
-func != (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
+// !=
+public func != (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
     return lhs.value != rhs.value
 }
-func != <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
+public func != <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
     return lhs.value != rhs
 }
-func != <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
+public func != <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
     return rhs != rhs.value
 }
 
-func > (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
+// >
+public func > (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
     return lhs.value > rhs.value
 }
-func > <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
+public func > <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
     return lhs.value > rhs
 }
-func > <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
+public func > <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
     return lhs > rhs.value
 }
 
-func < (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
+// <
+public func < (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
     return lhs.value < rhs.value
 }
-func < <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
+public func < <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
     return lhs.value < rhs
 }
-func < <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
+public func < <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
     return lhs < rhs.value
 }
 
-func >= (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
+// >=
+public func >= (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
     return lhs.value >= rhs.value
 }
-func <= (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
+
+// <=
+public func <= (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Bool {
     return lhs.value <= rhs.value
 }
-func ... (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Range<UInt8> {
+
+// ...
+public func ... (lhs: OpCodeProtocol, rhs: OpCodeProtocol) -> Range<UInt8> {
     return Range(lhs.value...rhs.value)
 }
 
-func ~= (pattern: OpCodeProtocol, op: OpCodeProtocol) -> Bool {
+// ~=
+public func ~= (pattern: OpCodeProtocol, op: OpCodeProtocol) -> Bool {
     return pattern == op
 }
-func ~= (pattern: Range<UInt8>, op: OpCodeProtocol) -> Bool {
+public func ~= (pattern: Range<UInt8>, op: OpCodeProtocol) -> Bool {
     return pattern ~= op.value
 }
-
-//extension OpCodeProtocol {
-//    // ==
-//    static func == <Other: OpCodeProtocol>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value == rhs.value
-//    }
-//    static func == <Other: BinaryInteger>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value == rhs
-//    }
-//    static func == <Other: BinaryInteger>(lhs: Other, rhs: Self) -> Bool {
-//        return lhs == rhs.value
-//    }
-//
-//    // !=
-//    static func != <Other: OpCodeProtocol>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value != rhs.value
-//    }
-//    static func != <Other: BinaryInteger>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value != rhs
-//    }
-//    static func != <Other: BinaryInteger>(lhs: Other, rhs: Self) -> Bool {
-//        return rhs != rhs.value
-//    }
-//
-//    // <
-//    static func < <Other: OpCodeProtocol>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value < rhs.value
-//    }
-//    static func < <Other: BinaryInteger>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value < rhs
-//    }
-//    static func < <Other: BinaryInteger>(lhs: Other, rhs: Self) -> Bool {
-//        return lhs < rhs.value
-//    }
-//
-//    // >
-//    static func > <Other: OpCodeProtocol>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value > rhs.value
-//    }
-//    static func > <Other: BinaryInteger>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value > rhs
-//    }
-//    static func > <Other: BinaryInteger>(lhs: Other, rhs: Self) -> Bool {
-//        return lhs > rhs.value
-//    }
-//
-//    // <=
-//    static func <= <Other: OpCodeProtocol>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value <= rhs.value
-//    }
-//    static func <= <Other: BinaryInteger>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value <= rhs
-//    }
-//    static func <= <Other: BinaryInteger>(lhs: Other, rhs: Self) -> Bool {
-//        return lhs <= rhs.value
-//    }
-//
-//    // >=
-//    static func >= <Other: OpCodeProtocol>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value >= rhs.value
-//    }
-//    static func >= <Other: BinaryInteger>(lhs: Self, rhs: Other) -> Bool {
-//        return lhs.value >= rhs
-//    }
-//    static func >= <Other: BinaryInteger>(lhs: Other, rhs: Self) -> Bool {
-//        return lhs >= rhs.value
-//    }
-//}

@@ -13,9 +13,10 @@ public struct OpDuplicate: OpCodeProtocol {
     public var name: String { return "OP_DUP" }
 
     public func execute(_ context: ScriptExecutionContext) throws {
+        try prepareExecute(context)
         // (x -- x x)
         guard context.stack.count >= 1 else {
-            throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
+            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(1)
         }
         try context.pushData(context.data(at: -1))
     }

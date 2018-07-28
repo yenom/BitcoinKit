@@ -13,8 +13,21 @@ public struct OpEqualVerify: OpCodeProtocol {
     public var name: String { return "OP_EQUALVERIFY" }
 
     public func execute(_ context: ScriptExecutionContext) throws {
+        try prepareExecute(context)
         print("stack: \(context.stack.map { $0.hex }.joined(separator: " "))")
-        try OpCode.OP_EQUAL.execute(context)
-        try OpCode.OP_VERIFY.execute(context)
+        // (x1 x2 - bool)
+        guard context.stack.count >= 2 else {
+            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(2)
+        }
+
+        let x1 = context.stack.popLast()!
+        let x2 = context.stack.popLast()!
+        let equal: Bool = x1 == x2
+        context.pushToStack(equal)
+
+        guard equal else {
+            throw OpCodeExecutionError.error("OP_EQUALVERIFY failed.")
+        }
+        context.stack.removeLast()
     }
 }

@@ -74,6 +74,7 @@
 		29290BA1210AF90D00D2BE78 /* OP_VERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */; };
 		29290BA3210AF9D600D2BE78 /* ScriptExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */; };
 		29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */; };
+		29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */; };
 		29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330F6D210597B700106AFA /* UnitsAndLimits.swift */; };
 		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
@@ -177,6 +178,7 @@
 		29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VERIFY.swift; sourceTree = "<group>"; };
 		29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptExecutionContext.swift; sourceTree = "<group>"; };
 		29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_PUSHDATA.swift; sourceTree = "<group>"; };
+		29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSIGVERIFY.swift; sourceTree = "<group>"; };
 		29330F6D210597B700106AFA /* UnitsAndLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsAndLimits.swift; sourceTree = "<group>"; };
 		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
 				29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */,
+				29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */,
 				29290B9A210AF88C00D2BE78 /* OP_HASH160.swift */,
 				29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */,
 			);
@@ -586,6 +589,7 @@
 				290880152109708000C79379 /* OpCodeProtocol.swift in Sources */,
 				14839A91202FE69300A6CB34 /* RejectMessage.swift in Sources */,
 				14839AA5202FE7A100A6CB34 /* ByteStream.swift in Sources */,
+				29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */,
 				14A2961D2032316900E19177 /* HDKeychain.swift in Sources */,
 				147494EA201F9C1F006D1CF8 /* Peer.swift in Sources */,
 				14CDC38A2021881A00C01556 /* Address.swift in Sources */,

@@ -13,9 +13,10 @@ public struct OpHash160: OpCodeProtocol {
     public var name: String { return "OP_HASH160" }
 
     public func execute(_ context: ScriptExecutionContext) throws {
+        try prepareExecute(context)
         // (in -- hash)
         guard context.stack.count >= 1 else {
-            throw ScriptMachineError.opcodeRequiresItemsOnStack(1)
+            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(1)
         }
 
         let data: Data = context.stack.removeLast()

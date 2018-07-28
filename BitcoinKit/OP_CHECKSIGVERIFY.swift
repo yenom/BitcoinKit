@@ -1,16 +1,16 @@
 //
-//  OP_CHECKSIG.swift
+//  OP_CHECKSIGVERIFY.swift
 //  BitcoinKit
 //
-//  Created by Shun Usami on 2018/07/27.
+//  Created by Shun Usami on 2018/07/28.
 //  Copyright © 2018 BitcoinKit-cash developers. All rights reserved.
 //
 
 import Foundation
 
-public struct OpCheckSig: OpCodeProtocol {
-    public var value: UInt8 { return 0xac }
-    public var name: String { return "OP_CHECKSIG" }
+public struct OpCheckSigVerify: OpCodeProtocol {
+    public var value: UInt8 { return 0xad }
+    public var name: String { return "OP_CHECKSIGVERIFY" }
 
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
@@ -31,5 +31,10 @@ public struct OpCheckSig: OpCodeProtocol {
         }
         let valid = try Crypto.verifySigData(for: tx, inputIndex: Int(context.inputIndex), utxo: utxo, sigData: sigData, pubKeyData: pubkeyData)
         context.pushToStack(valid)
+
+        guard valid else {
+            throw OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.")
+        }
+        context.stack.removeLast()
     }
 }
