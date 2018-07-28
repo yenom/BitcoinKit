@@ -57,7 +57,7 @@ public func != <Other: BinaryInteger>(lhs: OpCodeProtocol, rhs: Other) -> Bool {
     return lhs.value != rhs
 }
 public func != <Other: BinaryInteger>(lhs: Other, rhs: OpCodeProtocol) -> Bool {
-    return rhs != rhs.value
+    return lhs != rhs.value
 }
 
 // >
