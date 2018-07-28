@@ -301,19 +301,17 @@ public class Script {
         return chunks
     }
 
-    public var standardAddress: Address? {
+    public func standardAddress(network: Network) -> Address? {
         if isPayToPublicKeyHashScript {
             guard let dataChunk = chunk(at: 2) as? DataChunk else {
                 return nil
             }
-            // return [BTCPublicKeyAddress addressWithData:dataChunk.pushdata];
-            // TODO: Addressでdata, type, networkを引数にとるinitializerが必要
+            return Cashaddr(data: dataChunk.pushedData, type: .pubkeyHash, network: network)
         } else if isPayToScriptHashScript {
             guard let dataChunk = chunk(at: 1) as? DataChunk else {
                 return nil
             }
-            // return [BTCScriptHashAddress addressWithData:dataChunk.pushdata];
-            // TODO: Addressでdata, type, networkを引数にとるinitializerが必要
+            return Cashaddr(data: dataChunk.pushedData, type: .pubkeyHash, network: network)
         }
         return nil
     }

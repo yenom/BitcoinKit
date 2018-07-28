@@ -24,7 +24,6 @@
 
 import Foundation
 
-// TODO: このクラスはPubkeyHash Addressにしか対応していない。ScriptHashとかPrivateとか対応しないなら名前がおかしい。
 public protocol Address {
     var network: Network { get }
     var type: AddressType { get }
@@ -32,6 +31,12 @@ public protocol Address {
     var base58: String { get }
     var cashaddr: String { get }
     var publicKey: Data? { get }
+}
+
+public enum AddressError: Error {
+    case invalid
+    case wrongNetwork
+    case invalidVersionByte
 }
 
 public struct LegacyAddress: Address {
@@ -91,7 +96,7 @@ public struct LegacyAddress: Address {
             type = .scriptHash
         default:
             // TODO: privatekey, xpriv, xpub
-            throw AddressError.wrongNetwork
+            throw AddressError.invalidVersionByte
         }
 
         self.network = network
@@ -108,6 +113,15 @@ public struct LegacyAddress: Address {
         default:
             self.cashaddr = ""
         }
+    }
+    public init(data: Data, type: AddressType, network: Network) {
+        let addressData: Data = [type.versionByte] + data
+        self.data = data
+        self.type = type
+        self.network = network
+        self.publicKey = nil
+        self.base58 = publicKeyHashToAddress(addressData)
+        self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
     }
 }
 
@@ -189,6 +203,15 @@ public struct Cashaddr: Address {
             base58 = publicKeyHashToAddress(Data([network.scripthash]) + data)
         }
     }
+    public init(data: Data, type: AddressType, network: Network) {
+        let addressData: Data = [type.versionByte] + data
+        self.data = data
+        self.type = type
+        self.network = network
+        self.publicKey = nil
+        self.base58 = publicKeyHashToAddress(addressData)
+        self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
+    }
 }
 
 extension Cashaddr: Equatable {
@@ -202,10 +225,4 @@ extension Cashaddr: CustomStringConvertible {
     public var description: String {
         return cashaddr
     }
-}
-
-public enum AddressError: Error {
-    case invalid
-    case wrongNetwork
-    case invalidVersionByte
 }
