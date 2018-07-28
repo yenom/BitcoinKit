@@ -8,13 +8,15 @@
 
 import Foundation
 
+// Returns 1 if the inputs are exactly equal, 0 otherwise.
 public struct OpEqual: OpCodeProtocol {
     public var value: UInt8 { return 0x87 }
     public var name: String { return "OP_EQUAL" }
 
+    // input : x1 x2
+    // output : true / false
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        // (x1 x2 - bool)
         guard context.stack.count >= 2 else {
             throw OpCodeExecutionError.opcodeRequiresItemsOnStack(2)
         }

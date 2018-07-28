@@ -8,16 +8,18 @@
 
 import Foundation
 
+// Same as OP_CHECKSIG, but OP_VERIFY is executed afterward.
 public struct OpCheckSigVerify: OpCodeProtocol {
     public var value: UInt8 { return 0xad }
     public var name: String { return "OP_CHECKSIGVERIFY" }
 
+    // input : sig pubkey
+    // output : Nothing / fail
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         guard context.stack.count >= 2 else {
             throw OpCodeExecutionError.opcodeRequiresItemsOnStack(2)
         }
-        print("stack: \(context.stack.map { $0.hex }.joined(separator: " "))")
 
         let pubkeyData: Data = context.stack.removeLast()
         let sigData: Data = context.stack.removeLast()

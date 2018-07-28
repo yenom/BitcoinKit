@@ -428,7 +428,7 @@ public class Script {
             if let opChunk = chunk as? OpcodeChunk {
                 try opChunk.opCode.execute(context)
             } else if let dataChunk = chunk as? DataChunk {
-                try context.pushData(dataChunk.pushedData)
+                try context.pushToStack(dataChunk.pushedData)
             } else {
                 throw ScriptMachineError.error("Unknown chunk")
             }
@@ -442,7 +442,7 @@ public class Script {
 
 extension Script {
     // Standard Transaction to Bitcoin address (pay-to-pubkey-hash)
-    // scriptPubKey: OP_DUP OP_HASH160 OP_0 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
+    // scriptPubKey: OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
     public static func buildPublicKeyHashOut(pubKeyHash: Data) -> Data {
         let tmp: Data = Data() + OpCode.OP_DUP + OpCode.OP_HASH160 + UInt8(pubKeyHash.count) + pubKeyHash + OpCode.OP_EQUALVERIFY
         return tmp + OpCode.OP_CHECKSIG
@@ -457,7 +457,7 @@ extension Script {
 
     public static func isPublicKeyHashOut(_ script: Data) -> Bool {
         return script.count == 25 &&
-            script[0] == OpCode.OP_DUP && script[1] == OpCode.OP_HASH160 && script[2] == OpCode.OP_0 &&
+            script[0] == OpCode.OP_DUP && script[1] == OpCode.OP_HASH160 && script[2] == 20 &&
             script[23] == OpCode.OP_EQUALVERIFY && script[24] == OpCode.OP_CHECKSIG
     }
 

@@ -8,10 +8,13 @@
 
 import Foundation
 
+// Same as OP_EQUAL, but runs OP_VERIFY afterward.
 public struct OpEqualVerify: OpCodeProtocol {
     public var value: UInt8 { return 0x88 }
     public var name: String { return "OP_EQUALVERIFY" }
 
+    // input : x1 x2
+    // output : - / fail
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         print("stack: \(context.stack.map { $0.hex }.joined(separator: " "))")

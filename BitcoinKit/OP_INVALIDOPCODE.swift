@@ -11,8 +11,4 @@ import Foundation
 public struct OpInvalidOpCode: OpCodeProtocol {
     public var value: UInt8 { return 0xff }
     public var name: String { return "OP_INVALIDOPCODE" }
-
-    public func execute(_ context: ScriptExecutionContext) throws {
-        // do something with context here!
-    }
 }

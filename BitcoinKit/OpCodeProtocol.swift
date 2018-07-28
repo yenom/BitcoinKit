@@ -28,12 +28,12 @@ extension OpCodeProtocol {
     }
 
     public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
-        // write something!
+        throw OpCodeExecutionError.notImplemented
     }
 }
 
 enum OpCodeExecutionError: Error {
+    case notImplemented
     case error(String)
     case opcodeRequiresItemsOnStack(Int)
 }
