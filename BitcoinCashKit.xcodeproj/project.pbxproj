@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1419E83A202CDBE500FCB0BE /* BitcoinKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */; };
+		1419E83A202CDBE500FCB0BE /* BitcoinCashKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		1419E83B202CDBE500FCB0BE /* BitcoinCashKitPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */; };
 		141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E12022588C00A08B04 /* PublicKey.swift */; };
 		141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E32022589E00A08B04 /* PrivateKey.swift */; };
 		1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463E6B32025E9480033DAAE /* BlockStore.swift */; };
 		1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463E6B52025E99C0033DAAE /* BlockChain.swift */; };
 		147494D1201F9A29006D1CF8 /* BitcoinCashKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147494C7201F9A29006D1CF8 /* BitcoinCashKit.framework */; };
 		147494D6201F9A29006D1CF8 /* BitcoinKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */; };
-		147494D8201F9A29006D1CF8 /* BitcoinKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 147494CA201F9A29006D1CF8 /* BitcoinKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		147494D8201F9A29006D1CF8 /* BitcoinCashKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 147494CA201F9A29006D1CF8 /* BitcoinCashKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494E3201F9B85006D1CF8 /* Crypto.swift */; };
 		147494E6201F9BF0006D1CF8 /* Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494E5201F9BEF006D1CF8 /* Encoding.swift */; };
 		147494EA201F9C1F006D1CF8 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494E9201F9C1F006D1CF8 /* Peer.swift */; };
@@ -107,14 +107,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinKitPrivate.h; sourceTree = "<group>"; };
-		1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitcoinKitPrivate.m; sourceTree = "<group>"; };
+		1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinCashKitPrivate.h; sourceTree = "<group>"; };
+		1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitcoinCashKitPrivate.m; sourceTree = "<group>"; };
 		141FE2E12022588C00A08B04 /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
 		141FE2E32022589E00A08B04 /* PrivateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKey.swift; sourceTree = "<group>"; };
 		1463E6B32025E9480033DAAE /* BlockStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStore.swift; sourceTree = "<group>"; };
 		1463E6B52025E99C0033DAAE /* BlockChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockChain.swift; sourceTree = "<group>"; };
 		147494C7201F9A29006D1CF8 /* BitcoinCashKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BitcoinCashKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		147494CA201F9A29006D1CF8 /* BitcoinKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinKit.h; sourceTree = "<group>"; };
+		147494CA201F9A29006D1CF8 /* BitcoinCashKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinCashKit.h; sourceTree = "<group>"; };
 		147494CB201F9A29006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		147494D0201F9A29006D1CF8 /* BitcoinCashKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BitcoinCashKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinKitTests.swift; sourceTree = "<group>"; };
@@ -154,7 +154,7 @@
 		14839AA8202FE7DD00A6CB34 /* VarString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarString.swift; sourceTree = "<group>"; };
 		14839AAA202FE7F000A6CB34 /* NetworkAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAddress.swift; sourceTree = "<group>"; };
 		14839AAC202FE80400A6CB34 /* ServiceFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFlags.swift; sourceTree = "<group>"; };
-		14A2961B203207F400E19177 /* BitcoinKit.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = BitcoinKit.modulemap; sourceTree = "<group>"; };
+		14A2961B203207F400E19177 /* BitcoinCashKit.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = BitcoinCashKit.modulemap; sourceTree = "<group>"; };
 		14A2961C2032316900E19177 /* HDKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDKeychain.swift; sourceTree = "<group>"; };
 		14A2961E2032317B00E19177 /* HDWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWallet.swift; sourceTree = "<group>"; };
 		14CDC3852021824200C01556 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
@@ -244,8 +244,8 @@
 				14A29622203231DD00E19177 /* Wallet */,
 				14A296252032328900E19177 /* Networking */,
 				14839A7D202FE57300A6CB34 /* Messages */,
-				147494CA201F9A29006D1CF8 /* BitcoinKit.h */,
-				14A2961B203207F400E19177 /* BitcoinKit.modulemap */,
+				147494CA201F9A29006D1CF8 /* BitcoinCashKit.h */,
+				14A2961B203207F400E19177 /* BitcoinCashKit.modulemap */,
 				147494CB201F9A29006D1CF8 /* Info.plist */,
 			);
 			path = BitcoinCashKit;
@@ -339,8 +339,8 @@
 				147F9728201FC89E0071F49D /* BloomFilter.swift */,
 				147494ED201FADAC006D1CF8 /* MurmurHash.swift */,
 				14CDC38B2021EF5000C01556 /* Helpers.swift */,
-				1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */,
-				1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */,
+				1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */,
+				1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -395,8 +395,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				147494D8201F9A29006D1CF8 /* BitcoinKit.h in Headers */,
-				1419E83A202CDBE500FCB0BE /* BitcoinKitPrivate.h in Headers */,
+				147494D8201F9A29006D1CF8 /* BitcoinCashKit.h in Headers */,
+				1419E83A202CDBE500FCB0BE /* BitcoinCashKitPrivate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,7 +576,7 @@
 				14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */,
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
-				1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */,
+				1419E83B202CDBE500FCB0BE /* BitcoinCashKitPrivate.m in Sources */,
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
 				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
 				14839A9F202FE73B00A6CB34 /* TransactionOutput.swift in Sources */,
@@ -784,7 +784,7 @@
 					"$(SRCROOT)/Libraries/openssl/lib",
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
-				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinKit.modulemap";
+				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinCashKit.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -822,7 +822,7 @@
 					"$(SRCROOT)/Libraries/openssl/lib",
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
-				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinKit.modulemap";
+				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinCashKit.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

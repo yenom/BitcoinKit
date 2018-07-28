@@ -6,7 +6,7 @@
 //  Copyright © 2018 Kishikawa Katsumi. All rights reserved.
 //
 
-#import "BitcoinKitPrivate.h"
+#import "BitcoinCashKitPrivate.h"
 #import <openssl/sha.h>
 #import <openssl/ripemd.h>
 #import <openssl/hmac.h>
