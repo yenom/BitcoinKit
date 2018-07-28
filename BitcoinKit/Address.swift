@@ -35,7 +35,7 @@ public protocol Address {
 
 public enum AddressError: Error {
     case invalid
-    case wrongNetwork
+    case invalidScheme
     case invalidVersionByte
 }
 
@@ -180,7 +180,7 @@ public struct Cashaddr: Address {
         case Network.testnet.scheme:
             network = .testnet
         default:
-            throw AddressError.wrongNetwork
+            throw AddressError.invalidScheme
         }
 
         let versionByte = raw[0]
