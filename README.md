@@ -1,4 +1,4 @@
-BitcoinKit
+BitcoinCashKit
 ===========
 ### Welcome to BitcoinCashKit
 
@@ -101,7 +101,7 @@ Installation
 BitcoinKit is available through [Carthage](https://github.com/Carthage/Carthage). To install
 it, simply add the following line to your Cartfile:
 
-`github "BitcoinCashKit/BitcoinKit"`
+`github "BitcoinCashKit/BitcoinCashKit"`
 
 Contribute
 ----------
