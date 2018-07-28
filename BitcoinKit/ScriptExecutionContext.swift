@@ -25,7 +25,7 @@ public class ScriptExecutionContext {
     // Currently executed script.
     public internal(set) var script: Script = Script()
     // Current opcode.
-    public internal(set) var opCode: OpCode = OpCode.OP_0
+    public internal(set) var opCode: OpCodeProtocol = OpCode.OP_0
     // Current payload for any "push data" operation.
     // public var data
     // Current opcode index in _script.

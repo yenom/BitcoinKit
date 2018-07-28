@@ -8,12 +8,11 @@
 
 import Foundation
 
-public class OpEqual: OpCode {
-    override public var value: UInt8 { return 0x87 }
-    override public var name: String { return "OP_EQUAL" }
+public struct OpEqual: OpCodeProtocol {
+    public var value: UInt8 { return 0x87 }
+    public var name: String { return "OP_EQUAL" }
 
-    override public func execute(_ context: ScriptExecutionContext) throws {
-        try super.execute(context)
+    public func execute(_ context: ScriptExecutionContext) throws {
         // (x1 x2 - bool)
         guard context.stack.count >= 2 else {
             throw ScriptMachineError.opcodeRequiresItemsOnStack(2)

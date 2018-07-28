@@ -8,12 +8,11 @@
 
 import Foundation
 
-public class OpEqualVerify: OpCode {
-    override public var value: UInt8 { return 0x88 }
-    override public var name: String { return "OP_EQUALVERIFY" }
+public struct OpEqualVerify: OpCodeProtocol {
+    public var value: UInt8 { return 0x88 }
+    public var name: String { return "OP_EQUALVERIFY" }
 
-    override public func execute(_ context: ScriptExecutionContext) throws {
-        try super.execute(context)
+    public func execute(_ context: ScriptExecutionContext) throws {
         print("stack: \(context.stack.map { $0.hex }.joined(separator: " "))")
         try OpCode.OP_EQUAL.execute(context)
         try OpCode.OP_VERIFY.execute(context)

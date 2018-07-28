@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Op0: OpCode {
-    override public var value: UInt8 { return 0x00 }
-    override public var name: String { return "OP_0" }
+public struct Op0: OpCodeProtocol {
+    public var value: UInt8 { return 0x00 }
+    public var name: String { return "OP_0" }
 }

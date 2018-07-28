@@ -9,14 +9,14 @@
 import Foundation
 
 public struct OpCodeFactory {
-    public static func get(with value: UInt8) -> OpCode {
+    public static func get(with value: UInt8) -> OpCodeProtocol {
         guard let item = (OpCode.list.first { $0.value == value }) else {
             return OpCode.OP_INVALIDOPCODE
         }
         return item
     }
 
-    public static func get(with name: String) -> OpCode {
+    public static func get(with name: String) -> OpCodeProtocol {
         guard let item = (OpCode.list.first { $0.name == name }) else {
             return OpCode.OP_INVALIDOPCODE
         }
@@ -25,7 +25,7 @@ public struct OpCodeFactory {
 
     // Returns OP_1NEGATE, OP_0 .. OP_16 for ints from -1 to 16.
     // Returns OP_INVALIDOPCODE for other ints.
-    public static func opcodeForSmallInteger(smallInteger: Int) -> OpCode {
+    public static func opcodeForSmallInteger(smallInteger: Int) -> OpCodeProtocol {
         switch smallInteger {
         case -1:
             return OpCode.OP_1NEGATE
@@ -40,13 +40,13 @@ public struct OpCodeFactory {
 
     // Converts opcode OP_<N> or OP_1NEGATE to an integer value.
     // If incorrect opcode is given, Int.max is returned.
-    public static func smallIntegerFromOpcode(opcode: OpCode) -> Int {
+    public static func smallIntegerFromOpcode(opcode: OpCodeProtocol) -> Int {
         switch opcode {
-        case .OP_1NEGATE:
+        case OpCode.OP_1NEGATE:
             return -1
-        case .OP_0:
+        case OpCode.OP_0:
             return 0
-        case (.OP_1)...(.OP_16):
+        case (OpCode.OP_1)...(OpCode.OP_16):
             return Int(opcode.value - OpCode.OP_1.value - 1)
         default:
             return Int.max

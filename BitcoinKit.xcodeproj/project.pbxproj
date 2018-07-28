@@ -356,9 +356,9 @@
 			isa = PBXGroup;
 			children = (
 				CFA2906D2101CDA3001A1BAB /* Opcode.swift */,
+				290880142109708000C79379 /* OpCodeProtocol.swift */,
 				29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */,
 				29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */,
-				290880142109708000C79379 /* OpCodeProtocol.swift */,
 				14F37A3B20209F9200D34748 /* Script.swift */,
 				CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */,
 				29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */,

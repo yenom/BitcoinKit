@@ -8,12 +8,11 @@
 
 import Foundation
 
-public class OpCheckSig: OpCode {
-    override public var value: UInt8 { return 0xac }
-    override public var name: String { return "OP_CHECKSIGVERIFY" }
+public struct OpCheckSig: OpCodeProtocol {
+    public var value: UInt8 { return 0xac }
+    public var name: String { return "OP_CHECKSIGVERIFY" }
 
-    override public func execute(_ context: ScriptExecutionContext) throws {
-        try super.execute(context)
+    public func execute(_ context: ScriptExecutionContext) throws {
         guard context.stack.count >= 2 else {
             throw ScriptMachineError.opcodeRequiresItemsOnStack(2)
         }

@@ -8,15 +8,15 @@
 
 import Foundation
 
-public class OpPushData1: OpCode {
-    override public var value: UInt8 { return 0x4c }
-    override public var name: String { return "OP_PUSHDATA1" }
+public struct OpPushData1: OpCodeProtocol {
+    public var value: UInt8 { return 0x4c }
+    public var name: String { return "OP_PUSHDATA1" }
 }
-public class OpPushData2: OpCode {
-    override public var value: UInt8 { return 0x4d }
-    override public var name: String { return "OP_PUSHDATA2" }
+public struct OpPushData2: OpCodeProtocol {
+    public var value: UInt8 { return 0x4d }
+    public var name: String { return "OP_PUSHDATA2" }
 }
-public class OpPushData4: OpCode {
-    override public var value: UInt8 { return 0x4e }
-    override public var name: String { return "OP_PUSHDATA4" }
+public struct OpPushData4: OpCodeProtocol {
+    public var value: UInt8 { return 0x4e }
+    public var name: String { return "OP_PUSHDATA4" }
 }

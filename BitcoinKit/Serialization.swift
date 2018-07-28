@@ -67,10 +67,11 @@ extension String: BinaryConvertible {
     }
 }
 
-extension OpCode: BinaryConvertible {
-    static func +(lhs: Data, rhs: OpCode) -> Data {
-        return lhs + rhs.value
-    }
+func +(lhs: Data, rhs: OpCodeProtocol) -> Data {
+    return lhs + rhs.value
+}
+func += (lhs: inout Data, rhs: OpCodeProtocol) {
+    lhs = lhs + rhs
 }
 
 extension Data: BinaryConvertible {

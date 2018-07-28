@@ -8,12 +8,11 @@
 
 import Foundation
 
-public class OpVerify: OpCode {
-    override public var value: UInt8 { return 0x69 }
-    override public var name: String { return "OP_VERIFY" }
+public struct OpVerify: OpCodeProtocol {
+    public var value: UInt8 { return 0x69 }
+    public var name: String { return "OP_VERIFY" }
 
-    override public func execute(_ context: ScriptExecutionContext) throws {
-        try super.execute(context)
+    public func execute(_ context: ScriptExecutionContext) throws {
         // (true -- ) or
         // (false -- false) and return
         guard context.stack.count >= 1 else {

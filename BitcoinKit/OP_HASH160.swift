@@ -8,12 +8,11 @@
 
 import Foundation
 
-public class OpHash160: OpCode {
-    override public var value: UInt8 { return 0xa9 }
-    override public var name: String { return "OP_HASH160" }
+public struct OpHash160: OpCodeProtocol {
+    public var value: UInt8 { return 0xa9 }
+    public var name: String { return "OP_HASH160" }
 
-    override public func execute(_ context: ScriptExecutionContext) throws {
-        try super.execute(context)
+    public func execute(_ context: ScriptExecutionContext) throws {
         // (in -- hash)
         guard context.stack.count >= 1 else {
             throw ScriptMachineError.opcodeRequiresItemsOnStack(1)

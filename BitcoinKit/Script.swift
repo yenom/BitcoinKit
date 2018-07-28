@@ -125,8 +125,8 @@ public class Script {
         }
 
         // Both M and N should map to OP_<1..16>
-        let mOpcode: OpCode = OpCodeFactory.opcodeForSmallInteger(smallInteger: Int(signaturesRequired))
-        let nOpcode: OpCode = OpCodeFactory.opcodeForSmallInteger(smallInteger: publicKeys.count)
+        let mOpcode: OpCodeProtocol = OpCodeFactory.opcodeForSmallInteger(smallInteger: Int(signaturesRequired))
+        let nOpcode: OpCodeProtocol = OpCodeFactory.opcodeForSmallInteger(smallInteger: publicKeys.count)
 
         guard mOpcode != OpCode.OP_INVALIDOPCODE else {
             return nil
@@ -261,8 +261,8 @@ public class Script {
             return
         }
 
-        let mOpcode: OpCode = opcode(at: 0)
-        let nOpcode: OpCode = opcode(at: -2)
+        let mOpcode: OpCodeProtocol = opcode(at: 0)
+        let nOpcode: OpCodeProtocol = opcode(at: -2)
 
         let m: Int = OpCodeFactory.smallIntegerFromOpcode(opcode: mOpcode)
         let n: Int = OpCodeFactory.smallIntegerFromOpcode(opcode: nOpcode)
@@ -406,7 +406,7 @@ public class Script {
     // Returns an opcode in a chunk.
     // If the chunk is data, not an opcode, returns OP_INVALIDOPCODE
     // Raises exception if index is out of bounds.
-    public func opcode(at index: Int) -> OpCode {
+    public func opcode(at index: Int) -> OpCodeProtocol {
         let chunk = self.chunk(at: index)
         // If the chunk is not actually an opcode, return invalid opcode.
         guard chunk is OpcodeChunk else {
