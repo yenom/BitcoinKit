@@ -3,7 +3,7 @@
 //  BitcoinKitTests
 //
 //  Created by Akifumi Fujita on 2018/07/19.
-//  Copyright © 2018年 BitcoinKit-cash developers. All rights reserved.
+//  Copyright © 2018年 BitcoinCashKit developers. All rights reserved.
 //
 
 import XCTest

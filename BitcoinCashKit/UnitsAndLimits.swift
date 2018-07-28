@@ -3,7 +3,7 @@
 //  BitcoinKit
 //
 //  Created by Shun Usami on 2018/07/23.
-//  Copyright © 2018 BitcoinKit-cash developers. All rights reserved.
+//  Copyright © 2018 BitcoinCashKit developers. All rights reserved.
 //
 
 import Foundation
