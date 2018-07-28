@@ -1,6 +1,6 @@
 //
 //  OpCode.swift
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by Akifumi Fujita on 2018/07/09.
 //  Copyright © 2018 Akifumi Fujita

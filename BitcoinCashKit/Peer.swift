@@ -1,6 +1,6 @@
 //
 //  Peer.swift
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by Kishikawa Katsumi on 2018/01/30.
 //  Copyright © 2018 Kishikawa Katsumi
@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 //  This file has been modified by the BitcoinCashKit developers for the BitcoinCashKit project.
-//  The original file was from the bitcoinj project (https://github.com/kishikawakatsumi/BitcoinKit).
+//  The original file was from the BitcoinKit project (https://github.com/kishikawakatsumi/BitcoinKit).
 //
 
 import Foundation
@@ -263,7 +263,7 @@ public class Peer: NSObject, StreamDelegate {
                                                               address: "::ffff:127.0.0.1",
                                                               port: UInt16(port)),
                                      nonce: 0,
-                                     userAgent: "/BitcoinKit:0.1.0/",
+                                     userAgent: "/BitcoinCashKit:0.1.2/",
                                      startHeight: -1,
                                      relay: false)
         let payload = version.serialized()

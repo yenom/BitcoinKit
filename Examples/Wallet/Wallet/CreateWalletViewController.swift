@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import BitcoinKit
+import BitcoinCashKit
 
 class CreateWalletViewController: UIViewController {
     var mnemonic: [String]!

@@ -1,6 +1,6 @@
 //
 //  HDKeychain.swift
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by Kishikawa Katsumi on 2018/02/13.
 //  Copyright © 2018 Kishikawa Katsumi. All rights reserved.

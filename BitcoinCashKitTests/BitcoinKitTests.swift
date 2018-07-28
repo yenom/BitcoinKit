@@ -1,6 +1,6 @@
 //
-//  BitcoinKitTests.swift
-//  BitcoinKitTests
+//  BitcoinCashKitTests.swift
+//  BitcoinCashKitTests
 //
 //  Created by Kishikawa Katsumi on 2018/01/30.
 //  Copyright © 2018 Kishikawa Katsumi
@@ -19,13 +19,13 @@
 //  limitations under the License.
 //
 //  This file has been modified by the BitcoinCashKit developers for the BitcoinCashKit project.
-//  The original file was from the bitcoinj project (https://github.com/kishikawakatsumi/BitcoinKit).
+//  The original file was from the BitcoinKit project (https://github.com/kishikawakatsumi/BitcoinKit).
 //
 
 import XCTest
-@testable import BitcoinKit
+@testable import BitcoinCashKit
 
-class BitcoinKitTests: XCTestCase {
+class BitcoinCashKitTests: XCTestCase {
     func testSHA256() {
         /* Usually, when a hash is computed within bitcoin, it is computed twice.
          Most of the time SHA-256 hashes are used, however RIPEMD-160 is also used when a shorter hash is desirable

@@ -1,6 +1,6 @@
 //
 //  BlockChain.swift
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by Kishikawa Katsumi on 2018/02/03.
 //  Copyright © 2018 Kishikawa Katsumi. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  BlockStore.swift
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by Kishikawa Katsumi on 2018/02/03.
 //  Copyright © 2018 Kishikawa Katsumi
@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 //  This file has been modified by the BitcoinCashKit developers for the BitcoinCashKit project.
-//  The original file was from the bitcoinj project (https://github.com/kishikawakatsumi/BitcoinKit).
+//  The original file was from the BitcoinKit project (https://github.com/kishikawakatsumi/BitcoinKit).
 //
 
 // swiftlint:disable closure_end_indentation

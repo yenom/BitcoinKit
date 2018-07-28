@@ -1,6 +1,6 @@
 //
 //  OpCodeProtocol.swift
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by Shun Usami on 2018/07/26.
 //  Copyright © 2018 BitcoinCashKit developers. All rights reserved.

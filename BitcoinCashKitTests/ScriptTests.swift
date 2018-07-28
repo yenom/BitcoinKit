@@ -1,13 +1,13 @@
 //
 //  ScriptTests.swift
-//  BitcoinKitTests
+//  BitcoinCashKitTests
 //
 //  Created by Akifumi Fujita on 2018/07/11.
 //  Copyright © 2018年 Kishikawa Katsumi. All rights reserved.
 //
 
 import XCTest
-@testable import BitcoinKit
+@testable import BitcoinCashKit
 
 class ScriptTests: XCTestCase {
     

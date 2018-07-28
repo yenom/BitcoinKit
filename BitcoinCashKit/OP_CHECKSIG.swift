@@ -1,6 +1,6 @@
 //
 //  OP_CHECKSIG.swift
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by Shun Usami on 2018/07/27.
 //  Copyright © 2018 BitcoinCashKit developers. All rights reserved.

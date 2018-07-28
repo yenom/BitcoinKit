@@ -1,6 +1,6 @@
 //
 //  OpenSSL.m
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by kishikawakatsumi on 2018/02/09.
 //  Copyright © 2018 Kishikawa Katsumi. All rights reserved.

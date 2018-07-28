@@ -1,6 +1,6 @@
 //
 //  Script.swift
-//  BitcoinKit
+//  BitcoinCashKit
 //
 //  Created by Kishikawa Katsumi on 2018/01/30.
 //  Copyright © 2018 Kishikawa Katsumi

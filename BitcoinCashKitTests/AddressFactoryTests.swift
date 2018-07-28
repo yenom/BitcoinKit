@@ -1,6 +1,6 @@
 //
 //  AddressFactoryTests.swift
-//  BitcoinKitTests
+//  BitcoinCashKitTests
 //
 //  Created by Akifumi Fujita on 2018/07/08.
 //  Copyright © 2018 Akifumi Fujita
@@ -18,11 +18,11 @@
 //  limitations under the License.
 //
 //  This file has been modified by the BitcoinCashKit developers for the BitcoinCashKit project.
-//  The original file was from the bitcoinj project (https://github.com/kishikawakatsumi/BitcoinKit).
+//  The original file was from the BitcoinKit project (https://github.com/kishikawakatsumi/BitcoinKit).
 //
 
 import XCTest
-@testable import BitcoinKit
+@testable import BitcoinCashKit
 
 class AddressFactoryTests: XCTestCase {
     func testAddressFactory() {
