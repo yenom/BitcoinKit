@@ -13,7 +13,7 @@
 		141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E32022589E00A08B04 /* PrivateKey.swift */; };
 		1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463E6B32025E9480033DAAE /* BlockStore.swift */; };
 		1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463E6B52025E99C0033DAAE /* BlockChain.swift */; };
-		147494D1201F9A29006D1CF8 /* BitcoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147494C7201F9A29006D1CF8 /* BitcoinKit.framework */; };
+		147494D1201F9A29006D1CF8 /* BitcoinCashKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147494C7201F9A29006D1CF8 /* BitcoinCashKit.framework */; };
 		147494D6201F9A29006D1CF8 /* BitcoinKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */; };
 		147494D8201F9A29006D1CF8 /* BitcoinKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 147494CA201F9A29006D1CF8 /* BitcoinKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494E3201F9B85006D1CF8 /* Crypto.swift */; };
@@ -113,10 +113,10 @@
 		141FE2E32022589E00A08B04 /* PrivateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKey.swift; sourceTree = "<group>"; };
 		1463E6B32025E9480033DAAE /* BlockStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStore.swift; sourceTree = "<group>"; };
 		1463E6B52025E99C0033DAAE /* BlockChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockChain.swift; sourceTree = "<group>"; };
-		147494C7201F9A29006D1CF8 /* BitcoinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BitcoinKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		147494C7201F9A29006D1CF8 /* BitcoinCashKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BitcoinCashKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		147494CA201F9A29006D1CF8 /* BitcoinKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinKit.h; sourceTree = "<group>"; };
 		147494CB201F9A29006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		147494D0201F9A29006D1CF8 /* BitcoinKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BitcoinKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		147494D0201F9A29006D1CF8 /* BitcoinCashKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BitcoinCashKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinKitTests.swift; sourceTree = "<group>"; };
 		147494D7201F9A29006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		147494E3201F9B85006D1CF8 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
@@ -212,7 +212,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				147494D1201F9A29006D1CF8 /* BitcoinKit.framework in Frameworks */,
+				147494D1201F9A29006D1CF8 /* BitcoinCashKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,8 +231,8 @@
 		147494C8201F9A29006D1CF8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				147494C7201F9A29006D1CF8 /* BitcoinKit.framework */,
-				147494D0201F9A29006D1CF8 /* BitcoinKitTests.xctest */,
+				147494C7201F9A29006D1CF8 /* BitcoinCashKit.framework */,
+				147494D0201F9A29006D1CF8 /* BitcoinCashKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -403,9 +403,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		147494C6201F9A29006D1CF8 /* BitcoinKit */ = {
+		147494C6201F9A29006D1CF8 /* BitcoinCashKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 147494DB201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinKit" */;
+			buildConfigurationList = 147494DB201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinCashKit" */;
 			buildPhases = (
 				292B636820E7BF7000F5040A /* ShellScript */,
 				1482B628202954CC0098B612 /* Build Libraries */,
@@ -418,14 +418,14 @@
 			);
 			dependencies = (
 			);
-			name = BitcoinKit;
+			name = BitcoinCashKit;
 			productName = BitcoinKit;
-			productReference = 147494C7201F9A29006D1CF8 /* BitcoinKit.framework */;
+			productReference = 147494C7201F9A29006D1CF8 /* BitcoinCashKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		147494CF201F9A29006D1CF8 /* BitcoinKitTests */ = {
+		147494CF201F9A29006D1CF8 /* BitcoinCashKitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 147494DE201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinKitTests" */;
+			buildConfigurationList = 147494DE201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinCashKitTests" */;
 			buildPhases = (
 				147494CC201F9A29006D1CF8 /* Sources */,
 				147494CD201F9A29006D1CF8 /* Frameworks */,
@@ -436,9 +436,9 @@
 			dependencies = (
 				147494D3201F9A29006D1CF8 /* PBXTargetDependency */,
 			);
-			name = BitcoinKitTests;
+			name = BitcoinCashKitTests;
 			productName = BitcoinKitTests;
-			productReference = 147494D0201F9A29006D1CF8 /* BitcoinKitTests.xctest */;
+			productReference = 147494D0201F9A29006D1CF8 /* BitcoinCashKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -462,7 +462,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 147494C1201F9A29006D1CF8 /* Build configuration list for PBXProject "BitcoinKit" */;
+			buildConfigurationList = 147494C1201F9A29006D1CF8 /* Build configuration list for PBXProject "BitcoinCashKit" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -475,8 +475,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				147494C6201F9A29006D1CF8 /* BitcoinKit */,
-				147494CF201F9A29006D1CF8 /* BitcoinKitTests */,
+				147494C6201F9A29006D1CF8 /* BitcoinCashKit */,
+				147494CF201F9A29006D1CF8 /* BitcoinCashKitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -633,7 +633,7 @@
 /* Begin PBXTargetDependency section */
 		147494D3201F9A29006D1CF8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 147494C6201F9A29006D1CF8 /* BitcoinKit */;
+			target = 147494C6201F9A29006D1CF8 /* BitcoinCashKit */;
 			targetProxy = 147494D2201F9A29006D1CF8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -875,7 +875,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		147494C1201F9A29006D1CF8 /* Build configuration list for PBXProject "BitcoinKit" */ = {
+		147494C1201F9A29006D1CF8 /* Build configuration list for PBXProject "BitcoinCashKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				147494D9201F9A29006D1CF8 /* Debug */,
@@ -884,7 +884,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		147494DB201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinKit" */ = {
+		147494DB201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinCashKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				147494DC201F9A29006D1CF8 /* Debug */,
@@ -893,7 +893,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		147494DE201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinKitTests" */ = {
+		147494DE201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinCashKitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				147494DF201F9A29006D1CF8 /* Debug */,

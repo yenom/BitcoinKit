@@ -1,4 +1,4 @@
-framework module BitcoinKit {
+framework module BitcoinCashKit {
     umbrella header "BitcoinKit.h"
 
     export *
