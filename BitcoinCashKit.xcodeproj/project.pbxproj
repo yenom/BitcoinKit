@@ -222,8 +222,8 @@
 		147494BD201F9A29006D1CF8 = {
 			isa = PBXGroup;
 			children = (
-				147494C9201F9A29006D1CF8 /* BitcoinKit */,
-				147494D4201F9A29006D1CF8 /* BitcoinKitTests */,
+				147494C9201F9A29006D1CF8 /* BitcoinCashKit */,
+				147494D4201F9A29006D1CF8 /* BitcoinCashKitTests */,
 				147494C8201F9A29006D1CF8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -237,7 +237,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		147494C9201F9A29006D1CF8 /* BitcoinKit */ = {
+		147494C9201F9A29006D1CF8 /* BitcoinCashKit */ = {
 			isa = PBXGroup;
 			children = (
 				14A296242032325E00E19177 /* Core */,
@@ -248,10 +248,10 @@
 				14A2961B203207F400E19177 /* BitcoinKit.modulemap */,
 				147494CB201F9A29006D1CF8 /* Info.plist */,
 			);
-			path = BitcoinKit;
+			path = BitcoinCashKit;
 			sourceTree = "<group>";
 		};
-		147494D4201F9A29006D1CF8 /* BitcoinKitTests */ = {
+		147494D4201F9A29006D1CF8 /* BitcoinCashKitTests */ = {
 			isa = PBXGroup;
 			children = (
 				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
@@ -265,7 +265,7 @@
 				CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */,
 				147494D7201F9A29006D1CF8 /* Info.plist */,
 			);
-			path = BitcoinKitTests;
+			path = BitcoinCashKitTests;
 			sourceTree = "<group>";
 		};
 		14839A7D202FE57300A6CB34 /* Messages */ = {
@@ -773,7 +773,7 @@
 					"$(SRCROOT)/Libraries/openssl/include",
 					"$(SRCROOT)/Libraries/secp256k1/include",
 				);
-				INFOPLIST_FILE = BitcoinKit/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BitcoinCashKit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -784,7 +784,7 @@
 					"$(SRCROOT)/Libraries/openssl/lib",
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
-				MODULEMAP_FILE = "$(SRCROOT)/BitcoinKit/BitcoinKit.modulemap";
+				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinKit.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -811,7 +811,7 @@
 					"$(SRCROOT)/Libraries/openssl/include",
 					"$(SRCROOT)/Libraries/secp256k1/include",
 				);
-				INFOPLIST_FILE = BitcoinKit/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BitcoinCashKit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -822,7 +822,7 @@
 					"$(SRCROOT)/Libraries/openssl/lib",
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
-				MODULEMAP_FILE = "$(SRCROOT)/BitcoinKit/BitcoinKit.modulemap";
+				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinKit.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -839,7 +839,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27AEDK3C9F;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Libraries/crypto/include";
-				INFOPLIST_FILE = BitcoinKitTests/Info.plist;
+				INFOPLIST_FILE = BitcoinCashKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -859,7 +859,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27AEDK3C9F;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Libraries/crypto/include";
-				INFOPLIST_FILE = BitcoinKitTests/Info.plist;
+				INFOPLIST_FILE = BitcoinCashKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
