@@ -62,6 +62,19 @@
 		14F37A3E2020A02000D34748 /* SighashType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* SighashType.swift */; };
 		290880152109708000C79379 /* OpCodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290880142109708000C79379 /* OpCodeProtocol.swift */; };
 		29248EEF2104B64E00CC9051 /* ScriptChunkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */; };
+		29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */; };
+		29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B90210AF79300D2BE78 /* OP_DUP.swift */; };
+		29290B93210AF86400D2BE78 /* OP_0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B92210AF86400D2BE78 /* OP_0.swift */; };
+		29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B94210AF86C00D2BE78 /* OP_N.swift */; };
+		29290B97210AF87800D2BE78 /* OP_CHECKSIG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */; };
+		29290B99210AF88400D2BE78 /* OP_EQUALVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */; };
+		29290B9B210AF88C00D2BE78 /* OP_HASH160.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B9A210AF88C00D2BE78 /* OP_HASH160.swift */; };
+		29290B9D210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */; };
+		29290B9F210AF8FD00D2BE78 /* OP_EQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */; };
+		29290BA1210AF90D00D2BE78 /* OP_VERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */; };
+		29290BA3210AF9D600D2BE78 /* ScriptExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */; };
+		29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */; };
+		29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */; };
 		29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330F6D210597B700106AFA /* UnitsAndLimits.swift */; };
 		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
@@ -153,6 +166,19 @@
 		14F37A3D2020A02000D34748 /* SighashType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SighashType.swift; sourceTree = "<group>"; };
 		290880142109708000C79379 /* OpCodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeProtocol.swift; sourceTree = "<group>"; };
 		29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptChunkHelper.swift; sourceTree = "<group>"; };
+		29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeFactory.swift; sourceTree = "<group>"; };
+		29290B90210AF79300D2BE78 /* OP_DUP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_DUP.swift; sourceTree = "<group>"; };
+		29290B92210AF86400D2BE78 /* OP_0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_0.swift; sourceTree = "<group>"; };
+		29290B94210AF86C00D2BE78 /* OP_N.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_N.swift; sourceTree = "<group>"; };
+		29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSIG.swift; sourceTree = "<group>"; };
+		29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_EQUALVERIFY.swift; sourceTree = "<group>"; };
+		29290B9A210AF88C00D2BE78 /* OP_HASH160.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_HASH160.swift; sourceTree = "<group>"; };
+		29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_INVALIDOPCODE.swift; sourceTree = "<group>"; };
+		29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_EQUAL.swift; sourceTree = "<group>"; };
+		29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VERIFY.swift; sourceTree = "<group>"; };
+		29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptExecutionContext.swift; sourceTree = "<group>"; };
+		29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_PUSHDATA.swift; sourceTree = "<group>"; };
+		29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSIGVERIFY.swift; sourceTree = "<group>"; };
 		29330F6D210597B700106AFA /* UnitsAndLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsAndLimits.swift; sourceTree = "<group>"; };
 		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
@@ -284,6 +310,7 @@
 		14A296242032325E00E19177 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				29290B8E210AF71200D2BE78 /* Scripts */,
 				141FE2E32022589E00A08B04 /* PrivateKey.swift */,
 				141FE2E12022588C00A08B04 /* PublicKey.swift */,
 				14A2961C2032316900E19177 /* HDKeychain.swift */,
@@ -302,13 +329,7 @@
 				147494E3201F9B85006D1CF8 /* Crypto.swift */,
 				147494E5201F9BEF006D1CF8 /* Encoding.swift */,
 				147494EF201FAE30006D1CF8 /* Serialization.swift */,
-				CFA2906D2101CDA3001A1BAB /* Opcode.swift */,
-				290880142109708000C79379 /* OpCodeProtocol.swift */,
-				14F37A3B20209F9200D34748 /* Script.swift */,
-				CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */,
-				29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */,
 				14F37A3D2020A02000D34748 /* SighashType.swift */,
-				CFA290712102B635001A1BAB /* ScriptMachine.swift */,
 				29330F6D210597B700106AFA /* UnitsAndLimits.swift */,
 				299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */,
 				299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */,
@@ -331,6 +352,40 @@
 				14CDC3872021855200C01556 /* PeerGroup.swift */,
 			);
 			name = Networking;
+			sourceTree = "<group>";
+		};
+		29290B8E210AF71200D2BE78 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				CFA2906D2101CDA3001A1BAB /* Opcode.swift */,
+				290880142109708000C79379 /* OpCodeProtocol.swift */,
+				29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */,
+				29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */,
+				14F37A3B20209F9200D34748 /* Script.swift */,
+				CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */,
+				29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */,
+				CFA290712102B635001A1BAB /* ScriptMachine.swift */,
+				29290B8F210AF77100D2BE78 /* OP_CODEs */,
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
+		29290B8F210AF77100D2BE78 /* OP_CODEs */ = {
+			isa = PBXGroup;
+			children = (
+				29290B92210AF86400D2BE78 /* OP_0.swift */,
+				29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */,
+				29290B94210AF86C00D2BE78 /* OP_N.swift */,
+				29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */,
+				29290B90210AF79300D2BE78 /* OP_DUP.swift */,
+				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
+				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
+				29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */,
+				29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */,
+				29290B9A210AF88C00D2BE78 /* OP_HASH160.swift */,
+				29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */,
+			);
+			name = OP_CODEs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -492,23 +547,32 @@
 				14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */,
 				147494EC201F9E4F006D1CF8 /* Network.swift in Sources */,
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
+				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
+				29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */,
 				297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */,
+				29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */,
 				14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */,
 				29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */,
 				CFA2906C2101CD96001A1BAB /* ScriptChunk.swift in Sources */,
 				14F37A3C20209F9200D34748 /* Script.swift in Sources */,
 				CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */,
+				29290BA1210AF90D00D2BE78 /* OP_VERIFY.swift in Sources */,
+				29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */,
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,
 				14F37A3E2020A02000D34748 /* SighashType.swift in Sources */,
 				14839A8F202FE68000A6CB34 /* PongMessage.swift in Sources */,
+				29290B9B210AF88C00D2BE78 /* OP_HASH160.swift in Sources */,
 				14CDC3862021824200C01556 /* Wallet.swift in Sources */,
+				29290B9D210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift in Sources */,
 				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
 				299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */,
+				29290B93210AF86400D2BE78 /* OP_0.swift in Sources */,
 				2949920020F227EB00D078B6 /* VersionByte.swift in Sources */,
 				29248EEF2104B64E00CC9051 /* ScriptChunkHelper.swift in Sources */,
 				14839A85202FE60E00A6CB34 /* InventoryMessage.swift in Sources */,
 				14839AA7202FE7C700A6CB34 /* VarInt.swift in Sources */,
+				29290B99210AF88400D2BE78 /* OP_EQUALVERIFY.swift in Sources */,
 				14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */,
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
@@ -525,6 +589,7 @@
 				290880152109708000C79379 /* OpCodeProtocol.swift in Sources */,
 				14839A91202FE69300A6CB34 /* RejectMessage.swift in Sources */,
 				14839AA5202FE7A100A6CB34 /* ByteStream.swift in Sources */,
+				29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */,
 				14A2961D2032316900E19177 /* HDKeychain.swift in Sources */,
 				147494EA201F9C1F006D1CF8 /* Peer.swift in Sources */,
 				14CDC38A2021881A00C01556 /* Address.swift in Sources */,
@@ -535,7 +600,10 @@
 				14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */,
 				CFA290722102B635001A1BAB /* ScriptMachine.swift in Sources */,
 				147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */,
+				29290B9F210AF8FD00D2BE78 /* OP_EQUAL.swift in Sources */,
 				14839A8B202FE64D00A6CB34 /* GetDataMessage.swift in Sources */,
+				29290BA3210AF9D600D2BE78 /* ScriptExecutionContext.swift in Sources */,
+				29290B97210AF87800D2BE78 /* OP_CHECKSIG.swift in Sources */,
 				1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */,
 				14839A99202FE6E700A6CB34 /* MerkleBlockMessage.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,

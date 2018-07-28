@@ -125,8 +125,8 @@ public class Script {
         }
 
         // Both M and N should map to OP_<1..16>
-        let mOpcode: OpCode = OpCodeFactory.opcodeForSmallInteger(smallInteger: Int(signaturesRequired))
-        let nOpcode: OpCode = OpCodeFactory.opcodeForSmallInteger(smallInteger: publicKeys.count)
+        let mOpcode: OpCodeProtocol = OpCodeFactory.opcodeForSmallInteger(smallInteger: Int(signaturesRequired))
+        let nOpcode: OpCodeProtocol = OpCodeFactory.opcodeForSmallInteger(smallInteger: publicKeys.count)
 
         guard mOpcode != OpCode.OP_INVALIDOPCODE else {
             return nil
@@ -261,8 +261,8 @@ public class Script {
             return
         }
 
-        let mOpcode: OpCode = opcode(at: 0)
-        let nOpcode: OpCode = opcode(at: -2)
+        let mOpcode: OpCodeProtocol = opcode(at: 0)
+        let nOpcode: OpCodeProtocol = opcode(at: -2)
 
         let m: Int = OpCodeFactory.smallIntegerFromOpcode(opcode: mOpcode)
         let n: Int = OpCodeFactory.smallIntegerFromOpcode(opcode: nOpcode)
@@ -406,7 +406,7 @@ public class Script {
     // Returns an opcode in a chunk.
     // If the chunk is data, not an opcode, returns OP_INVALIDOPCODE
     // Raises exception if index is out of bounds.
-    public func opcode(at index: Int) -> OpCode {
+    public func opcode(at index: Int) -> OpCodeProtocol {
         let chunk = self.chunk(at: index)
         // If the chunk is not actually an opcode, return invalid opcode.
         guard chunk is OpcodeChunk else {
@@ -428,7 +428,7 @@ public class Script {
             if let opChunk = chunk as? OpcodeChunk {
                 try opChunk.opCode.execute(context)
             } else if let dataChunk = chunk as? DataChunk {
-                try context.pushData(dataChunk.pushedData)
+                try context.pushToStack(dataChunk.pushedData)
             } else {
                 throw ScriptMachineError.error("Unknown chunk")
             }
@@ -442,7 +442,7 @@ public class Script {
 
 extension Script {
     // Standard Transaction to Bitcoin address (pay-to-pubkey-hash)
-    // scriptPubKey: OP_DUP OP_HASH160 OP_0 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
+    // scriptPubKey: OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
     public static func buildPublicKeyHashOut(pubKeyHash: Data) -> Data {
         let tmp: Data = Data() + OpCode.OP_DUP + OpCode.OP_HASH160 + UInt8(pubKeyHash.count) + pubKeyHash + OpCode.OP_EQUALVERIFY
         return tmp + OpCode.OP_CHECKSIG
@@ -457,7 +457,7 @@ extension Script {
 
     public static func isPublicKeyHashOut(_ script: Data) -> Bool {
         return script.count == 25 &&
-            script[0] == OpCode.OP_DUP && script[1] == OpCode.OP_HASH160 && script[2] == OpCode.OP_0 &&
+            script[0] == OpCode.OP_DUP && script[1] == OpCode.OP_HASH160 && script[2] == 20 &&
             script[23] == OpCode.OP_EQUALVERIFY && script[24] == OpCode.OP_CHECKSIG
     }
 
