@@ -17,8 +17,8 @@ env:
   global:
   - LANG=en_US.UTF-8
   - LC_ALL=en_US.UTF-8
-  - WORKSPACE=BitcoinKit.xcworkspace
-  - SCHEME=BitcoinKit
+  - WORKSPACE=BitcoinCashKit.xcworkspace
+  - SCHEME=BitcoinCashKit
   - DESTINATION='name=iPhone 7,OS=11.2'
 branches:
   only:

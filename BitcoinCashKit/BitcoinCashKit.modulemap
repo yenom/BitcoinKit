@@ -1,0 +1,11 @@
+framework module BitcoinCashKit {
+    umbrella header "BitcoinCashKit.h"
+
+    export *
+    module * { export * }
+
+    explicit module Private {
+        header "BitcoinCashKitPrivate.h"
+        link "crypto"
+    }
+}
