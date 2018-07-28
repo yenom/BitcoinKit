@@ -29,8 +29,8 @@ public struct AddressFactory {
             return try Cashaddr(plainAddress)
         } catch AddressError.invalidVersionByte {
             throw AddressError.invalidVersionByte
-        } catch AddressError.wrongNetwork {
-            throw AddressError.wrongNetwork
+        } catch AddressError.invalidScheme {
+            throw AddressError.invalidScheme
         } catch AddressError.invalid {
             return try LegacyAddress(plainAddress)
         }

@@ -54,11 +54,11 @@ class AddressFactoryTests: XCTestCase {
         // wrong network
         do {
             _ = try AddressFactory.create("pref:pr6m7j9njldwwzlg9v7v53unlr4jkmx6ey65nvtks5")
-            XCTFail("Should throw wrong network.")
-        } catch AddressError.wrongNetwork {
+            XCTFail("Should throw invalid scheme error.")
+        } catch AddressError.invalidScheme {
             // Success
         } catch {
-            XCTFail("Should throw wrong network.")
+            XCTFail("Should throw invalid scheme error.")
         }
         
         // LegacyAddress
