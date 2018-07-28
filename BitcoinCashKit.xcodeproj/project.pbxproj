@@ -449,7 +449,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = "BitcoinKit-cash developers";
+				ORGANIZATIONNAME = "BitcoinCashKit developers";
 				TargetAttributes = {
 					147494C6201F9A29006D1CF8 = {
 						CreatedOnToolsVersion = 9.2;
@@ -785,7 +785,7 @@
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
 				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinCashKit.modulemap";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoincashkit.BitcoinCashKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries";
@@ -823,7 +823,7 @@
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
 				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinCashKit.modulemap";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoincashkit.BitcoinCashKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries";
@@ -845,7 +845,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoincashkit.BitcoinCashKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -865,7 +865,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kishikawakatsumi.BitcoinKitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoincashkit.BitcoinCashKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
