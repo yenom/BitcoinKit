@@ -335,7 +335,6 @@ public class Script {
         invalidateSerialization()
     }
 
-    // TODO: check if OP_PUSHDATAs
     public func append(_ opcode: OpCodeProtocol) throws {
         let invalidOpCodes: [OpCodeProtocol] = [OpCode.OP_PUSHDATA1,
                                                 OpCode.OP_PUSHDATA2,
