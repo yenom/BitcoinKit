@@ -327,74 +327,77 @@ public class Script {
         multisigRequirements = nil
     }
 
-    private func update(with updatedData: Data) {
+    private func update(with updatedData: Data) throws {
         guard let updatedChunks = Script.parseData(updatedData) else {
-            print("update parse data failed. : \(updatedData.hex)")
-            return
+            throw ScriptError.error("Parse data failed while updating. : \(updatedData.hex)")
         }
         chunks = updatedChunks
         invalidateSerialization()
     }
 
     // TODO: check if OP_PUSHDATAs
-    public func append(opcode: UInt8) {
+    public func append(_ opcode: OpCodeProtocol) throws {
+        let invalidOpCodes: [OpCodeProtocol] = [OpCode.OP_PUSHDATA1,
+                                                OpCode.OP_PUSHDATA2,
+                                                OpCode.OP_PUSHDATA4,
+                                                OpCode.OP_INVALIDOPCODE]
+        guard !invalidOpCodes.contains(where: { $0 == opcode }) else {
+            throw ScriptError.error("\(opcode.name) cannot be executed alone.")
+        }
         var updatedData: Data = data
         updatedData += opcode
-        update(with: updatedData)
+        try update(with: updatedData)
     }
 
-    public func append(data: Data) {
-        guard !data.isEmpty else {
-            print("data is empty")
-            return
+    public func append(_ newData: Data) throws {
+        guard !newData.isEmpty else {
+            throw ScriptError.error("Data is empty.")
         }
 
-        var updatedData: Data = self.data
-
-        guard let addedScriptData = ScriptChunkHelper.scriptData(for: data, preferredLengthEncoding: -1) else {
-            print("script data is nil")
-            return
+        guard let addedScriptData = ScriptChunkHelper.scriptData(for: newData, preferredLengthEncoding: -1) else {
+            throw ScriptError.error("Parse data to pushdata failed.")
         }
+        var updatedData: Data = data
         updatedData += addedScriptData
-        update(with: updatedData)
+        try update(with: updatedData)
     }
 
-    public func append(otherScript: Script) {
+    public func append(_ otherScript: Script) throws {
         guard !otherScript.data.isEmpty else {
-            return
+            throw ScriptError.error("Script is empty.")
         }
 
         var updatedData: Data = self.data
         updatedData += otherScript.data
-        update(with: updatedData)
+        try update(with: updatedData)
     }
 
-    public func deleteOccurrences(of data: Data) {
+    public func deleteOccurrences(of data: Data) throws {
         guard !data.isEmpty else {
             return
         }
 
         let updatedData = chunks.filter { ($0 as? DataChunk)?.pushedData != data }.reduce(Data()) { $0 + $1.chunkData }
-        update(with: updatedData)
+        try update(with: updatedData)
     }
 
-    public func deleteOccurrences(of opcode: UInt8) {
+    public func deleteOccurrences(of opcode: UInt8) throws {
         let updatedData = chunks.filter { $0.opCode != opcode }.reduce(Data()) { $0 + $1.chunkData }
-        update(with: updatedData)
+        try update(with: updatedData)
     }
 
-    public func subScript(from index: Int) -> Script {
+    public func subScript(from index: Int) throws -> Script {
         let subScript: Script = Script()
         for chunk in chunks[Range(index..<chunks.count)] {
-            subScript.append(data: chunk.chunkData)
+            try subScript.append(chunk.chunkData)
         }
         return subScript
     }
 
-    public func subScript(to index: Int) -> Script {
+    public func subScript(to index: Int) throws -> Script {
         let subScript: Script = Script()
         for chunk in chunks[Range(0..<index)] {
-            subScript.append(data: chunk.chunkData)
+            try subScript.append(chunk.chunkData)
         }
         return subScript
     }
@@ -472,4 +475,8 @@ extension Script: CustomStringConvertible {
     public var description: String {
         return string
     }
+}
+
+enum ScriptError: Error {
+    case error(String)
 }

@@ -66,6 +66,7 @@ public class ScriptExecutionContext {
     private let blobZero: Data = Data()
     private let blobTrue: Data = Data(bytes: [UInt8(1)])
 
+    public init() {}
     public var shouldExecute: Bool {
         return !conditionStack.contains(false)
     }
@@ -74,7 +75,7 @@ public class ScriptExecutionContext {
         return blockTimeStamp >= BTC_BIP16_TIMESTAMP
     }
 
-    func normalized(_ index: Int) -> Int {
+    private func normalized(_ index: Int) -> Int {
         return (index < 0) ? stack.count + index : index
     }
 
