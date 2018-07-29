@@ -8,7 +8,7 @@ It allows maintaining a wallet and sending/receiving transactions without needin
 
 Release notes are [here](CHANGELOG.md).
 
-<img src="https://user-images.githubusercontent.com/40610/35793683-0d497b4e-0a96-11e8-8e49-2b0ce09211a4.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/24402451/43364629-e59ad77c-9358-11e8-93f6-8a3c3464edfd.png" />
+<img src="https://user-images.githubusercontent.com/24402451/43367286-8753b4cc-9385-11e8-9fba-78e5283c1158.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/24402451/43367196-523d5f46-9384-11e8-9fee-10e72318e67b.png" width="319px" />
 
 Features
 --------
