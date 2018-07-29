@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
                        ```
                     DESC
   spec.homepage = 'https://github.com/BitcoinCashKit/BitcoinCashKit'
-  spec.license = { :type => 'Apache 2.0', :file => 'LICENSE' }
+  spec.license = { :type => 'MIT', :file => 'LICENSE' }
   spec.author = { 'BitcoinCashKit developers' => 'usatie@yenom.tech' }
 
   spec.requires_arc = true
