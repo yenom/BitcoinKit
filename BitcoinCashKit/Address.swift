@@ -96,7 +96,6 @@ public struct LegacyAddress: Address {
             network = .testnet
             type = .scriptHash
         default:
-            // TODO: privatekey, xpriv, xpub
             throw AddressError.invalidVersionByte
         }
 

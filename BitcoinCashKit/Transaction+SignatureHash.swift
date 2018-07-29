@@ -95,11 +95,10 @@ extension Transaction {
             return signatureHashLegacy(for: utxo, inputIndex: inputIndex, hashType: hashType)
         }
 
-        // TODO: Check if there is no need for handling this error when hashType has fork id?
-
         // "txin" ≒ "utxo"
         // "txin" is an input of this tx
         // "utxo" is an output of the prev tx
+        // Currently not handling "inputIndex is out of range error" because BitcoinABC implementation is not handling this.
         let txin = inputs[inputIndex]
 
         var data = Data()

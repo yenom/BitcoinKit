@@ -209,9 +209,6 @@ public class Script {
             && opcode(at: 4) == OpCode.OP_CHECKSIG
     }
 
-    // TODO: check against the original serialized form instead of parsed chunks because BIP16 defines
-    // P2SH script as an exact byte template. Scripts using OP_PUSHDATA1/2/4 are not valid P2SH scripts.
-    // To do that we have to maintain original script binary data and each chunk should keep a range in that data.
     public var isPayToScriptHashScript: Bool {
         guard chunks.count == 3 else {
             return false

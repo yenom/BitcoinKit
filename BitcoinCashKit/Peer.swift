@@ -30,7 +30,9 @@ private let bufferSize = 4096
 
 public class Peer: NSObject, StreamDelegate {
     public let host: String
-    public let port: UInt32
+    public var port: UInt32 {
+        return network.port
+    }
     public let network: Network
 
     public weak var delegate: PeerDelegate?
@@ -41,7 +43,7 @@ public class Peer: NSObject, StreamDelegate {
     class Context {
         var packets = Data()
         /// Transactions to be sent
-        var transactions = [Data: Transaction]() // TODO: これPeerGroupで使ってないやんけ。使うべき感すごいあるけど。
+        var transactions = [Data: Transaction]()
 
         var pingTime = Date()
         var estimatedHeight: Int32 = 0
@@ -65,17 +67,11 @@ public class Peer: NSObject, StreamDelegate {
     private var outputStream: OutputStream!
 
     public convenience init(network: Network = .testnet) {
-        self.init(host: network.dnsSeeds[Int(arc4random_uniform(UInt32(network.dnsSeeds.count)))], port: Int(network.port), network: network)
+        self.init(host: network.dnsSeeds[Int(arc4random_uniform(UInt32(network.dnsSeeds.count)))], network: network)
     }
 
-    public convenience init(host: String, network: Network = .testnet) {
-        self.init(host: host, port: Int(network.port), network: network)
-    }
-
-    // TODO: Networkがport持ってるんだからportって必要なくないか・・・？
-    public init(host: String, port: Int, network: Network = .testnet) {
+    public init(host: String, network: Network = .testnet) {
         self.host = host
-        self.port = UInt32(port)
         self.network = network
         latestBlockHash = network.genesisBlock
     }
@@ -251,9 +247,7 @@ public class Peer: NSObject, StreamDelegate {
         _ = data.withUnsafeBytes { outputStream.write($0, maxLength: data.count) }
     }
 
-    // TODO: checksum多用するので、functionかDataのextensionにしても良さそう。
     private func sendVersionMessage() {
-        // TODO: yourAddressとmyAddressとは・・・
         let version = VersionMessage(version: protocolVersion,
                                      services: 0x00,
                                      timestamp: Int64(Date().timeIntervalSince1970),
@@ -402,10 +396,10 @@ public class Peer: NSObject, StreamDelegate {
         delegate?.peer(self, didReceiveInventoryMessage: inventory)
 
         // 1. filteredBlockMessageとtransactionsは受け取る
-        let transactionItems: [InventoryItem] = inventory.inventoryItems.filter { $0.objectType == .transactionMessage } // TODO: Filter only txs that we don't have yet
+        let transactionItems: [InventoryItem] = inventory.inventoryItems.filter { $0.objectType == .transactionMessage }
         let blockItems: [InventoryItem] = inventory.inventoryItems
             .filter { $0.objectType == .blockMessage || $0.objectType == .filteredBlockMessage }
-            .map { InventoryItem(type: InventoryItem.ObjectType.filteredBlockMessage.rawValue, hash: $0.hash) } // TODO: Filter only blocks that we don't have yet
+            .map { InventoryItem(type: InventoryItem.ObjectType.filteredBlockMessage.rawValue, hash: $0.hash) }
         let filterdItems: [InventoryItem] = transactionItems + blockItems
 
         guard !filterdItems.isEmpty else {

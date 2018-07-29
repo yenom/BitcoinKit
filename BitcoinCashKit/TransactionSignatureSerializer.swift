@@ -37,8 +37,9 @@ public struct TransactionSignatureSerializer {
         let sequence: UInt32
 
         if i == inputIndex {
-            // TODO: Remove OP_CODESEPARATOR from lockingScript
-            let subScript: Data = utxo.lockingScript // .deleteOccurrencesOfOpcode(OP_CODESEPARATOR)
+            // TODO: Remove OP_CODuESEPARATOR from lockingScript
+            let subScript: Data = utxo.lockingScript
+            // subScript.deleteOccurrences(of: OpCode.OP_CODESEPARATOR)
             script = subScript
             sequence = txin.sequence
         } else if hashType.isNone || hashType.isSingle {
