@@ -69,8 +69,8 @@ class ScriptMachineTests: XCTestCase {
         // unlock script
         XCTAssertEqual(fromPublicKey.pubkeyHash.hex, "2a539adfd7aefcc02e0196b4ccf76aea88a1f470")
         let unlockScript: Script = Script()
-        unlockScript.append(data: signature + UInt8(hashType))
-        unlockScript.append(data: fromPublicKey.raw)
+        try! unlockScript.append(signature + UInt8(hashType))
+        try! unlockScript.append(fromPublicKey.raw)
         
         // signed tx
         let txin = TransactionInput(previousOutput: outpoint, signatureScript: unlockScript.data, sequence: UInt32.max)
