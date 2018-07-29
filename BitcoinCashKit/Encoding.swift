@@ -178,12 +178,8 @@ public struct Bech32 {
 
     // string : "bitcoincash:qql8zpwglr3q5le9jnjxkmypefaku39dkygsx29fzk"
     public static func decode(_ string: String) -> (prefix: String, data: Data)? {
-        // TODO: 不要なら削除する
-        // remove leading and trailing whitespaces
-        let string = string.trimmingCharacters(in: .whitespaces)
-
         // We can't have empty string.
-        // We can't have both upper case and lowercase.
+        // string should by uppercase only / lowercase only.
         guard !string.isEmpty && [string.lowercased(), string.uppercased()].contains(string) else {
             return nil
         }
