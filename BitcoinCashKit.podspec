@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'BitcoinCashKit'
-  spec.version = '0.1.2'
+  spec.version = '0.2.0'
   spec.summary = 'Bitcoin cash protocol toolkit for Swift'
   spec.description = <<-DESC
                        The BitcoinCashKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system. It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.

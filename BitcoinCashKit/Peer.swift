@@ -264,7 +264,7 @@ public class Peer: NSObject, StreamDelegate {
                                                               address: "::ffff:127.0.0.1",
                                                               port: UInt16(port)),
                                      nonce: 0,
-                                     userAgent: "/BitcoinCashKit:0.1.2/",
+                                     userAgent: "/BitcoinCashKit:0.2.0/",
                                      startHeight: -1,
                                      relay: false)
         let payload = version.serialized()
