@@ -87,13 +87,8 @@ class ScriptMachineTests: XCTestCase {
         }
         
         // script machine verify
-        guard let scriptMachine = ScriptMachine(tx: signedTx, inputIndex: 0) else {
-            XCTFail("Failed to initialize ScriptMachine.")
-            return
-        }
-
         do {
-            let result = try scriptMachine.verify(with: utxoToSign)
+            let result = try ScriptMachine.verifyTransaction(signedTx: signedTx, inputIndex: 0, utxo: utxoToSign)
             XCTAssertTrue(result)
         } catch (let err) {
             XCTFail("Script machine verify failed. \(err)")

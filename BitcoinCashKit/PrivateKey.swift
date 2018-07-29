@@ -23,7 +23,6 @@
 //  THE SOFTWARE.
 //
 
-
 import Foundation
 
 public struct PrivateKey {
