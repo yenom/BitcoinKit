@@ -122,10 +122,6 @@ extension Encoding {
     }
 
     static func decode(_ string: String) -> Data? {
-        // TODO: 不要なら削除する
-        // remove leading and trailing whitespaces
-        let string = string.trimmingCharacters(in: .whitespaces)
-
         guard !string.isEmpty else { return nil }
 
         var zerosCount = 0
@@ -136,8 +132,7 @@ extension Encoding {
         }
         let size = sizeFromBase(size: string.lengthOfBytes(using: .utf8) - zerosCount)
         var decodedBytes: [UInt8] = Array(repeating: 0, count: size)
-        // TODO: whitespaceは既に除去してるので、このwhere条件はいらないことが確認できたら削除
-        for c in string where c != " " {
+        for c in string {
             guard let baseIndex = baseAlphabets.index(of: c) else { return nil }
 
             var carry = baseIndex.encodedOffset
