@@ -40,61 +40,35 @@ public enum ScriptMachineError: Error {
 // ScriptMachine is a stack machine (like Forth) that evaluates a predicate
 // returning a bool indicating valid or not. There are no loops.
 // You can -copy a machine which will copy all the parameters and the stack state.
-class ScriptMachine {
-    // "To" transaction that is signed by an inputScript.
-    // Required parameter.
-    public var transaction: Transaction?
+public struct ScriptMachine {
 
-    // An index of the tx input in the `transaction`.
-    // Required parameter.
-    public var inputIndex: UInt32
+    public init() { }
 
-    // A timestamp of the current block. Default is current timestamp.
-    // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
-    // If not specified, defaults to current timestamp thus using the latest protocol rules.
-    public var blockTimestamp: UInt32 = UInt32(NSTimeIntervalSince1970)
-
-    private var context: ScriptExecutionContext = ScriptExecutionContext()
-    public init() {
-        inputIndex = 0xFFFFFFFF
-    }
-
-    // This will return nil if the transaction is nil, or inputIndex is out of bounds.
-    // You can use -init if you want to run scripts without signature verification (so no transaction is needed).
-    public convenience init?(tx: Transaction, inputIndex: UInt32) {
-        // BitcoinQT would crash right before VerifyScript if the input index was out of bounds.
-        // So even though it returns 1 from SignatureHash() function when checking for this condition,
-        // it never actually happens. So we too will not check for it when calculating a hash.
-        guard inputIndex < tx.inputs.count else {
-            return nil
-        }
-        self.init()
-        self.transaction = tx
-        self.inputIndex = inputIndex
-    }
-
-    private func shouldVerifyP2SH() -> Bool {
-        return blockTimestamp >= BTC_BIP16_TIMESTAMP
-    }
-
-    public func verify(with utxo: TransactionOutput) throws -> Bool {
+    public static func verifyTransaction(signedTx: Transaction, inputIndex: UInt32, utxo: TransactionOutput, blockTimeStamp: UInt32 = UInt32(NSTimeIntervalSince1970)) throws -> Bool {
         // Sanity check: transaction and its input should be consistent.
-        guard let tx = transaction, inputIndex < tx.inputs.count else {
+        guard inputIndex < signedTx.inputs.count else {
             throw ScriptMachineError.exception("Transaction and valid inputIndex are required for script verification.")
         }
-        context.transaction = transaction
+        let context: ScriptExecutionContext = ScriptExecutionContext()
+        context.transaction = signedTx
         context.utxoToVerify = utxo
         context.inputIndex = inputIndex
+        context.blockTimeStamp = blockTimeStamp
 
-        let txInput: TransactionInput = tx.inputs[Int(inputIndex)]
-        let unlockScript: Script = Script(data: txInput.signatureScript)! // TODO: txinput.signatureScript should be Script class
-        let lockScript: Script = Script(data: utxo.lockingScript)! // TODO: utxo.lockingScript should be Script class
+        let txInput: TransactionInput = signedTx.inputs[Int(inputIndex)]
+        guard let unlockScript = Script(data: txInput.signatureScript), let lockScript = Script(data: utxo.lockingScript) else {
+            throw ScriptMachineError.error("Both lock script and sig script must be valid.")
+        }
 
+        return try verify(lockScript: lockScript, unlockScript: unlockScript, context: context)
+    }
+
+    public static func verify(lockScript: Script, unlockScript: Script, context: ScriptExecutionContext) throws -> Bool {
         // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
-        try runScript(unlockScript)
+        try run(unlockScript, context: context)
 
         // Second step: run output script to see that the input satisfies all conditions laid in the output script.
-        try runScript(lockScript)
+        try run(lockScript, context: context)
 
         // We need to have something on stack
         guard !context.stack.isEmpty else {
@@ -107,12 +81,12 @@ class ScriptMachine {
         }
 
         // Additional validation for spend-to-script-hash transactions:
-        if shouldVerifyP2SH() && lockScript.isPayToScriptHashScript {
+        if context.shouldVerifyP2SH() && lockScript.isPayToScriptHashScript {
             guard unlockScript.isDataOnly else {
                 throw ScriptMachineError.error("Input script for P2SH spending must be literals-only.")
             }
             let deserializedLockScript = try context.deserializeP2SHLockScript()
-            try runScript(deserializedLockScript)
+            try run(deserializedLockScript, context: context)
 
             // We need to have something on stack
             guard !context.stack.isEmpty else {
@@ -129,7 +103,7 @@ class ScriptMachine {
         return true
     }
 
-    public func runScript(_ script: Script) throws {
+    public static func run(_ script: Script, context: ScriptExecutionContext) throws {
         guard script.data.count <= BTC_MAX_SCRIPT_SIZE else {
             throw ScriptMachineError.exception("Script binary is too long.")
         }

@@ -57,6 +57,10 @@ public class ScriptExecutionContext {
     public var utxoToVerify: TransactionOutput?
     public var inputIndex: UInt32 = 0xffffffff
 
+    // A timestamp of the current block. Default is current timestamp.
+    // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
+    public var blockTimeStamp: UInt32 = UInt32(NSTimeIntervalSince1970)
+
     // Constants
     private let blobFalse: Data = Data()
     private let blobZero: Data = Data()
@@ -64,6 +68,10 @@ public class ScriptExecutionContext {
 
     public var shouldExecute: Bool {
         return !conditionStack.contains(false)
+    }
+
+    public func shouldVerifyP2SH() -> Bool {
+        return blockTimeStamp >= BTC_BIP16_TIMESTAMP
     }
 
     func normalized(_ index: Int) -> Int {

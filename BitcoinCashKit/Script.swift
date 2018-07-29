@@ -59,15 +59,15 @@ public class Script {
     public typealias MultisigVariables = (nSigRequired: UInt, publickeys: [PublicKey])
     public var multisigRequirements: MultisigVariables?
 
-    init() {
+    public init() {
         self.chunks = [ScriptChunk]()
     }
 
-    init(chunks: [ScriptChunk]) {
+    public init(chunks: [ScriptChunk]) {
         self.chunks = chunks
     }
 
-    convenience init?(data: Data) {
+    public convenience init?(data: Data) {
         // It's important to keep around original data to correctly identify the size of the script for BTC_MAX_SCRIPT_SIZE check
         // and to correctly calculate hash for the signature because in BitcoinQT scripts are not re-serialized/canonicalized.
         guard let chunks = Script.parseData(data) else {
@@ -76,14 +76,14 @@ public class Script {
         self.init(chunks: chunks)
     }
 
-    convenience init?(hex: String) {
+    public convenience init?(hex: String) {
         guard let scriptData = Data(hex: hex) else {
             return nil
         }
         self.init(data: scriptData)
     }
 
-    convenience init?(address: Address) {
+    public convenience init?(address: Address) {
         var scriptData: Data = Data()
 
         switch address.type {
@@ -116,7 +116,7 @@ public class Script {
     }
 
     // OP_<M> <pubkey1> ... <pubkeyN> OP_<N> OP_CHECKMULTISIG
-    convenience init?(publicKeys: [PublicKey], signaturesRequired: UInt) {
+    public convenience init?(publicKeys: [PublicKey], signaturesRequired: UInt) {
         // First make sure the arguments make sense.
         // We need at least one signature
         guard signaturesRequired > 0 else {

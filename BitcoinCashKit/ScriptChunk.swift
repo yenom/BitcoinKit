@@ -88,7 +88,7 @@ public struct OpcodeChunk: ScriptChunk {
     public var scriptData: Data
     public var range: Range<Int>
 
-    init(scriptData: Data, range: Range<Int>) {
+    public init(scriptData: Data, range: Range<Int>) {
         self.scriptData = scriptData
         self.range = range
     }
@@ -102,7 +102,7 @@ public struct DataChunk: ScriptChunk {
     public var scriptData: Data
     public var range: Range<Int>
 
-    init(scriptData: Data, range: Range<Int>) {
+    public init(scriptData: Data, range: Range<Int>) {
         self.scriptData = scriptData
         self.range = range
     }
