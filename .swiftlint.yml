@@ -1,0 +1,34 @@
+included:
+  - BitcoinCashKit
+excluded:
+
+opt_in_rules:
+  - empty_count
+  - explicit_init
+  - closure_spacing
+  - overridden_super_call
+  - redundant_nil_coalescing
+  - private_outlet
+  - nimble_operator
+  - attributes
+  - operator_usage_whitespace
+  - closure_end_indentation
+  - first_where
+  - object_literal
+  - number_separator
+  - prohibited_super_call
+  - fatal_error_message
+disabled_rules:
+  - function_body_length
+  - identifier_name
+  - force_try
+  - fallthrough
+
+type_name:
+  max_length: 100
+  excluded:
+type_body_length: 500
+line_length: 300
+file_length: 500
+number_separator:
+  minimum_length: 5
