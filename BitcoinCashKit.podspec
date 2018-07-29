@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
   spec.author = { 'BitcoinCashKit developers' => 'usatie@yenom.tech' }
 
   spec.requires_arc = true
-  spec.source = { git: 'https://github.com/BitcoinCashKit/BitcoinCashKit.git', tag: "cash-v#{spec.version}" }
+  spec.source = { git: 'https://github.com/BitcoinCashKit/BitcoinCashKit.git', tag: "v#{spec.version}" }
   spec.source_files = 'BitcoinCashKit/**/*.{h,m,swift}'
   spec.private_header_files = 'BitcoinCashKit/**/BitcoinCashKitPrivate.h'
   spec.module_map = 'BitcoinCashKit/BitcoinCashKit.modulemap'
