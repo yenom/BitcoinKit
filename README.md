@@ -2,13 +2,13 @@ BitcoinCashKit
 ===========
 ### Welcome to BitcoinCashKit
 
-The BitcoinCashKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original library aimed at supporting the Bitcoin cash eco-system.
+The BitcoinCashKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system.
 
 It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.
 
 Release notes are [here](CHANGELOG.md).
 
-<img src="https://user-images.githubusercontent.com/40610/35793683-0d497b4e-0a96-11e8-8e49-2b0ce09211a4.png" width="320px" />&nbsp;<img src=":storage/1583100f-9557-45f0-bdb5-e66d60c62492/e72f64c0.png" />
+<img src="https://raw.githubusercontent.com/BitcoinCashKit/BitcoinCashKit/master/Screenshots/01.png" width="320px" />&nbsp;<img src="https://raw.githubusercontent.com/BitcoinCashKit/BitcoinCashKit/master/Screenshots/02.png" />
 
 Features
 --------
@@ -25,7 +25,7 @@ Features
 Usage
 -----
 
-#### Generate Addresses
+#### Generate addresses
 ```swift
 // from Testnet Cashaddr
 let cashaddrTest = try AddressFactory.create("bchtest:pr6m7j9njldwwzlg9v7v53unlr4jkmx6eyvwc0uz5t")
@@ -115,7 +115,7 @@ Installation
 ------------
 
 ### CocoaPods
-1. Install CocoaPods 1.1.0 or later.
+1. [Install CocoaPods 1.1.0 or later](https://guides.cocoapods.org/using/getting-started.html).
 2. Run `pod repo update` to make CocoaPods aware of the latest available Realm versions.
 3. In your Podfile, add `use_frameworks!` and `pod 'BitcoinCashKit'` to your main and test targets.
 4. From the command line, run pod install.
