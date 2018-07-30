@@ -1,5 +1,5 @@
 //
-//  OP_CHECKSIGVERIFY.swift
+//  OP_CHECKMULTISIGVERIFY.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
 //
@@ -24,20 +24,20 @@
 
 import Foundation
 
-// Same as OP_CHECKSIG, but OP_VERIFY is executed afterward.
-public struct OpCheckSigVerify: OpCodeProtocol {
-    public var value: UInt8 { return 0xad }
-    public var name: String { return "OP_CHECKSIGVERIFY" }
+// Same as OP_CHECKMULTISIG, but OP_VERIFY is executed afterward.
+public struct OpCheckMultiSigVerify: OpCodeProtocol {
+    public var value: UInt8 { return 0xaf }
+    public var name: String { return "OP_CHECKMULTISIGVERIFY" }
 
-    // input : sig pubkey
+    // input : x sig1 sig2 ... <number of signatures> pub1 pub2 <number of public keys>
     // output : Nothing / fail
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        try OpCode.OP_CHECKSIG.execute(context)
+        try OpCode.OP_CHECKMULTISIG.execute(context)
         do {
             try OpCode.OP_VERIFY.execute(context)
         } catch {
-            throw OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.")
+            throw OpCodeExecutionError.error("OP_CHECKMULTISIGVERIFY failed.")
         }
     }
 }

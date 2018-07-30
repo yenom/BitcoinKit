@@ -38,7 +38,7 @@ public struct OpCode {
     public static let OP_PUSHDATA1: OpCodeProtocol = OpPushData1() // followed by a 1-byte length of the string to push (allows pushing 0..255 bytes).
     public static let OP_PUSHDATA2: OpCodeProtocol = OpPushData2() // followed by a 2-byte length of the string to push (allows pushing 0..65535 bytes).
     public static let OP_PUSHDATA4: OpCodeProtocol = OpPushData4() // followed by a 4-byte length of the string to push (allows pushing 0..4294967295 bytes).
-    public static let OP_1NEGATE: OpCodeProtocol = OpExample() // pushes -1 number on the stack
+    public static let OP_1NEGATE: OpCodeProtocol = Op1Negate() // pushes -1 number on the stack
     public static let OP_RESERVED: OpCodeProtocol = OpExample() // Not assigned. If executed, transaction is invalid.
 
     // public static let OP_<N> pushes number <N> on the stack
@@ -158,9 +158,9 @@ public struct OpCode {
     public static let OP_HASH256: OpCodeProtocol = OpExample()
     public static let OP_CODESEPARATOR: OpCodeProtocol = OpExample() // This opcode is rarely used because it's useless, but we need to support it anyway.
     public static let OP_CHECKSIG: OpCodeProtocol = OpCheckSig()
-    public static let OP_CHECKSIGVERIFY: OpCodeProtocol = OpExample()
-    public static let OP_CHECKMULTISIG: OpCodeProtocol = OpExample()
-    public static let OP_CHECKMULTISIGVERIFY: OpCodeProtocol = OpExample()
+    public static let OP_CHECKSIGVERIFY: OpCodeProtocol = OpCheckSigVerify()
+    public static let OP_CHECKMULTISIG: OpCodeProtocol = OpCheckMultiSig()
+    public static let OP_CHECKMULTISIGVERIFY: OpCodeProtocol = OpCheckMultiSigVerify()
 
     // Expansion
     public static let OP_NOP1: OpCodeProtocol = OpExample()

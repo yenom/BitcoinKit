@@ -33,9 +33,7 @@ public struct OpHash160: OpCodeProtocol {
     // output : hash
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        guard context.stack.count >= 1 else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(1)
-        }
+        try context.assertStackHeightGreaterThan(1)
 
         let data: Data = context.stack.removeLast()
         let hash: Data = Crypto.sha256ripemd160(data)

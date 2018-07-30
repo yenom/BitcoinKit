@@ -79,30 +79,43 @@ public class ScriptExecutionContext {
         return (index < 0) ? stack.count + index : index
     }
 
-    internal func pushToStack(_ bool: Bool) {
+    // stack
+    public func pushToStack(_ bool: Bool) {
         stack.append(bool ? blobTrue : blobFalse)
     }
-    internal func pushToStack(_ n: Int) throws {
+    public func pushToStack(_ n: Int) throws {
         stack.append(Data(from: n.littleEndian))
     }
-    internal func pushToStack(_ data: Data) throws {
+    public func pushToStack(_ data: Data) throws {
         guard data.count <= BTC_MAX_SCRIPT_ELEMENT_SIZE else {
             throw ScriptMachineError.error("PushedData size is too big.")
         }
         stack.append(data)
     }
-
-    internal func resetStack() {
+    public func resetStack() {
         stack = [Data()]
         altStack = [Data()]
         conditionStack = [Bool]()
     }
-
-    internal func swapDataAt(i: Int, j: Int) {
+    public func swapDataAt(i: Int, j: Int) {
         stack.swapAt(normalized(i), normalized(j))
     }
 
-    internal func deserializeP2SHLockScript() throws -> Script {
+    public func assertStackHeightGreaterThan(_ n: Int) throws {
+        guard stack.count >= n else {
+            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(n)
+        }
+    }
+
+    // OpCount
+    public func incrementOpCount(by i: Int = 1) throws {
+        opCount += i
+        guard opCount <= BTC_MAX_OPS_PER_SCRIPT else {
+            throw OpCodeExecutionError.error("Exceeded the allowed number of operations per script.")
+        }
+    }
+
+    public func deserializeP2SHLockScript() throws -> Script {
         // Make a copy of the stack if we have P2SH script.
         // We will run deserialized P2SH script on this stack.
         var stackForP2SH: [Data] = stack
@@ -128,12 +141,12 @@ public class ScriptExecutionContext {
         return stack[normalized(i)]
     }
 
-    public func number(at i: Int) -> Int32? {
+    public func number(at i: Int) throws -> Int32 {
         let data: Data = stack[normalized(i)]
-        if data.count > 4 {
-            return nil
+        guard data.count <= 4 else {
+            throw OpCodeExecutionError.invalidBignum
         }
-        return Int32(data.withUnsafeBytes { $0.pointee })
+        return data.withUnsafeBytes { $0.pointee }
     }
 
     public func bool(at i: Int) -> Bool {
