@@ -132,7 +132,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'BitcoinCashKit', '~> 0.2.0'
+    pod 'BitcoinCashKit'
 end
 ```
 
@@ -156,7 +156,7 @@ $ brew install carthage
 To integrate BitcoinCashKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "BitcoinCashKit/BitcoinCashKit" ~> 0.2.0
+github "BitcoinCashKit/BitcoinCashKit"
 ```
 
 Run `carthage update` to build the framework and drag the built `BitcoinCashKit.framework` into your Xcode project.
