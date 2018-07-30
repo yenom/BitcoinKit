@@ -96,7 +96,7 @@ public struct OpCode {
     public static let OP_PICK: OpCodeProtocol = OpExample()
     public static let OP_ROLL: OpCodeProtocol = OpExample()
     public static let OP_ROT: OpCodeProtocol = OpExample()
-    public static let OP_SWAP: OpCodeProtocol = OpExample()
+    public static let OP_SWAP: OpCodeProtocol = OpSwap()
     public static let OP_TUCK: OpCodeProtocol = OpExample()
 
     // Splice ops

@@ -32,9 +32,7 @@ public struct OpSwap: OpCodeProtocol {
     // (x1 x2 -- x2 x1)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        guard context.stack.count >= 2 else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(2)
-        }
+        try context.assertStackHeightGreaterThan(2)
         context.swapDataAt(i: -2, j: -1)
     }
 }
