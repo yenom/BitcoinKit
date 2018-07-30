@@ -87,6 +87,7 @@
 		29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */; };
 		29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */; };
 		29E1ED73210ECD35007F4627 /* OP_CHECKMULTISIG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */; };
+		29E1ED75210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED74210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift */; };
 		CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF120F0CF9100AD4020 /* Base58Tests.swift */; };
 		CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */; };
 		CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF520F0ED4500AD4020 /* AddressTests.swift */; };
@@ -194,6 +195,7 @@
 		29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_EXAMPLE.swift; sourceTree = "<group>"; };
 		29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1NEGATE.swift; sourceTree = "<group>"; };
 		29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKMULTISIG.swift; sourceTree = "<group>"; };
+		29E1ED74210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKMULTISIGVERIFY.swift; sourceTree = "<group>"; };
 		CF432AF120F0CF9100AD4020 /* Base58Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58Tests.swift; sourceTree = "<group>"; };
 		CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bech32Tests.swift; sourceTree = "<group>"; };
 		CF432AF520F0ED4500AD4020 /* AddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTests.swift; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */,
 				29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */,
 				29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */,
+				29E1ED74210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift */,
 				29290B9A210AF88C00D2BE78 /* OP_HASH160.swift */,
 				29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */,
 			);
@@ -568,6 +571,7 @@
 				14F37A3C20209F9200D34748 /* Script.swift in Sources */,
 				CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */,
 				29290BA1210AF90D00D2BE78 /* OP_VERIFY.swift in Sources */,
+				29E1ED75210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift in Sources */,
 				29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */,
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,

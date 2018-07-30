@@ -24,7 +24,14 @@
 
 import Foundation
 
-// Compares the first signature against each public key until it finds an ECDSA match. Starting with the subsequent public key, it compares the second signature against each remaining public key until it finds an ECDSA match. The process is repeated until all signatures have been checked or not enough public keys remain to produce a successful result. All signatures need to match a public key. Because public keys are not checked again if they fail any signature comparison, signatures must be placed in the scriptSig using the same order as their corresponding public keys were placed in the scriptPubKey or redeemScript. If all signatures are valid, 1 is returned, 0 otherwise. Due to a bug, one extra unused value is removed from the stack.
+// Compares the first signature against each public key until it finds an ECDSA match. Starting
+// with the subsequent public key, it compares the second signature against each remaining public key
+// until it finds an ECDSA match. The process is repeated until all signatures have been checked or not
+// enough public keys remain to produce a successful result. All signatures need to match a public key.
+// Because public keys are not checked again if they fail any signature comparison, signatures must be
+// placed in the scriptSig using the same order as their corresponding public keys were placed in the
+// scriptPubKey or redeemScript. If all signatures are valid, 1 is returned, 0 otherwise. Due to a bug,
+// one extra unused value is removed from the stack.
 public struct OpCheckMultiSig: OpCodeProtocol {
     public var value: UInt8 { return 0xae }
     public var name: String { return "OP_CHECKSIG" }
@@ -33,7 +40,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
     // output : true / false
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        
+
         // Get numPublicKeys with validation
         guard context.stack.count >= 1 else {
             throw OpCodeExecutionError.opcodeRequiresItemsOnStack(1)
@@ -72,7 +79,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
             throw OpCodeExecutionError.error("Invalid number of signatures for \(name): \(numSigs).")
         }
         context.stack.removeLast()
-        
+
         // Get sigs with validation
         var signatures: [Data] = []
         guard context.stack.count >= numSigs else {
@@ -95,7 +102,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
         guard let tx = context.transaction, let utxo = context.utxoToVerify else {
             throw OpCodeExecutionError.error("The transaction or the utxo to verify is not set.")
         }
-        while success && signatures.count > 0 {
+        while success && !signatures.isEmpty {
             let pubkeyData: Data = publicKeys.removeFirst()
             let sigData: Data = signatures[0]
             do {
@@ -108,7 +115,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
                     firstSigError = error
                 }
             }
-            
+
             // If there are more signatures left than keys left,
             // then too many signatures have failed
             if publicKeys.count < signatures.count {

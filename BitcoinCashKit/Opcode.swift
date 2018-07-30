@@ -160,7 +160,7 @@ public struct OpCode {
     public static let OP_CHECKSIG: OpCodeProtocol = OpCheckSig()
     public static let OP_CHECKSIGVERIFY: OpCodeProtocol = OpCheckSigVerify()
     public static let OP_CHECKMULTISIG: OpCodeProtocol = OpCheckMultiSig()
-    public static let OP_CHECKMULTISIGVERIFY: OpCodeProtocol = OpExample()
+    public static let OP_CHECKMULTISIGVERIFY: OpCodeProtocol = OpCheckMultiSigVerify()
 
     // Expansion
     public static let OP_NOP1: OpCodeProtocol = OpExample()
