@@ -1,5 +1,5 @@
-BitcoinCashKit
-===========
+<img src="https://user-images.githubusercontent.com/23519083/43385824-be9ac974-941c-11e8-835c-39188c4ed7c9.jpg" alt="img_bitcoincashkit" width="600">
+
 ### Welcome to BitcoinCashKit
 
 The BitcoinCashKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system.
