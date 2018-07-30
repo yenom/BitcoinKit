@@ -1,5 +1,5 @@
 //
-//  OP_N.swift
+//  OP_1NEGATE.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
 //
@@ -24,22 +24,14 @@
 
 import Foundation
 
-// The number in the word name (1-16) is pushed onto the stack.
-public struct OpN: OpCodeProtocol {
-    public var value: UInt8 { return 0x50 + n }
-    public var name: String { return "OP_\(n)" }
-    private let n: UInt8
-    internal init(_ n: UInt8) {
-        guard (1...16).contains(n) else {
-            fatalError("OP_N can be initialized with N between 1 and 16. \(n) is not valid.")
-        }
-        self.n = n
-    }
-
+// The number -1 is pushed onto the stack.
+public struct Op1Negate: OpCodeProtocol {
+    public var value: UInt8 { return 0x4f }
+    public var name: String { return "OP_1NEGATE" }
     // input : -
-    // output : n
+    // output : -1
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        try context.pushToStack(Int(n))
+        try context.pushToStack(-1)
     }
 }
