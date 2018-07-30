@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/23519083/43385824-be9ac974-941c-11e8-835c-39188c4ed7c9.jpg" alt="img_bitcoincashkit" width="600">
+![BitcoinCashKit: Let's Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/43385824-be9ac974-941c-11e8-835c-39188c4ed7c9.jpg)
 
 ### Welcome to BitcoinCashKit
 
