@@ -179,7 +179,7 @@ public struct Bech32 {
     // string : "bitcoincash:qql8zpwglr3q5le9jnjxkmypefaku39dkygsx29fzk"
     public static func decode(_ string: String) -> (prefix: String, data: Data)? {
         // We can't have empty string.
-        // string should by uppercase only / lowercase only.
+        // Bech32 should be uppercase only / lowercase only.
         guard !string.isEmpty && [string.lowercased(), string.uppercased()].contains(string) else {
             return nil
         }
