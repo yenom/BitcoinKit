@@ -12,6 +12,11 @@
 
 * None.  
 
+## 0.2.1 Release notes (2018-07-30)
+- Fix Carthage install problem
+- Add OP_CODEs
+- Refactor ScriptMachine
+- etc...
 
 ## 0.2.0 Release notes (2018-07-29)
 First Version for BitcoinCashKit!
