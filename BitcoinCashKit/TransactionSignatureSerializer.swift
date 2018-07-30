@@ -33,24 +33,23 @@ public struct TransactionSignatureSerializer {
     // input should be modified before sign
     internal func modifiedInput(for i: Int) -> TransactionInput {
         let txin = tx.inputs[i]
-        let script: Data
+        let sigScript: Data
         let sequence: UInt32
 
         if i == inputIndex {
-            // TODO: Remove OP_CODuESEPARATOR from lockingScript
-            let subScript: Data = utxo.lockingScript
-            // subScript.deleteOccurrences(of: OpCode.OP_CODESEPARATOR)
-            script = subScript
+            let subScript = Script(data: utxo.lockingScript)
+            try? subScript?.deleteOccurrences(of: OpCode.OP_CODESEPARATOR)
+            sigScript = subScript?.data ?? Data()
             sequence = txin.sequence
         } else if hashType.isNone || hashType.isSingle {
             // If hashtype is NONE or SINGLE, blank out others' input sequence numbers to let others update transaction at will.
-            script = Data()
+            sigScript = Data()
             sequence = 0
         } else {
-            script = Data()
+            sigScript = Data()
             sequence = txin.sequence
         }
-        return TransactionInput(previousOutput: txin.previousOutput, signatureScript: script, sequence: sequence)
+        return TransactionInput(previousOutput: txin.previousOutput, signatureScript: sigScript, sequence: sequence)
     }
 
     public func serialize() -> Data {

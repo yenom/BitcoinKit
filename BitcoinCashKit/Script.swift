@@ -375,7 +375,7 @@ public class Script {
         try update(with: updatedData)
     }
 
-    public func deleteOccurrences(of opcode: UInt8) throws {
+    public func deleteOccurrences(of opcode: OpCodeProtocol) throws {
         let updatedData = chunks.filter { $0.opCode != opcode }.reduce(Data()) { $0 + $1.chunkData }
         try update(with: updatedData)
     }
