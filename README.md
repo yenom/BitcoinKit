@@ -109,13 +109,13 @@ Requirements
 ------------
 - iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 9.0+
-- Swift 4.0+
+- Swift 4.1+
 
 Installation
 ------------
 
 ### CocoaPods
-1. [Install CocoaPods 1.1.0 or later](https://guides.cocoapods.org/using/getting-started.html).
+1. [Install CocoaPods 1.5.0 or later](https://guides.cocoapods.org/using/getting-started.html).
 2. Run `pod repo update` to make CocoaPods aware of the latest available Realm versions.
 3. In your Podfile, add `use_frameworks!` and `pod 'BitcoinCashKit'` to your main and test targets.
 4. From the command line, run `pod install`.
@@ -123,10 +123,9 @@ Installation
 
 ### Carthage
 
-1. [Install Carthage 0.17.0 or later](https://github.com/Carthage/Carthage).
-2. Add `github "BitcoinCashKit/BitcoinCashKit"` to your Cartfile.
-3. Run `carthage update`.
-4. Drag the built `BitcoinCashKit.framework` into your Xcode project.
+BitcoinCashKit is available through [Carthage](https://github.com/Carthage/Carthage). To install it, simply add the following line to your Cartfile:
+
+`github "BitcoinCashKit/BitcoinCashKit"`
 
 Contribute
 ----------
