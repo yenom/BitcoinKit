@@ -42,9 +42,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
         try prepareExecute(context)
 
         // Get numPublicKeys with validation
-        guard context.stack.count >= 1 else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(1)
-        }
+        try context.assertStackHeightGreaterThan(1)
         guard let bn = context.number(at: -1) else {
             throw OpCodeExecutionError.invalidBignum
         }
@@ -52,25 +50,18 @@ public struct OpCheckMultiSig: OpCodeProtocol {
         guard numPublicKeys >= 0 && numPublicKeys <= BTC_MAX_KEYS_FOR_CHECKMULTISIG else {
             throw OpCodeExecutionError.error("Invalid number of keys for \(name): \(numPublicKeys).")
         }
-        context.opCount += numPublicKeys
-        guard context.opCount <= BTC_MAX_OPS_PER_SCRIPT else {
-            throw OpCodeExecutionError.error("Exceeded the allowed number of operations per script.")
-        }
+        try context.incrementOpCount(by: numPublicKeys)
         context.stack.removeLast()
 
         // Get pubkeys with validation
         var publicKeys: [Data] = []
-        guard context.stack.count >= numPublicKeys else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(numPublicKeys)
-        }
+        try context.assertStackHeightGreaterThan(numPublicKeys)
         for _ in 0..<numPublicKeys {
             publicKeys.append(context.stack.removeLast())
         }
 
         // Get numgSis with validation
-        guard context.stack.count >= 1 else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(1)
-        }
+        try context.assertStackHeightGreaterThan(1)
         guard let bn2 = context.number(at: -1) else {
             throw OpCodeExecutionError.invalidBignum
         }
@@ -82,18 +73,14 @@ public struct OpCheckMultiSig: OpCodeProtocol {
 
         // Get sigs with validation
         var signatures: [Data] = []
-        guard context.stack.count >= numSigs else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(numSigs)
-        }
+        try context.assertStackHeightGreaterThan(numSigs)
         for _ in 0..<numSigs {
             signatures.append(context.stack.removeLast())
         }
 
         // Remove extra opcode (OP_0)
         // Due to a bug, one extra unused value is removed from the stack.
-        guard context.stack.count >= 1 else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(1)
-        }
+        try context.assertStackHeightGreaterThan(1)
         context.stack.removeLast()
 
         // Signatures must come in the same order as their keys.

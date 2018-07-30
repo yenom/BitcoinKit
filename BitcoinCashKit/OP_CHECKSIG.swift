@@ -33,9 +33,7 @@ public struct OpCheckSig: OpCodeProtocol {
     // output : true / false
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        guard context.stack.count >= 2 else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(2)
-        }
+        try context.assertStackHeightGreaterThan(2)
 
         let pubkeyData: Data = context.stack.removeLast()
         let sigData: Data = context.stack.removeLast()

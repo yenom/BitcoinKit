@@ -36,11 +36,10 @@ extension OpCodeProtocol {
     public func isEnabled() -> Bool {
         return true
     }
+
     public func prepareExecute(_ context: ScriptExecutionContext) throws {
-        context.opCount += 1
-        guard context.opCount <= BTC_MAX_OPS_PER_SCRIPT else {
-            throw OpCodeExecutionError.error("Exceeded the allowed number of operations per script.")
-        }
+        try context.incrementOpCount()
+        // if context.verbose == true, print stacks and so on...
     }
 
     public func execute(_ context: ScriptExecutionContext) throws {

@@ -33,9 +33,7 @@ public struct OpEqual: OpCodeProtocol {
     // output : true / false
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        guard context.stack.count >= 2 else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(2)
-        }
+        try context.assertStackHeightGreaterThan(2)
 
         let x1 = context.stack.popLast()!
         let x2 = context.stack.popLast()!
