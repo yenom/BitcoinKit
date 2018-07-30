@@ -407,7 +407,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 147494DB201F9A29006D1CF8 /* Build configuration list for PBXNativeTarget "BitcoinCashKit" */;
 			buildPhases = (
-				292B636820E7BF7000F5040A /* ShellScript */,
+				292B636820E7BF7000F5040A /* SwiftLint */,
 				1482B628202954CC0098B612 /* Build Libraries */,
 				147494C2201F9A29006D1CF8 /* Sources */,
 				147494C3201F9A29006D1CF8 /* Frameworks */,
@@ -447,7 +447,7 @@
 		147494BE201F9A29006D1CF8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0920;
+				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "BitcoinCashKit developers";
 				TargetAttributes = {
@@ -514,13 +514,14 @@
 			shellScript = "if [ ! -d \"$SRCROOT/Libraries/secp256k1/lib\" ] || [ ! -d \"$SRCROOT/Libraries/openssl/lib\" ]; then\n  env -i PATH=$PATH sh \"$SRCROOT/setup/build_libraries.sh\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		292B636820E7BF7000F5040A /* ShellScript */ = {
+		292B636820E7BF7000F5040A /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = SwiftLint;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
