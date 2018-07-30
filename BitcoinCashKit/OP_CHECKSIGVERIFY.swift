@@ -33,26 +33,11 @@ public struct OpCheckSigVerify: OpCodeProtocol {
     // output : Nothing / fail
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        guard context.stack.count >= 2 else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(2)
-        }
-
-        let pubkeyData: Data = context.stack.removeLast()
-        let sigData: Data = context.stack.removeLast()
-
-        // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
-        let subScript = try context.script.subScript(from: context.lastCodeSepartorIndex)
-        try subScript.deleteOccurrences(of: sigData)
-
-        guard let tx = context.transaction, let utxo = context.utxoToVerify else {
-            throw OpCodeExecutionError.error("The transaction or the utxo to verify is not set.")
-        }
-        let valid = try Crypto.verifySigData(for: tx, inputIndex: Int(context.inputIndex), utxo: utxo, sigData: sigData, pubKeyData: pubkeyData)
-        context.pushToStack(valid)
-
-        guard valid else {
+        try OpCode.OP_CHECKSIG.execute(context)
+        do {
+            try OpCode.OP_VERIFY.execute(context)
+        } catch {
             throw OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.")
         }
-        context.stack.removeLast()
     }
 }
