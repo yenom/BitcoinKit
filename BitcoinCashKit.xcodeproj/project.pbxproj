@@ -84,6 +84,7 @@
 		297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97420EB13320077EEEE /* AddressFactory.swift */; };
 		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
 		299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */; };
+		29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */; };
 		CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF120F0CF9100AD4020 /* Base58Tests.swift */; };
 		CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */; };
 		CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF520F0ED4500AD4020 /* AddressTests.swift */; };
@@ -188,6 +189,7 @@
 		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
 		299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureSerializer.swift; sourceTree = "<group>"; };
+		29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_EXAMPLE.swift; sourceTree = "<group>"; };
 		CF432AF120F0CF9100AD4020 /* Base58Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58Tests.swift; sourceTree = "<group>"; };
 		CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bech32Tests.swift; sourceTree = "<group>"; };
 		CF432AF520F0ED4500AD4020 /* AddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTests.swift; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 		29290B8F210AF77100D2BE78 /* OP_CODEs */ = {
 			isa = PBXGroup;
 			children = (
+				29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */,
 				29290B92210AF86400D2BE78 /* OP_0.swift */,
 				29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */,
 				29290B94210AF86C00D2BE78 /* OP_N.swift */,
@@ -536,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1482B5EA20273B8A0098B612 /* HDPublicKey.swift in Sources */,
+				29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */,
 				14F37A3A20209B5400D34748 /* Transaction.swift in Sources */,
 				1482B5E42026F2590098B612 /* WordList.swift in Sources */,
 				14839A93202FE6AC00A6CB34 /* FilterLoadMessage.swift in Sources */,
