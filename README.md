@@ -1,4 +1,6 @@
 BitcoinCashKit
+![img_bitcoincashkit](https://user-images.githubusercontent.com/23519083/43384650-9b11d73e-9419-11e8-8c05-40af97849c77.jpg)
+
 ===========
 ### Welcome to BitcoinCashKit
 
