@@ -33,7 +33,7 @@ public class PeerGroup: PeerDelegate {
 
     var peers = [String: Peer]()
 
-    private var publicKeys = [Data]()
+    private var filters = [Data]()
     private var transactions = [Transaction]()
 
     public init(blockChain: BlockChain, maxConnections: Int = 1) {
@@ -64,12 +64,11 @@ public class PeerGroup: PeerDelegate {
         delegate?.peerGroupDidStop(self)
     }
 
-    // TODO: public key hashじゃなくて良いのか？
-    public func addPublickey(publicKey: Data) {
-        publicKeys.append(publicKey)
+    // filter: pubkey, pubkeyhash, scripthash, etc...
+    public func addFilter(_ filter: Data) {
+        filters.append(filter)
     }
 
-    // TODO: 送るpeerは一つじゃなくて全部に送る?
     public func sendTransaction(transaction: Transaction) {
         if let peer = peers.values.first {
             peer.sendTransaction(transaction: transaction)
@@ -80,10 +79,9 @@ public class PeerGroup: PeerDelegate {
     }
 
     public func peerDidConnect(_ peer: Peer) {
-        // TODO: isSyncingのpeerがあったらこのpeerとはstartSyncしなくてもいいのか・・・？
         if peers.filter({ $0.value.context.isSyncing }).isEmpty {
             let latestBlockHash = blockChain.latestBlockHash()
-            peer.startSync(filters: publicKeys, latestBlockHash: latestBlockHash)
+            peer.startSync(filters: filters, latestBlockHash: latestBlockHash)
         }
         if !transactions.isEmpty {
             for transaction in transactions {
@@ -104,7 +102,6 @@ public class PeerGroup: PeerDelegate {
         }
     }
 
-    // TODO: Merkle Treeの検証はをすべきでは？
     public func peer(_ peer: Peer, didReceiveMerkleBlockMessage message: MerkleBlockMessage, hash: Data) {
         try! blockChain.addMerkleBlock(message, hash: hash)
     }

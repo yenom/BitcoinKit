@@ -70,10 +70,13 @@ public class Script {
     public convenience init?(data: Data) {
         // It's important to keep around original data to correctly identify the size of the script for BTC_MAX_SCRIPT_SIZE check
         // and to correctly calculate hash for the signature because in BitcoinQT scripts are not re-serialized/canonicalized.
-        guard let chunks = Script.parseData(data) else {
+        do {
+            let chunks = try Script.parseData(data)
+            self.init(chunks: chunks)
+        } catch let error {
+            print(error)
             return nil
         }
-        self.init(chunks: chunks)
     }
 
     public convenience init?(hex: String) {
@@ -156,7 +159,7 @@ public class Script {
         self.multisigRequirements = (signaturesRequired, publicKeys)
     }
 
-    private static func parseData(_ data: Data) -> [ScriptChunk]? {
+    private static func parseData(_ data: Data) throws -> [ScriptChunk] {
         guard !data.isEmpty else {
             return [ScriptChunk]()
         }
@@ -168,11 +171,8 @@ public class Script {
 
         while i < count {
             // Exit if failed to parse
-            guard let chunk = ScriptChunkHelper.parseChunk(from: data, offset: i) else {
-                return nil
-            }
+            let chunk = try ScriptChunkHelper.parseChunk(from: data, offset: i)
             chunks.append(chunk)
-
             i += chunk.range.count
         }
         return chunks
@@ -209,9 +209,6 @@ public class Script {
             && opcode(at: 4) == OpCode.OP_CHECKSIG
     }
 
-    // TODO: check against the original serialized form instead of parsed chunks because BIP16 defines
-    // P2SH script as an exact byte template. Scripts using OP_PUSHDATA1/2/4 are not valid P2SH scripts.
-    // To do that we have to maintain original script binary data and each chunk should keep a range in that data.
     public var isPayToScriptHashScript: Bool {
         guard chunks.count == 3 else {
             return false
@@ -328,9 +325,7 @@ public class Script {
     }
 
     private func update(with updatedData: Data) throws {
-        guard let updatedChunks = Script.parseData(updatedData) else {
-            throw ScriptError.error("Parse data failed while updating. : \(updatedData.hex)")
-        }
+        let updatedChunks = try Script.parseData(updatedData)
         chunks = updatedChunks
         invalidateSerialization()
     }
@@ -380,7 +375,7 @@ public class Script {
         try update(with: updatedData)
     }
 
-    public func deleteOccurrences(of opcode: UInt8) throws {
+    public func deleteOccurrences(of opcode: OpCodeProtocol) throws {
         let updatedData = chunks.filter { $0.opCode != opcode }.reduce(Data()) { $0 + $1.chunkData }
         try update(with: updatedData)
     }

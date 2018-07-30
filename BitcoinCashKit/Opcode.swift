@@ -295,14 +295,3 @@ public struct OpCode {
 
     internal init() {}
 }
-
-// TODO: Remove this when all opcodes are implemented
-public class OpExample: OpCodeProtocol {
-    public var value: UInt8 { return 0x00 }
-    public var name: String { return "OP_EXAMPLE" }
-
-    public func execute(_ context: ScriptExecutionContext) throws {
-        // do something with context here!
-        fatalError("You should implement this!")
-    }
-}

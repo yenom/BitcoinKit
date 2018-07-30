@@ -50,7 +50,7 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
             return
         }
     }
-
+    
     @IBAction func sync(_ sender: UIButton) {
         if let peerGroup = peerGroup {
             print("stop sync")
@@ -66,9 +66,9 @@ class HomeViewController: UITableViewController, PeerGroupDelegate {
 
             for address in usedAddresses() {
                 if let publicKey = address.publicKey {
-                    peerGroup?.addPublickey(publicKey: publicKey)
+                    peerGroup?.addFilter(publicKey)
                 }
-                peerGroup?.addPublickey(publicKey: address.data)
+                peerGroup?.addFilter(address.data)
             }
 
             peerGroup?.start()

@@ -48,7 +48,7 @@ extension OpCodeProtocol {
     }
 }
 
-enum OpCodeExecutionError: Error {
+public enum OpCodeExecutionError: Error {
     case notImplemented
     case error(String)
     case opcodeRequiresItemsOnStack(Int)

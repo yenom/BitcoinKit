@@ -53,9 +53,9 @@ class SendViewController: UIViewController, PeerGroupDelegate {
         
         for address in usedAddresses() {
             if let publicKey = address.publicKey {
-                peerGroup?.addPublickey(publicKey: publicKey)
+                peerGroup?.addFilter(publicKey)
             }
-            peerGroup?.addPublickey(publicKey: address.data)
+            peerGroup?.addFilter(address.data)
         }
         
         peerGroup?.start()

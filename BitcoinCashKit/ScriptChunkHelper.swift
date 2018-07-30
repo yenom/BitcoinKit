@@ -24,7 +24,11 @@
 
 import Foundation
 
-struct ScriptChunkHelper {
+public enum ScriptChunkError: Error {
+    case error(String)
+}
+
+public struct ScriptChunkHelper {
     // If encoding is -1, then the most compact will be chosen.
     // Valid values: -1, 0, 1, 2, 4.
     // Returns nil if preferredLengthEncoding can't be used for data, or data is nil or too big.
@@ -51,11 +55,10 @@ struct ScriptChunkHelper {
         return scriptData
     }
 
-    // TODO: Make it throws and non-optional
-    public static func parseChunk(from scriptData: Data, offset: Int) -> ScriptChunk? {
+    public static func parseChunk(from scriptData: Data, offset: Int) throws -> ScriptChunk {
         // Data should fit at least one opcode.
         guard scriptData.count > offset else {
-            return nil
+            throw ScriptChunkError.error("Parse ScriptChunk failed. Offset is out of range.")
         }
 
         let opcode: UInt8 = scriptData[offset]
@@ -66,11 +69,11 @@ struct ScriptChunkHelper {
             return OpcodeChunk(scriptData: scriptData, range: range)
         } else {
             // push data
-            return parseDataChunk(from: scriptData, offset: offset, opcode: opcode)
+            return try parseDataChunk(from: scriptData, offset: offset, opcode: opcode)
         }
     }
 
-    private static func parseDataChunk(from scriptData: Data, offset: Int, opcode: UInt8) -> DataChunk? {
+    private static func parseDataChunk(from scriptData: Data, offset: Int, opcode: UInt8) throws -> DataChunk {
         // for range
         let count: Int = scriptData.count
         let chunkLength: Int
@@ -82,8 +85,7 @@ struct ScriptChunkHelper {
         case OpCode.OP_PUSHDATA1.value:
             var dataLength = UInt8()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
-                print("\(opcode), OP_PUSHDATA1 error")
-                return nil
+                throw ScriptChunkError.error("Parse DataChunk failed. OP_PUSHDATA1 error")
             }
             _ = scriptData.withUnsafeBytes {
                 memcpy(&dataLength, $0 + offset + MemoryLayout.size(ofValue: opcode), MemoryLayout.size(ofValue: dataLength))
@@ -92,8 +94,7 @@ struct ScriptChunkHelper {
         case OpCode.OP_PUSHDATA2.value:
             var dataLength = UInt16()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
-                print("\(opcode), OP_PUSHDATA2 error")
-                return nil
+                throw ScriptChunkError.error("Parse DataChunk failed.  OP_PUSHDATA2 error")
             }
             _ = scriptData.withUnsafeBytes {
                 memcpy(&dataLength, $0 + offset + MemoryLayout.size(ofValue: opcode), MemoryLayout.size(ofValue: dataLength))
@@ -103,8 +104,7 @@ struct ScriptChunkHelper {
         case OpCode.OP_PUSHDATA4.value:
             var dataLength = UInt32()
             guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
-                print("\(opcode), OP_PUSHDATA4 error")
-                return nil
+                throw ScriptChunkError.error("Parse DataChunk failed.  OP_PUSHDATA4 error")
             }
             _ = scriptData.withUnsafeBytes {
                 memcpy(&dataLength, $0 + offset + MemoryLayout.size(ofValue: opcode), MemoryLayout.size(ofValue: dataLength))
@@ -113,11 +113,11 @@ struct ScriptChunkHelper {
             chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
         default:
             // cannot happen because it's opcode
-            return nil
+            throw ScriptChunkError.error("Parse DataChunk failed. OP_CODE: \(opcode).")
         }
 
         guard offset + chunkLength <= count else {
-            return nil
+            throw ScriptChunkError.error("Parse DataChunk failed. Push data is out of bounds error.")
         }
         let range: Range<Int> = Range(offset..<offset + chunkLength)
         return DataChunk(scriptData: scriptData, range: range)
