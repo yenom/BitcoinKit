@@ -1,5 +1,5 @@
 
-![img_bitcoincashkit](https://user-images.githubusercontent.com/23519083/43384650-9b11d73e-9419-11e8-8c05-40af97849c77.jpg)
+![img_bitcoincashkit](https://user-images.githubusercontent.com/23519083/43385197-0f0a6b14-941b-11e8-8114-428e799c59a0.jpg)
 
 ### Welcome to BitcoinCashKit
 
