@@ -82,8 +82,8 @@ public class ScriptExecutionContext {
     internal func pushToStack(_ bool: Bool) {
         stack.append(bool ? blobTrue : blobFalse)
     }
-    internal func pushToStack(_ n: UInt8) throws {
-        stack.append(Data([n]))
+    internal func pushToStack(_ n: Int) throws {
+        stack.append(Data(from: n.littleEndian))
     }
     internal func pushToStack(_ data: Data) throws {
         guard data.count <= BTC_MAX_SCRIPT_ELEMENT_SIZE else {
