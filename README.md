@@ -8,21 +8,34 @@ It allows maintaining a wallet and sending/receiving transactions without needin
 
 Release notes are [here](CHANGELOG.md).
 
-<img src="https://user-images.githubusercontent.com/40610/35793683-0d497b4e-0a96-11e8-8e49-2b0ce09211a4.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/40610/35793685-0da36a32-0a96-11e8-855b-ecbc3ce1474c.png" width="320px" />
+<img src="https://user-images.githubusercontent.com/24402451/43367286-8753b4cc-9385-11e8-9fba-78e5283c1158.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/24402451/43367196-523d5f46-9384-11e8-9fee-10e72318e67b.png" width="319px" />
 
 Features
 --------
 
-- Send/receive transactions.
-- See current balance in a wallet.
-- Encoding/decoding addresses: P2PKH, P2SH, WIF format.
+- Encoding/decoding addresses: base58, Cashaddr, P2PKH, P2SH, WIF format.
 - Transaction building blocks: inputs, outputs, scripts.
 - EC keys and signatures.
 - BIP32, BIP44 hierarchical deterministic wallets.
 - BIP39 implementation.
+- SPV features **are under construction**. The following functions cannot work well sometimes.
+  - Send/receive transactions.
+  - See current balance in a wallet.
 
 Usage
 -----
+
+#### Generate addresses
+```swift
+// from Testnet Cashaddr
+let cashaddrTest = try AddressFactory.create("bchtest:pr6m7j9njldwwzlg9v7v53unlr4jkmx6eyvwc0uz5t")
+
+// from Mainnet Cashaddr
+let cashaddrMain = try AddressFactory.create("bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
+
+// from Base58 format
+let address = try AddressFactory.create("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
+```
 
 #### Creating new wallet
 
@@ -51,7 +64,7 @@ let wallet = HDWallet(seed: seed, network: .testnet)
 
 #### Key derivation
 
-```
+```swift
 let mnemonic = try Mnemonic.generate()
 let seed = Mnemonic.seed(mnemonic: mnemonic)
 
@@ -69,23 +82,22 @@ let m012prv = try! m01prv.derived(at: 2, hardened: true)
 
 #### HD Wallet Key derivation
 
-```
+```swift
 let keychain = HDKeychain(seed: seed, network: .mainnet)
 let privateKey = try! keychain.derivedKey(path: "m/44'/1'/0'/0/0")
-...
 ```
 
 #### Extended Keys
 
-```
+```swift
 let extendedKey = privateKey.extended()
 ```
 
 #### Sync blockchain
 
-```
+```swift
 let blockStore = try! SQLiteBlockStore.default()
-let blockChain = BlockChain(wallet: wallet, blockStore: blockStore)
+let blockChain = BlockChain(network: .testnet, blockStore: blockStore)
 
 let peerGroup = PeerGroup(blockChain: blockChain)
 let peerGroup.delegate = self
@@ -93,21 +105,70 @@ let peerGroup.delegate = self
 let peerGroup.start()
 ```
 
+Requirements
+------------
+- iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
+- Xcode 9.0+
+- Swift 4.1+
+
 Installation
 ------------
 
+### CocoaPods
+
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+> CocoaPods 1.5.0+ is required to build BitcoinCashKit.
+
+To integrate BitcoinCashKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
+use_frameworks!
+
+target '<Your Target Name>' do
+    pod 'BitcoinCashKit'
+end
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
 ### Carthage
 
-BitcoinKit is available through [Carthage](https://github.com/Carthage/Carthage). To install
-it, simply add the following line to your Cartfile:
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 
-`github "BitcoinCashKit/BitcoinCashKit"`
+You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+To integrate BitcoinCashKit into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```ogdl
+github "BitcoinCashKit/BitcoinCashKit"
+```
+
+Run `carthage update` to build the framework and drag the built `BitcoinCashKit.framework` into your Xcode project.
 
 Contribute
 ----------
 Contributions to BitcoinCashKit are welcome and encouraged!
 Feel free to open issues, drop us pull requests.
 
+## Authors & Maintainers
+ - [usatie](https://github.com/usatie)
+ - [akifuji](https://github.com/akifuj)
 
 License
 -------
