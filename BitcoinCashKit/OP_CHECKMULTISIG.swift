@@ -43,10 +43,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
 
         // Get numPublicKeys with validation
         try context.assertStackHeightGreaterThan(1)
-        guard let bn = context.number(at: -1) else {
-            throw OpCodeExecutionError.invalidBignum
-        }
-        let numPublicKeys = Int(bn)
+        let numPublicKeys = Int(try context.number(at: -1))
         guard numPublicKeys >= 0 && numPublicKeys <= BTC_MAX_KEYS_FOR_CHECKMULTISIG else {
             throw OpCodeExecutionError.error("Invalid number of keys for \(name): \(numPublicKeys).")
         }
@@ -62,10 +59,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
 
         // Get numgSis with validation
         try context.assertStackHeightGreaterThan(1)
-        guard let bn2 = context.number(at: -1) else {
-            throw OpCodeExecutionError.invalidBignum
-        }
-        let numSigs = Int(bn2)
+        let numSigs = Int(try context.number(at: -1))
         guard numSigs >= 0 && numSigs <= numPublicKeys else {
             throw OpCodeExecutionError.error("Invalid number of signatures for \(name): \(numSigs).")
         }

@@ -141,12 +141,12 @@ public class ScriptExecutionContext {
         return stack[normalized(i)]
     }
 
-    public func number(at i: Int) -> Int32? {
+    public func number(at i: Int) throws -> Int32 {
         let data: Data = stack[normalized(i)]
-        if data.count > 4 {
-            return nil
+        guard data.count <= 4 else {
+            throw OpCodeExecutionError.invalidBignum
         }
-        return Int32(data.withUnsafeBytes { $0.pointee })
+        return data.withUnsafeBytes { $0.pointee }
     }
 
     public func bool(at i: Int) -> Bool {
