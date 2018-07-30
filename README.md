@@ -1,5 +1,11 @@
 ![BitcoinCashKit: Let's Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/43385824-be9ac974-941c-11e8-835c-39188c4ed7c9.jpg)
 
+[![CI Status](http://img.shields.io/travis/BitcoinCashKit/BitcoinCashKit.svg)](https://travis-ci.org/BitcoinCashKit/BitcoinCashKit)
+[![codecov](https://codecov.io/gh/BitcoinCashKit/BitcoinCashKit/branch/master/graph/badge.svg)](https://codecov.io/gh/BitcoinCashKit/BitcoinCashKit)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Version](https://img.shields.io/cocoapods/v/BitcoinCashKit.svg)](http://cocoadocs.org/docsets/BitcoinCashKit)
+[![Platform](https://img.shields.io/cocoapods/p/BitcoinCashKit.svg)](http://cocoadocs.org/docsets/BitcoinCashKit)
+
 ### Welcome to BitcoinCashKit
 
 The BitcoinCashKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system.
