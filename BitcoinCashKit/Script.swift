@@ -53,6 +53,15 @@ public class Script {
     public var hex: String {
         return data.hex
     }
+    
+    public var p2shScript: Data {
+        var scriptData: Data = Data()
+        scriptData += OpCode.OP_HASH160
+        scriptData += Data([20])
+        scriptData += Crypto.sha256ripemd160(data)
+        scriptData += OpCode.OP_EQUAL
+        return scriptData
+    }
 
     // Multisignature script attribute.
     // If multisig script is not detected, this is nil
