@@ -47,4 +47,17 @@ class ScriptTests: XCTestCase {
         XCTAssertEqual(script2!.data, script.data, "script created from extracted address should be the same as the original script")
         XCTAssertEqual(script2!.string, script.string, "script created from extracted address should be the same as the original script")
     }
+    
+    func testCreate2of3MultisigScript() {
+        let aliceKey = try! PrivateKey(wif: "cNaP9iG9DaNNemnVa2LXvw4rby5Xc4k6qydENQmLBm2aD7gD7GJi")
+        let bobKey = try! PrivateKey(wif: "cSZEkc5cpjjmfK8E9MbTmHwmzck8MokK5Wd9LMTv59qdNSQNGBbG")
+        let charlieKey = try! PrivateKey(wif: "cUJiRP3A2KoCVi7fwYBGTKUaiHKgvT9CSiXpoGJdbYP9kEqHKU4q")
+        
+        let redeemScript = Script(publicKeys: [aliceKey.publicKey(), bobKey.publicKey(), charlieKey.publicKey()], signaturesRequired: 2)
+        XCTAssertNotNil(redeemScript)
+        let p2shScript = Script(data: redeemScript!.p2shScript)
+        XCTAssertNotNil(p2shScript)
+        let multisigAddr = p2shScript!.standardAddress(network: Network.testnet)
+        XCTAssertEqual(multisigAddr?.cashaddr, "bchtest:pp3f55qvt64vjfsu4jvscu3yr22eluknmyt3nkwcx2", "multisig address should be the same as address created from bitcoin-ruby.")
+    }
 }
