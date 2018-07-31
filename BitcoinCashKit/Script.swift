@@ -312,7 +312,7 @@ public class Script {
             guard let dataChunk = chunk(at: 1) as? DataChunk else {
                 return nil
             }
-            return Cashaddr(data: dataChunk.pushedData, type: .pubkeyHash, network: network)
+            return Cashaddr(data: dataChunk.pushedData, type: .scriptHash, network: network)
         }
         return nil
     }
