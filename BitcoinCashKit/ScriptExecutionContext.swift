@@ -93,9 +93,9 @@ public class ScriptExecutionContext {
         stack.append(data)
     }
     public func resetStack() {
-        stack = [Data()]
-        altStack = [Data()]
-        conditionStack = [Bool]()
+        stack = []
+        altStack = []
+        conditionStack = []
     }
     public func swapDataAt(i: Int, j: Int) {
         stack.swapAt(normalized(i), normalized(j))
