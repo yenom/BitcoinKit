@@ -101,6 +101,7 @@
 		6E20AED52112C8F9008A9810 /* BloomFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20AED42112C8F9008A9810 /* BloomFilterTests.swift */; };
 		6E20AED72112D417008A9810 /* MurmurHashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20AED62112D417008A9810 /* MurmurHashTests.swift */; };
 		6EE789DB2112C1E500EAB620 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE789DA2112C1E500EAB620 /* CryptoTests.swift */; };
+		29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E321106772007DA3BF /* BigNumberTests.swift */; };
 		CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF120F0CF9100AD4020 /* Base58Tests.swift */; };
 		CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */; };
 		CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF520F0ED4500AD4020 /* AddressTests.swift */; };
@@ -222,6 +223,7 @@
 		6E20AED42112C8F9008A9810 /* BloomFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloomFilterTests.swift; sourceTree = "<group>"; };
 		6E20AED62112D417008A9810 /* MurmurHashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MurmurHashTests.swift; sourceTree = "<group>"; };
 		6EE789DA2112C1E500EAB620 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
+		29F5D1E321106772007DA3BF /* BigNumberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumberTests.swift; sourceTree = "<group>"; };
 		CF432AF120F0CF9100AD4020 /* Base58Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58Tests.swift; sourceTree = "<group>"; };
 		CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bech32Tests.swift; sourceTree = "<group>"; };
 		CF432AF520F0ED4500AD4020 /* AddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTests.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */,
 				CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */,
 				29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */,
+				29F5D1E321106772007DA3BF /* BigNumberTests.swift */,
 				147494D7201F9A29006D1CF8 /* Info.plist */,
 				6EE789DA2112C1E500EAB620 /* CryptoTests.swift */,
 				6E20AEC62112C290008A9810 /* PrivateKeyTests.swift */,
@@ -694,6 +697,7 @@
 				6E20AED12112C6AA008A9810 /* PaymentURITests.swift in Sources */,
 				CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */,
 				2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */,
+				29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
