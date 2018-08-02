@@ -26,7 +26,24 @@ import XCTest
 @testable import BitcoinCashKit
 
 class Base58Tests: XCTestCase {
-    
+    func testBase58_1() {
+        XCTAssertEqual(Base58.decode("1EVEDmVcV7iPvTkaw2gk89yVcCzPzaS6B7")!.hex, "0093f051563b089897cb430602a7c35cd93b3cc8e9dfac9a96")
+        XCTAssertEqual(Base58.decode("11ujQcjgoMNmbmcBkk8CXLWQy8ZerMtuN")!.hex, "00002c048b88f56727538eadb2a81cfc350355ee4c466740d9")
+        XCTAssertEqual(Base58.decode("111oeV7wjVNCQttqY63jLFsg817aMEmTw")!.hex, "000000abdda9e604c965f5a2fe8c082b14fafecdc39102f5b2")
+    }
+
+    func testBase58_2() {
+        do {
+            let original = Data(hex: "00010966776006953D5567439E5E39F86A0D273BEED61967F6")!
+
+            let encoded = Base58.encode(original)
+            XCTAssertEqual(encoded, "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM")
+
+            let decoded = Base58.decode(encoded)!
+            XCTAssertEqual(decoded.hex, original.hex)
+        }
+    }
+
     func testAll() {
         XCTAssertNil(Base58.decode(""))
         XCTAssertNil(Base58.decode(" "))
@@ -46,8 +63,6 @@ class Base58Tests: XCTestCase {
         HexEncodesToBase58(hex: "ecac89cad93923c02321", base58: "EJDM8drfXA6uyA")
         HexEncodesToBase58(hex: "10c8511e", base58: "Rt5zm")
         HexEncodesToBase58(hex: "00000000000000000000", base58: "1111111111")
-        
-        
     }
     
     func HexEncodesToBase58(hex: String, base58: String) {
