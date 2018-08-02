@@ -53,6 +53,19 @@ public class Script {
     public var hex: String {
         return data.hex
     }
+    
+    public func toP2SH() -> Script {
+        let script: Script = Script()
+        try! script.append(OpCode.OP_HASH160)
+        try! script.append(Crypto.sha256ripemd160(data))
+        try! script.append(OpCode.OP_EQUAL)
+        return script
+    }
+    
+    public func standardP2SHAddress(network: Network) -> Address {
+        let scriptHash: Data = Crypto.sha256ripemd160(data)
+        return Cashaddr(data: scriptHash, type: .scriptHash, network: network)
+    }
 
     // Multisignature script attribute.
     // If multisig script is not detected, this is nil
@@ -312,7 +325,7 @@ public class Script {
             guard let dataChunk = chunk(at: 1) as? DataChunk else {
                 return nil
             }
-            return Cashaddr(data: dataChunk.pushedData, type: .pubkeyHash, network: network)
+            return Cashaddr(data: dataChunk.pushedData, type: .scriptHash, network: network)
         }
         return nil
     }
