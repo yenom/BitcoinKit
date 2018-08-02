@@ -54,13 +54,17 @@ public class Script {
         return data.hex
     }
     
-    public func toP2SH() -> Script? {
-        var scriptData: Data = Data()
-        scriptData += OpCode.OP_HASH160
-        scriptData += Data([20])
-        scriptData += Crypto.sha256ripemd160(data)
-        scriptData += OpCode.OP_EQUAL
-        return Script(data: scriptData)
+    public func toP2SH() -> Script {
+        let script: Script = Script()
+        try! script.append(OpCode.OP_HASH160)
+        try! script.append(Crypto.sha256ripemd160(data))
+        try! script.append(OpCode.OP_EQUAL)
+        return script
+    }
+    
+    public func standardP2SHAddress(network: Network) -> Address {
+        let scriptHash: Data = Crypto.sha256ripemd160(data)
+        return Cashaddr(data: scriptHash, type: .scriptHash, network: network)
     }
 
     // Multisignature script attribute.

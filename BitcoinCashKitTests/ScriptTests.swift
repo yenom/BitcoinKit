@@ -56,8 +56,8 @@ class ScriptTests: XCTestCase {
         let redeemScript = Script(publicKeys: [aliceKey.publicKey(), bobKey.publicKey(), charlieKey.publicKey()], signaturesRequired: 2)
         XCTAssertNotNil(redeemScript)
         let p2shScript = redeemScript!.toP2SH()
-        XCTAssertNotNil(p2shScript)
-        let multisigAddr = p2shScript!.standardAddress(network: Network.testnet)
-        XCTAssertEqual(multisigAddr?.cashaddr, "bchtest:pp3f55qvt64vjfsu4jvscu3yr22eluknmyt3nkwcx2", "multisig address should be the same as address created from bitcoin-ruby.")
+        XCTAssertEqual(p2shScript.hex, "a914629a500c5eaac9261cac990c72241a959ff2d3d987")
+        let multisigAddr = redeemScript!.standardP2SHAddress(network: Network.testnet)
+        XCTAssertEqual(multisigAddr.cashaddr, "bchtest:pp3f55qvt64vjfsu4jvscu3yr22eluknmyt3nkwcx2", "multisig address should be the same as address created from bitcoin-ruby.")
     }
 }
