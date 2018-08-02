@@ -53,7 +53,7 @@ public class Script {
     public var hex: String {
         return data.hex
     }
-    
+
     public func toP2SH() -> Script {
         let script: Script = Script()
         try! script.append(OpCode.OP_HASH160)
@@ -61,7 +61,7 @@ public class Script {
         try! script.append(OpCode.OP_EQUAL)
         return script
     }
-    
+
     public func standardP2SHAddress(network: Network) -> Address {
         let scriptHash: Data = Crypto.sha256ripemd160(data)
         return Cashaddr(data: scriptHash, type: .scriptHash, network: network)
