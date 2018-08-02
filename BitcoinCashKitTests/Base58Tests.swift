@@ -2,7 +2,6 @@
 //  Base58Tests.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
-//  Copyright © 2018 Kazumasa Shimomura
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

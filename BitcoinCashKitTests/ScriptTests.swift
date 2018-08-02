@@ -2,7 +2,6 @@
 //  ScriptTests.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
-//  Copyright © 2018 Kazumasa Shimomura
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +40,7 @@ class ScriptTests: XCTestCase {
         XCTAssertEqual(Script.getPublicKeyHash(from: lockingScript1), fromPubKeyHash)
         XCTAssertEqual(Script.getPublicKeyHash(from: lockingScript2), toPubKeyHash)
     }
-    
+
     func testBinarySerialization() {
         XCTAssertEqual(Script().data, Data(), "Default script should be empty.")
         XCTAssertEqual(Script(data: Data())!.data, Data(), "Empty script should be empty.")
