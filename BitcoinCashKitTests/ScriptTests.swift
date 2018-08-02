@@ -2,6 +2,7 @@
 //  ScriptTests.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
+//  Copyright © 2018 Kazumasa Shimomura
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +27,20 @@ import XCTest
 @testable import BitcoinCashKit
 
 class ScriptTests: XCTestCase {
+    func testScript() {
+        let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
+        let toAddress = "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB" // https://testnet.coinfaucet.eu/en/
+
+        let fromPublicKey = privateKey.publicKey()
+        let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.raw)
+        let toPubKeyHash = Base58.decode(toAddress)!.dropFirst().dropLast(4)
+
+        let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: fromPubKeyHash)
+        let lockingScript2 = Script.buildPublicKeyHashOut(pubKeyHash: toPubKeyHash)
+
+        XCTAssertEqual(Script.getPublicKeyHash(from: lockingScript1), fromPubKeyHash)
+        XCTAssertEqual(Script.getPublicKeyHash(from: lockingScript2), toPubKeyHash)
+    }
     
     func testBinarySerialization() {
         XCTAssertEqual(Script().data, Data(), "Default script should be empty.")
