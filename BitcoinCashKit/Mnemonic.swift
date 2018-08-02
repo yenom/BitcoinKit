@@ -54,7 +54,7 @@ public struct Mnemonic {
         return generate(entropy: bytes, language: language)
     }
 
-    public static func generate(entropy: Data, language: Language = .english) -> [String] {
+    internal static func generate(entropy: Data, language: Language = .english) -> [String] {
         let list = wordList(for: language)
         var bin = String(entropy.flatMap { ("00000000" + String($0, radix: 2)).suffix(8) })
 
