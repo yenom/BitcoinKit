@@ -31,62 +31,45 @@ class OpCodeTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         context = ScriptExecutionContext()
-        pushRandomDataOnStack()
+        pushRandomDataOnStack(context)
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    private func pushRandomDataOnStack() {
-        context.resetStack()
-        let rand = arc4random() % 50 + 1
-        for _ in (0..<rand) {
-            let nextRand = arc4random() % 32
-            print(nextRand)
-            switch nextRand {
-            case 0...16:
-                try! context.pushToStack(Int(nextRand))
-            default:
-                let extraRand = arc4random()
-                try! context.pushToStack(Data(from: extraRand))
+    /*
+     // OP_N is not working correctly right now because we didn't implemente bignum
+     // After implementing bignum, testOpN() should be enabled
+     
+    func testOpN() {
+        let vectors: [(OpCodeProtocol, Int32)] = [(OpCode.OP_1NEGATE, -1),
+                                               (OpCode.OP_0, 0),
+                                               (OpCode.OP_1,1),
+                                               (OpCode.OP_2,2),
+                                               (OpCode.OP_3,3),
+                                               (OpCode.OP_4,4),
+                                               (OpCode.OP_5,5),
+                                               (OpCode.OP_6,6),
+                                               (OpCode.OP_7,7),
+                                               (OpCode.OP_8,8),
+                                               (OpCode.OP_9,9),
+                                               (OpCode.OP_10,10),
+                                               (OpCode.OP_11,11),
+                                               (OpCode.OP_12,12),
+                                               (OpCode.OP_13,13),
+                                               (OpCode.OP_14,14),
+                                               (OpCode.OP_15,15),
+                                               (OpCode.OP_16,16)]
+
+        let context = ScriptExecutionContext()
+        for (i, (opcode, expectedNumber)) in vectors.enumerated() {
+            do {
+                try opcode.execute(context)
+                XCTAssertEqual(try context.number(at: -1), expectedNumber, "\(opcode.name)(\(opcode.value) execution test.")
+                XCTAssertEqual(context.stack.count, i + 1)
+            } catch {
+                XCTFail("\(opcode.name)(\(opcode.value) execution should not fail.")
             }
-            print(context.data(at: -1).hex)
         }
     }
-
-//    func testOpN() {
-//        let vectors: [(OpCodeProtocol, Int32)] = [(OpCode.OP_1NEGATE, -1),
-//                                               (OpCode.OP_0, 0),
-//                                               (OpCode.OP_1,1),
-//                                               (OpCode.OP_2,2),
-//                                               (OpCode.OP_3,3),
-//                                               (OpCode.OP_4,4),
-//                                               (OpCode.OP_5,5),
-//                                               (OpCode.OP_6,6),
-//                                               (OpCode.OP_7,7),
-//                                               (OpCode.OP_8,8),
-//                                               (OpCode.OP_9,9),
-//                                               (OpCode.OP_10,10),
-//                                               (OpCode.OP_11,11),
-//                                               (OpCode.OP_12,12),
-//                                               (OpCode.OP_13,13),
-//                                               (OpCode.OP_14,14),
-//                                               (OpCode.OP_15,15),
-//                                               (OpCode.OP_16,16)]
-//
-//        let context = ScriptExecutionContext()
-//        for (i, (opcode, expectedNumber)) in vectors.enumerated() {
-//            do {
-//                try opcode.execute(context)
-//                XCTAssertEqual(try context.number(at: -1), expectedNumber, "\(opcode.name)(\(opcode.value) execution test.")
-//                XCTAssertEqual(context.stack.count, i + 1)
-//            } catch {
-//                XCTFail("\(opcode.name)(\(opcode.value) execution should not fail.")
-//            }
-//        }
-//    }
+    */
     
     func testOpVerify() {
         let stackCountAtFirst: Int = context.stack.count
@@ -148,3 +131,21 @@ class OpCodeTests: XCTestCase {
         }
     }
 }
+
+private func pushRandomDataOnStack(_ context: ScriptExecutionContext) {
+    context.resetStack()
+    let rand = arc4random() % 50 + 1
+    for _ in (0..<rand) {
+        let nextRand = arc4random() % 32
+        print(nextRand)
+        switch nextRand {
+        case 0...16:
+            try! context.pushToStack(Int(nextRand))
+        default:
+            let extraRand = arc4random()
+            try! context.pushToStack(Data(from: extraRand))
+        }
+        print(context.data(at: -1).hex)
+    }
+}
+
