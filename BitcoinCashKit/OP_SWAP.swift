@@ -28,7 +28,7 @@ import Foundation
 public struct OpSwap: OpCodeProtocol {
     public var value: UInt8 { return 0x7c }
     public var name: String { return "OP_SWAP" }
-    
+
     // (x1 x2 -- x2 x1)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
