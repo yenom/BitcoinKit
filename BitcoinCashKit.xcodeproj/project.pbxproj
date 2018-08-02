@@ -81,6 +81,7 @@
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
 		2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920320F22A1500D078B6 /* TestHelpers.swift */; };
 		2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */; };
+		297C408121100810003AF4EF /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297C408021100810003AF4EF /* MnemonicTests.swift */; };
 		297DB97320EB12E60077EEEE /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* AddressType.swift */; };
 		297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97420EB13320077EEEE /* AddressFactory.swift */; };
 		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
@@ -191,6 +192,7 @@
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
 		2949920320F22A1500D078B6 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
+		297C408021100810003AF4EF /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
 		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
 		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
+				297C408021100810003AF4EF /* MnemonicTests.swift */,
 				2949920320F22A1500D078B6 /* TestHelpers.swift */,
 				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
 				CF432AF520F0ED4500AD4020 /* AddressTests.swift */,
@@ -643,6 +646,7 @@
 				147494D6201F9A29006D1CF8 /* BitcoinKitTests.swift in Sources */,
 				CFA290742102B650001A1BAB /* ScriptMachineTests.swift in Sources */,
 				CF432AFA20F222B400AD4020 /* AddressFactoryTests.swift in Sources */,
+				297C408121100810003AF4EF /* MnemonicTests.swift in Sources */,
 				CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */,
 				CF432AFC20F25E0000AD4020 /* TestHelpersTests.swift in Sources */,
 				CFA290702101CDCA001A1BAB /* ScriptTests.swift in Sources */,
