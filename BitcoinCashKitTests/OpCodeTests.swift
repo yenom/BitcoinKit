@@ -34,7 +34,6 @@ class OpCodeTests: XCTestCase {
         pushRandomDataOnStack(context)
     }
     
-    /*
      // OP_N is not working correctly right now because we didn't implemente bignum
      // After implementing bignum, testOpN() should be enabled
      
@@ -62,15 +61,15 @@ class OpCodeTests: XCTestCase {
         for (i, (opcode, expectedNumber)) in vectors.enumerated() {
             do {
                 try opcode.execute(context)
-                XCTAssertEqual(try context.number(at: -1), expectedNumber, "\(opcode.name)(\(opcode.value) execution test.")
+                let num = try context.number(at: -1)
+                XCTAssertEqual(num, expectedNumber, "\(opcode.name)(\(opcode.value) execution test.")
                 XCTAssertEqual(context.stack.count, i + 1)
-            } catch {
-                XCTFail("\(opcode.name)(\(opcode.value) execution should not fail.")
+            } catch let error {
+                XCTFail("\(opcode.name)(\(opcode.value) execution should not fail.\nError: \(error)")
             }
         }
     }
-    */
-    
+ 
     func testOpVerify() {
         let stackCountAtFirst: Int = context.stack.count
         let opcode = OpCode.OP_VERIFY
@@ -137,15 +136,13 @@ private func pushRandomDataOnStack(_ context: ScriptExecutionContext) {
     let rand = arc4random() % 50 + 1
     for _ in (0..<rand) {
         let nextRand = arc4random() % 32
-        print(nextRand)
         switch nextRand {
         case 0...16:
-            try! context.pushToStack(Int(nextRand))
+            try! context.pushToStack(Int32(nextRand))
         default:
             let extraRand = arc4random()
             try! context.pushToStack(Data(from: extraRand))
         }
-        print(context.data(at: -1).hex)
     }
 }
 

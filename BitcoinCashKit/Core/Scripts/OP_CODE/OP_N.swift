@@ -40,6 +40,6 @@ public struct OpN: OpCodeProtocol {
     // output : n
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        try context.pushToStack(Int(n))
+        try context.pushToStack(Int32(n))
     }
 }

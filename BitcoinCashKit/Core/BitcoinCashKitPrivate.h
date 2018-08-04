@@ -26,99 +26,6 @@
 
 #import <Foundation/Foundation.h>
 
-//@interface BigNumber : NSObject
-//
-//@property(nonatomic, readonly) uint32_t compact; // compact representation used for the difficulty target
-//@property(nonatomic, readonly) uint32_t uint32value;
-//@property(nonatomic, readonly) int32_t int32value;
-//@property(nonatomic, readonly) uint64_t uint64value;
-//@property(nonatomic, readonly) int64_t int64value;
-//@property(nonatomic, readonly) NSString* hexString;
-//@property(nonatomic, readonly) NSString* decimalString;
-//@property(nonatomic, readonly) NSData* signedLittleEndian;
-//@property(nonatomic, readonly) NSData* unsignedBigEndian;
-//
-////// Pointer to an internal BIGNUM value. You should not modify it.
-////// To modify, use [[bn mutableCopy] mutableBIGNUM] methods.
-////@property(nonatomic, readonly) const BIGNUM* BIGNUM;
-//
-//@property(nonatomic, readonly) BOOL isZero;
-//@property(nonatomic, readonly) BOOL isOne;
-//
-//
-//// BigNumber returns always the same object for these constants.
-//// MutableBigNumber returns a new object every time.
-//+ (instancetype) zero;        //  0
-//+ (instancetype) one;         //  1
-//+ (instancetype) negativeOne; // -1
-//
-//- (id) init;
-//- (id) initWithCompact:(uint32_t)compact;
-//- (id) initWithUInt32:(uint32_t)value;
-//- (id) initWithInt32:(int32_t)value;
-//- (id) initWithUInt64:(uint64_t)value;
-//- (id) initWithInt64:(int64_t)value;
-//- (id) initWithSignedLittleEndian:(NSData*)data;
-//- (id) initWithUnsignedBigEndian:(NSData*)data;
-//- (id) initWithLittleEndianData:(NSData*)data DEPRECATED_ATTRIBUTE;
-//- (id) initWithUnsignedData:(NSData*)data DEPRECATED_ATTRIBUTE;
-//
-//
-////// Initialized with OpenSSL representation of bignum.
-////- (id) initWithBIGNUM:(const BIGNUM*)bignum;
-//
-//// Inits with setString:base:
-//- (id) initWithString:(NSString*)string base:(NSUInteger)base;
-//
-//// Same as initWithString:base:16
-//- (id) initWithHexString:(NSString*)hexString DEPRECATED_ATTRIBUTE;
-//
-//// Same as initWithString:base:10
-//- (id) initWithDecimalString:(NSString*)decimalString;
-//
-//- (NSString*) stringInBase:(NSUInteger)base;
-//
-//// Re-declared copy and mutableCopy to provide exact return type.
-//- (BigNumber*) copy;
-////- (BTCMutableBigNumber*) mutableCopy;
-//
-//
-//// Returns MIN(self, other)
-//- (BigNumber*) min:(BigNumber*)other;
-//
-//// Returns MAX(self, other)
-//- (BigNumber*) max:(BigNumber*)other;
-//
-//
-//- (BOOL) less:(BigNumber*)other;
-//- (BOOL) lessOrEqual:(BigNumber*)other;
-//- (BOOL) greater:(BigNumber*)other;
-//- (BOOL) greaterOrEqual:(BigNumber*)other;
-//
-//// Destroys sensitive data and sets the value to 0.
-//// It is also called on dealloc.
-//// This method is available for both mutable and immutable numbers by design.
-//- (void) clear;
-//
-//// Operators modify the receiver and return self.
-//// To create a new instance z = x + y use copy method: z = [[x copy] add:y]
-//- (instancetype) add:(BigNumber*)other; // +=
-//- (instancetype) add:(BigNumber*)other mod:(BigNumber*)mod;
-//- (instancetype) subtract:(BigNumber*)other; // -=
-//- (instancetype) subtract:(BigNumber*)other mod:(BigNumber*)mod;
-//- (instancetype) multiply:(BigNumber*)other; // *=
-//- (instancetype) multiply:(BigNumber*)other mod:(BigNumber*)mod;
-//- (instancetype) divide:(BigNumber*)other; // /=
-//- (instancetype) mod:(BigNumber*)other; // %=
-//- (instancetype) lshift:(unsigned int)shift; // <<=
-//- (instancetype) rshift:(unsigned int)shift; // >>=
-//- (instancetype) inverseMod:(BigNumber*)mod; // (a^-1) mod n
-//- (instancetype) exp:(BigNumber*)power;
-//- (instancetype) exp:(BigNumber*)power mod:(BigNumber *)mod;
-//
-//@end
-
-
 NS_ASSUME_NONNULL_BEGIN
 @interface _Hash : NSObject
 
@@ -150,14 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface _BigNumber : NSObject
-+ (NSData *)Integer2BN:(uint32_t)integer;
-+ (uint32_t)BN2Integer:(NSData *)data;
-
-//+ BN_mpi2bn
-//+ BN_bn2mpi
-//+ BN_bin2bn
-//+ BN_bn2bin
-
++ (NSData *)int2Data:(int32_t)integer;
++ (int32_t)data2Int:(NSData *)data;
 @end
 
 NS_ASSUME_NONNULL_END
