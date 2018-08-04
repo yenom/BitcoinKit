@@ -87,16 +87,13 @@ public final class HDWallet {
         internalIndex = 0
     }
 
-    private func toCashaddr(publicKey key: HDPublicKey) -> Address {
-        return Cashaddr(data: key.pubkeyHash, type: .pubkeyHash, network: key.network, base58: key.base58(), bech32: key.bech32(), publicKey: key.raw)
-    }
     public func receiveAddress() throws -> Address {
         return try receiveAddress(index: externalIndex)
     }
 
     public func receiveAddress(index: UInt32) throws -> Address {
         let key = try publicKey(index: index)
-        return toCashaddr(publicKey: key)
+        return key.toCashaddr()
     }
 
     public func changeAddress() throws -> Address {
@@ -105,7 +102,7 @@ public final class HDWallet {
 
     public func changeAddress(index: UInt32) throws -> Address {
         let key = try changePublicKey(index: index)
-        return toCashaddr(publicKey: key)
+        return key.toCashaddr()
     }
 
     public func privateKey() throws -> HDPrivateKey {

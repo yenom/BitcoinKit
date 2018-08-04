@@ -59,12 +59,12 @@ public class HDPublicKey {
         return Base58.encode(data + checksum)
     }
 
-    internal func base58() -> String {
+    private func base58() -> String {
         let hash = Data([network.pubkeyhash]) + pubkeyHash
         return publicKeyHashToAddress(hash)
     }
 
-    internal func bech32() -> String {
+    private func bech32() -> String {
         let hash = Data([VersionByte.pubkeyHash160]) + pubkeyHash
         return Bech32.encode(hash, prefix: network.scheme)
     }

@@ -45,12 +45,12 @@ public struct PublicKey {
     /// Key hash = Version concatenated with RIPEMD-160(SHA-256(public key))
     /// Checksum = 1st 4 bytes of SHA-256(SHA-256(Key hash))
     /// Bitcoin Address = Base58Encode(Key hash concatenated with Checksum)
-    internal func base58() -> String {
+    private func base58() -> String {
         let versionByte: Data = Data([network.pubkeyhash])
         return publicKeyHashToAddress(versionByte + pubkeyHash)
     }
 
-    internal func bech32() -> String {
+    private func bech32() -> String {
         let versionByte: Data = Data([VersionByte.pubkeyHash160])
         return Bech32.encode(versionByte + pubkeyHash, prefix: network.scheme)
     }

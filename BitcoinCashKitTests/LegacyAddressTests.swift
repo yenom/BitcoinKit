@@ -34,7 +34,7 @@ class LegacyAddressTests: XCTestCase {
             let publicKey = privateKey.publicKey()
 
             let address1 = publicKey.toLegacy()
-            XCTAssertEqual("\(address1)", publicKey.base58())
+            XCTAssertEqual("\(address1)", address1.base58)
 
             let address2 = try? LegacyAddress("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
             XCTAssertNotNil(address2)
@@ -57,7 +57,7 @@ class LegacyAddressTests: XCTestCase {
             let publicKey = privateKey.publicKey()
 
             let address1 = publicKey.toLegacy()
-            XCTAssertEqual("\(address1)", publicKey.base58())
+            XCTAssertEqual("\(address1)", address1.base58)
 
             let address2 = try? LegacyAddress("mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
             XCTAssertNotNil(address2)
