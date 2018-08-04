@@ -56,9 +56,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface _BigNumber : NSObject
-+ (NSData *)int2Data:(int32_t)integer;
-+ (int32_t)data2Int:(NSData *)data;
-@end
-
 NS_ASSUME_NONNULL_END

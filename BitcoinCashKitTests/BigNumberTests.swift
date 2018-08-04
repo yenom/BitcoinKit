@@ -29,98 +29,77 @@ class BigNumberTests: XCTestCase {
     func testBigNumber() {
         XCTAssertEqual(BigNumber(), BigNumber.zero, "default bignum should be zero")
         XCTAssertNotEqual(BigNumber(), BigNumber.one, "default bignum should not be one")
-//        XCTAssertEqual("0", BigNumber().string(inBase: 10), "default bignum should be zero")
-//        XCTAssertEqual(BigNumber(0), BigNumber.zero, "0 should be equal to itself")
-//
-//        XCTAssertEqual(BigNumber.one, BigNumber.one, "1 should be equal to itself")
-//        XCTAssertEqual(BigNumber.one, BigNumber(1), "1 should be equal to itself")
-//
-//        XCTAssertEqual(BigNumber.one.string(inBase: 16), "1", "1 should be correctly printed out")
-//        XCTAssertEqual(BigNumber(1).string(inBase: 16), "1", "1 should be correctly printed out")
-//        XCTAssertEqual(BigNumber(0xdeadf00d).string(inBase: 16), "deadf00d", "0xdeadf00d should be correctly printed out")
-//
-//        XCTAssertEqual(BigNumber(uint64: 0xdeadf00ddeadf00d).string(inBase: 16), "deadf00ddeadf00d", "0xdeadf00ddeadf00d should be correctly printed out")
-//
-//        XCTAssertEqual(BigNumber(string: "0b1010111", base: 2).string(inBase: 2), "1010111", "0b1010111 should be correctly parsed")
-//        XCTAssertEqual(BigNumber(string: "0x12346789abcdef", base: 16).string(inBase: 16), "12346789abcdef", "0x12346789abcdef should be correctly parsed")
-//
-//
-//        do {
-//            let bn = BigNumber(uint64: 0xdeadf00ddeadbeef)!
-//            let data = bn.signedLittleEndian
-//            XCTAssertEqual("efbeadde0df0adde00", data!.hex, "littleEndianData should be little-endian with trailing zero byte")
-//            let bn2 = BigNumber(signedLittleEndian: data)!
-//            XCTAssertEqual("deadf00ddeadbeef", bn2.hexString, "converting to and from data should give the same result")
-//        }
 
+        XCTAssertEqual(BigNumber(1).data.hex, "01", "Init")
+        XCTAssertEqual(BigNumber(2).data.hex, "02", "Init")
+        XCTAssertEqual(BigNumber(4).data.hex, "04", "Init")
+        XCTAssertEqual(BigNumber(8).data.hex, "08", "Init")
+        XCTAssertEqual(BigNumber(16).data.hex, "10", "Init")
+        XCTAssertEqual(BigNumber(32).data.hex, "20", "Init")
+        XCTAssertEqual(BigNumber(64).data.hex, "40", "Init")
+        XCTAssertEqual(BigNumber(127).data.hex, "7f", "Init")
+        XCTAssertEqual(BigNumber(128).data.hex, "8000", "Init")
+        XCTAssertEqual(BigNumber(129).data.hex, "8100", "Init")
+        XCTAssertEqual(BigNumber(0x0100).data.hex, "0001", "Init")
+        XCTAssertEqual(BigNumber(0x0200).data.hex, "0002", "Init")
+        XCTAssertEqual(BigNumber(0x0400).data.hex, "0004", "Init")
+        XCTAssertEqual(BigNumber(0x0800).data.hex, "0008", "Init")
+        XCTAssertEqual(BigNumber(0x1000).data.hex, "0010", "Init")
+        XCTAssertEqual(BigNumber(0x2000).data.hex, "0020", "Init")
+        XCTAssertEqual(BigNumber(0x4000).data.hex, "0040", "Init")
+        XCTAssertEqual(BigNumber(0x8000).data.hex, "008000", "Init")
+        XCTAssertEqual(BigNumber(0x8001).data.hex, "018000", "Init")
+        XCTAssertEqual(BigNumber(0x010000).data.hex, "000001", "Init")
+        XCTAssertEqual(BigNumber(0x020000).data.hex, "000002", "Init")
+        XCTAssertEqual(BigNumber(0x040000).data.hex, "000004", "Init")
+        XCTAssertEqual(BigNumber(0x080000).data.hex, "000008", "Init")
+        XCTAssertEqual(BigNumber(0x100000).data.hex, "000010", "Init")
+        XCTAssertEqual(BigNumber(0x200000).data.hex, "000020", "Init")
+        XCTAssertEqual(BigNumber(0x400000).data.hex, "000040", "Init")
+        XCTAssertEqual(BigNumber(0x800000).data.hex, "00008000", "Init")
+        XCTAssertEqual(BigNumber(0x01000000).data.hex, "00000001", "Init")
+        XCTAssertEqual(BigNumber(0x02000000).data.hex, "00000002", "Init")
+        XCTAssertEqual(BigNumber(0x04000000).data.hex, "00000004", "Init")
+        XCTAssertEqual(BigNumber(0x08000000).data.hex, "00000008", "Init")
+        XCTAssertEqual(BigNumber(0x10000000).data.hex, "00000010", "Init")
+        XCTAssertEqual(BigNumber(0x20000000).data.hex, "00000020", "Init")
+        XCTAssertEqual(BigNumber(0x40000000).data.hex, "00000040", "Init")
+
+        
+        XCTAssertEqual(BigNumber(-1).data.hex, "81", "Init")
+        XCTAssertEqual(BigNumber(-2).data.hex, "82", "Init")
+        XCTAssertEqual(BigNumber(-4).data.hex, "84", "Init")
+        XCTAssertEqual(BigNumber(-8).data.hex, "88", "Init")
+        XCTAssertEqual(BigNumber(-16).data.hex, "90", "Init")
+        XCTAssertEqual(BigNumber(-32).data.hex, "a0", "Init")
+        XCTAssertEqual(BigNumber(-64).data.hex, "c0", "Init")
+        XCTAssertEqual(BigNumber(-127).data.hex, "ff", "Init")
+        XCTAssertEqual(BigNumber(-128).data.hex, "8080", "Init")
+        XCTAssertEqual(BigNumber(-129).data.hex, "8180", "Init")
+        XCTAssertEqual(BigNumber(-0x0100).data.hex, "0081", "Init")
+        XCTAssertEqual(BigNumber(-0x0200).data.hex, "0082", "Init")
+        XCTAssertEqual(BigNumber(-0x0400).data.hex, "0084", "Init")
+        XCTAssertEqual(BigNumber(-0x0800).data.hex, "0088", "Init")
+        XCTAssertEqual(BigNumber(-0x1000).data.hex, "0090", "Init")
+        XCTAssertEqual(BigNumber(-0x2000).data.hex, "00a0", "Init")
+        XCTAssertEqual(BigNumber(-0x4000).data.hex, "00c0", "Init")
+        XCTAssertEqual(BigNumber(-0x8000).data.hex, "008080", "Init")
+        XCTAssertEqual(BigNumber(-0x8001).data.hex, "018080", "Init")
+        XCTAssertEqual(BigNumber(-0x010000).data.hex, "000081", "Init")
+        XCTAssertEqual(BigNumber(-0x020000).data.hex, "000082", "Init")
+        XCTAssertEqual(BigNumber(-0x040000).data.hex, "000084", "Init")
+        XCTAssertEqual(BigNumber(-0x080000).data.hex, "000088", "Init")
+        XCTAssertEqual(BigNumber(-0x100000).data.hex, "000090", "Init")
+        XCTAssertEqual(BigNumber(-0x200000).data.hex, "0000a0", "Init")
+        XCTAssertEqual(BigNumber(-0x400000).data.hex, "0000c0", "Init")
+        XCTAssertEqual(BigNumber(-0x800000).data.hex, "00008080", "Init")
+        XCTAssertEqual(BigNumber(-0x01000000).data.hex, "00000081", "Init")
+        XCTAssertEqual(BigNumber(-0x02000000).data.hex, "00000082", "Init")
+        XCTAssertEqual(BigNumber(-0x04000000).data.hex, "00000084", "Init")
+        XCTAssertEqual(BigNumber(-0x08000000).data.hex, "00000088", "Init")
+        XCTAssertEqual(BigNumber(-0x10000000).data.hex, "00000090", "Init")
+        XCTAssertEqual(BigNumber(-0x20000000).data.hex, "000000a0", "Init")
+        XCTAssertEqual(BigNumber(-0x40000000).data.hex, "000000c0", "Init")
     }
 
-//    func testNegativeZero() {
-//
-//        let zeroBN: BigNumber = BigNumber.zero
-//        let negativeZeroBN = BigNumber(signedLittleEndian: Data(hex: "80")!)!
-//        let zeroWithEmptyDataBN = BigNumber(signedLittleEndian: Data())!
-//
-//        //        print("negativeZeroBN.data = \(negativeZeroBN.data)") //-data is deprecated
-//
-//        XCTAssertNotNil(zeroBN, "must exist")
-//        XCTAssertNotNil(negativeZeroBN, "must exist")
-//        XCTAssertNotNil(zeroWithEmptyDataBN, "must exist")
-//
-//        //        print("negative zero: %lld", negativeZeroBN.int64value)
-//
-//        XCTAssertEqual(zeroBN.copy()!.add(BigNumber(int32: 1)), BigNumber.one(), "0 + 1 == 1")
-//        XCTAssertEqual(negativeZeroBN.copy()!.add(BigNumber(int32: 1)), BigNumber.one(), "0 + 1 == 1")
-//        XCTAssertEqual(zeroWithEmptyDataBN.copy()!.add(BigNumber(int32: 1)), BigNumber.one(), "0 + 1 == 1")
-//s
-//        // In BitcoinQT script.cpp, there is check (bn != bnZero).
-//        // It covers negative zero alright because "bn" is created in a way that discards the sign.
-//        XCTAssertNotEqual(zeroBN, negativeZeroBN, "zero should != negative zero")
-//        XCTAssertFalse(_BIGNUM)
-//
-//    }
-
-//    func testExperiments() {
-//
-//        do {
-//            //let bn = BigNumber.zero()
-//            let bn = BigNumber(unsignedBigEndian: Data(hex: "00")!)
-//            print("bn = %@ %@ (%@) 0x%@ b36:%@", bn, bn.unsignedBigEndian, bn.decimalString, bn.stringInBase(16), bn.stringInBase(36))
-//        }
-//
-//        do {
-//            //let bn = BigNumber.one()
-//            let bn = BigNumber(unsignedBigEndian: Data(hex: "01")!)
-//            print("bn = %@ %@ (%@) 0x%@ b36:%@", bn, bn.unsignedBigEndian, bn.decimalString, bn.stringInBase(16), bn.stringInBase(36))
-//        }
-//
-//        do {
-//            let bn = BigNumber(UInt32: 0xdeadf00d)
-//            print("bn = %@ (%@) 0x%@ b36:%@", bn, bn.decimalString, bn.stringInBase(16), bn.stringInBase(36))
-//        }
-//
-//        do {
-//            let bn = BigNumber(int32: -16)
-//            print("bn = %@ (%@) 0x%@ b36:%@", bn, bn.decimalString, bn.stringInBase(16), bn.stringInBase(36))
-//        }
-//
-//        do {
-//            let base: UInt = 17
-//            let bn = BigNumber(string: "123", base: base)
-//            print("bn = %@", bn.stringInBase(base))
-//        }
-//
-//        do {
-//            let base: UInt = 12
-//            let bn = BigNumber(string: "0b123", base: base)
-//            print("bn = %@", bn.stringInBase(base))
-//        }
-//
-//        do {
-//            let bn = BigNumber(UInt64: 0xdeadf00ddeadbeef)
-//            let data = bn.signedLittleEndian
-//            let bn2 = BigNumber(signedLittleEndian: data)
-//            print("bn = %@", bn2.hexString)
-//        }
-//    }
 }
