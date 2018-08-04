@@ -33,6 +33,6 @@ public struct Op0: OpCodeProtocol {
     // output : n
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
-        try context.pushToStack(Data())
+        try context.pushToStack(0)
     }
 }

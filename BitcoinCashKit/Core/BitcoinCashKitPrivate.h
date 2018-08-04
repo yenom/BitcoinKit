@@ -55,4 +55,5 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable _HDKey *)derivedAtIndex:(uint32_t)childIndex hardened:(BOOL)hardened;
 
 @end
+
 NS_ASSUME_NONNULL_END

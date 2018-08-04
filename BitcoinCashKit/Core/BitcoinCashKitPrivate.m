@@ -28,6 +28,7 @@
 #import <openssl/ripemd.h>
 #import <openssl/hmac.h>
 #import <openssl/ec.h>
+#import <openssl/bn.h>
 
 @implementation _Hash
 
