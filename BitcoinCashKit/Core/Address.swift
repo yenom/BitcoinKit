@@ -50,22 +50,13 @@ public struct LegacyAddress: Address {
 
     public typealias Base58Check = String
 
-    public init(_ publicKey: PublicKey) {
-        self.network = publicKey.network
-        self.type = .pubkeyHash
-        self.publicKey = publicKey.raw
-        self.data = Crypto.sha256ripemd160(publicKey.raw)
-        self.base58 = publicKey.toAddress()
-        self.cashaddr = publicKey.toCashaddr()
-    }
-
-    public init(_ publicKey: HDPublicKey) {
-        self.network = publicKey.network
-        self.type = .pubkeyHash
-        self.publicKey = publicKey.raw
-        self.data = Crypto.sha256ripemd160(publicKey.raw)
-        self.base58 = publicKey.toAddress()
-        self.cashaddr = publicKey.toCashaddr()
+    public init(data: Data, type: AddressType, network: Network, base58: String, bech32: String, publicKey: Data?) {
+        self.data = data
+        self.type = type
+        self.network = network
+        self.base58 = base58
+        self.cashaddr = bech32
+        self.publicKey = publicKey
     }
 
     public init(_ base58: Base58Check) throws {
@@ -148,22 +139,13 @@ public struct Cashaddr: Address {
 
     public typealias CashaddrWithScheme = String
 
-    public init(_ publicKey: PublicKey) {
-        self.network = publicKey.network
-        self.type = .pubkeyHash
-        self.publicKey = publicKey.raw
-        self.data = Crypto.sha256ripemd160(publicKey.raw)
-        self.base58 = publicKey.toAddress()
-        self.cashaddr = publicKey.toCashaddr()
-    }
-
-    public init(_ publicKey: HDPublicKey) {
-        self.network = publicKey.network
-        self.type = .pubkeyHash
-        self.publicKey = publicKey.raw
-        self.data = Crypto.sha256ripemd160(publicKey.raw)
-        self.base58 = publicKey.toAddress()
-        self.cashaddr = publicKey.toCashaddr()
+    public init(data: Data, type: AddressType, network: Network, base58: String, bech32: CashaddrWithScheme, publicKey: Data?) {
+        self.data = data
+        self.type = type
+        self.network = network
+        self.base58 = base58
+        self.cashaddr = bech32
+        self.publicKey = publicKey
     }
 
     public init(_ cashaddr: CashaddrWithScheme) throws {

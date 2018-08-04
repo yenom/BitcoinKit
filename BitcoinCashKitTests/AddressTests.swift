@@ -30,7 +30,7 @@ class AddressTests: XCTestCase {
     func testMainnetLegacyAddress() {
         let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
         let publicKey = privateKey.publicKey()
-        let addressFromPublicKey = LegacyAddress(publicKey)
+        let addressFromPublicKey = publicKey.toLegacy()
         XCTAssertEqual("\(addressFromPublicKey)", "1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
         XCTAssertEqual("\(addressFromPublicKey.cashaddr)", "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
         
@@ -43,7 +43,7 @@ class AddressTests: XCTestCase {
     func testTestnetLegacyAddress() {
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
         let publicKey = privateKey.publicKey()
-        let addressFromPublicKey = LegacyAddress(publicKey)
+        let addressFromPublicKey = publicKey.toLegacy()
         XCTAssertEqual("\(addressFromPublicKey)", "mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
         XCTAssertEqual("\(addressFromPublicKey.cashaddr)", "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
         
@@ -67,7 +67,7 @@ class AddressTests: XCTestCase {
     func testMainnetCashaddr() {
         let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
         let publicKey = privateKey.publicKey()
-        let addressFromPublicKey = Cashaddr(publicKey)
+        let addressFromPublicKey = publicKey.toCashaddr()
         XCTAssertEqual("\(addressFromPublicKey)", "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
         
         let addressFromFormattedAddress = try? Cashaddr("bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
@@ -78,7 +78,7 @@ class AddressTests: XCTestCase {
     func testTestnetCashaddr() {
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
         let publicKey = privateKey.publicKey()
-        let addressFromPublicKey = Cashaddr(publicKey)
+        let addressFromPublicKey = publicKey.toCashaddr()
         XCTAssertEqual("\(addressFromPublicKey)", "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
         
         let addressFromFormattedAddress = try? Cashaddr("bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")

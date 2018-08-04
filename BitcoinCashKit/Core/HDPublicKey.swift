@@ -32,25 +32,10 @@ public class HDPublicKey {
     public let fingerprint: UInt32
     public let childIndex: UInt32
 
-    let raw: Data
-    let chainCode: Data
-
-    init(privateKey: HDPrivateKey, network: Network) {
-        self.network = network
-        self.raw = PublicKey.from(privateKey: privateKey.raw, compression: true)
-        self.chainCode = privateKey.chainCode
-        self.depth = 0
-        self.fingerprint = 0
-        self.childIndex = 0
-    }
-
-    init(privateKey: HDPrivateKey, chainCode: Data, network: Network = .testnet, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
-        self.network = network
-        self.raw = PublicKey.from(privateKey: privateKey.raw, compression: true)
-        self.chainCode = chainCode
-        self.depth = depth
-        self.fingerprint = fingerprint
-        self.childIndex = childIndex
+    public let raw: Data
+    public let chainCode: Data
+    public var pubkeyHash: Data {
+        return Crypto.sha256ripemd160(raw)
     }
 
     init(raw: Data, chainCode: Data, network: Network = .testnet, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
@@ -74,14 +59,22 @@ public class HDPublicKey {
         return Base58.encode(data + checksum)
     }
 
-    public func toAddress() -> String {
-        let hash = Data([network.pubkeyhash]) + Crypto.sha256ripemd160(raw)
+    private func base58() -> String {
+        let hash = Data([network.pubkeyhash]) + pubkeyHash
         return publicKeyHashToAddress(hash)
     }
 
-    public func toCashaddr() -> String {
-        let hash = Data([VersionByte.pubkeyHash160]) + Crypto.sha256ripemd160(raw)
+    private func bech32() -> String {
+        let hash = Data([VersionByte.pubkeyHash160]) + pubkeyHash
         return Bech32.encode(hash, prefix: network.scheme)
+    }
+
+    public func toLegacy() -> LegacyAddress {
+        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: raw)
+    }
+
+    public func toCashaddr() -> Cashaddr {
+        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: raw)
     }
 
     public func derived(at index: UInt32) throws -> HDPublicKey {

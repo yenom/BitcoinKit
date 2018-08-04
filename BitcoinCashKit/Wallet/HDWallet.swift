@@ -88,11 +88,12 @@ public final class HDWallet {
     }
 
     public func receiveAddress() throws -> Address {
-        return Cashaddr(try publicKey())
+        return try receiveAddress(index: externalIndex)
     }
 
     public func receiveAddress(index: UInt32) throws -> Address {
-        return Cashaddr(try publicKey(index: index))
+        let key = try publicKey(index: index)
+        return key.toCashaddr()
     }
 
     public func changeAddress() throws -> Address {
@@ -100,7 +101,8 @@ public final class HDWallet {
     }
 
     public func changeAddress(index: UInt32) throws -> Address {
-        return Cashaddr(try changePublicKey(index: index))
+        let key = try changePublicKey(index: index)
+        return key.toCashaddr()
     }
 
     public func privateKey() throws -> HDPrivateKey {
