@@ -27,18 +27,12 @@ import Foundation
 import BitcoinCashKit.Private
 
 public struct PublicKey {
-    let raw: Data
+    public let raw: Data
     public var pubkeyHash: Data {
         return Crypto.sha256ripemd160(raw)
     }
     public let network: Network
     public let isCompressed: Bool
-
-    init(privateKey: PrivateKey) {
-        self.network = privateKey.network
-        self.isCompressed = privateKey.isPublicKeyCompressed
-        self.raw = PublicKey.from(privateKey: privateKey.raw, compression: privateKey.isPublicKeyCompressed)
-    }
 
     init(bytes raw: Data, network: Network) {
         self.raw = raw
@@ -51,18 +45,22 @@ public struct PublicKey {
     /// Key hash = Version concatenated with RIPEMD-160(SHA-256(public key))
     /// Checksum = 1st 4 bytes of SHA-256(SHA-256(Key hash))
     /// Bitcoin Address = Base58Encode(Key hash concatenated with Checksum)
-    public func toAddress() -> String {
+    internal func base58() -> String {
         let versionByte: Data = Data([network.pubkeyhash])
         return publicKeyHashToAddress(versionByte + pubkeyHash)
     }
 
-    public func toCashaddr() -> String {
+    internal func bech32() -> String {
         let versionByte: Data = Data([VersionByte.pubkeyHash160])
         return Bech32.encode(versionByte + pubkeyHash, prefix: network.scheme)
     }
 
-    static func from(privateKey raw: Data, compression: Bool = false) -> Data {
-        return _Key.computePublicKey(fromPrivateKey: raw, compression: compression)
+    public func toLegacy() -> LegacyAddress {
+        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: raw)
+    }
+
+    public func toCashaddr() -> Cashaddr {
+        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: raw)
     }
 }
 

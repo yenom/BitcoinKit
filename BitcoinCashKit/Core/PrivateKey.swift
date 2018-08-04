@@ -26,7 +26,7 @@
 import Foundation
 
 public struct PrivateKey {
-    let raw: Data
+    public let raw: Data
     public let network: Network
     public let isPublicKeyCompressed: Bool
 
@@ -112,8 +112,12 @@ public struct PrivateKey {
         self.isPublicKeyCompressed = isPublicKeyCompressed
     }
 
+    private func computePublicKeyData() -> Data {
+        return _Key.computePublicKey(fromPrivateKey: raw, compression: isPublicKeyCompressed)
+    }
+
     public func publicKey() -> PublicKey {
-        return PublicKey(privateKey: self)
+        return PublicKey(bytes: computePublicKeyData(), network: network)
     }
 
     public func toWIF() -> String {

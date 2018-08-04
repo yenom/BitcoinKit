@@ -65,7 +65,7 @@ public class HDPrivateKey {
     }
 
     public func extendedPublicKey() -> HDPublicKey {
-        return HDPublicKey(privateKey: self, chainCode: chainCode, network: network, depth: depth, fingerprint: fingerprint, childIndex: childIndex)
+        return HDPublicKey(raw: computePublicKeyData(), chainCode: chainCode, network: network, depth: depth, fingerprint: fingerprint, childIndex: childIndex)
     }
 
     public func extended() -> String {
@@ -79,6 +79,14 @@ public class HDPrivateKey {
         data += raw
         let checksum = Crypto.sha256sha256(data).prefix(4)
         return Base58.encode(data + checksum)
+    }
+
+    private func computePublicKeyData() -> Data {
+        return _Key.computePublicKey(fromPrivateKey: raw, compression: true)
+    }
+
+    public func publicKey() -> PublicKey {
+        return PublicKey(bytes: computePublicKeyData(), network: network)
     }
 
     public func derived(at index: UInt32, hardened: Bool = false) throws -> HDPrivateKey {
