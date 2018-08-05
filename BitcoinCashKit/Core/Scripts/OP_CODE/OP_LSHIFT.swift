@@ -23,7 +23,7 @@
 //
 import Foundation
 
-// (x y -- x*y) disabled.
+// (x y -- x<<y) disabled.
 public struct OpLShift: OpCodeProtocol {
     public var value: UInt8 { return 0x98 }
     public var name: String { return "OP_LSHIFT" }
