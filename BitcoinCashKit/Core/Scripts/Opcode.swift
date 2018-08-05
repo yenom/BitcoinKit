@@ -130,7 +130,7 @@ public struct OpCode {
 
     public static let OP_ADD: OpCodeProtocol = OpExample() // (x y -- x+y)
     public static let OP_SUB: OpCodeProtocol = OpExample() // (x y -- x-y)
-    public static let OP_MUL: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
+    public static let OP_MUL: OpCodeProtocol = OpMul() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_DIV: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_MOD: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_LSHIFT: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
