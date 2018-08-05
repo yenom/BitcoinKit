@@ -128,7 +128,7 @@ public struct OpCode {
     public static let OP_NOT: OpCodeProtocol = OpExample() // replaces number with True if it's zero, False otherwise.
     public static let OP_0NOTEQUAL: OpCodeProtocol = OpExample() // replaces number with True if it's not zero, False otherwise.
 
-    public static let OP_ADD: OpCodeProtocol = OpExample() // (x y -- x+y)
+    public static let OP_ADD: OpCodeProtocol = OpAdd() // (x y -- x+y)
     public static let OP_SUB: OpCodeProtocol = OpExample() // (x y -- x-y)
     public static let OP_MUL: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_DIV: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
