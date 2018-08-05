@@ -119,7 +119,7 @@ public struct OpCode {
     public static let OP_RESERVED2: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
 
     // Numeric
-    public static let OP_1ADD: OpCodeProtocol = OpExample() // adds 1 to last item, pops it from stack and pushes result.
+    public static let OP_1ADD: OpCodeProtocol = Op1Add() // adds 1 to last item, pops it from stack and pushes result.
     public static let OP_1SUB: OpCodeProtocol = OpExample() // substracts 1 to last item, pops it from stack and pushes result.
     public static let OP_2MUL: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_2DIV: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
