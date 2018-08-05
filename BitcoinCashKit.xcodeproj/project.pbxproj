@@ -100,9 +100,8 @@
 		6E20AED32112C7DA008A9810 /* TransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20AED22112C7DA008A9810 /* TransactionTests.swift */; };
 		6E20AED52112C8F9008A9810 /* BloomFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20AED42112C8F9008A9810 /* BloomFilterTests.swift */; };
 		6E20AED72112D417008A9810 /* MurmurHashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20AED62112D417008A9810 /* MurmurHashTests.swift */; };
+		6E797C452116C8A5003BEDFD /* OpCodeFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E797C442116C8A5003BEDFD /* OpCodeFactoryTests.swift */; };
 		6EE789DB2112C1E500EAB620 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE789DA2112C1E500EAB620 /* CryptoTests.swift */; };
-		29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E321106772007DA3BF /* BigNumberTests.swift */; };
-		29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E5211068E8007DA3BF /* BigNumber.swift */; };
 		CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF120F0CF9100AD4020 /* Base58Tests.swift */; };
 		CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */; };
 		CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF520F0ED4500AD4020 /* AddressTests.swift */; };
@@ -315,6 +314,7 @@
 				6E20AED22112C7DA008A9810 /* TransactionTests.swift */,
 				6E20AED42112C8F9008A9810 /* BloomFilterTests.swift */,
 				6E20AED62112D417008A9810 /* MurmurHashTests.swift */,
+				6E797C442116C8A5003BEDFD /* OpCodeFactoryTests.swift */,
 			);
 			path = BitcoinCashKitTests;
 			sourceTree = "<group>";
@@ -691,6 +691,7 @@
 				CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */,
 				6E20AED32112C7DA008A9810 /* TransactionTests.swift in Sources */,
 				6E20AED72112D417008A9810 /* MurmurHashTests.swift in Sources */,
+				6E797C452116C8A5003BEDFD /* OpCodeFactoryTests.swift in Sources */,
 				CF432AFC20F25E0000AD4020 /* TestHelpersTests.swift in Sources */,
 				CFA290702101CDCA001A1BAB /* ScriptTests.swift in Sources */,
 				6E20AECF2112C66C008A9810 /* HDKeyChainTests.swift in Sources */,
