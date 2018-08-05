@@ -24,12 +24,12 @@
 
 import Foundation
 
-// Same as OP_EQUAL, but runs OP_VERIFY afterward.
+// Returns the larger of a and b.
 public struct OpMax: OpCodeProtocol {
     public var value: UInt8 { return 0xa4 }
     public var name: String { return "OP_MAX" }
     
-    // (x1 x2 -- x2 x1)
+    // (x1 x2 -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         try context.assertStackHeightGreaterThan(2)
