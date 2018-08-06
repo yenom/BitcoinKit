@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0900442116BA8F0077E9BC /* OP_RSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */; };
 		0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */; };
 		0C0900382116A7F50077E9BC /* OP_ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900372116A7F50077E9BC /* OP_ADD.swift */; };
 		0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002721169C810077E9BC /* OP_1ADD.swift */; };
@@ -137,6 +138,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RSHIFT.swift; sourceTree = "<group>"; };
 		0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LSHIFT.swift; sourceTree = "<group>"; };
 		0C0900372116A7F50077E9BC /* OP_ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_ADD.swift; sourceTree = "<group>"; };
 		0C09002721169C810077E9BC /* OP_1ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1ADD.swift; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 				0C4132EE210EFD1700906E4A /* OP_SWAP.swift */,
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
+				0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */,
 				0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */,
 				0C0900372116A7F50077E9BC /* OP_ADD.swift */,
 				0C09002721169C810077E9BC /* OP_1ADD.swift */,
@@ -633,6 +636,7 @@
 				14839A9D202FE72600A6CB34 /* TransactionOutPoint.swift in Sources */,
 				147494E6201F9BF0006D1CF8 /* Encoding.swift in Sources */,
 				2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */,
+				0C0900442116BA8F0077E9BC /* OP_RSHIFT.swift in Sources */,
 				14839A7F202FE58800A6CB34 /* VersionMessage.swift in Sources */,
 				0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */,
 				14839AAB202FE7F000A6CB34 /* NetworkAddress.swift in Sources */,

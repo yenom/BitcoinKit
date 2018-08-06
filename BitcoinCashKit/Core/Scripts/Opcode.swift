@@ -134,7 +134,7 @@ public struct OpCode {
     public static let OP_DIV: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_MOD: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_LSHIFT: OpCodeProtocol = OpLShift() // Disabled opcode. If executed, transaction is invalid.
-    public static let OP_RSHIFT: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
+    public static let OP_RSHIFT: OpCodeProtocol = OpRShift() // Disabled opcode. If executed, transaction is invalid.
 
     public static let OP_BOOLAND: OpCodeProtocol = OpExample()
     public static let OP_BOOLOR: OpCodeProtocol = OpExample()
