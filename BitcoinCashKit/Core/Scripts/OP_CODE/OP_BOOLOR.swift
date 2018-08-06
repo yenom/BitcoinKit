@@ -35,7 +35,7 @@ public struct OpBoolOr: OpCodeProtocol {
 
         let x1 = context.data(at: -2)
         let x2 = context.data(at: -1)
-        let output: Bool = x1 != Data() && x2 != Data()
+        let output: Bool = x1 != Data() || x2 != Data()
 
         context.stack.removeLast()
         context.stack.removeLast()
