@@ -27,16 +27,16 @@ import Foundation
 public struct OpBoolAnd: OpCodeProtocol {
     public var value: UInt8 { return 0x9a }
     public var name: String { return "OP_BOOLAND" }
-    
+
     // (x1 x2 -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         try context.assertStackHeightGreaterThan(2)
-        
+
         let x1 = context.data(at: -2)
         let x2 = context.data(at: -1)
         let output: Bool = x1 != Data() && x2 != Data()
-        
+
         context.stack.removeLast()
         context.stack.removeLast()
         context.pushToStack(output)
