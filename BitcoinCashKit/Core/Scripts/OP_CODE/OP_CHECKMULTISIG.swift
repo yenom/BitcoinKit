@@ -79,7 +79,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
 
         // Signatures must come in the same order as their keys.
         var success: Bool = true
-        var firstSigError: Error? = nil
+        var firstSigError: Error?
         guard let tx = context.transaction, let utxo = context.utxoToVerify else {
             throw OpCodeExecutionError.error("The transaction or the utxo to verify is not set.")
         }
