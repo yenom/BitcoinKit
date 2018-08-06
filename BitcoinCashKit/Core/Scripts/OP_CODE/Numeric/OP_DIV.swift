@@ -36,6 +36,11 @@ public struct OpDiv: OpCodeProtocol {
         let x1 = try context.number(at: -2)
         let x2 = try context.number(at: -1)
 
+        // denominator must not be 0
+        guard x2 != 0 else {
+            throw OpCodeExecutionError.error("OP_DIV by zero")
+        }
+
         context.stack.removeLast()
         context.stack.removeLast()
         try context.pushToStack(x1 / x2)
