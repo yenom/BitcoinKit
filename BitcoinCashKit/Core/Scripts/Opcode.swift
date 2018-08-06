@@ -124,7 +124,7 @@ public struct OpCode {
     public static let OP_2MUL: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_2DIV: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_NEGATE: OpCodeProtocol = OpExample() // negates the number, pops it from stack and pushes result.
-    public static let OP_ABS: OpCodeProtocol = OPAbs() // replaces number with its absolute value
+    public static let OP_ABS: OpCodeProtocol = OPAbsolute() // replaces number with its absolute value
     public static let OP_NOT: OpCodeProtocol = OpExample() // replaces number with True if it's zero, False otherwise.
     public static let OP_0NOTEQUAL: OpCodeProtocol = OpExample() // replaces number with True if it's not zero, False otherwise.
     public static let OP_ADD: OpCodeProtocol = OpAdd() // (x y -- x+y)

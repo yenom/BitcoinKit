@@ -24,15 +24,15 @@
 import Foundation
 
 // replaces number with its absolute value
-public struct OPAbs: OpCodeProtocol {
+public struct OPAbsolute: OpCodeProtocol {
     public var value: UInt8 { return 0x90 }
     public var name: String { return "OP_ABS" }
-    
+
     // (in -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         try context.assertStackHeightGreaterThan(1)
-        
+
         let input = try context.number(at: -1)
         context.stack.removeLast()
         try context.pushToStack(abs(input))
