@@ -135,19 +135,19 @@ public struct OpCode {
     public static let OP_LSHIFT: OpCodeProtocol = OpLShift() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_RSHIFT: OpCodeProtocol = OpRShift() // Disabled opcode. If executed, transaction is invalid.
 
-    public static let OP_BOOLAND: OpCodeProtocol = OpExample()
-    public static let OP_BOOLOR: OpCodeProtocol = OpExample()
-    public static let OP_NUMEQUAL: OpCodeProtocol = OpExample()
-    public static let OP_NUMEQUALVERIFY: OpCodeProtocol = OpExample()
-    public static let OP_NUMNOTEQUAL: OpCodeProtocol = OpExample()
-    public static let OP_LESSTHAN: OpCodeProtocol = OpExample()
-    public static let OP_GREATERTHAN: OpCodeProtocol = OpExample()
+    public static let OP_BOOLAND: OpCodeProtocol = OpBoolAnd()
+    public static let OP_BOOLOR: OpCodeProtocol = OpBoolOr()
+    public static let OP_NUMEQUAL: OpCodeProtocol = OpNumEqual()
+    public static let OP_NUMEQUALVERIFY: OpCodeProtocol = OpNumEqualVerify()
+    public static let OP_NUMNOTEQUAL: OpCodeProtocol = OpNumNotEqual()
+    public static let OP_LESSTHAN: OpCodeProtocol = OpLessThan()
+    public static let OP_GREATERTHAN: OpCodeProtocol = OpGreaterThan()
     public static let OP_LESSTHANOREQUAL: OpCodeProtocol = OpLessThanOrEqual()
-    public static let OP_GREATERTHANOREQUAL: OpCodeProtocol = OpExample()
+    public static let OP_GREATERTHANOREQUAL: OpCodeProtocol = OpGreaterThanOrEqual()
     public static let OP_MIN: OpCodeProtocol = OpMin()
     public static let OP_MAX: OpCodeProtocol = OpMax()
 
-    public static let OP_WITHIN: OpCodeProtocol = OpExample()
+    public static let OP_WITHIN: OpCodeProtocol = OpWithin()
 
     // Crypto
     public static let OP_RIPEMD160: OpCodeProtocol = OpExample()
