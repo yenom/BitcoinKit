@@ -23,14 +23,10 @@
 //
 import Foundation
 
-// (x y -- x%y) disabled.
+// (x y -- x%y)
 public struct OpMod: OpCodeProtocol {
     public var value: UInt8 { return 0x97 }
     public var name: String { return "OP_MOD" }
-
-    public func isEnabled() -> Bool {
-        return false
-    }
 
     // (x1 x2 -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
