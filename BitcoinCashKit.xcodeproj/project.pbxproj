@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002721169C810077E9BC /* OP_1ADD.swift */; };
 		0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */; };
 		0C0900342116A53F0077E9BC /* OP_NOT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900332116A53F0077E9BC /* OP_NOT.swift */; };
 		0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002D2116A32C0077E9BC /* OP_2MUL.swift */; };
@@ -134,6 +135,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C09002721169C810077E9BC /* OP_1ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1ADD.swift; sourceTree = "<group>"; };
 		0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_0NOTEQUAL.swift; sourceTree = "<group>"; };
 		0C0900332116A53F0077E9BC /* OP_NOT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOT.swift; sourceTree = "<group>"; };
 		0C09002D2116A32C0077E9BC /* OP_2MUL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2MUL.swift; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 				0C4132EE210EFD1700906E4A /* OP_SWAP.swift */,
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
+				0C09002721169C810077E9BC /* OP_1ADD.swift */,
 				0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */,
 				0C0900332116A53F0077E9BC /* OP_NOT.swift */,
 				0C09002D2116A32C0077E9BC /* OP_2MUL.swift */,
@@ -635,6 +638,7 @@
 				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
 				29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */,
 				297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */,
+				0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */,
 				29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */,
 				296ADC252112EC8C007EE5C7 /* Peer.swift in Sources */,
 				14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */,
