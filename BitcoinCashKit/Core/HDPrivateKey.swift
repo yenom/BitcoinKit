@@ -60,14 +60,6 @@ public class HDPrivateKey {
         self.childIndex = childIndex
     }
 
-    public func privateKey() -> PrivateKey {
-        return PrivateKey(data: raw, network: network, isPublicKeyCompressed: true)
-    }
-
-    public func extendedPublicKey() -> HDPublicKey {
-        return HDPublicKey(raw: computePublicKeyData(), chainCode: chainCode, network: network, depth: depth, fingerprint: fingerprint, childIndex: childIndex)
-    }
-
     public func extended() -> String {
         var data = Data()
         data += network.xprivkey.bigEndian
@@ -81,12 +73,16 @@ public class HDPrivateKey {
         return Base58.encode(data + checksum)
     }
 
-    private func computePublicKeyData() -> Data {
-        return _Key.computePublicKey(fromPrivateKey: raw, compression: true)
+    public func privateKey() -> PrivateKey {
+        return PrivateKey(data: raw, network: network, isPublicKeyCompressed: true)
     }
 
-    public func publicKey() -> PublicKey {
-        return PublicKey(bytes: computePublicKeyData(), network: network)
+    public func extendedPublicKey() -> HDPublicKey {
+        return HDPublicKey(raw: computePublicKeyData(), chainCode: chainCode, network: network, depth: depth, fingerprint: fingerprint, childIndex: childIndex)
+    }
+
+    private func computePublicKeyData() -> Data {
+        return _Key.computePublicKey(fromPrivateKey: raw, compression: true)
     }
 
     public func derived(at index: UInt32, hardened: Bool = false) throws -> HDPrivateKey {
