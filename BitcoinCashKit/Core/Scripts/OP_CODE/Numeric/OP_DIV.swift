@@ -38,7 +38,7 @@ public struct OpDiv: OpCodeProtocol {
 
         // denominator must not be 0
         guard x2 != 0 else {
-            throw OpCodeExecutionError.error("OP_DIV by zero")
+            throw OpCodeExecutionError.error("Division by zero error")
         }
 
         context.stack.removeLast()

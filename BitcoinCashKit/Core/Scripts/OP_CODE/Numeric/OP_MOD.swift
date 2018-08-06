@@ -38,7 +38,7 @@ public struct OpMod: OpCodeProtocol {
 
         // denominator must not be 0
         guard x2 != 0 else {
-            throw OpCodeExecutionError.error("OP_MOD by zero")
+            throw OpCodeExecutionError.error("Modulo by zero error")
         }
 
         context.stack.removeLast()
