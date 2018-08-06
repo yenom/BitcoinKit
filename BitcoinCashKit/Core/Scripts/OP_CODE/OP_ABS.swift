@@ -21,10 +21,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
+
 import Foundation
 
 // replaces number with its absolute value
-public struct OPAbsolute: OpCodeProtocol {
+public struct OpAbsolute: OpCodeProtocol {
     public var value: UInt8 { return 0x90 }
     public var name: String { return "OP_ABS" }
 
