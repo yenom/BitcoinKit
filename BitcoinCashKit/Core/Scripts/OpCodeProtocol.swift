@@ -38,6 +38,13 @@ extension OpCodeProtocol {
     }
 
     public func prepareExecute(_ context: ScriptExecutionContext) throws {
+        guard isEnabled() else {
+            throw OpCodeExecutionError.disabled
+        }
+        if context.verbose {
+            print("[prepare execution : \(name)(\(value))]")
+            print(context)
+        }
         try context.incrementOpCount()
         // if context.verbose == true, print stacks and so on...
     }
@@ -52,6 +59,7 @@ public enum OpCodeExecutionError: Error {
     case error(String)
     case opcodeRequiresItemsOnStack(Int)
     case invalidBignum
+    case disabled
 }
 
 // ==

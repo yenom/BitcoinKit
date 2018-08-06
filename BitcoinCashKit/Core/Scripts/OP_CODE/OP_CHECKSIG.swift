@@ -38,10 +38,6 @@ public struct OpCheckSig: OpCodeProtocol {
         let pubkeyData: Data = context.stack.removeLast()
         let sigData: Data = context.stack.removeLast()
 
-        // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
-        let subScript = try context.script.subScript(from: context.lastCodeSepartorIndex)
-        try subScript.deleteOccurrences(of: sigData)
-
         guard let tx = context.transaction, let utxo = context.utxoToVerify else {
             throw OpCodeExecutionError.error("The transaction or the utxo to verify is not set.")
         }

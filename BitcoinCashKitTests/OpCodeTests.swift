@@ -31,7 +31,7 @@ class OpCodeTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         context = ScriptExecutionContext()
-        pushRandomDataOnStack(context)
+        context.verbose = true
     }
     
      // OP_N is not working correctly right now because we didn't implemente bignum
@@ -57,7 +57,6 @@ class OpCodeTests: XCTestCase {
                                                (OpCode.OP_15,15),
                                                (OpCode.OP_16,16)]
 
-        let context = ScriptExecutionContext()
         for (i, (opcode, expectedNumber)) in vectors.enumerated() {
             do {
                 try opcode.execute(context)
@@ -71,6 +70,7 @@ class OpCodeTests: XCTestCase {
     }
  
     func testOpVerify() {
+        pushRandomDataOnStack(context)
         let stackCountAtFirst: Int = context.stack.count
         let opcode = OpCode.OP_VERIFY
         
@@ -99,6 +99,7 @@ class OpCodeTests: XCTestCase {
     }
     
     func testOpDuplicate() {
+        pushRandomDataOnStack(context)
         let stackCountAtFirst: Int = context.stack.count
         let opcode = OpCode.OP_DUP
         // OP_CODE basic specification
