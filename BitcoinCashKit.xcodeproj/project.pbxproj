@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		0C0900442116BA8F0077E9BC /* OP_RSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */; };
+		0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */; };
+		0C0900382116A7F50077E9BC /* OP_ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900372116A7F50077E9BC /* OP_ADD.swift */; };
+		0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002721169C810077E9BC /* OP_1ADD.swift */; };
+		0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */; };
+		0C0900342116A53F0077E9BC /* OP_NOT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900332116A53F0077E9BC /* OP_NOT.swift */; };
+		0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002D2116A32C0077E9BC /* OP_2MUL.swift */; };
+		0C0900302116A3EB0077E9BC /* OP_2DIV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */; };
+		0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */; };
+		0C09002A2116A0680077E9BC /* OP_1SUB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900292116A0680077E9BC /* OP_1SUB.swift */; };
+		0C09002621169B430077E9BC /* OP_MIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002521169B430077E9BC /* OP_MIN.swift */; };
+		0C0900242116935E0077E9BC /* OP_MAX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900232116935E0077E9BC /* OP_MAX.swift */; };
 		0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4132EE210EFD1700906E4A /* OP_SWAP.swift */; };
 		1419E83A202CDBE500FCB0BE /* BitcoinCashKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1419E83B202CDBE500FCB0BE /* BitcoinCashKitPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */; };
@@ -128,6 +139,17 @@
 
 /* Begin PBXFileReference section */
 		0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RSHIFT.swift; sourceTree = "<group>"; };
+		0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LSHIFT.swift; sourceTree = "<group>"; };
+		0C0900372116A7F50077E9BC /* OP_ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_ADD.swift; sourceTree = "<group>"; };
+		0C09002721169C810077E9BC /* OP_1ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1ADD.swift; sourceTree = "<group>"; };
+		0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_0NOTEQUAL.swift; sourceTree = "<group>"; };
+		0C0900332116A53F0077E9BC /* OP_NOT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOT.swift; sourceTree = "<group>"; };
+		0C09002D2116A32C0077E9BC /* OP_2MUL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2MUL.swift; sourceTree = "<group>"; };
+		0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2DIV.swift; sourceTree = "<group>"; };
+		0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NEGATE.swift; sourceTree = "<group>"; };
+		0C0900292116A0680077E9BC /* OP_1SUB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1SUB.swift; sourceTree = "<group>"; };
+		0C09002521169B430077E9BC /* OP_MIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MIN.swift; sourceTree = "<group>"; };
+		0C0900232116935E0077E9BC /* OP_MAX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MAX.swift; sourceTree = "<group>"; };
 		0C4132EE210EFD1700906E4A /* OP_SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SWAP.swift; sourceTree = "<group>"; };
 		1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinCashKitPrivate.h; sourceTree = "<group>"; };
 		1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitcoinCashKitPrivate.m; sourceTree = "<group>"; };
@@ -374,6 +396,17 @@
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
 				0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */,
+				0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */,
+				0C0900372116A7F50077E9BC /* OP_ADD.swift */,
+				0C09002721169C810077E9BC /* OP_1ADD.swift */,
+				0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */,
+				0C0900332116A53F0077E9BC /* OP_NOT.swift */,
+				0C09002D2116A32C0077E9BC /* OP_2MUL.swift */,
+				0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */,
+				0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */,
+				0C0900292116A0680077E9BC /* OP_1SUB.swift */,
+				0C09002521169B430077E9BC /* OP_MIN.swift */,
+				0C0900232116935E0077E9BC /* OP_MAX.swift */,
 				29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */,
 				29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */,
 				29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */,
@@ -609,11 +642,14 @@
 				14839AAB202FE7F000A6CB34 /* NetworkAddress.swift in Sources */,
 				297DB97320EB12E60077EEEE /* AddressType.swift in Sources */,
 				14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */,
+				0C0900302116A3EB0077E9BC /* OP_2DIV.swift in Sources */,
 				147494EC201F9E4F006D1CF8 /* Network.swift in Sources */,
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
 				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
 				29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */,
 				297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */,
+				0C0900382116A7F50077E9BC /* OP_ADD.swift in Sources */,
+				0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */,
 				29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */,
 				296ADC252112EC8C007EE5C7 /* Peer.swift in Sources */,
 				14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */,
@@ -647,10 +683,12 @@
 				1419E83B202CDBE500FCB0BE /* BitcoinCashKitPrivate.m in Sources */,
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
 				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
+				0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */,
 				14839A9F202FE73B00A6CB34 /* TransactionOutput.swift in Sources */,
 				1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */,
 				14839A81202FE5CA00A6CB34 /* VerackMessage.swift in Sources */,
 				29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */,
+				0C0900242116935E0077E9BC /* OP_MAX.swift in Sources */,
 				14839A95202FE6BE00A6CB34 /* GetBlocksMessage.swift in Sources */,
 				14A2961F2032317B00E19177 /* HDWallet.swift in Sources */,
 				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
@@ -666,16 +704,22 @@
 				1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */,
 				2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */,
 				14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */,
+				0C0900342116A53F0077E9BC /* OP_NOT.swift in Sources */,
 				CFA290722102B635001A1BAB /* ScriptMachine.swift in Sources */,
 				147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */,
+				0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */,
 				29290B9F210AF8FD00D2BE78 /* OP_EQUAL.swift in Sources */,
 				14839A8B202FE64D00A6CB34 /* GetDataMessage.swift in Sources */,
 				29290BA3210AF9D600D2BE78 /* ScriptExecutionContext.swift in Sources */,
+				0C09002A2116A0680077E9BC /* OP_1SUB.swift in Sources */,
 				29290B97210AF87800D2BE78 /* OP_CHECKSIG.swift in Sources */,
 				1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */,
+				0C09002621169B430077E9BC /* OP_MIN.swift in Sources */,
 				14839A99202FE6E700A6CB34 /* MerkleBlockMessage.swift in Sources */,
+				0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
 				14839A8D202FE66A00A6CB34 /* PingMessage.swift in Sources */,
+				0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */,
 				299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
