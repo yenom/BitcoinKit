@@ -38,6 +38,6 @@ public struct OpNumEqual: OpCodeProtocol {
         
         context.stack.removeLast()
         context.stack.removeLast()
-        try context.pushToStack(x1 == x2)
+        context.pushToStack(x1 == x2)
     }
 }
