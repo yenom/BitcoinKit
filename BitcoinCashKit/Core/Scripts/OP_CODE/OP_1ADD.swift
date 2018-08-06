@@ -27,12 +27,12 @@ import Foundation
 public struct Op1Add: OpCodeProtocol {
     public var value: UInt8 { return 0x8b }
     public var name: String { return "OP_1ADD" }
-    
+
     // (in -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         try context.assertStackHeightGreaterThan(1)
-        
+
         let input = try context.number(at: -1)
         context.stack.removeLast()
         try context.pushToStack(input + 1)

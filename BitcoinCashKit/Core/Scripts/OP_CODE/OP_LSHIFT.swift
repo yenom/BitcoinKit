@@ -27,19 +27,19 @@ import Foundation
 public struct OpLShift: OpCodeProtocol {
     public var value: UInt8 { return 0x98 }
     public var name: String { return "OP_LSHIFT" }
-    
+
     public func isEnabled() -> Bool {
         return false
     }
-    
+
     // (x1 x2 -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         try context.assertStackHeightGreaterThan(2)
-        
+
         let x1 = try context.number(at: -2)
         let x2 = try context.number(at: -1)
-        
+
         context.stack.removeLast()
         context.stack.removeLast()
         try context.pushToStack(x1 << x2)

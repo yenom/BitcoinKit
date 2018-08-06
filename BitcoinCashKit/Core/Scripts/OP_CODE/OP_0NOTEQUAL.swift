@@ -27,12 +27,12 @@ import Foundation
 public struct OP0NotEqual: OpCodeProtocol {
     public var value: UInt8 { return 0x92 }
     public var name: String { return "OP_0NOTEQUAL" }
-    
+
     // (in -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         try context.assertStackHeightGreaterThan(1)
-        
+
         let input = try context.number(at: -1)
         context.stack.removeLast()
         context.pushToStack(input != 0)

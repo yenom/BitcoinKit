@@ -28,12 +28,12 @@ import Foundation
 public struct OpMax: OpCodeProtocol {
     public var value: UInt8 { return 0xa4 }
     public var name: String { return "OP_MAX" }
-    
+
     // (x1 x2 -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         try context.assertStackHeightGreaterThan(2)
-        
+
         let x1 = try context.number(at: -2)
         let x2 = try context.number(at: -1)
 

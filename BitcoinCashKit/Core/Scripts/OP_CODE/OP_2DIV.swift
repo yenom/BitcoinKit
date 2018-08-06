@@ -27,16 +27,16 @@ import Foundation
 public struct Op2Div: OpCodeProtocol {
     public var value: UInt8 { return 0x8e }
     public var name: String { return "OP_2DIV" }
-    
+
     public func isEnabled() -> Bool {
         return false
     }
-    
+
     // (in -- out)
     public func execute(_ context: ScriptExecutionContext) throws {
         try prepareExecute(context)
         try context.assertStackHeightGreaterThan(1)
-        
+
         let input = try context.number(at: -1)
         context.stack.removeLast()
         try context.pushToStack(input / 2)
