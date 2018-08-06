@@ -120,7 +120,7 @@ public struct OpCode {
 
     // Numeric
     public static let OP_1ADD: OpCodeProtocol = OpExample() // adds 1 to last item, pops it from stack and pushes result.
-    public static let OP_1SUB: OpCodeProtocol = OpExample() // substracts 1 to last item, pops it from stack and pushes result.
+    public static let OP_1SUB: OpCodeProtocol = Op1Sub() // substracts 1 to last item, pops it from stack and pushes result.
     public static let OP_2MUL: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_2DIV: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_NEGATE: OpCodeProtocol = OpNegate() // negates the number, pops it from stack and pushes result.
@@ -145,8 +145,8 @@ public struct OpCode {
     public static let OP_GREATERTHAN: OpCodeProtocol = OpExample()
     public static let OP_LESSTHANOREQUAL: OpCodeProtocol = OpExample()
     public static let OP_GREATERTHANOREQUAL: OpCodeProtocol = OpExample()
-    public static let OP_MIN: OpCodeProtocol = OpExample()
-    public static let OP_MAX: OpCodeProtocol = OpExample()
+    public static let OP_MIN: OpCodeProtocol = OpMin()
+    public static let OP_MAX: OpCodeProtocol = OpMax()
 
     public static let OP_WITHIN: OpCodeProtocol = OpExample()
 
