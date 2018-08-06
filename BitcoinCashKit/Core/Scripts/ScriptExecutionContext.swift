@@ -38,17 +38,6 @@ public class ScriptExecutionContext {
     // Holds an array of Bool values to keep track of if/else branches.
     public internal(set) var conditionStack = [Bool]()
 
-    // Currently executed script.
-    public internal(set) var script: Script = Script()
-    // Current opcode.
-    public internal(set) var opCode: OpCodeProtocol = OpCode.OP_0
-    // Current payload for any "push data" operation.
-    // public var data
-    // Current opcode index in _script.
-    public internal(set) var opIndex: Int = 0
-    // Index of last OP_CODESEPARATOR
-    public internal(set) var lastCodeSepartorIndex: Int = 0
-
     // Keeps number of executed operations to check for limit.
     public internal(set) var opCount: Int = 0
 
@@ -65,6 +54,9 @@ public class ScriptExecutionContext {
     private let blobFalse: Data = Data()
     private let blobZero: Data = Data()
     private let blobTrue: Data = Data(bytes: [UInt8(1)])
+
+    // If verbose is true, stack will be printed each time OP_CODEs are executed
+    public var verbose: Bool = false
 
     public init() {}
     public var shouldExecute: Bool {
@@ -169,6 +161,29 @@ public class ScriptExecutionContext {
 
 extension ScriptExecutionContext: CustomStringConvertible {
     public var description: String {
-        return ""
+        var desc: String = "OpCount: \(opCount) \ncurrent stack: \n"
+        for data in stack.reversed() {
+            let hex = data.hex
+            var contents: String = "0x" + hex
+
+            if hex.count > 20 {
+                let first = hex.prefix(5)
+                let last = hex.suffix(5)
+                contents = "\(first)..\(last)"
+            }
+
+            if contents == "0x" {
+                contents = "NULL/FALSE/0"
+            }
+            for _ in 0...(20 - contents.count) / 2 {
+                contents = " \(contents) "
+            }
+            desc += "| \(contents) |\n"
+        }
+        var base: String = ""
+        (0...12).forEach { _ in
+            base = "=\(base)="
+        }
+        return desc + base + "\n"
     }
 }
