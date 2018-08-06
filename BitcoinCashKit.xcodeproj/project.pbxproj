@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C09002A2116A0680077E9BC /* OP_1SUB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900292116A0680077E9BC /* OP_1SUB.swift */; };
 		0C09002621169B430077E9BC /* OP_MIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002521169B430077E9BC /* OP_MIN.swift */; };
 		0C0900242116935E0077E9BC /* OP_MAX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900232116935E0077E9BC /* OP_MAX.swift */; };
 		0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4132EE210EFD1700906E4A /* OP_SWAP.swift */; };
@@ -128,6 +129,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C0900292116A0680077E9BC /* OP_1SUB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1SUB.swift; sourceTree = "<group>"; };
 		0C09002521169B430077E9BC /* OP_MIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MIN.swift; sourceTree = "<group>"; };
 		0C0900232116935E0077E9BC /* OP_MAX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MAX.swift; sourceTree = "<group>"; };
 		0C4132EE210EFD1700906E4A /* OP_SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SWAP.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				0C4132EE210EFD1700906E4A /* OP_SWAP.swift */,
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
+				0C0900292116A0680077E9BC /* OP_1SUB.swift */,
 				0C09002521169B430077E9BC /* OP_MIN.swift */,
 				0C0900232116935E0077E9BC /* OP_MAX.swift */,
 				29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */,
@@ -674,6 +677,7 @@
 				29290B9F210AF8FD00D2BE78 /* OP_EQUAL.swift in Sources */,
 				14839A8B202FE64D00A6CB34 /* GetDataMessage.swift in Sources */,
 				29290BA3210AF9D600D2BE78 /* ScriptExecutionContext.swift in Sources */,
+				0C09002A2116A0680077E9BC /* OP_1SUB.swift in Sources */,
 				29290B97210AF87800D2BE78 /* OP_CHECKSIG.swift in Sources */,
 				1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */,
 				0C09002621169B430077E9BC /* OP_MIN.swift in Sources */,
