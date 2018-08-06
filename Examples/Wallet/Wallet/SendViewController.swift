@@ -91,13 +91,13 @@ class SendViewController: UIViewController, PeerGroupDelegate {
         }
         // Receive key
         for index in 0..<(AppController.shared.externalIndex + 20) {
-            if let key = try? wallet.privateKey(index: index).privateKey() {
+            if let key = try? wallet.privateKey(index: index) {
                 keys.append(key)
             }
         }
         // Change key
         for index in 0..<(AppController.shared.internalIndex + 20) {
-            if let key = try? wallet.changePrivateKey(index: index).privateKey() {
+            if let key = try? wallet.changePrivateKey(index: index) {
                 keys.append(key)
             }
         }
