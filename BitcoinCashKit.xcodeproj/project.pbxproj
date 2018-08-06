@@ -20,6 +20,7 @@
 		0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */; };
 		0C0900442116BA8F0077E9BC /* OP_RSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */; };
 		0C1DD40821181719004BA8A8 /* OP_ABS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD40721181719004BA8A8 /* OP_ABS.swift */; };
+		0C1DD40A211819CE004BA8A8 /* OP_GREATERTHAN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD409211819CE004BA8A8 /* OP_GREATERTHAN.swift */; };
 		0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4132EE210EFD1700906E4A /* OP_SWAP.swift */; };
 		0CD92D3B2118153700DD3148 /* OP_LESSTHANOREQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */; };
 		1419E83A202CDBE500FCB0BE /* BitcoinCashKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -153,6 +154,7 @@
 		0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LSHIFT.swift; sourceTree = "<group>"; };
 		0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RSHIFT.swift; sourceTree = "<group>"; };
 		0C1DD40721181719004BA8A8 /* OP_ABS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_ABS.swift; sourceTree = "<group>"; };
+		0C1DD409211819CE004BA8A8 /* OP_GREATERTHAN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_GREATERTHAN.swift; sourceTree = "<group>"; };
 		0C4132EE210EFD1700906E4A /* OP_SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SWAP.swift; sourceTree = "<group>"; };
 		0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LESSTHANOREQUAL.swift; sourceTree = "<group>"; };
 		1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinCashKitPrivate.h; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				0C0900232116935E0077E9BC /* OP_MAX.swift */,
 				0C1DD40721181719004BA8A8 /* OP_ABS.swift */,
 				0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */,
+				0C1DD409211819CE004BA8A8 /* OP_GREATERTHAN.swift */,
 				29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */,
 				29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */,
 				29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */,
@@ -668,6 +671,7 @@
 				29E1ED75210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift in Sources */,
 				29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */,
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
+				0C1DD40A211819CE004BA8A8 /* OP_GREATERTHAN.swift in Sources */,
 				29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */,
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,
 				14F37A3E2020A02000D34748 /* SighashType.swift in Sources */,
