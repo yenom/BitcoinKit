@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */; };
 		0C0900342116A53F0077E9BC /* OP_NOT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900332116A53F0077E9BC /* OP_NOT.swift */; };
 		0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002D2116A32C0077E9BC /* OP_2MUL.swift */; };
 		0C0900302116A3EB0077E9BC /* OP_2DIV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */; };
@@ -133,6 +134,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_0NOTEQUAL.swift; sourceTree = "<group>"; };
 		0C0900332116A53F0077E9BC /* OP_NOT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOT.swift; sourceTree = "<group>"; };
 		0C09002D2116A32C0077E9BC /* OP_2MUL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2MUL.swift; sourceTree = "<group>"; };
 		0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2DIV.swift; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 				0C4132EE210EFD1700906E4A /* OP_SWAP.swift */,
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
+				0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */,
 				0C0900332116A53F0077E9BC /* OP_NOT.swift */,
 				0C09002D2116A32C0077E9BC /* OP_2MUL.swift */,
 				0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */,
@@ -700,6 +703,7 @@
 				0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
 				14839A8D202FE66A00A6CB34 /* PingMessage.swift in Sources */,
+				0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */,
 				299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
