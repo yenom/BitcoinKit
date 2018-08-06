@@ -124,31 +124,30 @@ public struct OpCode {
     public static let OP_2MUL: OpCodeProtocol = Op2Mul() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_2DIV: OpCodeProtocol = Op2Div() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_NEGATE: OpCodeProtocol = OpNegate() // negates the number, pops it from stack and pushes result.
-    public static let OP_ABS: OpCodeProtocol = OpExample() // replaces number with its absolute value
+    public static let OP_ABS: OpCodeProtocol = OpAbsolute() // replaces number with its absolute value
     public static let OP_NOT: OpCodeProtocol = OpNot() // replaces number with True if it's zero, False otherwise.
     public static let OP_0NOTEQUAL: OpCodeProtocol = OP0NotEqual() // replaces number with True if it's not zero, False otherwise.
-
     public static let OP_ADD: OpCodeProtocol = OpAdd() // (x y -- x+y)
-    public static let OP_SUB: OpCodeProtocol = OpExample() // (x y -- x-y)
-    public static let OP_MUL: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
-    public static let OP_DIV: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
-    public static let OP_MOD: OpCodeProtocol = OpExample() // Disabled opcode. If executed, transaction is invalid.
+    public static let OP_SUB: OpCodeProtocol = OpSub() // (x y -- x-y)
+    public static let OP_MUL: OpCodeProtocol = OpMul() // Disabled opcode. If executed, transaction is invalid.
+    public static let OP_DIV: OpCodeProtocol = OpDiv() // Disabled opcode. If executed, transaction is invalid.
+    public static let OP_MOD: OpCodeProtocol = OpMod() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_LSHIFT: OpCodeProtocol = OpLShift() // Disabled opcode. If executed, transaction is invalid.
     public static let OP_RSHIFT: OpCodeProtocol = OpRShift() // Disabled opcode. If executed, transaction is invalid.
 
-    public static let OP_BOOLAND: OpCodeProtocol = OpExample()
-    public static let OP_BOOLOR: OpCodeProtocol = OpExample()
-    public static let OP_NUMEQUAL: OpCodeProtocol = OpExample()
-    public static let OP_NUMEQUALVERIFY: OpCodeProtocol = OpExample()
-    public static let OP_NUMNOTEQUAL: OpCodeProtocol = OpExample()
-    public static let OP_LESSTHAN: OpCodeProtocol = OpExample()
-    public static let OP_GREATERTHAN: OpCodeProtocol = OpExample()
-    public static let OP_LESSTHANOREQUAL: OpCodeProtocol = OpExample()
-    public static let OP_GREATERTHANOREQUAL: OpCodeProtocol = OpExample()
+    public static let OP_BOOLAND: OpCodeProtocol = OpBoolAnd()
+    public static let OP_BOOLOR: OpCodeProtocol = OpBoolOr()
+    public static let OP_NUMEQUAL: OpCodeProtocol = OpNumEqual()
+    public static let OP_NUMEQUALVERIFY: OpCodeProtocol = OpNumEqualVerify()
+    public static let OP_NUMNOTEQUAL: OpCodeProtocol = OpNumNotEqual()
+    public static let OP_LESSTHAN: OpCodeProtocol = OpLessThan()
+    public static let OP_GREATERTHAN: OpCodeProtocol = OpGreaterThan()
+    public static let OP_LESSTHANOREQUAL: OpCodeProtocol = OpLessThanOrEqual()
+    public static let OP_GREATERTHANOREQUAL: OpCodeProtocol = OpGreaterThanOrEqual()
     public static let OP_MIN: OpCodeProtocol = OpMin()
     public static let OP_MAX: OpCodeProtocol = OpMax()
 
-    public static let OP_WITHIN: OpCodeProtocol = OpExample()
+    public static let OP_WITHIN: OpCodeProtocol = OpWithin()
 
     // Crypto
     public static let OP_RIPEMD160: OpCodeProtocol = OpExample()

@@ -7,19 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C0900442116BA8F0077E9BC /* OP_RSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */; };
-		0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */; };
-		0C0900382116A7F50077E9BC /* OP_ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900372116A7F50077E9BC /* OP_ADD.swift */; };
+		0C0900242116935E0077E9BC /* OP_MAX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900232116935E0077E9BC /* OP_MAX.swift */; };
+		0C09002621169B430077E9BC /* OP_MIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002521169B430077E9BC /* OP_MIN.swift */; };
 		0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002721169C810077E9BC /* OP_1ADD.swift */; };
-		0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */; };
-		0C0900342116A53F0077E9BC /* OP_NOT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900332116A53F0077E9BC /* OP_NOT.swift */; };
+		0C09002A2116A0680077E9BC /* OP_1SUB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900292116A0680077E9BC /* OP_1SUB.swift */; };
+		0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */; };
 		0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002D2116A32C0077E9BC /* OP_2MUL.swift */; };
 		0C0900302116A3EB0077E9BC /* OP_2DIV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */; };
-		0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */; };
-		0C09002A2116A0680077E9BC /* OP_1SUB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900292116A0680077E9BC /* OP_1SUB.swift */; };
-		0C09002621169B430077E9BC /* OP_MIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002521169B430077E9BC /* OP_MIN.swift */; };
-		0C0900242116935E0077E9BC /* OP_MAX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900232116935E0077E9BC /* OP_MAX.swift */; };
+		0C0900342116A53F0077E9BC /* OP_NOT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900332116A53F0077E9BC /* OP_NOT.swift */; };
+		0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */; };
+		0C0900382116A7F50077E9BC /* OP_ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900372116A7F50077E9BC /* OP_ADD.swift */; };
+		0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */; };
+		0C0900442116BA8F0077E9BC /* OP_RSHIFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */; };
+		0C1DD40821181719004BA8A8 /* OP_ABS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD40721181719004BA8A8 /* OP_ABS.swift */; };
+		0C1DD40A211819CE004BA8A8 /* OP_GREATERTHAN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD409211819CE004BA8A8 /* OP_GREATERTHAN.swift */; };
+		0C1DD40C21181A40004BA8A8 /* OP_LESSTHAN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD40B21181A40004BA8A8 /* OP_LESSTHAN.swift */; };
+		0C1DD40E21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD40D21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift */; };
+		0C1DD41021181AF3004BA8A8 /* OP_NUMEQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD40F21181AF3004BA8A8 /* OP_NUMEQUAL.swift */; };
+		0C1DD41221181B41004BA8A8 /* OP_BOOLOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD41121181B41004BA8A8 /* OP_BOOLOR.swift */; };
+		0C1DD41421181C01004BA8A8 /* OP_BOOLAND.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD41321181C01004BA8A8 /* OP_BOOLAND.swift */; };
+		0C1DD41621181CC0004BA8A8 /* OP_GREATERTHANOREQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD41521181CC0004BA8A8 /* OP_GREATERTHANOREQUAL.swift */; };
+		0C1DD41821181D08004BA8A8 /* OP_WITHIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD41721181D08004BA8A8 /* OP_WITHIN.swift */; };
+		0C1DD41A21181DDF004BA8A8 /* OP_NUMEQUALVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD41921181DDF004BA8A8 /* OP_NUMEQUALVERIFY.swift */; };
+		0C1DD41D21182043004BA8A8 /* OP_SUB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD41C21182043004BA8A8 /* OP_SUB.swift */; };
+		0C1DD41F211820BB004BA8A8 /* OP_MUL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD41E211820BB004BA8A8 /* OP_MUL.swift */; };
+		0C1DD421211820D4004BA8A8 /* OP_DIV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD420211820D4004BA8A8 /* OP_DIV.swift */; };
+		0C1DD42321182126004BA8A8 /* OP_MOD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DD42221182126004BA8A8 /* OP_MOD.swift */; };
 		0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4132EE210EFD1700906E4A /* OP_SWAP.swift */; };
+		0CD92D3B2118153700DD3148 /* OP_LESSTHANOREQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */; };
 		1419E83A202CDBE500FCB0BE /* BitcoinCashKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1419E83B202CDBE500FCB0BE /* BitcoinCashKitPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */; };
 		141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E12022588C00A08B04 /* PublicKey.swift */; };
@@ -138,19 +153,34 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RSHIFT.swift; sourceTree = "<group>"; };
-		0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LSHIFT.swift; sourceTree = "<group>"; };
-		0C0900372116A7F50077E9BC /* OP_ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_ADD.swift; sourceTree = "<group>"; };
+		0C0900232116935E0077E9BC /* OP_MAX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MAX.swift; sourceTree = "<group>"; };
+		0C09002521169B430077E9BC /* OP_MIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MIN.swift; sourceTree = "<group>"; };
 		0C09002721169C810077E9BC /* OP_1ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1ADD.swift; sourceTree = "<group>"; };
-		0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_0NOTEQUAL.swift; sourceTree = "<group>"; };
-		0C0900332116A53F0077E9BC /* OP_NOT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOT.swift; sourceTree = "<group>"; };
+		0C0900292116A0680077E9BC /* OP_1SUB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1SUB.swift; sourceTree = "<group>"; };
+		0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NEGATE.swift; sourceTree = "<group>"; };
 		0C09002D2116A32C0077E9BC /* OP_2MUL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2MUL.swift; sourceTree = "<group>"; };
 		0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2DIV.swift; sourceTree = "<group>"; };
-		0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NEGATE.swift; sourceTree = "<group>"; };
-		0C0900292116A0680077E9BC /* OP_1SUB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1SUB.swift; sourceTree = "<group>"; };
-		0C09002521169B430077E9BC /* OP_MIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MIN.swift; sourceTree = "<group>"; };
-		0C0900232116935E0077E9BC /* OP_MAX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MAX.swift; sourceTree = "<group>"; };
+		0C0900332116A53F0077E9BC /* OP_NOT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOT.swift; sourceTree = "<group>"; };
+		0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_0NOTEQUAL.swift; sourceTree = "<group>"; };
+		0C0900372116A7F50077E9BC /* OP_ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_ADD.swift; sourceTree = "<group>"; };
+		0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LSHIFT.swift; sourceTree = "<group>"; };
+		0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RSHIFT.swift; sourceTree = "<group>"; };
+		0C1DD40721181719004BA8A8 /* OP_ABS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_ABS.swift; sourceTree = "<group>"; };
+		0C1DD409211819CE004BA8A8 /* OP_GREATERTHAN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_GREATERTHAN.swift; sourceTree = "<group>"; };
+		0C1DD40B21181A40004BA8A8 /* OP_LESSTHAN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LESSTHAN.swift; sourceTree = "<group>"; };
+		0C1DD40D21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NUMNOTEQUAL.swift; sourceTree = "<group>"; };
+		0C1DD40F21181AF3004BA8A8 /* OP_NUMEQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NUMEQUAL.swift; sourceTree = "<group>"; };
+		0C1DD41121181B41004BA8A8 /* OP_BOOLOR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_BOOLOR.swift; sourceTree = "<group>"; };
+		0C1DD41321181C01004BA8A8 /* OP_BOOLAND.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_BOOLAND.swift; sourceTree = "<group>"; };
+		0C1DD41521181CC0004BA8A8 /* OP_GREATERTHANOREQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_GREATERTHANOREQUAL.swift; sourceTree = "<group>"; };
+		0C1DD41721181D08004BA8A8 /* OP_WITHIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_WITHIN.swift; sourceTree = "<group>"; };
+		0C1DD41921181DDF004BA8A8 /* OP_NUMEQUALVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NUMEQUALVERIFY.swift; sourceTree = "<group>"; };
+		0C1DD41C21182043004BA8A8 /* OP_SUB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SUB.swift; sourceTree = "<group>"; };
+		0C1DD41E211820BB004BA8A8 /* OP_MUL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MUL.swift; sourceTree = "<group>"; };
+		0C1DD420211820D4004BA8A8 /* OP_DIV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_DIV.swift; sourceTree = "<group>"; };
+		0C1DD42221182126004BA8A8 /* OP_MOD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MOD.swift; sourceTree = "<group>"; };
 		0C4132EE210EFD1700906E4A /* OP_SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SWAP.swift; sourceTree = "<group>"; };
+		0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LESSTHANOREQUAL.swift; sourceTree = "<group>"; };
 		1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinCashKitPrivate.h; sourceTree = "<group>"; };
 		1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitcoinCashKitPrivate.m; sourceTree = "<group>"; };
 		141FE2E12022588C00A08B04 /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
@@ -281,6 +311,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C1DD41B21181EF8004BA8A8 /* Numeric */ = {
+			isa = PBXGroup;
+			children = (
+				0C09002721169C810077E9BC /* OP_1ADD.swift */,
+				0C0900292116A0680077E9BC /* OP_1SUB.swift */,
+				0C09002D2116A32C0077E9BC /* OP_2MUL.swift */,
+				0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */,
+				0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */,
+				0C1DD40721181719004BA8A8 /* OP_ABS.swift */,
+				0C0900332116A53F0077E9BC /* OP_NOT.swift */,
+				0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */,
+				0C0900372116A7F50077E9BC /* OP_ADD.swift */,
+				0C1DD41C21182043004BA8A8 /* OP_SUB.swift */,
+				0C1DD41E211820BB004BA8A8 /* OP_MUL.swift */,
+				0C1DD420211820D4004BA8A8 /* OP_DIV.swift */,
+				0C1DD42221182126004BA8A8 /* OP_MOD.swift */,
+				0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */,
+				0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */,
+				0C1DD41321181C01004BA8A8 /* OP_BOOLAND.swift */,
+				0C1DD41121181B41004BA8A8 /* OP_BOOLOR.swift */,
+				0C1DD40F21181AF3004BA8A8 /* OP_NUMEQUAL.swift */,
+				0C1DD41921181DDF004BA8A8 /* OP_NUMEQUALVERIFY.swift */,
+				0C1DD40D21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift */,
+				0C1DD40B21181A40004BA8A8 /* OP_LESSTHAN.swift */,
+				0C1DD409211819CE004BA8A8 /* OP_GREATERTHAN.swift */,
+				0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */,
+				0C1DD41521181CC0004BA8A8 /* OP_GREATERTHANOREQUAL.swift */,
+				0C09002521169B430077E9BC /* OP_MIN.swift */,
+				0C0900232116935E0077E9BC /* OP_MAX.swift */,
+				0C1DD41721181D08004BA8A8 /* OP_WITHIN.swift */,
+			);
+			path = Numeric;
+			sourceTree = "<group>";
+		};
 		147494BD201F9A29006D1CF8 = {
 			isa = PBXGroup;
 			children = (
@@ -395,18 +459,7 @@
 				0C4132EE210EFD1700906E4A /* OP_SWAP.swift */,
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
-				0C0900432116BA8F0077E9BC /* OP_RSHIFT.swift */,
-				0C0900412116B9DE0077E9BC /* OP_LSHIFT.swift */,
-				0C0900372116A7F50077E9BC /* OP_ADD.swift */,
-				0C09002721169C810077E9BC /* OP_1ADD.swift */,
-				0C0900352116A62E0077E9BC /* OP_0NOTEQUAL.swift */,
-				0C0900332116A53F0077E9BC /* OP_NOT.swift */,
-				0C09002D2116A32C0077E9BC /* OP_2MUL.swift */,
-				0C09002F2116A3EB0077E9BC /* OP_2DIV.swift */,
-				0C09002B2116A1C30077E9BC /* OP_NEGATE.swift */,
-				0C0900292116A0680077E9BC /* OP_1SUB.swift */,
-				0C09002521169B430077E9BC /* OP_MIN.swift */,
-				0C0900232116935E0077E9BC /* OP_MAX.swift */,
+				0C1DD41B21181EF8004BA8A8 /* Numeric */,
 				29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */,
 				29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */,
 				29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */,
@@ -651,7 +704,9 @@
 				0C0900382116A7F50077E9BC /* OP_ADD.swift in Sources */,
 				0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */,
 				29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */,
+				0C1DD41821181D08004BA8A8 /* OP_WITHIN.swift in Sources */,
 				296ADC252112EC8C007EE5C7 /* Peer.swift in Sources */,
+				0CD92D3B2118153700DD3148 /* OP_LESSTHANOREQUAL.swift in Sources */,
 				14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */,
 				29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */,
 				CFA2906C2101CD96001A1BAB /* ScriptChunk.swift in Sources */,
@@ -661,15 +716,21 @@
 				29E1ED75210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift in Sources */,
 				29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */,
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
+				0C1DD40A211819CE004BA8A8 /* OP_GREATERTHAN.swift in Sources */,
 				29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */,
+				0C1DD41021181AF3004BA8A8 /* OP_NUMEQUAL.swift in Sources */,
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,
 				14F37A3E2020A02000D34748 /* SighashType.swift in Sources */,
 				14839A8F202FE68000A6CB34 /* PongMessage.swift in Sources */,
+				0C1DD42321182126004BA8A8 /* OP_MOD.swift in Sources */,
 				29290B9B210AF88C00D2BE78 /* OP_HASH160.swift in Sources */,
 				14CDC3862021824200C01556 /* Wallet.swift in Sources */,
+				0C1DD41621181CC0004BA8A8 /* OP_GREATERTHANOREQUAL.swift in Sources */,
 				29290B9D210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift in Sources */,
 				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
 				299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */,
+				0C1DD40E21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift in Sources */,
+				0C1DD41D21182043004BA8A8 /* OP_SUB.swift in Sources */,
 				29290B93210AF86400D2BE78 /* OP_0.swift in Sources */,
 				2949920020F227EB00D078B6 /* VersionByte.swift in Sources */,
 				29248EEF2104B64E00CC9051 /* ScriptChunkHelper.swift in Sources */,
@@ -681,6 +742,7 @@
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
 				1419E83B202CDBE500FCB0BE /* BitcoinCashKitPrivate.m in Sources */,
+				0C1DD40C21181A40004BA8A8 /* OP_LESSTHAN.swift in Sources */,
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
 				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
 				0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */,
@@ -692,10 +754,14 @@
 				14839A95202FE6BE00A6CB34 /* GetBlocksMessage.swift in Sources */,
 				14A2961F2032317B00E19177 /* HDWallet.swift in Sources */,
 				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
+				0C1DD41221181B41004BA8A8 /* OP_BOOLOR.swift in Sources */,
 				290880152109708000C79379 /* OpCodeProtocol.swift in Sources */,
 				14839A91202FE69300A6CB34 /* RejectMessage.swift in Sources */,
 				14839AA5202FE7A100A6CB34 /* ByteStream.swift in Sources */,
+				0C1DD41421181C01004BA8A8 /* OP_BOOLAND.swift in Sources */,
+				0C1DD41F211820BB004BA8A8 /* OP_MUL.swift in Sources */,
 				29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */,
+				0C1DD41A21181DDF004BA8A8 /* OP_NUMEQUALVERIFY.swift in Sources */,
 				14A2961D2032316900E19177 /* HDKeychain.swift in Sources */,
 				296ADC242112EC8C007EE5C7 /* PeerGroup.swift in Sources */,
 				14CDC38A2021881A00C01556 /* Address.swift in Sources */,
@@ -713,8 +779,10 @@
 				29290BA3210AF9D600D2BE78 /* ScriptExecutionContext.swift in Sources */,
 				0C09002A2116A0680077E9BC /* OP_1SUB.swift in Sources */,
 				29290B97210AF87800D2BE78 /* OP_CHECKSIG.swift in Sources */,
+				0C1DD40821181719004BA8A8 /* OP_ABS.swift in Sources */,
 				1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */,
 				0C09002621169B430077E9BC /* OP_MIN.swift in Sources */,
+				0C1DD421211820D4004BA8A8 /* OP_DIV.swift in Sources */,
 				14839A99202FE6E700A6CB34 /* MerkleBlockMessage.swift in Sources */,
 				0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
