@@ -40,9 +40,16 @@ class OpCodeTests: XCTestCase {
             try op0.execute(context)
             let num = try context.number(at: -1)
             XCTAssertEqual(num, 0)
+    
+    func testOp1Negate() {
+        let opcode = OpCode.OP_1NEGATE
+        do {
+            try opcode.execute(context)
+            let num = try context.number(at: -1)
             XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(num, -1)
         } catch let error {
-            XCTFail("OP_0 execution should not fail.\nError: \(error)")
+            fail(with: opcode, error: error)
         }
     }
     
@@ -159,3 +166,6 @@ private func pushRandomDataOnStack(_ context: ScriptExecutionContext) {
     }
 }
 
+private func fail(with opCode: OpCodeProtocol, error: Error) {
+    XCTFail("\(opCode.name)(\(opCode.value)) execution should not fail.\nError: \(error)")
+}
