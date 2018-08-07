@@ -34,6 +34,18 @@ class OpCodeTests: XCTestCase {
         context.verbose = true
     }
     
+    func testOp0() {
+        let op0 = OpCode.OP_0
+        do {
+            try op0.execute(context)
+            let num = try context.number(at: -1)
+            XCTAssertEqual(num, 0)
+            XCTAssertEqual(context.stack.count, 1)
+        } catch let error {
+            XCTFail("OP_0 execution should not fail.\nError: \(error)")
+        }
+    }
+    
      // OP_N is not working correctly right now because we didn't implemente bignum
      // After implementing bignum, testOpN() should be enabled
      
