@@ -35,14 +35,26 @@ class OpCodeTests: XCTestCase {
     }
     
     func testOp0() {
-        let op0 = OpCode.OP_0
+        let opcode = OpCode.OP_0
         do {
-            try op0.execute(context)
+            try opcode.execute(context)
             let num = try context.number(at: -1)
-            XCTAssertEqual(num, 0)
             XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(num, 0)
         } catch let error {
-            XCTFail("OP_0 execution should not fail.\nError: \(error)")
+            fail(with: opcode, error: error)
+        }
+    }
+    
+    func testOp1Negate() {
+        let opcode = OpCode.OP_1NEGATE
+        do {
+            try opcode.execute(context)
+            let num = try context.number(at: -1)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(num, -1)
+        } catch let error {
+            fail(with: opcode, error: error)
         }
     }
     
@@ -76,7 +88,7 @@ class OpCodeTests: XCTestCase {
                 XCTAssertEqual(num, expectedNumber, "\(opcode.name)(\(opcode.value) execution test.")
                 XCTAssertEqual(context.stack.count, i + 1)
             } catch let error {
-                XCTFail("\(opcode.name)(\(opcode.value) execution should not fail.\nError: \(error)")
+                fail(with: opcode, error: error)
             }
         }
     }
@@ -96,8 +108,8 @@ class OpCodeTests: XCTestCase {
             XCTAssertEqual(context.stack.count, stackCountAtFirst + 1)
             try opcode.execute(context)
             XCTAssertEqual(context.stack.count, stackCountAtFirst, "\(opcode.name)(\(String(format: "%02x", opcode.value)) execution test.")
-        } catch {
-            XCTFail("\(opcode.name)(\(opcode.value) execution should not fail.")
+        } catch let error {
+            fail(with: opcode, error: error)
         }
         
         // OP_VERIFY fail
@@ -128,8 +140,8 @@ class OpCodeTests: XCTestCase {
             XCTAssertEqual(context.stack.count, stackCountAtFirst + 1, "\(opcode.name)(\(String(format: "%02x", opcode.value)) test: One data should be added to stack.")
             XCTAssertEqual(context.stack.dropLast().map(Data.init), stackSnapShot, "\(opcode.name)(\(String(format: "%02x", opcode.value)) test: The data except the top should be the same after the execution.")
             XCTAssertEqual(context.stack.last!, dataOnTop, "\(opcode.name)(\(String(format: "%02x", opcode.value)) test: The data on top should be copied and pushed.")
-        } catch {
-            XCTFail("\(opcode.name)(\(opcode.value) execution should not fail.")
+        } catch let error {
+            fail(with: opcode, error: error)
         }
         
         // OP_DUP fail
@@ -159,3 +171,6 @@ private func pushRandomDataOnStack(_ context: ScriptExecutionContext) {
     }
 }
 
+private func fail(with opCode: OpCodeProtocol, error: Error) {
+    XCTFail("\(opCode.name)(\(opCode.value)) execution should not fail.\nError: \(error)")
+}
