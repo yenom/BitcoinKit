@@ -154,6 +154,32 @@ class OpCodeTests: XCTestCase {
             // do nothing equal success
         }
     }
+    
+    func testOpEqualVerify() {
+        let opcode = OpCode.OP_EQUALVERIFY
+        // OP_EQUALVERIFY success
+        do {
+            try context.pushToStack(1)
+            try context.pushToStack(1)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 0)
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // OP_EQUALVERIFY fail
+        do {
+            context.resetStack()
+            try context.pushToStack(1)
+            try context.pushToStack(3)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertThrowsError(try opcode.execute(context))
+            XCTAssertEqual(context.stack.count, 1)
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
 }
 
 private func pushRandomDataOnStack(_ context: ScriptExecutionContext) {
