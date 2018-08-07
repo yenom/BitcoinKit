@@ -95,7 +95,7 @@ public struct OpCodeFactory {
         case OpCode.OP_0:
             return 0
         case (OpCode.OP_1)...(OpCode.OP_16):
-            return Int(opcode.value - OpCode.OP_1.value - 1)
+            return Int(opcode.value - OpCode.OP_1.value + 1)
         default:
             return Int.max
         }
