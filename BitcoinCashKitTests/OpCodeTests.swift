@@ -165,7 +165,7 @@ class OpCodeTests: XCTestCase {
             XCTAssertEqual(context.stack.count, 2)
             try opcode.execute(context)
             XCTAssertEqual(context.stack.count, 1)
-            XCTAssertEqual(try context.number(at: -1), 1)
+            XCTAssertEqual(context.bool(at: -1), true)
         } catch let error {
             fail(with: opcode, error: error)
         }
@@ -178,7 +178,7 @@ class OpCodeTests: XCTestCase {
             XCTAssertEqual(context.stack.count, 2)
             try opcode.execute(context)
             XCTAssertEqual(context.stack.count, 1)
-            XCTAssertEqual(try context.number(at: -1), 0)
+            XCTAssertEqual(context.bool(at: -1), false)
         } catch let error {
             fail(with: opcode, error: error)
         }
