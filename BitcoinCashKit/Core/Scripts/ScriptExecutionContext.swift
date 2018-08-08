@@ -93,7 +93,7 @@ public class ScriptExecutionContext {
         stack.swapAt(normalized(i), normalized(j))
     }
 
-    public func assertStackHeightGreaterThan(_ n: Int) throws {
+    public func assertStackHeightGreaterThanOrEqual(_ n: Int) throws {
         guard stack.count >= n else {
             throw OpCodeExecutionError.opcodeRequiresItemsOnStack(n)
         }

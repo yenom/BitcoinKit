@@ -32,7 +32,7 @@ public struct OpCheckSig: OpCodeProtocol {
     // input : sig pubkey
     // output : true / false
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThan(2)
+        try context.assertStackHeightGreaterThanOrEqual(2)
 
         let pubkeyData: Data = context.stack.removeLast()
         let sigData: Data = context.stack.removeLast()

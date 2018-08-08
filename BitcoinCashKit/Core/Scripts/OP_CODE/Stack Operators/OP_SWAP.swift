@@ -31,7 +31,7 @@ public struct OpSwap: OpCodeProtocol {
 
     // (x1 x2 -- x2 x1)
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThan(2)
+        try context.assertStackHeightGreaterThanOrEqual(2)
         context.swapDataAt(i: -2, j: -1)
     }
 }

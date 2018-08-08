@@ -30,7 +30,7 @@ public struct OpLessThan: OpCodeProtocol {
 
     // (x1 x2 -- out)
      public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThan(2)
+        try context.assertStackHeightGreaterThanOrEqual(2)
 
         let x1 = try context.number(at: -2)
         let x2 = try context.number(at: -1)

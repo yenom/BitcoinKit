@@ -30,7 +30,7 @@ public struct OpWithin: OpCodeProtocol {
 
     // (x1 min max -- out)
      public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThan(3)
+        try context.assertStackHeightGreaterThanOrEqual(3)
 
         let x = try context.number(at: -3)
         let minValue = try context.number(at: -2)

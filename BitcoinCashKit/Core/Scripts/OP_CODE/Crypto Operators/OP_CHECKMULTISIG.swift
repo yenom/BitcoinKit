@@ -41,7 +41,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
      public func mainProcess(_ context: ScriptExecutionContext) throws {
 
         // Get numPublicKeys with validation
-        try context.assertStackHeightGreaterThan(1)
+        try context.assertStackHeightGreaterThanOrEqual(1)
         let numPublicKeys = Int(try context.number(at: -1))
         guard numPublicKeys >= 0 && numPublicKeys <= BTC_MAX_KEYS_FOR_CHECKMULTISIG else {
             throw OpCodeExecutionError.error("Invalid number of keys for \(name): \(numPublicKeys).")
@@ -51,13 +51,13 @@ public struct OpCheckMultiSig: OpCodeProtocol {
 
         // Get pubkeys with validation
         var publicKeys: [Data] = []
-        try context.assertStackHeightGreaterThan(numPublicKeys)
+        try context.assertStackHeightGreaterThanOrEqual(numPublicKeys)
         for _ in 0..<numPublicKeys {
             publicKeys.append(context.stack.removeLast())
         }
 
         // Get numgSis with validation
-        try context.assertStackHeightGreaterThan(1)
+        try context.assertStackHeightGreaterThanOrEqual(1)
         let numSigs = Int(try context.number(at: -1))
         guard numSigs >= 0 && numSigs <= numPublicKeys else {
             throw OpCodeExecutionError.error("Invalid number of signatures for \(name): \(numSigs).")
@@ -66,14 +66,14 @@ public struct OpCheckMultiSig: OpCodeProtocol {
 
         // Get sigs with validation
         var signatures: [Data] = []
-        try context.assertStackHeightGreaterThan(numSigs)
+        try context.assertStackHeightGreaterThanOrEqual(numSigs)
         for _ in 0..<numSigs {
             signatures.append(context.stack.removeLast())
         }
 
         // Remove extra opcode (OP_0)
         // Due to a bug, one extra unused value is removed from the stack.
-        try context.assertStackHeightGreaterThan(1)
+        try context.assertStackHeightGreaterThanOrEqual(1)
         context.stack.removeLast()
 
         // Signatures must come in the same order as their keys.

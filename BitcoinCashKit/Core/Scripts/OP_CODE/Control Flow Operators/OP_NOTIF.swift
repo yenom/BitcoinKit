@@ -15,7 +15,7 @@ public struct OpNotIf: OpCodeProtocol {
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         var value: Bool = false
         if context.shouldExecute {
-            try context.assertStackHeightGreaterThan(1)
+            try context.assertStackHeightGreaterThanOrEqual(1)
             value = context.bool(at: -1)
             context.stack.removeLast()
         }
