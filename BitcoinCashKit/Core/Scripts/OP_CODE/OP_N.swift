@@ -38,8 +38,7 @@ public struct OpN: OpCodeProtocol {
 
     // input : -
     // output : n
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+    public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.pushToStack(Int32(n))
     }
 }

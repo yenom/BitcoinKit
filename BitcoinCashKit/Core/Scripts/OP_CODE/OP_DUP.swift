@@ -31,8 +31,7 @@ public struct OpDuplicate: OpCodeProtocol {
 
     // input : x
     // output : x x
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+    public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(1)
         try context.pushToStack(context.data(at: -1))
     }

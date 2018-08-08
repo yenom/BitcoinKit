@@ -33,8 +33,7 @@ public struct OpRShift: OpCodeProtocol {
     }
 
     // (x1 x2 -- out)
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(2)
 
         let x1 = try context.number(at: -2)

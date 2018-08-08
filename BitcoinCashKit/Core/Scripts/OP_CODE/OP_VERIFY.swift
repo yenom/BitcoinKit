@@ -31,8 +31,7 @@ public struct OpVerify: OpCodeProtocol {
 
     // input : true / false
     // output : - / fail
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+    public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(1)
         guard context.bool(at: -1) else {
             throw OpCodeExecutionError.error("OP_VERIFY failed.")

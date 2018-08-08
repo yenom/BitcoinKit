@@ -30,8 +30,7 @@ public struct OpNumEqualVerify: OpCodeProtocol {
 
     // input : x1 x2
     // output : - / fail
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try OpCode.OP_NUMEQUAL.execute(context)
         do {
             try OpCode.OP_VERIFY.execute(context)

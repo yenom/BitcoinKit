@@ -28,8 +28,7 @@ public struct OpReturn: OpCodeProtocol {
     public var value: UInt8 { return 0x6a }
     public var name: String { return "OP_RETURN" }
 
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
         throw ScriptError.error("OP_RETURN was encountered")
     }
 }
