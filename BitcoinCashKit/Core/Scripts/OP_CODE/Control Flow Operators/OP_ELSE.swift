@@ -14,7 +14,7 @@ public struct OpElse: OpCodeProtocol {
 
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         guard !context.conditionStack.isEmpty else {
-            throw ScriptError.error("Expected an OP_IF or OP_NOTIF branch before OP_ELSE.")
+            throw OpCodeExecutionError.error("Expected an OP_IF or OP_NOTIF branch before OP_ELSE.")
         }
         let f = context.conditionStack.removeLast()
         context.conditionStack.append(!f)
