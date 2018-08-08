@@ -106,6 +106,7 @@
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
 		2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920320F22A1500D078B6 /* TestHelpers.swift */; };
 		2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */; };
+		294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE31211A05D200B7F645 /* OP_RETURN.swift */; };
 		296ADC242112EC8C007EE5C7 /* PeerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296ADC222112EC8C007EE5C7 /* PeerGroup.swift */; };
 		296ADC252112EC8C007EE5C7 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296ADC232112EC8C007EE5C7 /* Peer.swift */; };
 		297C408121100810003AF4EF /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297C408021100810003AF4EF /* MnemonicTests.swift */; };
@@ -257,6 +258,7 @@
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
 		2949920320F22A1500D078B6 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
+		294DDE31211A05D200B7F645 /* OP_RETURN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RETURN.swift; sourceTree = "<group>"; };
 		296ADC222112EC8C007EE5C7 /* PeerGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeerGroup.swift; sourceTree = "<group>"; };
 		296ADC232112EC8C007EE5C7 /* Peer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		297C408021100810003AF4EF /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 				29E1ED74210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift */,
 				29290B9A210AF88C00D2BE78 /* OP_HASH160.swift */,
 				29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */,
+				294DDE31211A05D200B7F645 /* OP_RETURN.swift */,
 			);
 			path = OP_CODE;
 			sourceTree = "<group>";
@@ -758,6 +761,7 @@
 				14A2961F2032317B00E19177 /* HDWallet.swift in Sources */,
 				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
 				0C1DD41221181B41004BA8A8 /* OP_BOOLOR.swift in Sources */,
+				294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */,
 				290880152109708000C79379 /* OpCodeProtocol.swift in Sources */,
 				14839A91202FE69300A6CB34 /* RejectMessage.swift in Sources */,
 				14839AA5202FE7A100A6CB34 /* ByteStream.swift in Sources */,
