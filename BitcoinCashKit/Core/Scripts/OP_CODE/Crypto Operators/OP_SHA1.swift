@@ -18,9 +18,8 @@ public struct OpSha1: OpCodeProtocol {
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(1)
 
-        // TODO: Implement Crypto.sha1()
-        //let data: Data = context.stack.removeLast()
-        //let hash: Data = Crypto.sha1(data)
-        //context.stack.append(hash)
+        let data: Data = context.stack.removeLast()
+        let hash: Data = Crypto.sha1(data)
+        context.stack.append(hash)
     }
 }

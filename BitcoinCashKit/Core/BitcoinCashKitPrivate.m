@@ -32,6 +32,12 @@
 
 @implementation _Hash
 
++ (NSData *)sha1:(NSData *)data {
+    NSMutableData *result = [NSMutableData dataWithLength:SHA512_DIGEST_LENGTH];
+    SHA1(data.bytes, data.length, result.mutableBytes);
+    return result;
+}
+
 + (NSData *)sha256:(NSData *)data {
     NSMutableData *result = [NSMutableData dataWithLength:SHA256_DIGEST_LENGTH];
     SHA256(data.bytes, data.length, result.mutableBytes);

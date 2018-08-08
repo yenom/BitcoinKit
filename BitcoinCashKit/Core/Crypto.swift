@@ -28,6 +28,10 @@ import BitcoinCashKit.Private
 import secp256k1
 
 public struct Crypto {
+    public static func sha1(_ data: Data) -> Data {
+        return _Hash.sha1(data)
+    }
+
     public static func sha256(_ data: Data) -> Data {
         return _Hash.sha256(data)
     }
