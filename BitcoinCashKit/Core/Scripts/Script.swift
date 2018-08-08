@@ -56,9 +56,9 @@ public class Script {
 
     public func toP2SH() -> Script {
         let script: Script = Script()
-        try! script.append(OpCode.OP_HASH160)
-        try! script.append(Crypto.sha256ripemd160(data))
-        try! script.append(OpCode.OP_EQUAL)
+        try! script.append(.OP_HASH160)
+        try! script.appendData(Crypto.sha256ripemd160(data))
+        try! script.append(.OP_EQUAL)
         return script
     }
 
@@ -100,35 +100,31 @@ public class Script {
     }
 
     public convenience init?(address: Address) {
-        var scriptData: Data = Data()
-
+        self.init()
         switch address.type {
         case .pubkeyHash:
             // OP_DUP OP_HASH160 <hash> OP_EQUALVERIFY OP_CHECKSIG
-            scriptData += OpCode.OP_DUP
-            scriptData += OpCode.OP_HASH160
-
-            guard let addressData = ScriptChunkHelper.scriptData(for: address.data, preferredLengthEncoding: -1) else {
+            do {
+                try append(.OP_DUP)
+                try append(.OP_HASH160)
+                try appendData(address.data)
+                try append(.OP_EQUALVERIFY)
+                try append(.OP_CHECKSIG)
+            } catch {
                 return nil
             }
-            scriptData += addressData
-
-            scriptData += OpCode.OP_EQUALVERIFY
-            scriptData += OpCode.OP_CHECKSIG
         case .scriptHash:
             // OP_HASH160 <hash> OP_EQUAL
-            scriptData += OpCode.OP_HASH160
-
-            guard let addressData = ScriptChunkHelper.scriptData(for: address.data, preferredLengthEncoding: -1) else {
+            do {
+                try append(.OP_HASH160)
+                try appendData(address.data)
+                try append(.OP_EQUAL)
+            } catch {
                 return nil
             }
-            scriptData += addressData
-
-            scriptData += OpCode.OP_EQUAL
         default:
             return nil
         }
-        self.init(data: scriptData)
     }
 
     // OP_<M> <pubkey1> ... <pubkeyN> OP_<N> OP_CHECKMULTISIG
@@ -145,31 +141,27 @@ public class Script {
         }
 
         // Both M and N should map to OP_<1..16>
-        let mOpcode: OpCodeProtocol = OpCodeFactory.opcodeForSmallInteger(smallInteger: Int(signaturesRequired))
-        let nOpcode: OpCodeProtocol = OpCodeFactory.opcodeForSmallInteger(smallInteger: publicKeys.count)
+        let mOpcode: OpCode = OpCodeFactory.opcode(for: Int(signaturesRequired))
+        let nOpcode: OpCode = OpCodeFactory.opcode(for: publicKeys.count)
 
-        guard mOpcode != OpCode.OP_INVALIDOPCODE else {
+        guard mOpcode != .OP_INVALIDOPCODE else {
             return nil
         }
-        guard nOpcode != OpCode.OP_INVALIDOPCODE else {
+        guard nOpcode != .OP_INVALIDOPCODE else {
             return nil
         }
-
-        var scriptData: Data = Data()
-        scriptData += mOpcode
-
-        for pubkey in publicKeys {
-            guard let pubkeyScriptData = ScriptChunkHelper.scriptData(for: pubkey.raw, preferredLengthEncoding: -1) else {
-                return nil // invalid data
+        do {
+            self.init()
+            try append(mOpcode)
+            for pubkey in publicKeys {
+                try appendData(pubkey.raw)
             }
-            scriptData += pubkeyScriptData
+            try append(nOpcode)
+            try append(.OP_CHECKMULTISIG)
+            multisigRequirements = (signaturesRequired, publicKeys)
+        } catch {
+            return nil
         }
-
-        scriptData += nOpcode
-        scriptData += OpCode.OP_CHECKMULTISIG
-
-        self.init(data: scriptData)
-        self.multisigRequirements = (signaturesRequired, publicKeys)
     }
 
     private static func parseData(_ data: Data) throws -> [ScriptChunk] {
@@ -275,11 +267,11 @@ public class Script {
             return
         }
 
-        let mOpcode: OpCodeProtocol = opcode(at: 0)
-        let nOpcode: OpCodeProtocol = opcode(at: -2)
+        let mOpcode: OpCode = opcode(at: 0)
+        let nOpcode: OpCode = opcode(at: -2)
 
-        let m: Int = OpCodeFactory.smallIntegerFromOpcode(opcode: mOpcode)
-        let n: Int = OpCodeFactory.smallIntegerFromOpcode(opcode: nOpcode)
+        let m: Int = OpCodeFactory.smallInteger(from: mOpcode)
+        let n: Int = OpCodeFactory.smallInteger(from: nOpcode)
 
         guard m > 0 && m != Int.max else {
             return
@@ -343,11 +335,11 @@ public class Script {
         invalidateSerialization()
     }
 
-    public func append(_ opcode: OpCodeProtocol) throws {
-        let invalidOpCodes: [OpCodeProtocol] = [OpCode.OP_PUSHDATA1,
-                                                OpCode.OP_PUSHDATA2,
-                                                OpCode.OP_PUSHDATA4,
-                                                OpCode.OP_INVALIDOPCODE]
+    public func append(_ opcode: OpCode) throws {
+        let invalidOpCodes: [OpCode] = [.OP_PUSHDATA1,
+                                                .OP_PUSHDATA2,
+                                                .OP_PUSHDATA4,
+                                                .OP_INVALIDOPCODE]
         guard !invalidOpCodes.contains(where: { $0 == opcode }) else {
             throw ScriptError.error("\(opcode.name) cannot be executed alone.")
         }
@@ -356,7 +348,7 @@ public class Script {
         try update(with: updatedData)
     }
 
-    public func append(_ newData: Data) throws {
+    public func appendData(_ newData: Data) throws {
         guard !newData.isEmpty else {
             throw ScriptError.error("Data is empty.")
         }
@@ -369,7 +361,7 @@ public class Script {
         try update(with: updatedData)
     }
 
-    public func append(_ otherScript: Script) throws {
+    public func appendScript(_ otherScript: Script) throws {
         guard !otherScript.data.isEmpty else {
             throw ScriptError.error("Script is empty.")
         }
@@ -388,7 +380,7 @@ public class Script {
         try update(with: updatedData)
     }
 
-    public func deleteOccurrences(of opcode: OpCodeProtocol) throws {
+    public func deleteOccurrences(of opcode: OpCode) throws {
         let updatedData = chunks.filter { $0.opCode != opcode }.reduce(Data()) { $0 + $1.chunkData }
         try update(with: updatedData)
     }
@@ -396,7 +388,7 @@ public class Script {
     public func subScript(from index: Int) throws -> Script {
         let subScript: Script = Script()
         for chunk in chunks[Range(index..<chunks.count)] {
-            try subScript.append(chunk.chunkData)
+            try subScript.appendData(chunk.chunkData)
         }
         return subScript
     }
@@ -404,7 +396,7 @@ public class Script {
     public func subScript(to index: Int) throws -> Script {
         let subScript: Script = Script()
         for chunk in chunks[Range(0..<index)] {
-            try subScript.append(chunk.chunkData)
+            try subScript.appendData(chunk.chunkData)
         }
         return subScript
     }
@@ -418,11 +410,11 @@ public class Script {
     // Returns an opcode in a chunk.
     // If the chunk is data, not an opcode, returns OP_INVALIDOPCODE
     // Raises exception if index is out of bounds.
-    public func opcode(at index: Int) -> OpCodeProtocol {
+    public func opcode(at index: Int) -> OpCode {
         let chunk = self.chunk(at: index)
         // If the chunk is not actually an opcode, return invalid opcode.
         guard chunk is OpcodeChunk else {
-            return OpCode.OP_INVALIDOPCODE
+            return .OP_INVALIDOPCODE
         }
         return chunk.opCode
     }

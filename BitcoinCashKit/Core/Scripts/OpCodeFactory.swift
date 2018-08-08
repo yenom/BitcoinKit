@@ -37,9 +37,9 @@ public struct OpCodeFactory {
      
      - returns: The OpCode corresponding to value
     */
-    public static func get(with value: UInt8) -> OpCodeProtocol {
+    public static func get(with value: UInt8) -> OpCode {
         guard let item = (OpCode.list.first { $0.value == value }) else {
-            return OpCode.OP_INVALIDOPCODE
+            return .OP_INVALIDOPCODE
         }
         return item
     }
@@ -52,9 +52,9 @@ public struct OpCodeFactory {
      
      - returns: The OpCode corresponding to name
      */
-    public static func get(with name: String) -> OpCodeProtocol {
+    public static func get(with name: String) -> OpCode {
         guard let item = (OpCode.list.first { $0.name == name }) else {
-            return OpCode.OP_INVALIDOPCODE
+            return .OP_INVALIDOPCODE
         }
         return item
     }
@@ -67,16 +67,17 @@ public struct OpCodeFactory {
  
      - returns: The OpCode corresponding to smallInteger
     */
-    public static func opcodeForSmallInteger(smallInteger: Int) -> OpCodeProtocol {
+    public typealias SmallInteger = Int
+    public static func opcode(for smallInteger: SmallInteger) -> OpCode {
         switch smallInteger {
         case -1:
-            return OpCode.OP_1NEGATE
+            return .OP_1NEGATE
         case 0:
-            return OpCode.OP_0
+            return .OP_0
         case 1...16:
             return get(with: OpCode.OP_1.value + UInt8(smallInteger - 1))
         default:
-            return OpCode.OP_INVALIDOPCODE
+            return .OP_INVALIDOPCODE
         }
     }
 
@@ -88,11 +89,11 @@ public struct OpCodeFactory {
      
      - returns: Int value correspondint to OpCode
     */
-    public static func smallIntegerFromOpcode(opcode: OpCodeProtocol) -> Int {
+    public static func smallInteger(from opcode: OpCode) -> SmallInteger {
         switch opcode {
-        case OpCode.OP_1NEGATE:
+        case .OP_1NEGATE:
             return -1
-        case OpCode.OP_0:
+        case .OP_0:
             return 0
         case (OpCode.OP_1)...(OpCode.OP_16):
             return Int(opcode.value - OpCode.OP_1.value + 1)

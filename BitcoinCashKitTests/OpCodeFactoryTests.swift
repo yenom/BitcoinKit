@@ -47,22 +47,23 @@ class OpCodeFactoryTests: XCTestCase {
     }
     
     func testOpCodeForSmallInteger() {
-        assert(OpCodeFactory.opcodeForSmallInteger(smallInteger: -1), OpCode.OP_1NEGATE)
-        assert(OpCodeFactory.opcodeForSmallInteger(smallInteger: 0), OpCode.OP_0)
-        assert(OpCodeFactory.opcodeForSmallInteger(smallInteger: 1), OpCode.OP_1)
-        assert(OpCodeFactory.opcodeForSmallInteger(smallInteger: 8), OpCode.OP_8)
-        assert(OpCodeFactory.opcodeForSmallInteger(smallInteger: 16), OpCode.OP_16)
-        assert(OpCodeFactory.opcodeForSmallInteger(smallInteger: 17), OpCode.OP_INVALIDOPCODE)
-        assert(OpCodeFactory.opcodeForSmallInteger(smallInteger: Int.min), OpCode.OP_INVALIDOPCODE)
-        assert(OpCodeFactory.opcodeForSmallInteger(smallInteger: Int.max), OpCode.OP_INVALIDOPCODE)
+        assert(OpCodeFactory.opcode(for: -1), OpCode.OP_1NEGATE)
+        assert(OpCodeFactory.opcode(for: 0), OpCode.OP_0)
+        assert(OpCodeFactory.opcode(for: 1), OpCode.OP_1)
+        assert(OpCodeFactory.opcode(for: 8), OpCode.OP_8)
+        assert(OpCodeFactory.opcode(for: 16), OpCode.OP_16)
+        assert(OpCodeFactory.opcode(for: 17), OpCode.OP_INVALIDOPCODE)
+        assert(OpCodeFactory.opcode(for: Int.min), OpCode.OP_INVALIDOPCODE)
+        assert(OpCodeFactory.opcode(for: Int.max), OpCode.OP_INVALIDOPCODE)
     }
     
     func testSmallIntegerFromOpcode() {
-        XCTAssertEqual(OpCodeFactory.smallIntegerFromOpcode(opcode: OpCode.OP_1NEGATE), -1)
-        XCTAssertEqual(OpCodeFactory.smallIntegerFromOpcode(opcode: OpCode.OP_0), 0)
-        XCTAssertEqual(OpCodeFactory.smallIntegerFromOpcode(opcode: OpCode.OP_1), 1)
-        XCTAssertEqual(OpCodeFactory.smallIntegerFromOpcode(opcode: OpCode.OP_16), 16)
-        XCTAssertEqual(OpCodeFactory.smallIntegerFromOpcode(opcode: OpCode.OP_INVALIDOPCODE), Int.max)
+        XCTAssertEqual(OpCodeFactory.smallInteger(from: OpCode.OP_1NEGATE), -1)
+        XCTAssertEqual(OpCodeFactory.smallInteger(from: OpCode.OP_0), 0)
+        XCTAssertEqual(OpCodeFactory.smallInteger(from: OpCode.OP_1), 1)
+        XCTAssertEqual(OpCodeFactory.smallInteger(from: OpCode.OP_8), 8)
+        XCTAssertEqual(OpCodeFactory.smallInteger(from: OpCode.OP_16), 16)
+        XCTAssertEqual(OpCodeFactory.smallInteger(from: OpCode.OP_INVALIDOPCODE), Int.max)
     }
     
     private func assert(_ lhs: OpCodeProtocol, _ rhs: OpCodeProtocol) {
