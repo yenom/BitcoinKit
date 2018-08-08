@@ -113,8 +113,15 @@ class OpCodeTests: XCTestCase {
         }
         
         // OP_VERIFY fail
-        context.pushToStack(false)
-        XCTAssertThrowsError(try opcode.execute(context))
+        do {
+            context.pushToStack(false)
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error.")
+        } catch OpCodeExecutionError.error("OP_VERIFY failed.") {
+            // success
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
     }
     
     func testOpDuplicate() {
@@ -140,9 +147,16 @@ class OpCodeTests: XCTestCase {
         }
         
         // OP_DUP fail
-        context.resetStack()
-        XCTAssertEqual(context.stack.count, 0)
-        XCTAssertThrowsError(try opcode.execute(context))
+        do {
+            context.resetStack()
+            XCTAssertEqual(context.stack.count, 0)
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error when stack is empty.")
+        } catch OpCodeExecutionError.opcodeRequiresItemsOnStack(1) {
+            // success
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
     }
     
     func testOpEqualVerify() {
@@ -164,7 +178,9 @@ class OpCodeTests: XCTestCase {
             try context.pushToStack(1)
             try context.pushToStack(3)
             XCTAssertEqual(context.stack.count, 2)
-            XCTAssertThrowsError(try opcode.execute(context))
+            try opcode.execute(context)
+        } catch OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.") {
+            // success
             XCTAssertEqual(context.stack.count, 1)
         } catch let error {
             fail(with: opcode, error: error)
