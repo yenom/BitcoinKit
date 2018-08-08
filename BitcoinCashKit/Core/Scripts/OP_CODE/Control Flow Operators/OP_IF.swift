@@ -13,9 +13,12 @@ public struct OpIf: OpCodeProtocol {
     public var name: String { return "OP_IF" }
 
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThan(1)
-        let value = context.bool(at: -1)
-        context.stack.removeLast()
+        var value: Bool = false
+        if context.shouldExecute {
+            try context.assertStackHeightGreaterThan(1)
+            value = context.bool(at: -1)
+            context.stack.removeLast()
+        }
         context.conditionStack.append(value)
     }
 }
