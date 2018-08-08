@@ -180,10 +180,6 @@ public enum OpCode: OpCodeProtocol {
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try opcode.mainProcess(context)
     }
-
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try opcode.execute(context)
-    }
 }
 
 //public struct OpCode {

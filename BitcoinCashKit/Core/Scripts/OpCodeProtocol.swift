@@ -30,7 +30,6 @@ public protocol OpCodeProtocol {
 
     func isEnabled() -> Bool
     func mainProcess(_ context: ScriptExecutionContext) throws
-    func execute(_ context: ScriptExecutionContext) throws
 }
 
 extension OpCodeProtocol {
