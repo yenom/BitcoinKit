@@ -33,7 +33,7 @@ public protocol ScriptChunk {
     // Portion of scriptData defined by range.
     var chunkData: Data { get }
     // OP_CODE of scriptData defined by range.
-    var opCode: OpCodeProtocol { get }
+    var opCode: OpCode { get }
     // String representation of a chunk.
     var string: String { get }
 
@@ -54,7 +54,7 @@ public protocol ScriptChunk {
 }
 
 extension ScriptChunk {
-    public var opCode: OpCodeProtocol {
+    public var opCode: OpCode {
         return OpCodeFactory.get(with: opcodeValue)
     }
 
