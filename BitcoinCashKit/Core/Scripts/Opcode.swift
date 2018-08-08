@@ -76,7 +76,7 @@ public struct OpCode {
     public static let OP_ENDIF: OpCodeProtocol = OpExample() // Finishes if/else block
 
     public static let OP_VERIFY: OpCodeProtocol = OpVerify() // Removes item from the stack if it's not 0x00 or 0x80 (negative zero). Otherwise, marks script as invalid.
-    public static let OP_RETURN: OpCodeProtocol = OpExample() // Marks transaction as invalid.
+    public static let OP_RETURN: OpCodeProtocol = OpReturn() // Marks transaction as invalid.
 
     // Stack ops
     public static let OP_TOALTSTACK: OpCodeProtocol = OpExample() // Moves item from the stack to altstack
