@@ -57,14 +57,14 @@ public enum OpCode: OpCodeProtocol {
         case .OP_16: return OpN(16)
 
         // 2. Control flow operators
-        case .OP_NOP: return OpExample()
-        case .OP_VER: return OpExample()
-        case .OP_IF: return OpExample()
-        case .OP_NOTIF: return OpExample()
-        case .OP_VERIF: return OpExample()
-        case .OP_VERNOTIF: return OpExample()
-        case .OP_ELSE: return OpExample()
-        case .OP_ENDIF: return OpExample()
+        case .OP_NOP: return OpNop()
+        case .OP_VER: return OpVer()
+        case .OP_IF: return OpIf()
+        case .OP_NOTIF: return OpNotIf()
+        case .OP_VERIF: return OpVerIf()
+        case .OP_VERNOTIF: return OpVerNotIf()
+        case .OP_ELSE: return OpElse()
+        case .OP_ENDIF: return OpEndIf()
         case .OP_VERIFY: return OpVerify()
         case .OP_RETURN: return OpReturn()
 
