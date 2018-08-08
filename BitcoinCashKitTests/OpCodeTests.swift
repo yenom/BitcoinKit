@@ -183,6 +183,33 @@ class OpCodeTests: XCTestCase {
             fail(with: opcode, error: error)
         }
     }
+
+    func testOpHash160() {
+        let opcode = OpCode.OP_HASH160
+
+        // OP_HASH160 success
+        do {
+            let data = "hello".data(using: .utf8)!
+            try context.pushToStack(data)
+            XCTAssertEqual(context.stack.count, 1)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1).hex, "b6a9c8c230722b7c748331a8b450f05566dc7d0f")
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+
+        // OP_HASH160 fail
+        do {
+            context.resetStack()
+            XCTAssertEqual(context.stack.count, 0)
+            try opcode.execute(context)
+        } catch OpCodeExecutionError.opcodeRequiresItemsOnStack(1) {
+            // do nothing equal success
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
 }
 
 private func pushRandomDataOnStack(_ context: ScriptExecutionContext) {
