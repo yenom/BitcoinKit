@@ -136,12 +136,12 @@ public enum OpCode: OpCodeProtocol {
         case .OP_WITHIN: return OpWithin()
 
         // Crypto
-        case .OP_RIPEMD160: return OpExample()
-        case .OP_SHA1: return OpExample()
-        case .OP_SHA256: return OpExample()
+        case .OP_RIPEMD160: return OpRipemd160()
+        case .OP_SHA1: return OpSha1()
+        case .OP_SHA256: return OpSha256()
         case .OP_HASH160: return OpHash160()
-        case .OP_HASH256: return OpExample()
-        case .OP_CODESEPARATOR: return OpExample()
+        case .OP_HASH256: return OpHash256()
+        case .OP_CODESEPARATOR: return OpCodeSeparator()
         case .OP_CHECKSIG: return OpCheckSig()
         case .OP_CHECKSIGVERIFY: return OpCheckSigVerify()
         case .OP_CHECKMULTISIG: return OpCheckMultiSig()
