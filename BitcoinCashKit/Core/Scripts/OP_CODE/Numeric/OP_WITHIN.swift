@@ -29,8 +29,7 @@ public struct OpWithin: OpCodeProtocol {
     public var name: String { return "OP_WITHIN" }
 
     // (x1 min max -- out)
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(3)
 
         let x = try context.number(at: -3)

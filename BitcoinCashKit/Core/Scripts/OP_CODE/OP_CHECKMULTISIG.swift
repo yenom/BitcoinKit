@@ -38,8 +38,7 @@ public struct OpCheckMultiSig: OpCodeProtocol {
 
     // input : x sig1 sig2 ... <number of signatures> pub1 pub2 <number of public keys>
     // output : true / false
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
 
         // Get numPublicKeys with validation
         try context.assertStackHeightGreaterThan(1)

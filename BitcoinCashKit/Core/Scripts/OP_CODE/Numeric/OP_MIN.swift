@@ -30,8 +30,7 @@ public struct OpMin: OpCodeProtocol {
     public var name: String { return "OP_MIN" }
 
     // (x1 x2 -- out)
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+    public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(2)
 
         let x1 = try context.number(at: -2)

@@ -29,8 +29,7 @@ public struct OP0NotEqual: OpCodeProtocol {
     public var name: String { return "OP_0NOTEQUAL" }
 
     // (in -- out)
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(1)
 
         let input = try context.number(at: -1)

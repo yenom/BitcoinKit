@@ -30,8 +30,7 @@ public struct Op1Negate: OpCodeProtocol {
     public var name: String { return "OP_1NEGATE" }
     // input : -
     // output : -1
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+    public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.pushToStack(-1)
     }
 }

@@ -29,33 +29,45 @@ public protocol OpCodeProtocol {
     var value: UInt8 { get }
 
     func isEnabled() -> Bool
-    func execute(_ context: ScriptExecutionContext) throws
+    func mainProcess(_ context: ScriptExecutionContext) throws
 }
 
 extension OpCodeProtocol {
     public func isEnabled() -> Bool {
         return true
     }
-
-    public func prepareExecute(_ context: ScriptExecutionContext) throws {
+    private func preprocess(_ context: ScriptExecutionContext) throws {
         guard isEnabled() else {
             throw OpCodeExecutionError.disabled
         }
         if context.verbose {
-            print("[prepare execution : \(name)(\(value))]")
+            print("[pre execution : \(name)(\(value))]")
             print(context)
         }
         try context.incrementOpCount()
-        // if context.verbose == true, print stacks and so on...
+
+    }
+
+    private func postProcess(_ context: ScriptExecutionContext) {
+        if context.verbose {
+            print("[post execution : \(name)(\(value))]")
+            print(context)
+        }
+    }
+
+    public func mainProcess(_ context: ScriptExecutionContext) throws {
+        throw OpCodeExecutionError.notImplemented("[\(name)(\(value))]")
     }
 
     public func execute(_ context: ScriptExecutionContext) throws {
-        throw OpCodeExecutionError.notImplemented
+        try preprocess(context)
+        try mainProcess(context)
+        postProcess(context)
     }
 }
 
 public enum OpCodeExecutionError: Error {
-    case notImplemented
+    case notImplemented(String)
     case error(String)
     case opcodeRequiresItemsOnStack(Int)
     case invalidBignum

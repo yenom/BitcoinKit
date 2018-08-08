@@ -29,8 +29,7 @@ public struct OpBoolAnd: OpCodeProtocol {
     public var name: String { return "OP_BOOLAND" }
 
     // (x1 x2 -- out)
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(2)
 
         let x1 = context.data(at: -2)

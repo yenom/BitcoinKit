@@ -31,11 +31,10 @@ public struct OpEqualVerify: OpCodeProtocol {
 
     // input : x1 x2
     // output : - / fail
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
-        try OpCode.OP_EQUAL.execute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
+        try OpCode.OP_EQUAL.mainProcess(context)
         do {
-            try OpCode.OP_VERIFY.execute(context)
+            try OpCode.OP_VERIFY.mainProcess(context)
         } catch {
             throw OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.")
         }

@@ -33,8 +33,7 @@ public struct Op2Mul: OpCodeProtocol {
     }
 
     // (in -- out)
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(1)
 
         let input = try context.number(at: -1)

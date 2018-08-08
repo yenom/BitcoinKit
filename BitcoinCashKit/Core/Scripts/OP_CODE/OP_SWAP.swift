@@ -30,8 +30,7 @@ public struct OpSwap: OpCodeProtocol {
     public var name: String { return "OP_SWAP" }
 
     // (x1 x2 -- x2 x1)
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
+    public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThan(2)
         context.swapDataAt(i: -2, j: -1)
     }

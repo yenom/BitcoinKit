@@ -28,9 +28,4 @@ import Foundation
 public class OpExample: OpCodeProtocol {
     public var value: UInt8 { return 0x00 }
     public var name: String { return "OP_EXAMPLE" }
-
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try prepareExecute(context)
-        // do something with context here!
-    }
 }

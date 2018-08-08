@@ -177,8 +177,8 @@ public enum OpCode: OpCodeProtocol {
         return opcode.isEnabled()
     }
 
-    public func execute(_ context: ScriptExecutionContext) throws {
-        try opcode.execute(context)
+    public func mainProcess(_ context: ScriptExecutionContext) throws {
+        try opcode.mainProcess(context)
     }
 }
 
