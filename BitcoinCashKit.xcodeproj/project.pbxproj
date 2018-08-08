@@ -107,6 +107,14 @@
 		2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920320F22A1500D078B6 /* TestHelpers.swift */; };
 		2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */; };
 		294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE31211A05D200B7F645 /* OP_RETURN.swift */; };
+		294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3A211B31B100B7F645 /* OP_NOP.swift */; };
+		294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3C211B31C100B7F645 /* OP_VER.swift */; };
+		294DDE3F211B31CB00B7F645 /* OP_IF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3E211B31CB00B7F645 /* OP_IF.swift */; };
+		294DDE41211B31D600B7F645 /* OP_NOTIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE40211B31D600B7F645 /* OP_NOTIF.swift */; };
+		294DDE43211B31EA00B7F645 /* OP_VERIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE42211B31EA00B7F645 /* OP_VERIF.swift */; };
+		294DDE45211B31FA00B7F645 /* OP_VERNOTIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE44211B31FA00B7F645 /* OP_VERNOTIF.swift */; };
+		294DDE47211B322000B7F645 /* OP_ELSE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE46211B322000B7F645 /* OP_ELSE.swift */; };
+		294DDE49211B322E00B7F645 /* OP_ENDIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE48211B322E00B7F645 /* OP_ENDIF.swift */; };
 		296ADC242112EC8C007EE5C7 /* PeerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296ADC222112EC8C007EE5C7 /* PeerGroup.swift */; };
 		296ADC252112EC8C007EE5C7 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296ADC232112EC8C007EE5C7 /* Peer.swift */; };
 		297C408121100810003AF4EF /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297C408021100810003AF4EF /* MnemonicTests.swift */; };
@@ -259,6 +267,14 @@
 		2949920320F22A1500D078B6 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
 		294DDE31211A05D200B7F645 /* OP_RETURN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RETURN.swift; sourceTree = "<group>"; };
+		294DDE3A211B31B100B7F645 /* OP_NOP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOP.swift; sourceTree = "<group>"; };
+		294DDE3C211B31C100B7F645 /* OP_VER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VER.swift; sourceTree = "<group>"; };
+		294DDE3E211B31CB00B7F645 /* OP_IF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_IF.swift; sourceTree = "<group>"; };
+		294DDE40211B31D600B7F645 /* OP_NOTIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOTIF.swift; sourceTree = "<group>"; };
+		294DDE42211B31EA00B7F645 /* OP_VERIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VERIF.swift; sourceTree = "<group>"; };
+		294DDE44211B31FA00B7F645 /* OP_VERNOTIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VERNOTIF.swift; sourceTree = "<group>"; };
+		294DDE46211B322000B7F645 /* OP_ELSE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_ELSE.swift; sourceTree = "<group>"; };
+		294DDE48211B322E00B7F645 /* OP_ENDIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_ENDIF.swift; sourceTree = "<group>"; };
 		296ADC222112EC8C007EE5C7 /* PeerGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeerGroup.swift; sourceTree = "<group>"; };
 		296ADC232112EC8C007EE5C7 /* Peer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		297C408021100810003AF4EF /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
@@ -465,6 +481,14 @@
 		294DDE34211B2B1300B7F645 /* Control Flow Operators */ = {
 			isa = PBXGroup;
 			children = (
+				294DDE3A211B31B100B7F645 /* OP_NOP.swift */,
+				294DDE3C211B31C100B7F645 /* OP_VER.swift */,
+				294DDE3E211B31CB00B7F645 /* OP_IF.swift */,
+				294DDE40211B31D600B7F645 /* OP_NOTIF.swift */,
+				294DDE42211B31EA00B7F645 /* OP_VERIF.swift */,
+				294DDE44211B31FA00B7F645 /* OP_VERNOTIF.swift */,
+				294DDE46211B322000B7F645 /* OP_ELSE.swift */,
+				294DDE48211B322E00B7F645 /* OP_ENDIF.swift */,
 				29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */,
 				294DDE31211A05D200B7F645 /* OP_RETURN.swift */,
 			);
@@ -756,9 +780,11 @@
 				0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */,
 				14839AAB202FE7F000A6CB34 /* NetworkAddress.swift in Sources */,
 				297DB97320EB12E60077EEEE /* AddressType.swift in Sources */,
+				294DDE43211B31EA00B7F645 /* OP_VERIF.swift in Sources */,
 				14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */,
 				0C0900302116A3EB0077E9BC /* OP_2DIV.swift in Sources */,
 				147494EC201F9E4F006D1CF8 /* Network.swift in Sources */,
+				294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */,
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
 				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
 				29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */,
@@ -773,9 +799,11 @@
 				29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */,
 				CFA2906C2101CD96001A1BAB /* ScriptChunk.swift in Sources */,
 				14F37A3C20209F9200D34748 /* Script.swift in Sources */,
+				294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */,
 				CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */,
 				29290BA1210AF90D00D2BE78 /* OP_VERIFY.swift in Sources */,
 				29E1ED75210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift in Sources */,
+				294DDE3F211B31CB00B7F645 /* OP_IF.swift in Sources */,
 				29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */,
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
 				0C1DD40A211819CE004BA8A8 /* OP_GREATERTHAN.swift in Sources */,
@@ -784,6 +812,7 @@
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,
 				14F37A3E2020A02000D34748 /* SighashType.swift in Sources */,
 				14839A8F202FE68000A6CB34 /* PongMessage.swift in Sources */,
+				294DDE41211B31D600B7F645 /* OP_NOTIF.swift in Sources */,
 				0C1DD42321182126004BA8A8 /* OP_MOD.swift in Sources */,
 				29290B9B210AF88C00D2BE78 /* OP_HASH160.swift in Sources */,
 				14CDC3862021824200C01556 /* Wallet.swift in Sources */,
@@ -791,6 +820,7 @@
 				29290B9D210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift in Sources */,
 				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
 				299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */,
+				294DDE49211B322E00B7F645 /* OP_ENDIF.swift in Sources */,
 				0C1DD40E21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift in Sources */,
 				0C1DD41D21182043004BA8A8 /* OP_SUB.swift in Sources */,
 				29290B93210AF86400D2BE78 /* OP_0.swift in Sources */,
@@ -800,6 +830,7 @@
 				14839AA7202FE7C700A6CB34 /* VarInt.swift in Sources */,
 				29E1ED73210ECD35007F4627 /* OP_CHECKMULTISIG.swift in Sources */,
 				29290B99210AF88400D2BE78 /* OP_EQUALVERIFY.swift in Sources */,
+				294DDE47211B322000B7F645 /* OP_ELSE.swift in Sources */,
 				14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */,
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
@@ -835,6 +866,7 @@
 				14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */,
 				0C0900342116A53F0077E9BC /* OP_NOT.swift in Sources */,
 				CFA290722102B635001A1BAB /* ScriptMachine.swift in Sources */,
+				294DDE45211B31FA00B7F645 /* OP_VERNOTIF.swift in Sources */,
 				147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */,
 				0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */,
 				29290B9F210AF8FD00D2BE78 /* OP_EQUAL.swift in Sources */,
