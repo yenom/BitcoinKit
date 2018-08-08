@@ -120,7 +120,7 @@ class OpCodeTests: XCTestCase {
         } catch OpCodeExecutionError.error("OP_VERIFY failed.") {
             // success
         } catch let error {
-            fail(with: opcode, error: error)
+            XCTFail("Should throw OpCodeExecutionError .error(\"OP_VERIFY failed.\"), but threw \(error)")
         }
     }
     
@@ -155,7 +155,7 @@ class OpCodeTests: XCTestCase {
         } catch OpCodeExecutionError.opcodeRequiresItemsOnStack(1) {
             // success
         } catch let error {
-            fail(with: opcode, error: error)
+            XCTFail("Should throw OpCodeExecutionError .opcodeRequiresItemsOnStack(1), but threw \(error)")
         }
     }
     
