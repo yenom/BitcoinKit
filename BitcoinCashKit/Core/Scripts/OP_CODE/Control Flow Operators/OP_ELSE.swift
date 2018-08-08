@@ -11,7 +11,7 @@ import Foundation
 public struct OpElse: OpCodeProtocol {
     public var value: UInt8 { return 0x67 }
     public var name: String { return "OP_ELSE" }
-    
+
     public func mainProcess(_ context: ScriptExecutionContext) throws {
     }
 }

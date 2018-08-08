@@ -11,7 +11,7 @@ import Foundation
 public struct OpEndIf: OpCodeProtocol {
     public var value: UInt8 { return 0x68 }
     public var name: String { return "OP_ENDIF" }
-    
+
     public func mainProcess(_ context: ScriptExecutionContext) throws {
     }
 }
