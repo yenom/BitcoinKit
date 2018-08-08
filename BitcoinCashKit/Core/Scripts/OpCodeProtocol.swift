@@ -45,7 +45,6 @@ extension OpCodeProtocol {
             print(context)
         }
         try context.incrementOpCount()
-
     }
 
     private func postProcess(_ context: ScriptExecutionContext) {
@@ -61,7 +60,9 @@ extension OpCodeProtocol {
 
     public func execute(_ context: ScriptExecutionContext) throws {
         try preprocess(context)
-        try mainProcess(context)
+        if context.shouldExecute || (OpCode.OP_IF <= self && self <= OpCode.OP_ENDIF) {
+            try mainProcess(context)
+        }
         postProcess(context)
     }
 }
