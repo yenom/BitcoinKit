@@ -9,7 +9,7 @@ script:
   -enableCodeCoverage YES ENABLE_TESTABILITY=YES "$ACTION"
 after_success:
 - ruby scripts/coverage.rb "$SCHEME"
-- bash <(curl -s https://codecov.io/bash) -f 'coverage.txt'
+- bash <(curl -s https://codecov.io/bash) -f 'coverage.txt' -y '.codecov.yml'
 env:
   matrix:
   - SDK=iphonesimulator CONFIGURATION=Debug ACTION=test
