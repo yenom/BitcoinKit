@@ -57,7 +57,7 @@ extension OpCodeProtocol {
     }
 
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        throw OpCodeExecutionError.notImplemented
+        throw OpCodeExecutionError.notImplemented("[\(name)(\(value))]")
     }
 
     public func execute(_ context: ScriptExecutionContext) throws {
@@ -68,7 +68,7 @@ extension OpCodeProtocol {
 }
 
 public enum OpCodeExecutionError: Error {
-    case notImplemented
+    case notImplemented(String)
     case error(String)
     case opcodeRequiresItemsOnStack(Int)
     case invalidBignum

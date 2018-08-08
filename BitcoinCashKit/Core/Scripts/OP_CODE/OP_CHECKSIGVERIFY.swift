@@ -32,9 +32,9 @@ public struct OpCheckSigVerify: OpCodeProtocol {
     // input : sig pubkey
     // output : Nothing / fail
      public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try OpCode.OP_CHECKSIG.execute(context)
+        try OpCode.OP_CHECKSIG.mainProcess(context)
         do {
-            try OpCode.OP_VERIFY.execute(context)
+            try OpCode.OP_VERIFY.mainProcess(context)
         } catch {
             throw OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.")
         }
