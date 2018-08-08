@@ -315,7 +315,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0C1DD41B21181EF8004BA8A8 /* Numeric */ = {
+		0C1DD41B21181EF8004BA8A8 /* Numeric Operators */ = {
 			isa = PBXGroup;
 			children = (
 				0C09002721169C810077E9BC /* OP_1ADD.swift */,
@@ -346,7 +346,7 @@
 				0C0900232116935E0077E9BC /* OP_MAX.swift */,
 				0C1DD41721181D08004BA8A8 /* OP_WITHIN.swift */,
 			);
-			path = Numeric;
+			path = "Numeric Operators";
 			sourceTree = "<group>";
 		};
 		147494BD201F9A29006D1CF8 = {
@@ -451,27 +451,83 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
-		296ADC1D2112EB8F007EE5C7 /* OP_CODE */ = {
+		294DDE33211B2AEA00B7F645 /* Push Data Operators */ = {
 			isa = PBXGroup;
 			children = (
-				29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */,
 				29290B92210AF86400D2BE78 /* OP_0.swift */,
 				29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */,
 				29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */,
 				29290B94210AF86C00D2BE78 /* OP_N.swift */,
+			);
+			path = "Push Data Operators";
+			sourceTree = "<group>";
+		};
+		294DDE34211B2B1300B7F645 /* Control Flow Operators */ = {
+			isa = PBXGroup;
+			children = (
 				29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */,
+				294DDE31211A05D200B7F645 /* OP_RETURN.swift */,
+			);
+			path = "Control Flow Operators";
+			sourceTree = "<group>";
+		};
+		294DDE35211B2B3900B7F645 /* Stack Operators */ = {
+			isa = PBXGroup;
+			children = (
 				29290B90210AF79300D2BE78 /* OP_DUP.swift */,
 				0C4132EE210EFD1700906E4A /* OP_SWAP.swift */,
+			);
+			path = "Stack Operators";
+			sourceTree = "<group>";
+		};
+		294DDE36211B2B4300B7F645 /* Splice Operators */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Splice Operators";
+			sourceTree = "<group>";
+		};
+		294DDE37211B2B4A00B7F645 /* Bit Logic Operators */ = {
+			isa = PBXGroup;
+			children = (
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
-				0C1DD41B21181EF8004BA8A8 /* Numeric */,
+			);
+			path = "Bit Logic Operators";
+			sourceTree = "<group>";
+		};
+		294DDE38211B2B5900B7F645 /* Crypto Operators */ = {
+			isa = PBXGroup;
+			children = (
+				29290B9A210AF88C00D2BE78 /* OP_HASH160.swift */,
 				29290B96210AF87800D2BE78 /* OP_CHECKSIG.swift */,
 				29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */,
 				29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */,
 				29E1ED74210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift */,
-				29290B9A210AF88C00D2BE78 /* OP_HASH160.swift */,
+			);
+			path = "Crypto Operators";
+			sourceTree = "<group>";
+		};
+		294DDE39211B2B6100B7F645 /* Expansion Operators */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Expansion Operators";
+			sourceTree = "<group>";
+		};
+		296ADC1D2112EB8F007EE5C7 /* OP_CODE */ = {
+			isa = PBXGroup;
+			children = (
+				294DDE33211B2AEA00B7F645 /* Push Data Operators */,
+				294DDE34211B2B1300B7F645 /* Control Flow Operators */,
+				294DDE35211B2B3900B7F645 /* Stack Operators */,
+				294DDE36211B2B4300B7F645 /* Splice Operators */,
+				294DDE37211B2B4A00B7F645 /* Bit Logic Operators */,
+				0C1DD41B21181EF8004BA8A8 /* Numeric Operators */,
+				294DDE38211B2B5900B7F645 /* Crypto Operators */,
+				294DDE39211B2B6100B7F645 /* Expansion Operators */,
+				29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */,
 				29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */,
-				294DDE31211A05D200B7F645 /* OP_RETURN.swift */,
 			);
 			path = OP_CODE;
 			sourceTree = "<group>";
