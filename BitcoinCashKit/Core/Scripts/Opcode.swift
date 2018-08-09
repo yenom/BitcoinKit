@@ -37,7 +37,7 @@ public enum OpCode: OpCodeProtocol {
         case .OP_PUSHDATA2: return OpPushData2()
         case .OP_PUSHDATA4: return OpPushData4()
         case .OP_1NEGATE: return Op1Negate()
-        case .OP_RESERVED: return OpExample() // reserved
+        case .OP_RESERVED: return OpReserved() // reserved and fail if executed
         case .OP_1: return OpN(1)
         case .OP_TRUE: return OpCode.OP_1.opcode
         case .OP_2: return OpN(2)
@@ -103,8 +103,8 @@ public enum OpCode: OpCodeProtocol {
         case .OP_XOR: return OpExample()
         case .OP_EQUAL: return OpEqual()
         case .OP_EQUALVERIFY: return OpEqualVerify()
-        case .OP_RESERVED1: return OpExample() // reserved
-        case .OP_RESERVED2: return OpExample() // reserved
+        case .OP_RESERVED1: return OpReserved1() // reserved and fail if executed
+        case .OP_RESERVED2: return OpReserved2() // reserved and fail if executed
 
         // 6. Arithmetic
         case .OP_1ADD: return Op1Add()
@@ -148,8 +148,8 @@ public enum OpCode: OpCodeProtocol {
         case .OP_CHECKMULTISIGVERIFY: return OpCheckMultiSigVerify()
 
         // Lock Times
-        case .OP_CHECKLOCKTIMEVERIFY: return OpExample() // previously OP_NOP2
-        case .OP_CHECKSEQUENCEVERIFY: return OpExample() // previously OP_NOP3
+        case .OP_CHECKLOCKTIMEVERIFY: return OpCheckLockTimeVerify() // previously OP_NOP2
+        case .OP_CHECKSEQUENCEVERIFY: return OpCheckSequenceVerify() // previously OP_NOP3
 
         // Pseudo Words
         case .OP_PUBKEYHASH: return OpExample()
@@ -157,14 +157,14 @@ public enum OpCode: OpCodeProtocol {
         case .OP_INVALIDOPCODE: return OpInvalidOpCode()
 
         // Reserved Words
-        case .OP_NOP1: return OpExample()
-        case .OP_NOP4: return OpExample()
-        case .OP_NOP5: return OpExample()
-        case .OP_NOP6: return OpExample()
-        case .OP_NOP7: return OpExample()
-        case .OP_NOP8: return OpExample()
-        case .OP_NOP9: return OpExample()
-        case .OP_NOP10: return OpExample()
+        case .OP_NOP1: return OpNop1()
+        case .OP_NOP4: return OpNop4()
+        case .OP_NOP5: return OpNop5()
+        case .OP_NOP6: return OpNop6()
+        case .OP_NOP7: return OpNop7()
+        case .OP_NOP8: return OpNop8()
+        case .OP_NOP9: return OpNop9()
+        case .OP_NOP10: return OpNop10()
         }
     }
 

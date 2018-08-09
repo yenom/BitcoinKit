@@ -27,7 +27,7 @@ import Foundation
 public struct OpCheckLockTimeVerify: OpCodeProtocol {
     public var value: UInt8 { return 0xb1 }
     public var name: String { return "OP_CHECKLOCKTIMEVERIFY " }
-    
+
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         // do nothing
     }
