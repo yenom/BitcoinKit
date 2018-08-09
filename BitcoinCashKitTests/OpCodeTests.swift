@@ -34,18 +34,6 @@ class OpCodeTests: XCTestCase {
         context.verbose = true
     }
     
-    func testOp0() {
-        let opcode = OpCode.OP_0
-        do {
-            try opcode.execute(context)
-            let num = try context.number(at: -1)
-            XCTAssertEqual(context.stack.count, 1)
-            XCTAssertEqual(num, 0)
-        } catch let error {
-            fail(with: opcode, error: error)
-        }
-    }
-    
     func testOp1Negate() {
         let opcode = OpCode.OP_1NEGATE
         do {
@@ -63,7 +51,6 @@ class OpCodeTests: XCTestCase {
      
     func testOpN() {
         let vectors: [(OpCodeProtocol, Int32)] = [(OpCode.OP_1NEGATE, -1),
-                                               (OpCode.OP_0, 0),
                                                (OpCode.OP_1,1),
                                                (OpCode.OP_2,2),
                                                (OpCode.OP_3,3),
