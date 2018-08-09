@@ -237,10 +237,10 @@ class OpCodeTests: XCTestCase {
 
         do {
             try opcode.execute(context)
-        } catch OpCodeExecutionError.notImplemented("[\(opcode.name)(\(opcode.value))]") {
+        } catch OpCodeExecutionError.error("OP_INVALIDOPCODE should not be executed.") {
             // success
         } catch let error {
-            XCTFail("Shoud throw OpCodeExecutionError.notImplemented(\"[\(opcode.name)(\(opcode.value))]\", but threw \(error)")
+            XCTFail("Shoud throw OpCodeExecutionError.error(\"OP_INVALIDOPCODE should not be executed.\", but threw \(error)")
         }
     }
 }
