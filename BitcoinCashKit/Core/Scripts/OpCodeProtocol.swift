@@ -37,14 +37,22 @@ extension OpCodeProtocol {
         return true
     }
     private func preprocess(_ context: ScriptExecutionContext) throws {
-        guard isEnabled() else {
-            throw OpCodeExecutionError.disabled
-        }
         if context.verbose {
             print("[pre execution : \(name)(\(value))]")
             print(context)
         }
-        try context.incrementOpCount()
+
+        if value > OpCode.OP_16 {
+            try context.incrementOpCount()
+        }
+
+        guard isEnabled() else {
+            throw OpCodeExecutionError.disabled
+        }
+
+        guard !(context.shouldExecute && 0 <= value && value <= OpCode.OP_PUSHDATA4.value) else {
+            throw OpCodeExecutionError.error("PUSHDATA OP_CODE should not be executed.")
+        }
     }
 
     private func postProcess(_ context: ScriptExecutionContext) {
