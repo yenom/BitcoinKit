@@ -476,6 +476,7 @@
 		292AEA3C2112EB190012D7E5 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				296ADC1E2112EBAD007EE5C7 /* Scripts */,
 				141FE2E32022589E00A08B04 /* PrivateKey.swift */,
 				141FE2E12022588C00A08B04 /* PublicKey.swift */,
 				14A2961C2032316900E19177 /* HDKeychain.swift */,
@@ -507,7 +508,6 @@
 				14CDC38B2021EF5000C01556 /* Helpers.swift */,
 				1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */,
 				1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */,
-				296ADC1E2112EBAD007EE5C7 /* Scripts */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -614,6 +614,7 @@
 		296ADC1E2112EBAD007EE5C7 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				296ADC1D2112EB8F007EE5C7 /* OP_CODE */,
 				CFA2906D2101CDA3001A1BAB /* Opcode.swift */,
 				290880142109708000C79379 /* OpCodeProtocol.swift */,
 				29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */,
@@ -622,7 +623,6 @@
 				CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */,
 				29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */,
 				CFA290712102B635001A1BAB /* ScriptMachine.swift */,
-				296ADC1D2112EB8F007EE5C7 /* OP_CODE */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
