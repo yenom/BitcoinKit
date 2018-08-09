@@ -341,7 +341,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0C1DD41B21181EF8004BA8A8 /* Numeric Operators */ = {
+		0C1DD41B21181EF8004BA8A8 /* Arithmetic */ = {
 			isa = PBXGroup;
 			children = (
 				0C09002721169C810077E9BC /* OP_1ADD.swift */,
@@ -372,7 +372,7 @@
 				0C0900232116935E0077E9BC /* OP_MAX.swift */,
 				0C1DD41721181D08004BA8A8 /* OP_WITHIN.swift */,
 			);
-			path = "Numeric Operators";
+			path = Arithmetic;
 			sourceTree = "<group>";
 		};
 		147494BD201F9A29006D1CF8 = {
@@ -438,6 +438,21 @@
 			path = BitcoinCashKitTests;
 			sourceTree = "<group>";
 		};
+		2914BE4A211BCAAE00B349CB /* Lock Time */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Lock Time";
+			sourceTree = "<group>";
+		};
+		2914BE4B211BCABA00B349CB /* Pseudo Words */ = {
+			isa = PBXGroup;
+			children = (
+				29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */,
+			);
+			path = "Pseudo Words";
+			sourceTree = "<group>";
+		};
 		292AEA3C2112EB190012D7E5 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -477,7 +492,7 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
-		294DDE33211B2AEA00B7F645 /* Push Data Operators */ = {
+		294DDE33211B2AEA00B7F645 /* Push Data */ = {
 			isa = PBXGroup;
 			children = (
 				29290B92210AF86400D2BE78 /* OP_0.swift */,
@@ -485,52 +500,49 @@
 				29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */,
 				29290B94210AF86C00D2BE78 /* OP_N.swift */,
 			);
-			path = "Push Data Operators";
+			path = "Push Data";
 			sourceTree = "<group>";
 		};
-		294DDE34211B2B1300B7F645 /* Control Flow Operators */ = {
+		294DDE34211B2B1300B7F645 /* Flow Control */ = {
 			isa = PBXGroup;
 			children = (
 				294DDE3A211B31B100B7F645 /* OP_NOP.swift */,
-				294DDE3C211B31C100B7F645 /* OP_VER.swift */,
 				294DDE3E211B31CB00B7F645 /* OP_IF.swift */,
 				294DDE40211B31D600B7F645 /* OP_NOTIF.swift */,
-				294DDE42211B31EA00B7F645 /* OP_VERIF.swift */,
-				294DDE44211B31FA00B7F645 /* OP_VERNOTIF.swift */,
 				294DDE46211B322000B7F645 /* OP_ELSE.swift */,
 				294DDE48211B322E00B7F645 /* OP_ENDIF.swift */,
 				29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */,
 				294DDE31211A05D200B7F645 /* OP_RETURN.swift */,
 			);
-			path = "Control Flow Operators";
+			path = "Flow Control";
 			sourceTree = "<group>";
 		};
-		294DDE35211B2B3900B7F645 /* Stack Operators */ = {
+		294DDE35211B2B3900B7F645 /* Stack */ = {
 			isa = PBXGroup;
 			children = (
 				29290B90210AF79300D2BE78 /* OP_DUP.swift */,
 				0C4132EE210EFD1700906E4A /* OP_SWAP.swift */,
 			);
-			path = "Stack Operators";
+			path = Stack;
 			sourceTree = "<group>";
 		};
-		294DDE36211B2B4300B7F645 /* Splice Operators */ = {
+		294DDE36211B2B4300B7F645 /* Splice */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = "Splice Operators";
+			path = Splice;
 			sourceTree = "<group>";
 		};
-		294DDE37211B2B4A00B7F645 /* Bit Logic Operators */ = {
+		294DDE37211B2B4A00B7F645 /* Bitwise Logic */ = {
 			isa = PBXGroup;
 			children = (
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
 			);
-			path = "Bit Logic Operators";
+			path = "Bitwise Logic";
 			sourceTree = "<group>";
 		};
-		294DDE38211B2B5900B7F645 /* Crypto Operators */ = {
+		294DDE38211B2B5900B7F645 /* Crypto */ = {
 			isa = PBXGroup;
 			children = (
 				2914BE40211BAAC900B349CB /* OP_RIPEMD160.swift */,
@@ -544,29 +556,33 @@
 				29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */,
 				29E1ED74210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift */,
 			);
-			path = "Crypto Operators";
+			path = Crypto;
 			sourceTree = "<group>";
 		};
-		294DDE39211B2B6100B7F645 /* Expansion Operators */ = {
+		294DDE39211B2B6100B7F645 /* Reserved Words */ = {
 			isa = PBXGroup;
 			children = (
+				294DDE3C211B31C100B7F645 /* OP_VER.swift */,
+				294DDE42211B31EA00B7F645 /* OP_VERIF.swift */,
+				294DDE44211B31FA00B7F645 /* OP_VERNOTIF.swift */,
 			);
-			path = "Expansion Operators";
+			path = "Reserved Words";
 			sourceTree = "<group>";
 		};
 		296ADC1D2112EB8F007EE5C7 /* OP_CODE */ = {
 			isa = PBXGroup;
 			children = (
-				294DDE33211B2AEA00B7F645 /* Push Data Operators */,
-				294DDE34211B2B1300B7F645 /* Control Flow Operators */,
-				294DDE35211B2B3900B7F645 /* Stack Operators */,
-				294DDE36211B2B4300B7F645 /* Splice Operators */,
-				294DDE37211B2B4A00B7F645 /* Bit Logic Operators */,
-				0C1DD41B21181EF8004BA8A8 /* Numeric Operators */,
-				294DDE38211B2B5900B7F645 /* Crypto Operators */,
-				294DDE39211B2B6100B7F645 /* Expansion Operators */,
+				294DDE33211B2AEA00B7F645 /* Push Data */,
+				294DDE34211B2B1300B7F645 /* Flow Control */,
+				294DDE35211B2B3900B7F645 /* Stack */,
+				294DDE36211B2B4300B7F645 /* Splice */,
+				294DDE37211B2B4A00B7F645 /* Bitwise Logic */,
+				0C1DD41B21181EF8004BA8A8 /* Arithmetic */,
+				294DDE38211B2B5900B7F645 /* Crypto */,
+				2914BE4A211BCAAE00B349CB /* Lock Time */,
+				2914BE4B211BCABA00B349CB /* Pseudo Words */,
+				294DDE39211B2B6100B7F645 /* Reserved Words */,
 				29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */,
-				29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */,
 			);
 			path = OP_CODE;
 			sourceTree = "<group>";
