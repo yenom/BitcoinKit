@@ -92,6 +92,12 @@
 		2914BE45211BAAF400B349CB /* OP_SHA1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE44211BAAF400B349CB /* OP_SHA1.swift */; };
 		2914BE47211BAB0500B349CB /* OP_HASH256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE46211BAB0500B349CB /* OP_HASH256.swift */; };
 		2914BE49211BAB1900B349CB /* OP_CODESEPARATOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE48211BAB1900B349CB /* OP_CODESEPARATOR.swift */; };
+		2914BE4E211BCF7600B349CB /* OP_RESERVED.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE4D211BCF7600B349CB /* OP_RESERVED.swift */; };
+		2914BE50211BCF8E00B349CB /* OP_RESERVED1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE4F211BCF8E00B349CB /* OP_RESERVED1.swift */; };
+		2914BE52211BCF9600B349CB /* OP_RESERVED2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE51211BCF9600B349CB /* OP_RESERVED2.swift */; };
+		2914BE56211BCFE600B349CB /* OP_NOPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE55211BCFE600B349CB /* OP_NOPN.swift */; };
+		2914BE5A211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE59211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift */; };
+		2914BE5C211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5B211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift */; };
 		29248EEF2104B64E00CC9051 /* ScriptChunkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */; };
 		29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */; };
 		29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B90210AF79300D2BE78 /* OP_DUP.swift */; };
@@ -257,6 +263,12 @@
 		2914BE44211BAAF400B349CB /* OP_SHA1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SHA1.swift; sourceTree = "<group>"; };
 		2914BE46211BAB0500B349CB /* OP_HASH256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_HASH256.swift; sourceTree = "<group>"; };
 		2914BE48211BAB1900B349CB /* OP_CODESEPARATOR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CODESEPARATOR.swift; sourceTree = "<group>"; };
+		2914BE4D211BCF7600B349CB /* OP_RESERVED.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RESERVED.swift; sourceTree = "<group>"; };
+		2914BE4F211BCF8E00B349CB /* OP_RESERVED1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RESERVED1.swift; sourceTree = "<group>"; };
+		2914BE51211BCF9600B349CB /* OP_RESERVED2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RESERVED2.swift; sourceTree = "<group>"; };
+		2914BE55211BCFE600B349CB /* OP_NOPN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOPN.swift; sourceTree = "<group>"; };
+		2914BE59211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKLOCKTIMEVERIFY.swift; sourceTree = "<group>"; };
+		2914BE5B211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSEQUENCEVERIFY.swift; sourceTree = "<group>"; };
 		29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptChunkHelper.swift; sourceTree = "<group>"; };
 		29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeFactory.swift; sourceTree = "<group>"; };
 		29290B90210AF79300D2BE78 /* OP_DUP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_DUP.swift; sourceTree = "<group>"; };
@@ -441,6 +453,8 @@
 		2914BE4A211BCAAE00B349CB /* Lock Time */ = {
 			isa = PBXGroup;
 			children = (
+				2914BE59211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift */,
+				2914BE5B211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift */,
 			);
 			path = "Lock Time";
 			sourceTree = "<group>";
@@ -498,6 +512,7 @@
 				29290B92210AF86400D2BE78 /* OP_0.swift */,
 				29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */,
 				29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */,
+				2914BE4D211BCF7600B349CB /* OP_RESERVED.swift */,
 				29290B94210AF86C00D2BE78 /* OP_N.swift */,
 			);
 			path = "Push Data";
@@ -507,8 +522,11 @@
 			isa = PBXGroup;
 			children = (
 				294DDE3A211B31B100B7F645 /* OP_NOP.swift */,
+				294DDE3C211B31C100B7F645 /* OP_VER.swift */,
 				294DDE3E211B31CB00B7F645 /* OP_IF.swift */,
 				294DDE40211B31D600B7F645 /* OP_NOTIF.swift */,
+				294DDE42211B31EA00B7F645 /* OP_VERIF.swift */,
+				294DDE44211B31FA00B7F645 /* OP_VERNOTIF.swift */,
 				294DDE46211B322000B7F645 /* OP_ELSE.swift */,
 				294DDE48211B322E00B7F645 /* OP_ENDIF.swift */,
 				29290BA0210AF90D00D2BE78 /* OP_VERIFY.swift */,
@@ -538,6 +556,8 @@
 			children = (
 				29290B9E210AF8FD00D2BE78 /* OP_EQUAL.swift */,
 				29290B98210AF88400D2BE78 /* OP_EQUALVERIFY.swift */,
+				2914BE4F211BCF8E00B349CB /* OP_RESERVED1.swift */,
+				2914BE51211BCF9600B349CB /* OP_RESERVED2.swift */,
 			);
 			path = "Bitwise Logic";
 			sourceTree = "<group>";
@@ -562,9 +582,7 @@
 		294DDE39211B2B6100B7F645 /* Reserved Words */ = {
 			isa = PBXGroup;
 			children = (
-				294DDE3C211B31C100B7F645 /* OP_VER.swift */,
-				294DDE42211B31EA00B7F645 /* OP_VERIF.swift */,
-				294DDE44211B31FA00B7F645 /* OP_VERNOTIF.swift */,
+				2914BE55211BCFE600B349CB /* OP_NOPN.swift */,
 			);
 			path = "Reserved Words";
 			sourceTree = "<group>";
@@ -799,6 +817,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1482B5EA20273B8A0098B612 /* HDPublicKey.swift in Sources */,
+				2914BE5C211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift in Sources */,
 				29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */,
 				14F37A3A20209B5400D34748 /* Transaction.swift in Sources */,
 				1482B5E42026F2590098B612 /* WordList.swift in Sources */,
@@ -841,6 +860,7 @@
 				0C1DD40A211819CE004BA8A8 /* OP_GREATERTHAN.swift in Sources */,
 				2914BE49211BAB1900B349CB /* OP_CODESEPARATOR.swift in Sources */,
 				29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */,
+				2914BE52211BCF9600B349CB /* OP_RESERVED2.swift in Sources */,
 				0C1DD41021181AF3004BA8A8 /* OP_NUMEQUAL.swift in Sources */,
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,
 				14F37A3E2020A02000D34748 /* SighashType.swift in Sources */,
@@ -856,6 +876,7 @@
 				299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */,
 				294DDE49211B322E00B7F645 /* OP_ENDIF.swift in Sources */,
 				0C1DD40E21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift in Sources */,
+				2914BE5A211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift in Sources */,
 				0C1DD41D21182043004BA8A8 /* OP_SUB.swift in Sources */,
 				29290B93210AF86400D2BE78 /* OP_0.swift in Sources */,
 				2914BE47211BAB0500B349CB /* OP_HASH256.swift in Sources */,
@@ -866,6 +887,7 @@
 				29E1ED73210ECD35007F4627 /* OP_CHECKMULTISIG.swift in Sources */,
 				29290B99210AF88400D2BE78 /* OP_EQUALVERIFY.swift in Sources */,
 				294DDE47211B322000B7F645 /* OP_ELSE.swift in Sources */,
+				2914BE50211BCF8E00B349CB /* OP_RESERVED1.swift in Sources */,
 				14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */,
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
@@ -876,10 +898,12 @@
 				0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */,
 				14839A9F202FE73B00A6CB34 /* TransactionOutput.swift in Sources */,
 				1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */,
+				2914BE4E211BCF7600B349CB /* OP_RESERVED.swift in Sources */,
 				14839A81202FE5CA00A6CB34 /* VerackMessage.swift in Sources */,
 				29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */,
 				0C0900242116935E0077E9BC /* OP_MAX.swift in Sources */,
 				14839A95202FE6BE00A6CB34 /* GetBlocksMessage.swift in Sources */,
+				2914BE56211BCFE600B349CB /* OP_NOPN.swift in Sources */,
 				14A2961F2032317B00E19177 /* HDWallet.swift in Sources */,
 				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
 				0C1DD41221181B41004BA8A8 /* OP_BOOLOR.swift in Sources */,
