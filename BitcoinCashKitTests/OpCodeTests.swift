@@ -117,8 +117,10 @@ class OpCodeTests: XCTestCase {
             context.pushToStack(false)
             try opcode.execute(context)
             XCTFail("\(opcode.name)(\(opcode.value) execution should throw error.")
-        } catch {
-            // do nothing equal success
+        } catch OpCodeExecutionError.error("OP_VERIFY failed.") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"OP_VERIFY failed.\"), but threw \(error)")
         }
     }
     
@@ -138,7 +140,7 @@ class OpCodeTests: XCTestCase {
             let dataOnTop: Data = context.stack.last!
             try opcode.execute(context)
             XCTAssertEqual(context.stack.count, stackCountAtFirst + 1, "\(opcode.name)(\(String(format: "%02x", opcode.value)) test: One data should be added to stack.")
-            XCTAssertEqual(context.stack.dropLast().map(Data.init), stackSnapShot, "\(opcode.name)(\(String(format: "%02x", opcode.value)) test: The data except the top should be the same after the execution.")
+            XCTAssertEqual(context.stack.dropLast().map { Data($0) }, stackSnapShot, "\(opcode.name)(\(String(format: "%02x", opcode.value)) test: The data except the top should be the same after the execution.")
             XCTAssertEqual(context.stack.last!, dataOnTop, "\(opcode.name)(\(String(format: "%02x", opcode.value)) test: The data on top should be copied and pushed.")
         } catch let error {
             fail(with: opcode, error: error)
@@ -150,8 +152,38 @@ class OpCodeTests: XCTestCase {
             XCTAssertEqual(context.stack.count, 0)
             try opcode.execute(context)
             XCTFail("\(opcode.name)(\(opcode.value) execution should throw error when stack is empty.")
-        } catch {
-            // do nothing equal success
+        } catch OpCodeExecutionError.opcodeRequiresItemsOnStack(1) {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .opcodeRequiresItemsOnStack(1), but threw \(error)")
+        }
+    }
+    
+    func testOpEqualVerify() {
+        let opcode = OpCode.OP_EQUALVERIFY
+        // OP_EQUALVERIFY success
+        do {
+            try context.pushToStack(1)
+            try context.pushToStack(1)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 0)
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // OP_EQUALVERIFY fail
+        do {
+            context.resetStack()
+            try context.pushToStack(1)
+            try context.pushToStack(3)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+        } catch OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.") {
+            // success
+            XCTAssertEqual(context.stack.count, 1)
+        } catch let error {
+            fail(with: opcode, error: error)
         }
     }
     
