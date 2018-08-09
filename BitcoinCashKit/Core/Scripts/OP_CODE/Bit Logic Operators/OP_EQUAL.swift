@@ -32,7 +32,7 @@ public struct OpEqual: OpCodeProtocol {
     // input : x1 x2
     // output : true / false
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThan(2)
+        try context.assertStackHeightGreaterThanOrEqual(2)
 
         let x1 = context.stack.popLast()!
         let x2 = context.stack.popLast()!

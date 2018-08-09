@@ -32,7 +32,7 @@ public struct OpDuplicate: OpCodeProtocol {
     // input : x
     // output : x x
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThan(1)
+        try context.assertStackHeightGreaterThanOrEqual(1)
         try context.pushToStack(context.data(at: -1))
     }
 }

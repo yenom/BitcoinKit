@@ -30,7 +30,7 @@ public struct OP0NotEqual: OpCodeProtocol {
 
     // (in -- out)
      public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThan(1)
+        try context.assertStackHeightGreaterThanOrEqual(1)
 
         let input = try context.number(at: -1)
         context.stack.removeLast()
