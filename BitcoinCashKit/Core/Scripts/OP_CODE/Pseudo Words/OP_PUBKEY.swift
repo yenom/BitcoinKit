@@ -27,7 +27,7 @@ import Foundation
 public struct OpPubkey: OpCodeProtocol {
     public var value: UInt8 { return 0xfe }
     public var name: String { return "OP_PUBKEY" }
-    
+
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         throw OpCodeExecutionError.error("OP_PUBKEY should not be executed.")
     }

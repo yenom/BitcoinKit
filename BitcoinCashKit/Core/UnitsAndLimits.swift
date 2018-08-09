@@ -39,3 +39,5 @@ let BTC_MAX_KEYS_FOR_CHECKMULTISIG: Int = 20
 // Maximum number of operations allowed per script (excluding pushdata operations and OP_<N>)
 // Multisig op additionally increases count by a number of pubkeys.
 let BTC_MAX_OPS_PER_SCRIPT: Int = 201
+
+let BTC_LOCKTIME_THRESHOLD: UInt32 = 500_000_000

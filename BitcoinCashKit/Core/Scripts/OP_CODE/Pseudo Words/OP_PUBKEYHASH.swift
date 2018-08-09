@@ -27,7 +27,7 @@ import Foundation
 public struct OpPubkeyHash: OpCodeProtocol {
     public var value: UInt8 { return 0xfd }
     public var name: String { return "OP_PUBKEYHASH" }
-    
+
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         throw OpCodeExecutionError.error("OP_PUBKEYHASH should not be executed.")
     }
