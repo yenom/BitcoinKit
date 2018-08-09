@@ -77,14 +77,14 @@ public struct SighashType {
     }
 }
 
-public extension UInt8 {
-    init(_ hashType: SighashType) {
+extension UInt8 {
+    public init(_ hashType: SighashType) {
         self = hashType.uint8
     }
 }
 
 public extension UInt32 {
-    init(_ hashType: SighashType) {
+    public init(_ hashType: SighashType) {
         self = UInt32(UInt8(hashType))
     }
 }
