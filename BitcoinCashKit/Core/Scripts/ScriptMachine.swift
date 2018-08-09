@@ -49,10 +49,7 @@ public struct ScriptMachine {
         guard inputIndex < signedTx.inputs.count else {
             throw ScriptMachineError.exception("Transaction and valid inputIndex are required for script verification.")
         }
-        let context: ScriptExecutionContext = ScriptExecutionContext()
-        context.transaction = signedTx
-        context.utxoToVerify = utxo
-        context.inputIndex = inputIndex
+        let context: ScriptExecutionContext = ScriptExecutionContext(transaction: signedTx, utxoToVerify: utxo, inputIndex: inputIndex)!
         context.blockTimeStamp = blockTimeStamp
 
         let txInput: TransactionInput = signedTx.inputs[Int(inputIndex)]

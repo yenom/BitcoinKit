@@ -42,9 +42,10 @@ public class ScriptExecutionContext {
     public internal(set) var opCount: Int = 0
 
     // Transaction, utxo, index for CHECKSIG operations
-    public var transaction: Transaction?
-    public var utxoToVerify: TransactionOutput?
-    public var inputIndex: UInt32 = 0xffffffff
+    public private(set) var transaction: Transaction?
+    public private(set) var utxoToVerify: TransactionOutput?
+    public private(set) var txinToVerify: TransactionInput?
+    public private(set) var inputIndex: UInt32 = 0xffffffff
 
     // A timestamp of the current block. Default is current timestamp.
     // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
@@ -59,6 +60,15 @@ public class ScriptExecutionContext {
     public var verbose: Bool = false
 
     public init() {}
+    public init?(transaction: Transaction, utxoToVerify: TransactionOutput, inputIndex: UInt32) {
+        guard transaction.inputs.count > inputIndex else {
+            return nil
+        }
+        self.transaction = transaction
+        self.utxoToVerify = utxoToVerify
+        self.txinToVerify = transaction.inputs[Int(inputIndex)]
+        self.inputIndex = inputIndex
+    }
     public var shouldExecute: Bool {
         return !conditionStack.contains(false)
     }
