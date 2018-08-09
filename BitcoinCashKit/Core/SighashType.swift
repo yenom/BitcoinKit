@@ -83,7 +83,7 @@ extension UInt8 {
     }
 }
 
-public extension UInt32 {
+extension UInt32 {
     public init(_ hashType: SighashType) {
         self = UInt32(UInt8(hashType))
     }
