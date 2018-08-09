@@ -98,6 +98,8 @@
 		2914BE56211BCFE600B349CB /* OP_NOPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE55211BCFE600B349CB /* OP_NOPN.swift */; };
 		2914BE5A211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE59211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift */; };
 		2914BE5C211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5B211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift */; };
+		2914BE5E211C062200B349CB /* OP_PUBKEYHASH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5D211C062200B349CB /* OP_PUBKEYHASH.swift */; };
+		2914BE60211C063300B349CB /* OP_PUBKEY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5F211C063300B349CB /* OP_PUBKEY.swift */; };
 		29248EEF2104B64E00CC9051 /* ScriptChunkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */; };
 		29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */; };
 		29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B90210AF79300D2BE78 /* OP_DUP.swift */; };
@@ -269,6 +271,8 @@
 		2914BE55211BCFE600B349CB /* OP_NOPN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOPN.swift; sourceTree = "<group>"; };
 		2914BE59211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKLOCKTIMEVERIFY.swift; sourceTree = "<group>"; };
 		2914BE5B211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSEQUENCEVERIFY.swift; sourceTree = "<group>"; };
+		2914BE5D211C062200B349CB /* OP_PUBKEYHASH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_PUBKEYHASH.swift; sourceTree = "<group>"; };
+		2914BE5F211C063300B349CB /* OP_PUBKEY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_PUBKEY.swift; sourceTree = "<group>"; };
 		29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptChunkHelper.swift; sourceTree = "<group>"; };
 		29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeFactory.swift; sourceTree = "<group>"; };
 		29290B90210AF79300D2BE78 /* OP_DUP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_DUP.swift; sourceTree = "<group>"; };
@@ -462,6 +466,8 @@
 		2914BE4B211BCABA00B349CB /* Pseudo Words */ = {
 			isa = PBXGroup;
 			children = (
+				2914BE5D211C062200B349CB /* OP_PUBKEYHASH.swift */,
+				2914BE5F211C063300B349CB /* OP_PUBKEY.swift */,
 				29290B9C210AF8DF00D2BE78 /* OP_INVALIDOPCODE.swift */,
 			);
 			path = "Pseudo Words";
@@ -834,6 +840,7 @@
 				14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */,
 				0C0900302116A3EB0077E9BC /* OP_2DIV.swift in Sources */,
 				147494EC201F9E4F006D1CF8 /* Network.swift in Sources */,
+				2914BE60211C063300B349CB /* OP_PUBKEY.swift in Sources */,
 				294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */,
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
 				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
@@ -906,6 +913,7 @@
 				2914BE56211BCFE600B349CB /* OP_NOPN.swift in Sources */,
 				14A2961F2032317B00E19177 /* HDWallet.swift in Sources */,
 				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
+				2914BE5E211C062200B349CB /* OP_PUBKEYHASH.swift in Sources */,
 				0C1DD41221181B41004BA8A8 /* OP_BOOLOR.swift in Sources */,
 				294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */,
 				290880152109708000C79379 /* OpCodeProtocol.swift in Sources */,

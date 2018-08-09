@@ -152,8 +152,8 @@ public enum OpCode: OpCodeProtocol {
         case .OP_CHECKSEQUENCEVERIFY: return OpCheckSequenceVerify() // previously OP_NOP3
 
         // Pseudo Words
-        case .OP_PUBKEYHASH: return OpExample()
-        case .OP_PUBKEY: return OpExample()
+        case .OP_PUBKEYHASH: return OpPubkeyHash()
+        case .OP_PUBKEY: return OpPubkey()
         case .OP_INVALIDOPCODE: return OpInvalidOpCode()
 
         // Reserved Words
