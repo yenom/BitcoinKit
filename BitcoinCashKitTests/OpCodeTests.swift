@@ -210,6 +210,20 @@ class OpCodeTests: XCTestCase {
             fail(with: opcode, error: error)
         }
     }
+
+    func testOpInvalidOpCode() {
+        let opcode = OpCode.OP_INVALIDOPCODE
+        XCTAssertEqual(opcode.name, "OP_INVALIDOPCODE")
+        XCTAssertEqual(opcode.value, 0xff)
+
+        do {
+            try opcode.execute(context)
+        } catch OpCodeExecutionError.notImplemented("[\(opcode.name)(\(opcode.value))]") {
+            // success
+        } catch let error {
+            XCTFail("Shoud throw OpCodeExecutionError.notImplemented(\"[\(opcode.name)(\(opcode.value))]\", but threw \(error)")
+        }
+    }
 }
 
 private func pushRandomDataOnStack(_ context: ScriptExecutionContext) {
