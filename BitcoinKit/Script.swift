@@ -10,16 +10,24 @@ import Foundation
 
 public struct Script {
     // Opcode
-    public static let OP_DUP: UInt8 = 0x76
-    public static let OP_HASH160: UInt8 = 0xa9
-    public static let OP_0: UInt8 = 0x14
-    public static let OP_EQUALVERIFY: UInt8 = 0x88
-    public static let OP_CHECKSIG: UInt8 = 0xac
+    private static let OP_DUP: Data = 0x76
+    private static let OP_HASH160: Data = 0xa9
+    private static let OP_0: Data = 0x14
+    private static let OP_EQUALVERIFY: Data = 0x88
+    private static let OP_CHECKSIG: Data = 0xac
 
     // Standard Transaction to Bitcoin address (pay-to-pubkey-hash)
     // scriptPubKey: OP_DUP OP_HASH160 OP_0 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
     public static func buildPublicKeyHashOut(pubKeyHash: Data) -> Data {
-        return Data() + OP_DUP + OP_HASH160 + OP_0 + pubKeyHash + OP_EQUALVERIFY + OP_CHECKSIG
+        let data: [Data] = [
+            OP_DUP,
+            OP_HASH160,
+            OP_0,
+            pubKeyHash,
+            OP_EQUALVERIFY,
+            OP_CHECKSIG
+        ]
+        return data.reduce(Data(), +)
     }
 
     public static func isPublicKeyHashOut(_ script: Data) -> Bool {

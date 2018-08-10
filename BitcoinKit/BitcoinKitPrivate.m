@@ -12,6 +12,8 @@
 #import <openssl/hmac.h>
 #import <openssl/ec.h>
 
+char *const Secp256k1CurveOrderHex = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141";
+
 @implementation _Hash
 
 + (NSData *)sha256:(NSData *)data {
@@ -44,6 +46,32 @@
 @end
 
 @implementation _Key
+
++ (NSData *)curveOrderMinus:(NSInteger)smallNumber {
+    Byte *byteData = (Byte*)malloc(4);
+    byteData[3] = smallNumber & 0xff;
+    byteData[2] = (smallNumber & 0xff00) >> 8;
+    byteData[1] = (smallNumber & 0xff0000) >> 16;
+    byteData[0] = (smallNumber & 0xff000000) >> 24;
+    NSData * smallNumberData = [NSData dataWithBytes:byteData length:4];
+
+    BIGNUM *numberBN = BN_new();
+    BN_bin2bn(smallNumberData.bytes, (int)smallNumberData.length, numberBN);
+
+    BIGNUM *curveOrder = BN_new();
+    BN_hex2bn(&curveOrder, Secp256k1CurveOrderHex);
+
+    BIGNUM *subtractionBN = BN_new();
+    BN_sub(subtractionBN, curveOrder, numberBN);
+
+    int numBytes = BN_num_bytes(subtractionBN);
+    NSMutableData *result = [NSMutableData dataWithLength:numBytes];
+    BN_bn2bin(subtractionBN, result.mutableBytes);
+    BN_free(numberBN);
+    BN_free(curveOrder);
+    BN_free(subtractionBN);
+    return result;
+}
 
 + (NSData *)computePublicKeyFromPrivateKey:(NSData *)privateKey compression:(BOOL)compression {
     BN_CTX *ctx = BN_CTX_new();
@@ -123,7 +151,7 @@
     NSData *derivedChainCode = [digest subdataWithRange:NSMakeRange(32, 32)];
 
     BIGNUM *curveOrder = BN_new();
-    BN_hex2bn(&curveOrder, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141");
+    BN_hex2bn(&curveOrder, Secp256k1CurveOrderHex);
 
     BIGNUM *factor = BN_new();
     BN_bin2bn(derivedPrivateKey.bytes, (int)derivedPrivateKey.length, factor);
@@ -152,7 +180,6 @@
         BIGNUM *publicKey = BN_new();
         BN_bin2bn(self.publicKey.bytes, (int)self.publicKey.length, publicKey);
         EC_GROUP *group = EC_GROUP_new_by_curve_name(NID_secp256k1);
-
         EC_POINT *point = EC_POINT_new(group);
         EC_POINT_bn2point(group, publicKey, point, ctx);
         EC_POINT_mul(group, point, factor, point, BN_value_one(), ctx);

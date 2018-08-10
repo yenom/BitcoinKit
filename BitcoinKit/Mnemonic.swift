@@ -86,6 +86,10 @@ public struct Mnemonic {
     }
 }
 
+public func curveN(minus smallNumber: Int) -> Data {
+   return _Key.curveOrderMinus(smallNumber)
+}
+
 public enum MnemonicError : Error {
     case randomBytesError
 }

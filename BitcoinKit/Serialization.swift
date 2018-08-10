@@ -90,6 +90,24 @@ extension Data {
     }
 }
 
+
+extension Data: ExpressibleByIntegerLiteral {
+
+    public init(uint8: UInt8) {
+        self.init([uint8])
+    }
+
+    public init(integerLiteral: UInt8) {
+        self.init(uint8: integerLiteral)
+    }
+}
+
+extension Data {
+    static func == (lhs: UInt8, rhs: Data) -> Bool {
+        return Data(uint8: lhs) == rhs
+    }
+}
+
 extension Data {
     init?(hex: String) {
         let len = hex.count / 2
