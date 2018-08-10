@@ -8,8 +8,8 @@
 
 import Foundation
 
-class WordList {
-    static var english: [String.SubSequence] =  {
+public class WordList {
+    public static var english: [String.SubSequence] =  {
         let words =
             """
             abandon
@@ -2063,7 +2063,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var japanese: [String.SubSequence] =  {
+    public static var japanese: [String.SubSequence] =  {
         let words =
             """
             あいこくしん
@@ -4117,7 +4117,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var korean: [String.SubSequence] =  {
+    public static var korean: [String.SubSequence] =  {
         let words =
             """
             가격
@@ -6171,7 +6171,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var spanish: [String.SubSequence] =  {
+    public static var spanish: [String.SubSequence] =  {
         let words =
             """
             ábaco
@@ -8225,7 +8225,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var simplifiedChinese: [String.SubSequence] =  {
+    public static var simplifiedChinese: [String.SubSequence] =  {
         let words =
             """
             的
@@ -10279,7 +10279,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var traditionalChinese: [String.SubSequence] =  {
+    public static var traditionalChinese: [String.SubSequence] =  {
         let words =
             """
             的
@@ -12333,7 +12333,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var french: [String.SubSequence] =  {
+    public static var french: [String.SubSequence] =  {
         let words =
             """
             abaisser
@@ -14387,7 +14387,7 @@ class WordList {
             """
         return words.split(separator: "\n")
     }()
-    static var italian: [String.SubSequence] =  {
+    public static var italian: [String.SubSequence] =  {
         let words =
             """
             abaco
