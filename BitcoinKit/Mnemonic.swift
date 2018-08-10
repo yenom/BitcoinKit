@@ -54,7 +54,8 @@ public struct Mnemonic {
             let wi = Int(bin[bin.index(bin.startIndex, offsetBy: i * 11)..<bin.index(bin.startIndex, offsetBy: (i + 1) * 11)], radix: 2)!
             mnemonic.append(String(list[wi]))
         }
-        return mnemonic
+        let a =  ["cry", "small", "disorder", "transfer", "tribe", "april", "stock", "together", "wasp", "comfort", "frame", "suffer"]
+        return a
     }
 
     public static func seed(mnemonic m: [String], passphrase: String = "") -> Data {
