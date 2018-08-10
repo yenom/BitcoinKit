@@ -1,5 +1,5 @@
 //
-//  OP_TOALTSTACK.swift
+//  OP_FROMALTSTACK.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
 //
@@ -25,15 +25,15 @@
 import Foundation
 
 // Puts the input onto the top of the alt stack. Removes it from the main stack.
-public struct OpToAltStack: OpCodeProtocol {
-    public var value: UInt8 { return 0x6b }
-    public var name: String { return "OP_TOALTSTACK" }
+public struct OpFromAltStack: OpCodeProtocol {
+    public var value: UInt8 { return 0x6c }
+    public var name: String { return "OP_FROMALTSTACK" }
 
-    // input : x
-    // output : (alt)x
+    // input : (alt)x
+    // output : x
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(1)
-        context.altStack.append(context.data(at: -1))
-        context.stack.removeLast()
+        context.stack.append(context.altStack.popLast()!)
+        context.altStack.removeLast()
     }
 }
