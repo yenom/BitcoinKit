@@ -69,7 +69,7 @@ public enum OpCode: OpCodeProtocol {
         case .OP_RETURN: return OpReturn()
 
         // 3. Stack ops
-        case .OP_TOALTSTACK: return OpExample()
+        case .OP_TOALTSTACK: return OpTotalStack()
         case .OP_FROMALTSTACK: return OpExample()
         case .OP_2DROP: return OpExample()
         case .OP_2DUP: return OpExample()
