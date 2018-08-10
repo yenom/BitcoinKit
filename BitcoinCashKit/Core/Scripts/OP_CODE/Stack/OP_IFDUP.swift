@@ -28,7 +28,7 @@ import Foundation
 public struct OpIfDup: OpCodeProtocol {
     public var value: UInt8 { return 0x73 }
     public var name: String { return "OP_IFDUP" }
-    
+
     // input : x
     // output : x / x x    
     public func mainProcess(_ context: ScriptExecutionContext) throws {
