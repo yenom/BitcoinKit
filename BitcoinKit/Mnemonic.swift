@@ -84,6 +84,38 @@ public struct Mnemonic {
             return WordList.italian
         }
     }
+    
+    public static func isLegal(mnemonic m: [String], for language: Language = .english) -> Bool {
+        let list = wordList(for: language)
+        if m.count != 12 {
+            return false
+        }
+        for word in m {
+            var count = 0
+            for w in m {
+                if word == w {
+                    count = count + 1
+                }
+            }
+            if count != 1 {
+                return false
+            }
+        }
+        for word in m {
+            var foundOne = false
+            for w in list {
+                let newStr = String(w)
+                if newStr == word {
+                    foundOne = true
+                    break
+                }
+            }
+            if !foundOne {
+                return false
+            }
+        }
+        return true
+    }
 }
 
 public enum MnemonicError : Error {

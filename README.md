@@ -8,8 +8,6 @@ BitcoinKit
 
 BitcoinKit implements Bitcoin protocol in Swift. It is an implementation of the Bitcoin SPV protocol written (almost) entirely in swift.
 
-<img src="https://user-images.githubusercontent.com/40610/35793683-0d497b4e-0a96-11e8-8e49-2b0ce09211a4.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/40610/35793685-0da36a32-0a96-11e8-855b-ecbc3ce1474c.png" width="320px" />
-
 Features
 --------
 
@@ -24,84 +22,19 @@ Features
 Usage
 -----
 
-#### Creating new wallet
-
-```swift
-let privateKey = PrivateKey(network: .testnet) // You can choose .mainnet or .testnet
-let wallet = Wallet(privateKey: privateKey)
-```
-
-#### Import wallet from WIF
-
-```swift
-let wallet = try Wallet(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
-```
-
-#### Hierarchical Deterministic Wallet
-
-```swift
-// Generate mnemonic
-let mnemonic = try Mnemonic.generate()
-
-// Generate seed from the mnemonic
-let seed = Mnemonic.seed(mnemonic: mnemonic)
-
-let wallet = HDWallet(seed: seed, network: .testnet)
-```
-
-#### Key derivation
-
-```
-let mnemonic = try Mnemonic.generate()
-let seed = Mnemonic.seed(mnemonic: mnemonic)
-
-let privateKey = HDPrivateKey(seed: seed, network: .testnet)
-
-// m/0'
-let m0prv = try! privateKey.derived(at: 0, hardened: true)
-
-// m/0'/1
-let m01prv = try! m0prv.derived(at: 1)
-
-// m/0'/1/2'
-let m012prv = try! m01prv.derived(at: 2, hardened: true)
-```
-
-#### HD Wallet Key derivation
-
-```
-let keychain = HDKeychain(seed: seed, network: .mainnet)
-let privateKey = try! keychain.derivedKey(path: "m/44'/1'/0'/0/0")
-...
-```
-
-#### Extended Keys
-
-```
-let extendedKey = privateKey.extended()
-```
-
-#### Sync blockchain
-
-```
-let blockStore = try! SQLiteBlockStore.default()
-let blockChain = BlockChain(wallet: wallet, blockStore: blockStore)
-
-let peerGroup = PeerGroup(blockChain: blockChain)
-let peerGroup.delegate = self
-
-let peerGroup.start()
-```
-
+	//助记词
+	let words = Mnemonic.generate(strength: Mnemonic.Strength.default, language: language)
+	//种子
+	let seed = Mnemonic.seed(mnemonic: words)
+	//网络, 支持 BTC, BCH, LTC...
+	let net = CommonNet(symbol: token.symbol, bip32HeaderPub: token.bip32HeaderPub, bip32HeaderPriv: token.bip32HeaderPriv, wif: token.wif, addressHeader: token.addressHeader, p2shHeader: token.p2shHeader)
+	let hdKeyChain = HDKeychain(seed: seed, network: net)
+	//生成外部地址
+	let path = String(format: "m/44'/%d'/0'/0/%d",coin_type, address_index)
+	let address = derivedKey(path: path).publicKey().toAddress()
+        
 Installation
 ------------
-
-### Carthage
-
-BitcoinKit is available through [Carthage](https://github.com/Carthage/Carthage). To install
-it, simply add the following line to your Cartfile:
-
-`github "kishikawakatsumi/BitcoinKit"`
 
 ### CocoaPods
 
@@ -113,17 +46,149 @@ use_frameworks!
 pod 'BitcoinKit'
 ```
 
-Contribute
-----------
+### Environment
 
-Feel free to open issues, drop us pull requests or contact us to discuss how to do things.
+BitcoinKit builds secp256k1 and OpenSSL itself for security reasons. They requires autoconf and automake. Please install them.
 
-Email: [kishikawakatsumi@mac.com](mailto:kishikawakatsumi@mac.com)
-
-Twitter: [@k_katsumi](http://twitter.com/k_katsumi)
+	brew install libtool autoconf automake
+	
+**Make sure you're using the latest version of Xcode**
 
 
 License
 -------
 
 BitcoinKit is available under the Apache 2.0 license. See the LICENSE file for more info.
+
+
+Modify
+-------
+
+#### Swift4.1 bug  
+
+Script.swift 出现 Swift 语法错误. 修改如下: 
+
+	public static func buildPublicKeyHashOut(pubKeyHash: Data) -> Data {
+        var tmp = Data() + OP_DUP + OP_HASH160 + OP_0 + pubKeyHash + OP_EQUALVERIFY
+        return tmp + OP_CHECKSIG
+    }
+
+
+#### 助记词验证
+
+Mnemonic.swift 新增助记词验证方法: 
+
+	//in struct Mnemonic
+	
+	//验证助记词合法, 语言识别
+	public static func isLegal(word: String, forLanguage: Language?) -> (Bool, Language) {
+        let lang = forLanguage
+        if lang != nil {
+            let has = isLegal(word: word, language: lang!)
+            return (has, lang!)
+        }
+        var languageArr = [Language]()
+        languageArr.append(.english)
+        languageArr.append(.japanese)
+        languageArr.append(.korean)
+        languageArr.append(.spanish)
+        languageArr.append(.simplifiedChinese)
+        languageArr.append(.french)
+        languageArr.append(.traditionalChinese)
+        languageArr.append(.italian)
+        
+        for lang in languageArr {
+            if isLegal(word: word, language: lang) {
+                return (true, lang)
+            }
+        }
+        return (false, .english)
+    }
+    
+    //确定的语言验证助记词合法性
+    public static func isLegal(word: String, language: Language) -> Bool {
+        let list = wordList(for: language)
+        for w in list {
+            let newStr = String(w)
+            if newStr == word {
+                return true
+            }
+        }
+        return false
+    }
+
+	public static func isLegal(mnemonic m: [String], for language: Language = .english) -> Bool {
+        let list = wordList(for: language)
+        if m.count != 12 {
+            return false
+        }
+        for word in m {
+            var count = 0
+            for w in m {
+                if word == w {
+                    count = count + 1
+                }
+            }
+            if count != 1 {
+                return false
+            }
+        }
+        for word in m {
+            var foundOne = false
+            for w in list {
+                let newStr = String(w)
+                if newStr == word {
+                    foundOne = true
+                    break
+                }
+            }
+            if !foundOne {
+                return false
+            }
+        }
+        return true
+    }
+
+#### 拓展支持其他币种
+
+支持其他币种拓展, Network.swift 增加 CommonNet: 
+
+	public class CommonNet: Network {
+    	var psymbol: String
+		var ppubkeyhash: UInt8
+		var pprivatekey: UInt8
+   		var pscripthash: UInt8
+		var pxpubkey: UInt32
+   		var pxprivkey: UInt32
+    
+		public init(symbol: String, bip32HeaderPub: Int, bip32HeaderPriv: Int, wif: Int, addressHeader: Int, p2shHeader: Int) {
+			self.psymbol = symbol
+			self.pxpubkey = UInt32(bip32HeaderPub)
+			self.pxprivkey = UInt32(bip32HeaderPriv)
+			self.pprivatekey = UInt8(wif)
+			self.ppubkeyhash = UInt8(addressHeader)
+			self.pscripthash = UInt8(p2shHeader)
+	    }
+		public override var name: String {
+			return psymbol
+		}
+		public override var alias: String {
+			return psymbol
+		}
+		override var pubkeyhash: UInt8 {
+			return ppubkeyhash
+		}
+		override var privatekey: UInt8 {
+			return pprivatekey
+		}
+		override var scripthash: UInt8 {
+			return pscripthash
+		}
+		override var xpubkey: UInt32 {
+			return pxpubkey
+		}
+		override var xprivkey: UInt32 {
+			return pxprivkey
+		}
+	}
+

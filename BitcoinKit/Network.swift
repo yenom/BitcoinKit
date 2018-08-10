@@ -173,6 +173,45 @@ public class Testnet: Network {
     fileprivate override init() {}
 }
 
+public class CommonNet: Network {
+    var psymbol: String
+    var ppubkeyhash: UInt8
+    var pprivatekey: UInt8
+    var pscripthash: UInt8
+    var pxpubkey: UInt32
+    var pxprivkey: UInt32
+    
+    public init(symbol: String, bip32HeaderPub: Int, bip32HeaderPriv: Int, wif: Int, addressHeader: Int, p2shHeader: Int) {
+        self.psymbol = symbol
+        self.pxpubkey = UInt32(bip32HeaderPub)
+        self.pxprivkey = UInt32(bip32HeaderPriv)
+        self.pprivatekey = UInt8(wif)
+        self.ppubkeyhash = UInt8(addressHeader)
+        self.pscripthash = UInt8(p2shHeader)
+    }
+    public override var name: String {
+        return psymbol
+    }
+    public override var alias: String {
+        return psymbol
+    }
+    override var pubkeyhash: UInt8 {
+        return ppubkeyhash
+    }
+    override var privatekey: UInt8 {
+        return pprivatekey
+    }
+    override var scripthash: UInt8 {
+        return pscripthash
+    }
+    override var xpubkey: UInt32 {
+        return pxpubkey
+    }
+    override var xprivkey: UInt32 {
+        return pxprivkey
+    }
+}
+
 struct Checkpoint {
     let height: Int32
     let hash: Data
