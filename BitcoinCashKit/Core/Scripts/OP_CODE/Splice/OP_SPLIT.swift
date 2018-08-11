@@ -33,15 +33,18 @@ public struct OpSplit: OpCodeProtocol {
     // output : x1 x2
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(2)
-        let data = context.data(at: -2)
-        let position = try context.number(at: -1)
+        let data: Data = context.data(at: -2)
+        
+        // Make sure the split point is apropriate.
+        let position: Int32 = try context.number(at: -1)
         guard position <= MemoryLayout.size(ofValue: data) else {
             throw OpCodeExecutionError.error("Invalid OP_SPLIT range")
         }
 
-        let n1 = data.subdata(in: Range(0..<Int(position)))
-        let n2 = data.subdata(in: Range(Int(position)..<data.count))
+        let n1: Data = data.subdata(in: Range(0..<Int(position)))
+        let n2: Data = data.subdata(in: Range(Int(position)..<data.count))
 
+        // Replace existing stack values by the new values.
         context.stack[data.count - 2] = n1
         context.stack[data.count - 1] = n2
     }
