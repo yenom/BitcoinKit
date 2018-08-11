@@ -90,7 +90,7 @@ public enum OpCode: OpCodeProtocol {
         case .OP_TUCK: return OpTuck()
 
         // 4. Splice ops
-        case .OP_CAT: return OpExample()
+        case .OP_CAT: return OpConcatenate()
         case .OP_SUBSTR: return OpExample()
         case .OP_LEFT: return OpExample()
         case .OP_RIGHT: return OpExample()
