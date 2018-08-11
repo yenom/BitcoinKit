@@ -38,8 +38,9 @@ public struct OpPick: OpCodeProtocol {
         guard n >= 0 else {
             throw OpCodeExecutionError.error("\(name): n should be greater than or equal to 0.")
         }
-        try context.assertStackHeightGreaterThanOrEqual(Int(n + 1))
-        let x: Data = context.data(at: Int(-n - 1))
-        context.stack.append(x)
+        let index: Int = Int(n + 1)
+        try context.assertStackHeightGreaterThanOrEqual(index)
+        let xn: Data = context.data(at: -index)
+        context.stack.append(xn)
     }
 }
