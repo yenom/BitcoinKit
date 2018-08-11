@@ -28,7 +28,7 @@ import Foundation
 public struct OpRoll: OpCodeProtocol {
     public var value: UInt8 { return 0x7a }
     public var name: String { return "OP_ROLL" }
-    
+
     // input : xn ... x2 x1 x0 <n>
     // output : ... x2 x1 x0 xn
     public func mainProcess(_ context: ScriptExecutionContext) throws {
