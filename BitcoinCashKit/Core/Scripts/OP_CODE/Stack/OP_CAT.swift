@@ -33,8 +33,8 @@ public struct OpConcatenate: OpCodeProtocol {
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(2)
-        let x1 = context.data(at: -2)
-        let x2 = context.data(at: -1)
+        let x1: Data = context.data(at: -2)
+        let x2: Data = context.data(at: -1)
         guard MemoryLayout.size(ofValue: x1) + MemoryLayout.size(ofValue: x2) > BTC_MAX_SCRIPT_ELEMENT_SIZE else {
             throw OpCodeExecutionError.error("Push value size limit exceeded")
         }
