@@ -1,5 +1,5 @@
 //
-//  OP_NUM2BIN.swift
+//  OP_BIN2NUM.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
 //
@@ -24,22 +24,15 @@
 
 import Foundation
 
-// convert numeric value a into byte sequence of length b
-public struct OpNum2Bin: OpCodeProtocol {
-    public var value: UInt8 { return 0x80 }
-    public var name: String { return "OP_NUM2BIN" }
+// convert byte sequence x into a numeric value
+public struct OpBin2Num: OpCodeProtocol {
+    public var value: UInt8 { return 0x81 }
+    public var name: String { return "OP_BIN2NUM" }
     
-    // input : a b
+    // input : x
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThanOrEqual(2)
-        
-        let size: Int32 = try context.number(at: -1)
-        guard size <= BTC_MAX_SCRIPT_ELEMENT_SIZE else {
-            throw OpCodeExecutionError.error("Push value size limit exceeded")
-        }
-        
-        context.stack.removeLast()
+        try context.assertStackHeightGreaterThanOrEqual(1)
         
         // TODO: not implemented
     }
