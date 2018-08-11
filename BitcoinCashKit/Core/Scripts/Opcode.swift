@@ -72,7 +72,7 @@ public enum OpCode: OpCodeProtocol {
         case .OP_TOALTSTACK: return OpToAltStack()
         case .OP_FROMALTSTACK: return OpFromAltStack()
         case .OP_2DROP: return Op2Drop()
-        case .OP_2DUP: return OpExample()
+        case .OP_2DUP: return Op2Duplicate()
         case .OP_3DUP: return OpExample()
         case .OP_2OVER: return OpExample()
         case .OP_2ROT: return OpExample()
