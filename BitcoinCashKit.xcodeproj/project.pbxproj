@@ -38,6 +38,8 @@
 		0C1DE159211D7FC800FE8E43 /* OP_IFDUP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DE158211D7FC800FE8E43 /* OP_IFDUP.swift */; };
 		0C1DE15B211D819A00FE8E43 /* OP_DEPTH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DE15A211D819A00FE8E43 /* OP_DEPTH.swift */; };
 		0C1DE15D211E6EB400FE8E43 /* OP_DROP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DE15C211E6EB400FE8E43 /* OP_DROP.swift */; };
+		0C1DE15F211E6FA700FE8E43 /* OP_NIP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DE15E211E6FA700FE8E43 /* OP_NIP.swift */; };
+		0C1DE161211E717500FE8E43 /* OP_OVER.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DE160211E717500FE8E43 /* OP_OVER.swift */; };
 		0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4132EE210EFD1700906E4A /* OP_SWAP.swift */; };
 		0CD92D3B2118153700DD3148 /* OP_LESSTHANOREQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */; };
 		1419E83A202CDBE500FCB0BE /* BitcoinCashKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -212,6 +214,8 @@
 		0C1DE158211D7FC800FE8E43 /* OP_IFDUP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_IFDUP.swift; sourceTree = "<group>"; };
 		0C1DE15A211D819A00FE8E43 /* OP_DEPTH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_DEPTH.swift; sourceTree = "<group>"; };
 		0C1DE15C211E6EB400FE8E43 /* OP_DROP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_DROP.swift; sourceTree = "<group>"; };
+		0C1DE15E211E6FA700FE8E43 /* OP_NIP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NIP.swift; sourceTree = "<group>"; };
+		0C1DE160211E717500FE8E43 /* OP_OVER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_OVER.swift; sourceTree = "<group>"; };
 		0C4132EE210EFD1700906E4A /* OP_SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SWAP.swift; sourceTree = "<group>"; };
 		0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LESSTHANOREQUAL.swift; sourceTree = "<group>"; };
 		1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinCashKitPrivate.h; sourceTree = "<group>"; };
@@ -560,6 +564,8 @@
 				0C1DE15A211D819A00FE8E43 /* OP_DEPTH.swift */,
 				0C1DE15C211E6EB400FE8E43 /* OP_DROP.swift */,
 				29290B90210AF79300D2BE78 /* OP_DUP.swift */,
+				0C1DE15E211E6FA700FE8E43 /* OP_NIP.swift */,
+				0C1DE160211E717500FE8E43 /* OP_OVER.swift */,
 				0C4132EE210EFD1700906E4A /* OP_SWAP.swift */,
 			);
 			path = Stack;
@@ -873,6 +879,7 @@
 				CFA2906C2101CD96001A1BAB /* ScriptChunk.swift in Sources */,
 				14F37A3C20209F9200D34748 /* Script.swift in Sources */,
 				294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */,
+				0C1DE15F211E6FA700FE8E43 /* OP_NIP.swift in Sources */,
 				CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */,
 				29290BA1210AF90D00D2BE78 /* OP_VERIFY.swift in Sources */,
 				2914BE41211BAAC900B349CB /* OP_RIPEMD160.swift in Sources */,
@@ -889,6 +896,7 @@
 				14F37A3E2020A02000D34748 /* SighashType.swift in Sources */,
 				14839A8F202FE68000A6CB34 /* PongMessage.swift in Sources */,
 				294DDE41211B31D600B7F645 /* OP_NOTIF.swift in Sources */,
+				0C1DE161211E717500FE8E43 /* OP_OVER.swift in Sources */,
 				0C1DD42321182126004BA8A8 /* OP_MOD.swift in Sources */,
 				29290B9B210AF88C00D2BE78 /* OP_HASH160.swift in Sources */,
 				14CDC3862021824200C01556 /* Wallet.swift in Sources */,
