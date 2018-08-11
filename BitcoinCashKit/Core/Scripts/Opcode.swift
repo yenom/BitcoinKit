@@ -86,7 +86,7 @@ public enum OpCode: OpCodeProtocol {
         case .OP_PICK: return OpPick()
         case .OP_ROLL: return OpRoll()
         case .OP_ROT: return OpRot()
-        case .OP_SWAP: return OpExample()
+        case .OP_SWAP: return OpSwap()
         case .OP_TUCK: return OpTuck()
 
         // 4. Splice ops
