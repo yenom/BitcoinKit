@@ -79,7 +79,7 @@ public enum OpCode: OpCodeProtocol {
         case .OP_2SWAP: return OpExample()
         case .OP_IFDUP: return OpIfDup()
         case .OP_DEPTH: return OpDepth()
-        case .OP_DROP: return OpExample()
+        case .OP_DROP: return OpDrop()
         case .OP_DUP: return OpDuplicate()
         case .OP_NIP: return OpExample()
         case .OP_OVER: return OpExample()
