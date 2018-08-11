@@ -28,12 +28,10 @@ import Foundation
 public struct OpBin2Num: OpCodeProtocol {
     public var value: UInt8 { return 0x81 }
     public var name: String { return "OP_BIN2NUM" }
-    
+
     // input : x
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThanOrEqual(1)
-        
-        // TODO: not implemented
+        // not implemented
     }
 }

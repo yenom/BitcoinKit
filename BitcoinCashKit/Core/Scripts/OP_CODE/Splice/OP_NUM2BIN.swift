@@ -28,19 +28,10 @@ import Foundation
 public struct OpNum2Bin: OpCodeProtocol {
     public var value: UInt8 { return 0x80 }
     public var name: String { return "OP_NUM2BIN" }
-    
+
     // input : a b
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThanOrEqual(2)
-        
-        let size: Int32 = try context.number(at: -1)
-        guard size <= BTC_MAX_SCRIPT_ELEMENT_SIZE else {
-            throw OpCodeExecutionError.error("Push value size limit exceeded")
-        }
-        
-        context.stack.removeLast()
-        
-        // TODO: not implemented
+        // not implemented
     }
 }
