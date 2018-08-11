@@ -33,7 +33,8 @@ public struct OpTuck: OpCodeProtocol {
     // output : x2 x1 x2
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(2)
-        let x = context.data(at: -1)
-        context.stack.insert(x, at: context.stack.count - 2)
+        let x: Data = context.data(at: -1)
+        let count: Int = context.stack.count
+        context.stack.insert(x, at: count - 2)
     }
 }

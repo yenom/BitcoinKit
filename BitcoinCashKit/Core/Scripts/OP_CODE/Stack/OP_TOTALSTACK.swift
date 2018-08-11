@@ -33,7 +33,7 @@ public struct OpToAltStack: OpCodeProtocol {
     // output : (alt)x
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(1)
-        context.altStack.append(context.data(at: -1))
-        context.stack.removeLast()
+        let x: Data = context.stack.removeLast()
+        context.altStack.append(x)
     }
 }

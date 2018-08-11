@@ -33,9 +33,9 @@ public struct Op3Duplicate: OpCodeProtocol {
     // output : x1 x2 x3 x1 x2 x3
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(3)
-        let x1 = context.data(at: -3)
-        let x2 = context.data(at: -2)
-        let x3 = context.data(at: -1)
+        let x1: Data = context.data(at: -3)
+        let x2: Data = context.data(at: -2)
+        let x3: Data = context.data(at: -1)
         try context.pushToStack(x1)
         try context.pushToStack(x2)
         try context.pushToStack(x3)

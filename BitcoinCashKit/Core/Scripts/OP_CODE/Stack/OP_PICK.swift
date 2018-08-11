@@ -33,13 +33,13 @@ public struct OpPick: OpCodeProtocol {
     // output : xn ... x2 x1 x0 xn
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(2)
-        let n = try context.number(at: -1)
+        let n: Int32 = try context.number(at: -1)
         context.stack.removeLast()
-        guard n >= 0 && n < context.stack.count else {
-            throw OpCodeExecutionError.opcodeRequiresItemsOnStack(Int(n))
-            // TODO: Should we implement another error for this condition?
+        guard n >= 0 else {
+            throw OpCodeExecutionError.error("\(name): n should be greater than or equal to 0.")
         }
-        let xn = context.data(at: Int(-n - 1))
-        context.stack.append(xn)
+        try context.assertStackHeightGreaterThanOrEqual(Int(n + 1))
+        let x: Data = context.data(at: Int(-n - 1))
+        context.stack.append(x)
     }
 }

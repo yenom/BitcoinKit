@@ -32,7 +32,7 @@ public struct OpDepth: OpCodeProtocol {
     // input : Nothing
     // output : <Stack size>
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        let size = context.stack.count
-        context.stack.append(Data(from: size))
+        let count: Int = context.stack.count
+        try context.pushToStack(Int32(count))
     }
 }

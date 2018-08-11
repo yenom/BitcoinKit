@@ -33,7 +33,10 @@ public struct OpFromAltStack: OpCodeProtocol {
     // output : x
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(1)
-        context.stack.append(context.altStack.popLast()!)
-        context.altStack.removeLast()
+        guard context.altStack.count >= 1 else {
+            throw OpCodeExecutionError.error("Operation not valid with the current altstack size")
+        }
+        let x: Data = context.altStack.removeLast()
+        context.stack.append(x)
     }
 }

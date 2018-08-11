@@ -32,7 +32,7 @@ public struct Op2Drop: OpCodeProtocol {
     // input : x1 x2
     // output : Nothing
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThanOrEqual(1)
+        try context.assertStackHeightGreaterThanOrEqual(2)
         context.stack.removeLast()
         context.stack.removeLast()
     }

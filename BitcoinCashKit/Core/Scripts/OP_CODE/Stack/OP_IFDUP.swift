@@ -33,8 +33,9 @@ public struct OpIfDup: OpCodeProtocol {
     // output : x / x x    
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(1)
-        if context.bool(at: -1) {
-            context.stack.append(context.data(at: -1))
+        let bool: Bool = context.bool(at: -1)
+        if bool {
+            context.pushToStack(bool)
         }
     }
 }

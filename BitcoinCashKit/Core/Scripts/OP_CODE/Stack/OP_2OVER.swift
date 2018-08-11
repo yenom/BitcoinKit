@@ -33,8 +33,8 @@ public struct Op2Over: OpCodeProtocol {
     // output : x1 x2 x3 x4 x1 x2
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(4)
-        let x1 = context.data(at: -4)
-        let x2 = context.data(at: -3)
+        let x1: Data = context.data(at: -4)
+        let x2: Data = context.data(at: -3)
         context.stack.append(x1)
         context.stack.append(x2)
     }

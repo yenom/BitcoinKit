@@ -33,7 +33,7 @@ public struct OpNip: OpCodeProtocol {
     // output : x2
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(2)
-        let count = context.stack.count
+        let count: Int = context.stack.count
         context.stack.remove(at: count - 2)
     }
 }

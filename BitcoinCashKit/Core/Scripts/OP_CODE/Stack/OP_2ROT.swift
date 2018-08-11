@@ -33,9 +33,9 @@ public struct Op2Rot: OpCodeProtocol {
     // output : x3 x4 x5 x6 x1 x2
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(6)
-        let x1 = context.data(at: -6)
-        let x2 = context.data(at: -5)
-        let count = context.stack.count
+        let x1: Data = context.data(at: -6)
+        let x2: Data = context.data(at: -5)
+        let count: Int = context.stack.count
         context.stack.removeSubrange(Range(count - 6 ..< count - 4))
         context.stack.append(x1)
         context.stack.append(x2)
