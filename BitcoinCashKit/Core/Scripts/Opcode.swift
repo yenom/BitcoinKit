@@ -94,7 +94,7 @@ public enum OpCode: OpCodeProtocol {
         case .OP_SUBSTR: return OpExample()
         case .OP_LEFT: return OpExample()
         case .OP_RIGHT: return OpExample()
-        case .OP_SIZE: return OpExample()
+        case .OP_SIZE: return OpSize()
         case .OP_SPLIT: return OpSplit()
         case .OP_NUM2BIN: return OpExample()
         case .OP_BIN2NUM: return OpExample()
