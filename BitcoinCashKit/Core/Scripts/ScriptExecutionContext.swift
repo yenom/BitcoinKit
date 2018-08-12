@@ -111,11 +111,7 @@ public class ScriptExecutionContext {
 
     public func assertAltStackHeightGreaterThanOrEqual(_ n: Int) throws {
         guard altStack.count >= n else {
-            if n == 1 {
-                throw OpCodeExecutionError.error("Operation requires \(n) item on altstack.")
-            } else {
-                throw OpCodeExecutionError.error("Operation requires \(n) items on altstack.")
-            }
+            throw OpCodeExecutionError.error("Operation requires \(n) items on altstack.")
         }
     }
 
