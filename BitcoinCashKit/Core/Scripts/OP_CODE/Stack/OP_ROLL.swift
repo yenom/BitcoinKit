@@ -40,9 +40,8 @@ public struct OpRoll: OpCodeProtocol {
         }
         let index: Int = Int(n + 1)
         try context.assertStackHeightGreaterThanOrEqual(index)
-        let xn: Data = context.data(at: -index)
         let count: Int = context.stack.count
-        context.stack.remove(at: count - index)
+        let xn: Data = context.stack.remove(at: count - index)
         context.stack.append(xn)
     }
 }
