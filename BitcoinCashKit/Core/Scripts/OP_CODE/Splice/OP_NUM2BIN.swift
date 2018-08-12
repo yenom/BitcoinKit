@@ -29,9 +29,4 @@ public struct OpNum2Bin: OpCodeProtocol {
     public var value: UInt8 { return 0x80 }
     public var name: String { return "OP_NUM2BIN" }
 
-    // input : a b
-    // output : out
-    public func mainProcess(_ context: ScriptExecutionContext) throws {
-        // not implemented
-    }
 }
