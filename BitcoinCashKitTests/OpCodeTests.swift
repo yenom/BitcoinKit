@@ -265,6 +265,22 @@ class OpCodeTests: XCTestCase {
         // OP_CHECKSIG success
         do {
             context = ScriptExecutionContext(
+                transaction: unsignedTx,
+                utxoToVerify: utxoToSign,
+                inputIndex: 0)
+            try context.pushToStack(sigData) // sigData
+            try context.pushToStack(pubkeyData) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.bool(at: -1), true)
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+
+        // OP_CHECKSIG success(invalid signature)
+        do {
+            context = ScriptExecutionContext(
                 transaction: Transaction(
                     version: 1,
                     inputs: [TransactionInput(
@@ -277,7 +293,10 @@ class OpCodeTests: XCTestCase {
                 inputIndex: 0)
             try context.pushToStack(sigData) // sigData
             try context.pushToStack(pubkeyData) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
             try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.bool(at: -1), false)
         } catch let error {
             fail(with: opcode, error: error)
         }
@@ -285,8 +304,10 @@ class OpCodeTests: XCTestCase {
         // OP_CHECKSIG fail
         do {
             context = ScriptExecutionContext()
+            XCTAssertEqual(context.stack.count, 0)
             try context.pushToStack("".data(using: .utf8)!) // sigData
             try context.pushToStack("".data(using: .utf8)!) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
             try opcode.execute(context)
         } catch OpCodeExecutionError.error("The transaction or the utxo to verify is not set.") {
             // do nothing equal success
