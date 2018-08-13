@@ -146,6 +146,253 @@ class OpCodeTests: XCTestCase {
         }
     }
     
+    func testOpCat() {
+        let opcode = OpCode.OP_CAT
+        
+        // maxlen_x y OP_CAT -> failure
+        // Concatenating any operand except an empty vector, including a single byte value (e.g. OP_1),
+        // onto a maximum sized array causes failure
+        do {
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            try context.pushToStack(1)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error when push value size limit exceeded.")
+        } catch OpCodeExecutionError.error("Push value size limit exceeded") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Push value size limit exceeded\"), but threw \(error)")
+        }
+        
+        // large_x large_y OP_CAT -> failure
+        // Concatenating two operands, where the total length is greater than MAX_SCRIPT_ELEMENT_SIZE, causes failure
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE / 2 + 1))
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE / 2))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error when push value size limit exceeded.")
+        } catch OpCodeExecutionError.error("Push value size limit exceeded") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Push value size limit exceeded\"), but threw \(error)")
+        }
+        
+        // OP_0 OP_0 OP_CAT -> OP_0
+        // Concatenating two empty arrays results in an empty array
+        do {
+            context.resetStack()
+            try context.pushToStack(Data())
+            try context.pushToStack(Data())
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // x OP_0 OP_CAT -> x
+        // Concatenating an empty array onto any operand results in the operand, including when len(x) = MAX_SCRIPT_ELEMENT_SIZE
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            try context.pushToStack(Data())
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // OP_0 x OP_CAT -> x
+        // Concatenating any operand onto an empty array results in the operand, including when len(x) = MAX_SCRIPT_ELEMENT_SIZE
+        do {
+            context.resetStack()
+            try context.pushToStack(Data())
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // {Ox11} {0x22, 0x33} OP_CAT -> 0x112233
+        // Concatenating two operands generates the correct result
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x11]))
+            try context.pushToStack(Data([0x22, 0x33]))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data([0x11, 0x22, 0x33]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+
+    func testOpSize() {
+        let opcode = OpCode.OP_SIZE
+        // OP_SIZE succeeds
+        do {
+            try context.pushToStack(Data([0x01]))
+            XCTAssertEqual(context.stack.count, 1)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(try context.number(at: -1), 1)
+            XCTAssertEqual(context.data(at: -2), Data([0x01]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // OP_SIZE succeeds with empty array
+        do {
+            context.resetStack()
+            try context.pushToStack(Data())
+            XCTAssertEqual(context.stack.count, 1)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(try context.number(at: -1), 0)
+            XCTAssertEqual(context.data(at: -2), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // OP_SIZE succeeds with maximum sized array case
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            XCTAssertEqual(context.stack.count, 1)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(try context.number(at: -1), Int32(BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            XCTAssertEqual(context.data(at: -2), Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
+    func testOpSplit() {
+        let opcode = OpCode.OP_SPLIT
+        // OP_0 0 OP_SPLIT -> OP_0 OP_0
+        // Execution of OP_SPLIT on empty array results in two empty arrays.
+        do {
+            try context.pushToStack(Data())
+            try context.pushToStack(0)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data())
+            XCTAssertEqual(context.data(at: -2), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // x 0 OP_SPLIT -> OP_0 x
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x01]))
+            try context.pushToStack(0)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data([0x01]))
+            XCTAssertEqual(context.data(at: -2), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // x len(x) OP_SPLIT -> x OP_0
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x01]))
+            try context.pushToStack(Int32(Data([0x01]).count))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data())
+            XCTAssertEqual(context.data(at: -2), Data([0x01]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // x (len(x) + 1) OP_SPLIT -> FAIL
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x01]))
+            try context.pushToStack(Int32(Data([0x01]).count + 1))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error with Invalid OP_SPLIT range.")
+        } catch OpCodeExecutionError.error("Invalid OP_SPLIT range") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid OP_SPLIT range\"), but threw \(error)")
+        }
+        
+        // successful cases
+        // {0x00, 0x11, 0x22} 0 OP_SPLIT -> OP_0 {0x00, 0x11, 0x22}
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x00, 0x11, 0x22]))
+            try context.pushToStack(0)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data([0x00, 0x11, 0x22]))
+            XCTAssertEqual(context.data(at: -2), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // {0x00, 0x11, 0x22} 1 OP_SPLIT -> {0x00} {0x11, 0x22}
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x00, 0x11, 0x22]))
+            try context.pushToStack(1)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data([0x11, 0x22]))
+            XCTAssertEqual(context.data(at: -2), Data([0x00]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // {0x00, 0x11, 0x22} 2 OP_SPLIT -> {0x00, 0x11} {0x22}
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x00, 0x11, 0x22]))
+            try context.pushToStack(2)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data([0x22]))
+            XCTAssertEqual(context.data(at: -2), Data([0x00, 0x11]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // {0x00, 0x11, 0x22} 3 OP_SPLIT -> {0x00, 0x11, 0x22} OP_0
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x00, 0x11, 0x22]))
+            try context.pushToStack(3)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data())
+            XCTAssertEqual(context.data(at: -2), Data([0x00, 0x11, 0x22]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
     func testOpEqualVerify() {
         let opcode = OpCode.OP_EQUALVERIFY
         // OP_EQUALVERIFY success
