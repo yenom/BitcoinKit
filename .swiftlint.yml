@@ -1,5 +1,6 @@
 included:
   - BitcoinCashKit
+  - Sources/BitcoinCashKit
 excluded:
 
 opt_in_rules:

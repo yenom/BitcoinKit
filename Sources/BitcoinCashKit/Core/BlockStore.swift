@@ -26,7 +26,10 @@
 // swiftlint:disable closure_end_indentation
 
 import Foundation
+
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 import SQLite3
+#endif
 
 public struct Payment {
     public enum State {
@@ -57,6 +60,7 @@ public protocol BlockStore {
     func latestBlockHash() throws -> Data?
 }
 
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 let SQLITE_TRANSIENT = unsafeBitCast(OpaquePointer(bitPattern: -1), to: sqlite3_destructor_type.self)
 
 public class SQLiteBlockStore: BlockStore {
@@ -474,3 +478,5 @@ public class SQLiteBlockStore: BlockStore {
 enum SQLiteError: Error {
     case error(Int32)
 }
+
+#endif

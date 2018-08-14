@@ -24,7 +24,11 @@
 //
 
 import Foundation
+#if BitcoinKitXcode
 import BitcoinCashKit.Private
+#else
+import BitcoinCashKitPrivate
+#endif
 
 public struct Mnemonic {
     public enum Strength: Int {

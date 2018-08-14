@@ -204,15 +204,15 @@
 		0C1DD42221182126004BA8A8 /* OP_MOD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MOD.swift; sourceTree = "<group>"; };
 		0C4132EE210EFD1700906E4A /* OP_SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SWAP.swift; sourceTree = "<group>"; };
 		0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LESSTHANOREQUAL.swift; sourceTree = "<group>"; };
-		1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinCashKitPrivate.h; sourceTree = "<group>"; };
-		1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitcoinCashKitPrivate.m; sourceTree = "<group>"; };
+		1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BitcoinCashKitPrivate.h; path = ../../BitcoinCashKit/BitcoinCashKitPrivate.h; sourceTree = "<group>"; };
+		1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BitcoinCashKitPrivate.m; path = ../../BitcoinCashKit/BitcoinCashKitPrivate.m; sourceTree = "<group>"; };
 		141FE2E12022588C00A08B04 /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
 		141FE2E32022589E00A08B04 /* PrivateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKey.swift; sourceTree = "<group>"; };
 		1463E6B32025E9480033DAAE /* BlockStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStore.swift; sourceTree = "<group>"; };
 		1463E6B52025E99C0033DAAE /* BlockChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockChain.swift; sourceTree = "<group>"; };
 		147494C7201F9A29006D1CF8 /* BitcoinCashKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BitcoinCashKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		147494CA201F9A29006D1CF8 /* BitcoinCashKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitcoinCashKit.h; sourceTree = "<group>"; };
-		147494CB201F9A29006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		147494CA201F9A29006D1CF8 /* BitcoinCashKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BitcoinCashKit.h; path = ../../BitcoinCashKit/BitcoinCashKit.h; sourceTree = "<group>"; };
+		147494CB201F9A29006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../BitcoinCashKit/Info.plist; sourceTree = "<group>"; };
 		147494D0201F9A29006D1CF8 /* BitcoinCashKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BitcoinCashKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		147494D5201F9A29006D1CF8 /* BitcoinCashKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinCashKitTests.swift; sourceTree = "<group>"; };
 		147494D7201F9A29006D1CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -250,7 +250,7 @@
 		14839AA8202FE7DD00A6CB34 /* VarString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarString.swift; sourceTree = "<group>"; };
 		14839AAA202FE7F000A6CB34 /* NetworkAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAddress.swift; sourceTree = "<group>"; };
 		14839AAC202FE80400A6CB34 /* ServiceFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFlags.swift; sourceTree = "<group>"; };
-		14A2961B203207F400E19177 /* BitcoinCashKit.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = BitcoinCashKit.modulemap; sourceTree = "<group>"; };
+		14A2961B203207F400E19177 /* BitcoinCashKit.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; name = BitcoinCashKit.modulemap; path = ../../BitcoinCashKit/BitcoinCashKit.modulemap; sourceTree = "<group>"; };
 		14A2961C2032316900E19177 /* HDKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDKeychain.swift; sourceTree = "<group>"; };
 		14A2961E2032317B00E19177 /* HDWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWallet.swift; sourceTree = "<group>"; };
 		14CDC3852021824200C01556 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
@@ -418,9 +418,12 @@
 				296ADC202112EC5A007EE5C7 /* Messages */,
 				147494CA201F9A29006D1CF8 /* BitcoinCashKit.h */,
 				14A2961B203207F400E19177 /* BitcoinCashKit.modulemap */,
+				1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */,
+				1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */,
 				147494CB201F9A29006D1CF8 /* Info.plist */,
 			);
-			path = BitcoinCashKit;
+			name = BitcoinCashKit;
+			path = Sources/BitcoinCashKit;
 			sourceTree = "<group>";
 		};
 		147494D4201F9A29006D1CF8 /* BitcoinCashKitTests */ = {
@@ -451,7 +454,8 @@
 				6E20AED62112D417008A9810 /* MurmurHashTests.swift */,
 				6E797C442116C8A5003BEDFD /* OpCodeFactoryTests.swift */,
 			);
-			path = BitcoinCashKitTests;
+			name = BitcoinCashKitTests;
+			path = Tests/BitcoinCashKitTests;
 			sourceTree = "<group>";
 		};
 		2914BE4A211BCAAE00B349CB /* Lock Time */ = {
@@ -506,8 +510,6 @@
 				147494ED201FADAC006D1CF8 /* MurmurHash.swift */,
 				29F5D1E5211068E8007DA3BF /* BigNumber.swift */,
 				14CDC38B2021EF5000C01556 /* Helpers.swift */,
-				1419E838202CDBE500FCB0BE /* BitcoinCashKitPrivate.h */,
-				1419E839202CDBE500FCB0BE /* BitcoinCashKitPrivate.m */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -813,7 +815,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\n    pwd\n    swiftlint autocorrect\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1142,6 +1144,7 @@
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
 				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinCashKit.modulemap";
+				OTHER_SWIFT_FLAGS = "-D BitcoinKitXcode";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoincashkit.BitcoinCashKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1180,6 +1183,7 @@
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
 				MODULEMAP_FILE = "$(SRCROOT)/BitcoinCashKit/BitcoinCashKit.modulemap";
+				OTHER_SWIFT_FLAGS = "-D BitcoinKitXcode";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoincashkit.BitcoinCashKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1196,7 +1200,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27AEDK3C9F;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = BitcoinCashKitTests/Info.plist;
+				INFOPLIST_FILE = Tests/BitcoinCashKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1216,7 +1220,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27AEDK3C9F;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = BitcoinCashKitTests/Info.plist;
+				INFOPLIST_FILE = Tests/BitcoinCashKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -143,7 +143,6 @@ end
 ```
 
 Then, run the following command:
-
 ```bash
 $ pod install
 ```
@@ -166,6 +165,21 @@ github "BitcoinCashKit/BitcoinCashKit"
 ```
 
 Run `carthage update` to build the framework and drag the built `BitcoinCashKit.framework` into your Xcode project.
+
+
+### Swift Package Manager
+
+BitcoinKit is available through [Swift Package Manager](https://github.com/apple/swift-package-manager). To install
+it, simply add the following lines to dependencies of your Package.swift:
+
+```swift
+.package(url: "https://github.com/kishikawakatsumi/BitcoinKit.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Note that following data types and features are currently not supported on Linux platform.  
+
+* `Peer` and `PeerGroup`
+* SQLite based BlockStore
 
 Contribute
 ----------
