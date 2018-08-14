@@ -53,8 +53,7 @@ class MockHelperTests: XCTestCase {
             let result = try verifyCustomMultisig(with: key)
             XCTAssertFalse(result, "\(key) Should fail but succeeds.")
         } catch OpCodeExecutionError.error("OP_EQUALVERIFY failed.") {
-            // do nothing
-            // print("ScriptMachine throw error: \(error)")
+            // Expected fail:  do nothing
         } catch let error {
             XCTFail("Inappropriate error for \(key) : \(error)")
         }

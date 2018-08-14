@@ -66,7 +66,7 @@ public struct MockHelper {
         let i = 0
         var inputs = tx.inputs
 
-        // TODO: sequenceの更新
+        // Sequence may need to be updated
         let txin = inputs[i]
         inputs[i] = TransactionInput(previousOutput: txin.previousOutput,
                                      signatureScript: unlockScriptData,
