@@ -55,11 +55,10 @@ public class Script {
     }
 
     public func toP2SH() -> Script {
-        let script: Script = Script()
-        try! script.append(.OP_HASH160)
-        try! script.appendData(Crypto.sha256ripemd160(data))
-        try! script.append(.OP_EQUAL)
-        return script
+        return try! Script()
+            .append(.OP_HASH160)
+            .appendData(Crypto.sha256ripemd160(data))
+            .append(.OP_EQUAL)
     }
 
     public func standardP2SHAddress(network: Network) -> Address {
@@ -105,20 +104,20 @@ public class Script {
         case .pubkeyHash:
             // OP_DUP OP_HASH160 <hash> OP_EQUALVERIFY OP_CHECKSIG
             do {
-                try append(.OP_DUP)
-                try append(.OP_HASH160)
-                try appendData(address.data)
-                try append(.OP_EQUALVERIFY)
-                try append(.OP_CHECKSIG)
+                _ = try self.append(.OP_DUP)
+                    .append(.OP_HASH160)
+                    .appendData(address.data)
+                    .append(.OP_EQUALVERIFY)
+                    .append(.OP_CHECKSIG)
             } catch {
                 return nil
             }
         case .scriptHash:
             // OP_HASH160 <hash> OP_EQUAL
             do {
-                try append(.OP_HASH160)
-                try appendData(address.data)
-                try append(.OP_EQUAL)
+                _ = try self.append(.OP_HASH160)
+                    .appendData(address.data)
+                    .append(.OP_EQUAL)
             } catch {
                 return nil
             }
@@ -152,12 +151,12 @@ public class Script {
         }
         do {
             self.init()
-            try append(mOpcode)
+            _ = try append(mOpcode)
             for pubkey in publicKeys {
-                try appendData(pubkey.raw)
+                _ = try appendData(pubkey.raw)
             }
-            try append(nOpcode)
-            try append(.OP_CHECKMULTISIG)
+            _ = try append(nOpcode)
+            _ = try append(.OP_CHECKMULTISIG)
             multisigRequirements = (signaturesRequired, publicKeys)
         } catch {
             return nil
@@ -335,7 +334,7 @@ public class Script {
         invalidateSerialization()
     }
 
-    public func append(_ opcode: OpCode) throws {
+    public func append(_ opcode: OpCode) throws -> Script {
         let invalidOpCodes: [OpCode] = [.OP_PUSHDATA1,
                                                 .OP_PUSHDATA2,
                                                 .OP_PUSHDATA4,
@@ -346,9 +345,10 @@ public class Script {
         var updatedData: Data = data
         updatedData += opcode
         try update(with: updatedData)
+        return self
     }
 
-    public func appendData(_ newData: Data) throws {
+    public func appendData(_ newData: Data) throws -> Script {
         guard !newData.isEmpty else {
             throw ScriptError.error("Data is empty.")
         }
@@ -359,9 +359,10 @@ public class Script {
         var updatedData: Data = data
         updatedData += addedScriptData
         try update(with: updatedData)
+        return self
     }
 
-    public func appendScript(_ otherScript: Script) throws {
+    public func appendScript(_ otherScript: Script) throws -> Script {
         guard !otherScript.data.isEmpty else {
             throw ScriptError.error("Script is empty.")
         }
@@ -369,26 +370,29 @@ public class Script {
         var updatedData: Data = self.data
         updatedData += otherScript.data
         try update(with: updatedData)
+        return self
     }
 
-    public func deleteOccurrences(of data: Data) throws {
+    public func deleteOccurrences(of data: Data) throws -> Script {
         guard !data.isEmpty else {
-            return
+            return self
         }
 
         let updatedData = chunks.filter { ($0 as? DataChunk)?.pushedData != data }.reduce(Data()) { $0 + $1.chunkData }
         try update(with: updatedData)
+        return self
     }
 
-    public func deleteOccurrences(of opcode: OpCode) throws {
+    public func deleteOccurrences(of opcode: OpCode) throws -> Script {
         let updatedData = chunks.filter { $0.opCode != opcode }.reduce(Data()) { $0 + $1.chunkData }
         try update(with: updatedData)
+        return self
     }
 
     public func subScript(from index: Int) throws -> Script {
         let subScript: Script = Script()
         for chunk in chunks[Range(index..<chunks.count)] {
-            try subScript.appendData(chunk.chunkData)
+            _ = try subScript.appendData(chunk.chunkData)
         }
         return subScript
     }
@@ -396,7 +400,7 @@ public class Script {
     public func subScript(to index: Int) throws -> Script {
         let subScript: Script = Script()
         for chunk in chunks[Range(0..<index)] {
-            try subScript.appendData(chunk.chunkData)
+            _ = try subScript.appendData(chunk.chunkData)
         }
         return subScript
     }
