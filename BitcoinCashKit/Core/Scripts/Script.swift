@@ -104,7 +104,7 @@ public class Script {
         case .pubkeyHash:
             // OP_DUP OP_HASH160 <hash> OP_EQUALVERIFY OP_CHECKSIG
             do {
-                _ = try self.append(.OP_DUP)
+                try self.append(.OP_DUP)
                     .append(.OP_HASH160)
                     .appendData(address.data)
                     .append(.OP_EQUALVERIFY)
@@ -115,7 +115,7 @@ public class Script {
         case .scriptHash:
             // OP_HASH160 <hash> OP_EQUAL
             do {
-                _ = try self.append(.OP_HASH160)
+                try self.append(.OP_HASH160)
                     .appendData(address.data)
                     .append(.OP_EQUAL)
             } catch {
@@ -151,12 +151,12 @@ public class Script {
         }
         do {
             self.init()
-            _ = try append(mOpcode)
+            try append(mOpcode)
             for pubkey in publicKeys {
-                _ = try appendData(pubkey.raw)
+                try appendData(pubkey.raw)
             }
-            _ = try append(nOpcode)
-            _ = try append(.OP_CHECKMULTISIG)
+            try append(nOpcode)
+            try append(.OP_CHECKMULTISIG)
             multisigRequirements = (signaturesRequired, publicKeys)
         } catch {
             return nil
@@ -334,6 +334,7 @@ public class Script {
         invalidateSerialization()
     }
 
+    @discardableResult
     public func append(_ opcode: OpCode) throws -> Script {
         let invalidOpCodes: [OpCode] = [.OP_PUSHDATA1,
                                                 .OP_PUSHDATA2,
@@ -348,6 +349,7 @@ public class Script {
         return self
     }
 
+    @discardableResult
     public func appendData(_ newData: Data) throws -> Script {
         guard !newData.isEmpty else {
             throw ScriptError.error("Data is empty.")
@@ -362,6 +364,7 @@ public class Script {
         return self
     }
 
+    @discardableResult
     public func appendScript(_ otherScript: Script) throws -> Script {
         guard !otherScript.data.isEmpty else {
             throw ScriptError.error("Script is empty.")
@@ -373,6 +376,7 @@ public class Script {
         return self
     }
 
+    @discardableResult
     public func deleteOccurrences(of data: Data) throws -> Script {
         guard !data.isEmpty else {
             return self
@@ -383,6 +387,7 @@ public class Script {
         return self
     }
 
+    @discardableResult
     public func deleteOccurrences(of opcode: OpCode) throws -> Script {
         let updatedData = chunks.filter { $0.opCode != opcode }.reduce(Data()) { $0 + $1.chunkData }
         try update(with: updatedData)
@@ -392,7 +397,7 @@ public class Script {
     public func subScript(from index: Int) throws -> Script {
         let subScript: Script = Script()
         for chunk in chunks[Range(index..<chunks.count)] {
-            _ = try subScript.appendData(chunk.chunkData)
+            try subScript.appendData(chunk.chunkData)
         }
         return subScript
     }
@@ -400,7 +405,7 @@ public class Script {
     public func subScript(to index: Int) throws -> Script {
         let subScript: Script = Script()
         for chunk in chunks[Range(0..<index)] {
-            _ = try subScript.appendData(chunk.chunkData)
+            try subScript.appendData(chunk.chunkData)
         }
         return subScript
     }
