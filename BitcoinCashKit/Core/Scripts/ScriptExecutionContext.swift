@@ -185,19 +185,24 @@ extension ScriptExecutionContext: CustomStringConvertible {
             if hex.count > 20 {
                 let first = hex.prefix(5)
                 let last = hex.suffix(5)
-                contents = "\(first)..\(last)"
+                contents = "\(first)..\(last) [\(data.count)bytes]"
             }
 
             if contents == "0x" {
-                contents = "NULL/FALSE/0"
+                contents = "NULL [FALSE/0]"
             }
-            for _ in 0...(20 - contents.count) / 2 {
+
+            if contents == "0x01" {
+                contents = "0x01 [TRUE/1]"
+            }
+
+            for _ in 0...(24 - contents.count) / 2 {
                 contents = " \(contents) "
             }
             desc += "| \(contents) |\n"
         }
         var base: String = ""
-        (0...12).forEach { _ in
+        (0...14).forEach { _ in
             base = "=\(base)="
         }
         return desc + base + "\n"

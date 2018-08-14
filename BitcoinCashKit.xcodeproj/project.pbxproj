@@ -109,6 +109,7 @@
 		14F37A3C20209F9200D34748 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3B20209F9200D34748 /* Script.swift */; };
 		14F37A3E2020A02000D34748 /* SighashType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* SighashType.swift */; };
 		290880152109708000C79379 /* OpCodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290880142109708000C79379 /* OpCodeProtocol.swift */; };
+		29089F0C2122B9CD00E0C305 /* MockHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29089F0B2122B9CD00E0C305 /* MockHelper.swift */; };
 		2914BE41211BAAC900B349CB /* OP_RIPEMD160.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE40211BAAC900B349CB /* OP_RIPEMD160.swift */; };
 		2914BE43211BAAE500B349CB /* OP_SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE42211BAAE500B349CB /* OP_SHA256.swift */; };
 		2914BE45211BAAF400B349CB /* OP_SHA1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE44211BAAF400B349CB /* OP_SHA1.swift */; };
@@ -304,6 +305,7 @@
 		14F37A3B20209F9200D34748 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
 		14F37A3D2020A02000D34748 /* SighashType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SighashType.swift; sourceTree = "<group>"; };
 		290880142109708000C79379 /* OpCodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeProtocol.swift; sourceTree = "<group>"; };
+		29089F0B2122B9CD00E0C305 /* MockHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHelper.swift; sourceTree = "<group>"; };
 		2914BE40211BAAC900B349CB /* OP_RIPEMD160.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RIPEMD160.swift; sourceTree = "<group>"; };
 		2914BE42211BAAE500B349CB /* OP_SHA256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SHA256.swift; sourceTree = "<group>"; };
 		2914BE44211BAAF400B349CB /* OP_SHA1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SHA1.swift; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 		147494C9201F9A29006D1CF8 /* BitcoinCashKit */ = {
 			isa = PBXGroup;
 			children = (
+				29089F0B2122B9CD00E0C305 /* MockHelper.swift */,
 				292AEA3C2112EB190012D7E5 /* Core */,
 				296ADC1F2112EBF4007EE5C7 /* Wallet */,
 				296ADC212112EC8C007EE5C7 /* Networking */,
@@ -901,7 +904,6 @@
 				0C0900442116BA8F0077E9BC /* OP_RSHIFT.swift in Sources */,
 				14839A7F202FE58800A6CB34 /* VersionMessage.swift in Sources */,
 				0C1DE16B211E7C0900FE8E43 /* OP_2DROP.swift in Sources */,
-				0C1DE186211EB52F00FE8E43 /* OP_SUBSTR.swift in Sources */,
 				0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */,
 				14839AAB202FE7F000A6CB34 /* NetworkAddress.swift in Sources */,
 				297DB97320EB12E60077EEEE /* AddressType.swift in Sources */,
@@ -976,6 +978,7 @@
 				294DDE47211B322000B7F645 /* OP_ELSE.swift in Sources */,
 				2914BE50211BCF8E00B349CB /* OP_RESERVED1.swift in Sources */,
 				0C1DE173211E7E7C00FE8E43 /* OP_2ROT.swift in Sources */,
+				29089F0C2122B9CD00E0C305 /* MockHelper.swift in Sources */,
 				14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */,
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
