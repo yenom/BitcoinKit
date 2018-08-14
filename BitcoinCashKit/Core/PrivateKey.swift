@@ -129,6 +129,11 @@ public struct PrivateKey {
         let checksum = Crypto.sha256sha256(data).prefix(4)
         return Base58.encode(data + checksum)
     }
+
+    public func sign(_ tx: Transaction, utxoToSign: UnspentTransaction, hashType: SighashType, inputIndex: Int = 0) -> Data {
+        let sighash: Data = tx.signatureHash(for: utxoToSign.output, inputIndex: inputIndex, hashType: hashType)
+        return try! Crypto.sign(sighash, privateKey: self)
+    }
 }
 
 extension PrivateKey: Equatable {
