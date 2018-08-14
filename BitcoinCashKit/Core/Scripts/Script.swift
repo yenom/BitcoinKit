@@ -432,7 +432,9 @@ public class Script {
             if let opChunk = chunk as? OpcodeChunk {
                 try opChunk.opCode.execute(context)
             } else if let dataChunk = chunk as? DataChunk {
-                try context.pushToStack(dataChunk.pushedData)
+                if context.shouldExecute {
+                    try context.pushToStack(dataChunk.pushedData)
+                }
             } else {
                 throw ScriptMachineError.error("Unknown chunk")
             }

@@ -413,7 +413,7 @@ class OpCodeTests: XCTestCase {
             try context.pushToStack(3)
             XCTAssertEqual(context.stack.count, 2)
             try opcode.execute(context)
-        } catch OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.") {
+        } catch OpCodeExecutionError.error("OP_EQUALVERIFY failed.") {
             // success
             XCTAssertEqual(context.stack.count, 1)
         } catch let error {
