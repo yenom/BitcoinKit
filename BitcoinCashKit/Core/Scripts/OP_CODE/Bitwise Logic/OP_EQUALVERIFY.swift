@@ -36,7 +36,7 @@ public struct OpEqualVerify: OpCodeProtocol {
         do {
             try OpCode.OP_VERIFY.mainProcess(context)
         } catch {
-            throw OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.")
+            throw OpCodeExecutionError.error("OP_EQUALVERIFY failed.")
         }
     }
 }
