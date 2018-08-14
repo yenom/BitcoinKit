@@ -110,6 +110,8 @@
 		14F37A3E2020A02000D34748 /* SighashType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3D2020A02000D34748 /* SighashType.swift */; };
 		290880152109708000C79379 /* OpCodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290880142109708000C79379 /* OpCodeProtocol.swift */; };
 		29089F0C2122B9CD00E0C305 /* MockHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29089F0B2122B9CD00E0C305 /* MockHelper.swift */; };
+		29089F0E2122BE7200E0C305 /* MockHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29089F0D2122BE7200E0C305 /* MockHelperTests.swift */; };
+		29089F102122D06300E0C305 /* MockKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29089F0F2122D06300E0C305 /* MockKey.swift */; };
 		2914BE41211BAAC900B349CB /* OP_RIPEMD160.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE40211BAAC900B349CB /* OP_RIPEMD160.swift */; };
 		2914BE43211BAAE500B349CB /* OP_SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE42211BAAE500B349CB /* OP_SHA256.swift */; };
 		2914BE45211BAAF400B349CB /* OP_SHA1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE44211BAAF400B349CB /* OP_SHA1.swift */; };
@@ -306,6 +308,8 @@
 		14F37A3D2020A02000D34748 /* SighashType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SighashType.swift; sourceTree = "<group>"; };
 		290880142109708000C79379 /* OpCodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeProtocol.swift; sourceTree = "<group>"; };
 		29089F0B2122B9CD00E0C305 /* MockHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHelper.swift; sourceTree = "<group>"; };
+		29089F0D2122BE7200E0C305 /* MockHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHelperTests.swift; sourceTree = "<group>"; };
+		29089F0F2122D06300E0C305 /* MockKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockKey.swift; sourceTree = "<group>"; };
 		2914BE40211BAAC900B349CB /* OP_RIPEMD160.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RIPEMD160.swift; sourceTree = "<group>"; };
 		2914BE42211BAAE500B349CB /* OP_SHA256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SHA256.swift; sourceTree = "<group>"; };
 		2914BE44211BAAF400B349CB /* OP_SHA1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SHA1.swift; sourceTree = "<group>"; };
@@ -470,11 +474,11 @@
 		147494C9201F9A29006D1CF8 /* BitcoinCashKit */ = {
 			isa = PBXGroup;
 			children = (
-				29089F0B2122B9CD00E0C305 /* MockHelper.swift */,
 				292AEA3C2112EB190012D7E5 /* Core */,
 				296ADC1F2112EBF4007EE5C7 /* Wallet */,
 				296ADC212112EC8C007EE5C7 /* Networking */,
 				296ADC202112EC5A007EE5C7 /* Messages */,
+				29089F112122D07500E0C305 /* Mock */,
 				147494CA201F9A29006D1CF8 /* BitcoinCashKit.h */,
 				14A2961B203207F400E19177 /* BitcoinCashKit.modulemap */,
 				147494CB201F9A29006D1CF8 /* Info.plist */,
@@ -509,8 +513,18 @@
 				6E20AED42112C8F9008A9810 /* BloomFilterTests.swift */,
 				6E20AED62112D417008A9810 /* MurmurHashTests.swift */,
 				6E797C442116C8A5003BEDFD /* OpCodeFactoryTests.swift */,
+				29089F0D2122BE7200E0C305 /* MockHelperTests.swift */,
 			);
 			path = BitcoinCashKitTests;
+			sourceTree = "<group>";
+		};
+		29089F112122D07500E0C305 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				29089F0B2122B9CD00E0C305 /* MockHelper.swift */,
+				29089F0F2122D06300E0C305 /* MockKey.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		2914BE4A211BCAAE00B349CB /* Lock Time */ = {
@@ -1002,6 +1016,7 @@
 				0C1DE15B211D819A00FE8E43 /* OP_DEPTH.swift in Sources */,
 				0C1DD41221181B41004BA8A8 /* OP_BOOLOR.swift in Sources */,
 				294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */,
+				29089F102122D06300E0C305 /* MockKey.swift in Sources */,
 				290880152109708000C79379 /* OpCodeProtocol.swift in Sources */,
 				14839A91202FE69300A6CB34 /* RejectMessage.swift in Sources */,
 				14839AA5202FE7A100A6CB34 /* ByteStream.swift in Sources */,
@@ -1067,6 +1082,7 @@
 				CFA290702101CDCA001A1BAB /* ScriptTests.swift in Sources */,
 				6E20AECF2112C66C008A9810 /* HDKeyChainTests.swift in Sources */,
 				CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */,
+				29089F0E2122BE7200E0C305 /* MockHelperTests.swift in Sources */,
 				6E20AECD2112C559008A9810 /* CashAddrTests.swift in Sources */,
 				29F5D1E02110495F007DA3BF /* OpCodeTests.swift in Sources */,
 				6E20AEC92112C31A008A9810 /* LegacyAddressTests.swift in Sources */,

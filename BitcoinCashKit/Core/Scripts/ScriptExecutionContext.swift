@@ -177,7 +177,7 @@ public class ScriptExecutionContext {
 
 extension ScriptExecutionContext: CustomStringConvertible {
     public var description: String {
-        var desc: String = "OpCount: \(opCount) \ncurrent stack: \n"
+        var desc: String = ""
         for data in stack.reversed() {
             let hex = data.hex
             var contents: String = "0x" + hex
