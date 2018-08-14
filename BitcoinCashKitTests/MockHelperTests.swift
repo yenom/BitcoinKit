@@ -61,44 +61,42 @@ class MockHelperTests: XCTestCase {
 
     struct MultisigUnlockScriptBuilder: SingleKeyScriptBuilder {
         func build(with sigWithHashType: Data, key: MockKey) -> Script {
-            let unlockScript: Script = Script()
-            try! unlockScript.appendData(sigWithHashType)
-            try! unlockScript.appendData(key.pubkey.raw)
-            try! unlockScript.append(.OP_FALSE)
-            try! unlockScript.append(.OP_TRUE)
-            return unlockScript
+            return try! Script()
+                .appendData(sigWithHashType)
+                .appendData(key.pubkey.raw)
+                .append(.OP_FALSE)
+                .append(.OP_TRUE)
         }
     }
     
     var customMultisigLockScript: Script {
-        let lockScript = Script()
-        // stack: sig pub bool2 bool1
-        try! lockScript.append(.OP_IF)
-            try! lockScript.append(.OP_IF)
-                try! lockScript.append(.OP_DUP)
-                try! lockScript.append(.OP_HASH160)
-                try! lockScript.appendData(MockKey.keyA.pubkeyHash)
-            try! lockScript.append(.OP_ELSE)
-                try! lockScript.append(.OP_DUP)
-                try! lockScript.append(.OP_HASH160)
-                try! lockScript.appendData(MockKey.keyB.pubkeyHash)
-            try! lockScript.append(.OP_ENDIF)
-        try! lockScript.append(.OP_ELSE)
-            try! lockScript.append(.OP_IF)
-                try! lockScript.append(.OP_DUP)
-                try! lockScript.append(.OP_HASH160)
-                try! lockScript.appendData(MockKey.keyC.pubkeyHash)
-            try! lockScript.append(.OP_ELSE)
-                try! lockScript.append(.OP_DUP)
-                try! lockScript.append(.OP_HASH160)
-                try! lockScript.appendData(MockKey.keyD.pubkeyHash)
-            try! lockScript.append(.OP_ENDIF)
-        try! lockScript.append(.OP_ENDIF)
-        
-        // stack: sig pub pubkeyhash pubkeyhash
-        try! lockScript.append(.OP_EQUALVERIFY)
-        // stack: sig pub
-        try! lockScript.append(.OP_CHECKSIG)
+        let lockScript = try! Script()
+            // stack: sig pub bool2 bool1
+            .append(.OP_IF)
+                .append(.OP_IF)
+                    .append(.OP_DUP)
+                    .append(.OP_HASH160)
+                    .appendData(MockKey.keyA.pubkeyHash)
+                .append(.OP_ELSE)
+                    .append(.OP_DUP)
+                    .append(.OP_HASH160)
+                    .appendData(MockKey.keyB.pubkeyHash)
+                .append(.OP_ENDIF)
+            .append(.OP_ELSE)
+                .append(.OP_IF)
+                    .append(.OP_DUP)
+                    .append(.OP_HASH160)
+                    .appendData(MockKey.keyC.pubkeyHash)
+                .append(.OP_ELSE)
+                    .append(.OP_DUP)
+                    .append(.OP_HASH160)
+                    .appendData(MockKey.keyD.pubkeyHash)
+                .append(.OP_ENDIF)
+            .append(.OP_ENDIF)
+            // stack: sig pub pubkeyhash pubkeyhash
+            .append(.OP_EQUALVERIFY)
+            // stack: sig pub
+            .append(.OP_CHECKSIG)
         return lockScript
     }
 }
