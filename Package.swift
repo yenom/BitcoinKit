@@ -2,9 +2,9 @@
 import PackageDescription
 
 let package = Package(
-    name: "BitcoinCashKit",
+    name: "BitcoinKit",
     products: [
-        .library(name: "BitcoinCashKit", targets: ["BitcoinCashKit"])
+        .library(name: "BitcoinKit", targets: ["BitcoinKit"])
     ],
     dependencies: [
         .package(url: "https://github.com/vapor-community/copenssl.git", .exact("1.0.0-rc.1")),
@@ -13,15 +13,15 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "BitcoinCashKit",
-            dependencies: ["BitcoinCashKitPrivate", "secp256k1", "Random"]
+            name: "BitcoinKit",
+            dependencies: ["BitcoinKitPrivate", "secp256k1", "Random"]
         ),
         .target(
-            name: "BitcoinCashKitPrivate"
+            name: "BitcoinKitPrivate"
         ),
         .testTarget(
-            name: "BitcoinCashKitTests",
-            dependencies: ["BitcoinCashKit"]
+            name: "BitcoinKitTests",
+            dependencies: ["BitcoinKit"]
         )
     ],
     swiftLanguageVersions: [4]
