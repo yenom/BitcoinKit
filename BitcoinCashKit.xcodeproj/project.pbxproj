@@ -244,7 +244,7 @@
 		0C1DE170211E7DE300FE8E43 /* OP_2OVER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2OVER.swift; sourceTree = "<group>"; };
 		0C1DE172211E7E7C00FE8E43 /* OP_2ROT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2ROT.swift; sourceTree = "<group>"; };
 		0C1DE174211E816E00FE8E43 /* OP_2SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_2SWAP.swift; sourceTree = "<group>"; };
-		0C1DE179211E848500FE8E43 /* OP_CAT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OP_CAT.swift; path = BitcoinCashKit/Core/Scripts/OP_CODE/Stack/OP_CAT.swift; sourceTree = SOURCE_ROOT; };
+		0C1DE179211E848500FE8E43 /* OP_CAT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OP_CAT.swift; path = Sources/BitcoinCashKit/Core/Scripts/OP_CODE/Splice/OP_CAT.swift; sourceTree = SOURCE_ROOT; };
 		0C1DE17B211E8A0100FE8E43 /* OP_SPLIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SPLIT.swift; sourceTree = "<group>"; };
 		0C1DE17F211EACE800FE8E43 /* OP_NUM2BIN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OP_NUM2BIN.swift; sourceTree = "<group>"; };
 		0C1DE183211EB32D00FE8E43 /* OP_SIZE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SIZE.swift; sourceTree = "<group>"; };
