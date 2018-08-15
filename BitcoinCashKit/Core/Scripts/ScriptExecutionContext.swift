@@ -74,7 +74,6 @@ public class ScriptExecutionContext {
     }
 
     public func shouldVerifyP2SH() -> Bool {
-        print(NSTimeIntervalSince1970, blockTimeStamp, BTC_BIP16_TIMESTAMP)
         return blockTimeStamp >= BTC_BIP16_TIMESTAMP
     }
 

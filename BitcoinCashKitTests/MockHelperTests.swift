@@ -60,7 +60,7 @@ class MockHelperTests: XCTestCase {
         succeed(with: .keyC)
         // Fail with keyD
         fail(with: .keyD)
-    }
+    }
 
     // p2sh multisig
     func testP2SHMultisig() {
@@ -156,24 +156,26 @@ class MockHelperTests: XCTestCase {
     // custom multisig unlock
     struct CustomMultisigUnlockScriptBuilder: SingleKeyScriptBuilder {
         func build(with sigWithHashType: Data, key: MockKey) -> Script {
-            if key == MockKey.keyA {
+            switch key {
+            case .keyA:
                 return try! Script()
                     .appendData(sigWithHashType)
                     .appendData(key.pubkey.raw)
                     .append(.OP_TRUE)
                     .append(.OP_TRUE)
-            } else if key == MockKey.keyB {
-                return try! Script()
-                    .appendData(sigWithHashType)
-                    .appendData(key.pubkey.raw)
-                    .append(.OP_FALSE)
-                    .append(.OP_TRUE)
-            } else if key == MockKey.keyC {
+            case .keyB:
                 return try! Script()
                     .appendData(sigWithHashType)
                     .appendData(key.pubkey.raw)
                     .append(.OP_FALSE)
-            } else {
+                    .append(.OP_TRUE)
+            case .keyC:
+                return try! Script()
+                    .appendData(sigWithHashType)
+                    .appendData(key.pubkey.raw)
+                    .append(.OP_FALSE)
+            default:
+                // unlock script for keyA
                 return try! Script()
                     .appendData(sigWithHashType)
                     .appendData(key.pubkey.raw)
