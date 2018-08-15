@@ -1,5 +1,5 @@
 //
-//  OP_DUP.swift
+//  OP_SIZE.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
 //
@@ -24,16 +24,16 @@
 
 import Foundation
 
-// Duplicates the top stack item.
-public struct OpDuplicate: OpCodeProtocol {
-    public var value: UInt8 { return 0x76 }
-    public var name: String { return "OP_DUP" }
+// Pushes the string length of the top element of the stack (without popping it).
+public struct OpSize: OpCodeProtocol {
+    public var value: UInt8 { return 0x82 }
+    public var name: String { return "OP_SIZE" }
 
-    // input : x
-    // output : x x
+    // input : in
+    // output : in size
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(1)
         let x: Data = context.data(at: -1)
-        try context.pushToStack(x)
+        try context.pushToStack(Int32(x.count))
     }
 }

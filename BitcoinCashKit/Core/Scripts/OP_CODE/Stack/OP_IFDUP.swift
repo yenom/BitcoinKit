@@ -1,5 +1,5 @@
 //
-//  OP_DUP.swift
+//  OP_IFDUP.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
 //
@@ -24,16 +24,17 @@
 
 import Foundation
 
-// Duplicates the top stack item.
-public struct OpDuplicate: OpCodeProtocol {
-    public var value: UInt8 { return 0x76 }
-    public var name: String { return "OP_DUP" }
+// If the top stack value is not 0, duplicate it.
+public struct OpIfDup: OpCodeProtocol {
+    public var value: UInt8 { return 0x73 }
+    public var name: String { return "OP_IFDUP" }
 
     // input : x
-    // output : x x
+    // output : x / x x    
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(1)
-        let x: Data = context.data(at: -1)
-        try context.pushToStack(x)
+        if context.bool(at: -1) {
+            context.stack.append(context.data(at: -1))
+        }
     }
 }

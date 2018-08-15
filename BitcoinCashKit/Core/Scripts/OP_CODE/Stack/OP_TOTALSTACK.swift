@@ -1,5 +1,5 @@
 //
-//  OP_DUP.swift
+//  OP_TOALTSTACK.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
 //
@@ -24,16 +24,16 @@
 
 import Foundation
 
-// Duplicates the top stack item.
-public struct OpDuplicate: OpCodeProtocol {
-    public var value: UInt8 { return 0x76 }
-    public var name: String { return "OP_DUP" }
+// Puts the input onto the top of the alt stack. Removes it from the main stack.
+public struct OpToAltStack: OpCodeProtocol {
+    public var value: UInt8 { return 0x6b }
+    public var name: String { return "OP_TOALTSTACK" }
 
     // input : x
-    // output : x x
+    // output : (alt)x
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(1)
-        let x: Data = context.data(at: -1)
-        try context.pushToStack(x)
+        let x: Data = context.stack.removeLast()
+        context.altStack.append(x)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  OP_DUP.swift
+//  OP_BIN2NUM.swift
 //
 //  Copyright © 2018 BitcoinCashKit developers
 //
@@ -24,16 +24,9 @@
 
 import Foundation
 
-// Duplicates the top stack item.
-public struct OpDuplicate: OpCodeProtocol {
-    public var value: UInt8 { return 0x76 }
-    public var name: String { return "OP_DUP" }
+// convert byte sequence x into a numeric value
+public struct OpBin2Num: OpCodeProtocol {
+    public var value: UInt8 { return 0x81 }
+    public var name: String { return "OP_BIN2NUM" }
 
-    // input : x
-    // output : x x
-    public func mainProcess(_ context: ScriptExecutionContext) throws {
-        try context.assertStackHeightGreaterThanOrEqual(1)
-        let x: Data = context.data(at: -1)
-        try context.pushToStack(x)
-    }
 }

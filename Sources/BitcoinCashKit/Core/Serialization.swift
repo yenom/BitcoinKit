@@ -118,7 +118,7 @@ extension Data {
 }
 
 extension Data {
-    init?(hex: String) {
+    public init?(hex: String) {
         let len = hex.count / 2
         var data = Data(capacity: len)
         for i in 0..<len {
@@ -134,7 +134,7 @@ extension Data {
         self = data
     }
 
-    var hex: String {
+    public var hex: String {
         return reduce("") { $0 + String(format: "%02x", $1) }
     }
 }

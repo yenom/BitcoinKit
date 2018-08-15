@@ -146,6 +146,253 @@ class OpCodeTests: XCTestCase {
         }
     }
     
+    func testOpCat() {
+        let opcode = OpCode.OP_CAT
+        
+        // maxlen_x y OP_CAT -> failure
+        // Concatenating any operand except an empty vector, including a single byte value (e.g. OP_1),
+        // onto a maximum sized array causes failure
+        do {
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            try context.pushToStack(1)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error when push value size limit exceeded.")
+        } catch OpCodeExecutionError.error("Push value size limit exceeded") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Push value size limit exceeded\"), but threw \(error)")
+        }
+        
+        // large_x large_y OP_CAT -> failure
+        // Concatenating two operands, where the total length is greater than MAX_SCRIPT_ELEMENT_SIZE, causes failure
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE / 2 + 1))
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE / 2))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error when push value size limit exceeded.")
+        } catch OpCodeExecutionError.error("Push value size limit exceeded") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Push value size limit exceeded\"), but threw \(error)")
+        }
+        
+        // OP_0 OP_0 OP_CAT -> OP_0
+        // Concatenating two empty arrays results in an empty array
+        do {
+            context.resetStack()
+            try context.pushToStack(Data())
+            try context.pushToStack(Data())
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // x OP_0 OP_CAT -> x
+        // Concatenating an empty array onto any operand results in the operand, including when len(x) = MAX_SCRIPT_ELEMENT_SIZE
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            try context.pushToStack(Data())
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // OP_0 x OP_CAT -> x
+        // Concatenating any operand onto an empty array results in the operand, including when len(x) = MAX_SCRIPT_ELEMENT_SIZE
+        do {
+            context.resetStack()
+            try context.pushToStack(Data())
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // {Ox11} {0x22, 0x33} OP_CAT -> 0x112233
+        // Concatenating two operands generates the correct result
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x11]))
+            try context.pushToStack(Data([0x22, 0x33]))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data([0x11, 0x22, 0x33]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+
+    func testOpSize() {
+        let opcode = OpCode.OP_SIZE
+        // OP_SIZE succeeds
+        do {
+            try context.pushToStack(Data([0x01]))
+            XCTAssertEqual(context.stack.count, 1)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(try context.number(at: -1), 1)
+            XCTAssertEqual(context.data(at: -2), Data([0x01]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // OP_SIZE succeeds with empty array
+        do {
+            context.resetStack()
+            try context.pushToStack(Data())
+            XCTAssertEqual(context.stack.count, 1)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(try context.number(at: -1), 0)
+            XCTAssertEqual(context.data(at: -2), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // OP_SIZE succeeds with maximum sized array case
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            XCTAssertEqual(context.stack.count, 1)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(try context.number(at: -1), Int32(BTC_MAX_SCRIPT_ELEMENT_SIZE))
+            XCTAssertEqual(context.data(at: -2), Data(count: BTC_MAX_SCRIPT_ELEMENT_SIZE))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
+    func testOpSplit() {
+        let opcode = OpCode.OP_SPLIT
+        // OP_0 0 OP_SPLIT -> OP_0 OP_0
+        // Execution of OP_SPLIT on empty array results in two empty arrays.
+        do {
+            try context.pushToStack(Data())
+            try context.pushToStack(0)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data())
+            XCTAssertEqual(context.data(at: -2), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // x 0 OP_SPLIT -> OP_0 x
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x01]))
+            try context.pushToStack(0)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data([0x01]))
+            XCTAssertEqual(context.data(at: -2), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // x len(x) OP_SPLIT -> x OP_0
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x01]))
+            try context.pushToStack(Int32(Data([0x01]).count))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data())
+            XCTAssertEqual(context.data(at: -2), Data([0x01]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // x (len(x) + 1) OP_SPLIT -> FAIL
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x01]))
+            try context.pushToStack(Int32(Data([0x01]).count + 1))
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error with Invalid OP_SPLIT range.")
+        } catch OpCodeExecutionError.error("Invalid OP_SPLIT range") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid OP_SPLIT range\"), but threw \(error)")
+        }
+        
+        // successful cases
+        // {0x00, 0x11, 0x22} 0 OP_SPLIT -> OP_0 {0x00, 0x11, 0x22}
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x00, 0x11, 0x22]))
+            try context.pushToStack(0)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data([0x00, 0x11, 0x22]))
+            XCTAssertEqual(context.data(at: -2), Data())
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // {0x00, 0x11, 0x22} 1 OP_SPLIT -> {0x00} {0x11, 0x22}
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x00, 0x11, 0x22]))
+            try context.pushToStack(1)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data([0x11, 0x22]))
+            XCTAssertEqual(context.data(at: -2), Data([0x00]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // {0x00, 0x11, 0x22} 2 OP_SPLIT -> {0x00, 0x11} {0x22}
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x00, 0x11, 0x22]))
+            try context.pushToStack(2)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data([0x22]))
+            XCTAssertEqual(context.data(at: -2), Data([0x00, 0x11]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+        
+        // {0x00, 0x11, 0x22} 3 OP_SPLIT -> {0x00, 0x11, 0x22} OP_0
+        do {
+            context.resetStack()
+            try context.pushToStack(Data([0x00, 0x11, 0x22]))
+            try context.pushToStack(3)
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 2)
+            XCTAssertEqual(context.data(at: -1), Data())
+            XCTAssertEqual(context.data(at: -2), Data([0x00, 0x11, 0x22]))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
     func testOpEqualVerify() {
         let opcode = OpCode.OP_EQUALVERIFY
         // OP_EQUALVERIFY success
@@ -166,7 +413,7 @@ class OpCodeTests: XCTestCase {
             try context.pushToStack(3)
             XCTAssertEqual(context.stack.count, 2)
             try opcode.execute(context)
-        } catch OpCodeExecutionError.error("OP_CHECKSIGVERIFY failed.") {
+        } catch OpCodeExecutionError.error("OP_EQUALVERIFY failed.") {
             // success
             XCTAssertEqual(context.stack.count, 1)
         } catch let error {
@@ -227,6 +474,178 @@ class OpCodeTests: XCTestCase {
             // do nothing equal success
         } catch let error {
             fail(with: opcode, error: error)
+        }
+    }
+
+    func testOpCheckSigBTC() {
+        let opcode = OpCode.OP_CHECKSIG
+
+        // BTC Transaction in testnet3
+        // https://api.blockcypher.com/v1/btc/test3/txs/0189910c263c4d416d5c5c2cf70744f9f6bcd5feaf0b149b02e5d88afbe78992
+        let prevTxID = "1524ca4eeb9066b4765effd472bc9e869240c4ecb5c1ee0edb40f8b666088231"
+        let hash = Data(Data(hex: prevTxID)!.reversed())
+        let index: UInt32 = 1
+        let outpoint = TransactionOutPoint(hash: hash, index: index)
+
+        let balance: Int64 = 169012961
+
+        let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
+
+        let fromPublicKey = privateKey.publicKey()
+
+        let subScript = Data(hex: "76a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac")!
+        let inputForSign = TransactionInput(previousOutput: outpoint, signatureScript: subScript, sequence: UInt32.max)
+        let unsignedTx = Transaction(version: 1, inputs: [inputForSign], outputs: [], lockTime: 0)
+
+        // sign
+        let hashType: SighashType = SighashType.BTC.ALL
+        let utxoToSign = TransactionOutput(value: balance, lockingScript: subScript)
+        let _txHash = unsignedTx.signatureHash(for: utxoToSign, inputIndex: 0, hashType: hashType)
+        guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
+            XCTFail("Failed to sign tx.")
+            return
+        }
+
+        let sigData: Data = signature + UInt8(hashType)
+        let pubkeyData: Data = fromPublicKey.raw
+
+        // OP_CHECKSIG success
+        do {
+            context = ScriptExecutionContext(
+                transaction: unsignedTx,
+                utxoToVerify: utxoToSign,
+                inputIndex: 0)
+            try context.pushToStack(sigData) // sigData
+            try context.pushToStack(pubkeyData) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.bool(at: -1), true)
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+
+        // OP_CHECKSIG success(invalid signature)
+        do {
+            context = ScriptExecutionContext(
+                transaction: Transaction(
+                    version: 1,
+                    inputs: [TransactionInput(
+                        previousOutput: TransactionOutPoint(hash: Data(), index: 0),
+                        signatureScript: Data(),
+                        sequence: 0)],
+                    outputs: [],
+                    lockTime: 0),
+                utxoToVerify: utxoToSign,
+                inputIndex: 0)
+            try context.pushToStack(sigData) // sigData
+            try context.pushToStack(pubkeyData) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.bool(at: -1), false)
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+
+        // OP_CHECKSIG fail
+        do {
+            context = ScriptExecutionContext()
+            XCTAssertEqual(context.stack.count, 0)
+            try context.pushToStack("".data(using: .utf8)!) // sigData
+            try context.pushToStack("".data(using: .utf8)!) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+        } catch OpCodeExecutionError.error("The transaction or the utxo to verify is not set.") {
+            // do nothing equal success
+        } catch let error {
+            XCTFail("Shoud throw OpCodeExecutionError.error(\"The transaction or the utxo to verify is not set.\", but threw \(error)")
+        }
+    }
+
+    func testOpCheckSigBCH() {
+        let opcode = OpCode.OP_CHECKSIG
+
+        // BCH Transaction
+        // https://blockchair.com/bitcoin-cash/transaction/a793605eaed2c08c3f4c7906dd1526238ea04e9a16c785d46988c8cbd56f5088
+        let prevTxID = "3b3ffd3f597cc114c14b3655f61da60258e2ff69388cd2e463c60504a0d98f78"
+        let hash = Data(Data(hex: prevTxID)!.reversed())
+        let index: UInt32 = 1
+        let outpoint = TransactionOutPoint(hash: hash, index: index)
+
+        let balance: Int64 = 2047900000
+
+        let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
+
+        let fromPublicKey = privateKey.publicKey()
+
+        let subScript = Data(hex: "30440220356c7a8d55d4a63b1eab9cf00886cb66fe114d31f59faf242295e0e6e2aec9e5022052b6c4ee09b6564edf5a6d13f386e43ca6f9b4af19e9fefea413ac28d5b8d2df41036b7b02cc5592256d22e45c2c70c41b34e962cc370bcf672cea6f476e1db318c8")!
+        let inputForSign = TransactionInput(previousOutput: outpoint, signatureScript: subScript, sequence: UInt32.max)
+        let unsignedTx = Transaction(version: 1, inputs: [inputForSign], outputs: [], lockTime: 0)
+
+        // sign
+        let hashType: SighashType = SighashType.BCH.ALL
+        let utxoToSign = TransactionOutput(value: balance, lockingScript: subScript)
+        let _txHash = unsignedTx.signatureHash(for: utxoToSign, inputIndex: 0, hashType: hashType)
+        guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
+            XCTFail("Failed to sign tx.")
+            return
+        }
+
+        let sigData: Data = signature + UInt8(hashType)
+        let pubkeyData: Data = fromPublicKey.raw
+
+        // OP_CHECKSIG success
+        do {
+            context = ScriptExecutionContext(
+                transaction: unsignedTx,
+                utxoToVerify: utxoToSign,
+                inputIndex: 0)
+            try context.pushToStack(sigData) // sigData
+            try context.pushToStack(pubkeyData) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.bool(at: -1), true)
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+
+        // OP_CHECKSIG success(invalid signature)
+        do {
+            context = ScriptExecutionContext(
+                transaction: Transaction(
+                    version: 1,
+                    inputs: [TransactionInput(
+                        previousOutput: TransactionOutPoint(hash: Data(), index: 0),
+                        signatureScript: Data(),
+                        sequence: 0)],
+                    outputs: [],
+                    lockTime: 0),
+                utxoToVerify: utxoToSign,
+                inputIndex: 0)
+            try context.pushToStack(sigData) // sigData
+            try context.pushToStack(pubkeyData) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.bool(at: -1), false)
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+
+        // OP_CHECKSIG fail
+        do {
+            context = ScriptExecutionContext()
+            XCTAssertEqual(context.stack.count, 0)
+            try context.pushToStack("".data(using: .utf8)!) // sigData
+            try context.pushToStack("".data(using: .utf8)!) // pubkeyData
+            XCTAssertEqual(context.stack.count, 2)
+            try opcode.execute(context)
+        } catch OpCodeExecutionError.error("The transaction or the utxo to verify is not set.") {
+            // do nothing equal success
+        } catch let error {
+            XCTFail("Shoud throw OpCodeExecutionError.error(\"The transaction or the utxo to verify is not set.\", but threw \(error)")
         }
     }
 

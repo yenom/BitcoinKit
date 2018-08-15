@@ -37,11 +37,6 @@ extension OpCodeProtocol {
         return true
     }
     private func preprocess(_ context: ScriptExecutionContext) throws {
-        if context.verbose {
-            print("[pre execution : \(name)(\(value))]")
-            print(context)
-        }
-
         if value > OpCode.OP_16 {
             try context.incrementOpCount()
         }
@@ -55,23 +50,27 @@ extension OpCodeProtocol {
         }
     }
 
-    private func postProcess(_ context: ScriptExecutionContext) {
-        if context.verbose {
-            print("[post execution : \(name)(\(value))]")
-            print(context)
-        }
-    }
-
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         throw OpCodeExecutionError.notImplemented("[\(name)(\(value))]")
     }
 
     public func execute(_ context: ScriptExecutionContext) throws {
         try preprocess(context)
-        if context.shouldExecute || (OpCode.OP_IF <= self && self <= OpCode.OP_ENDIF) {
-            try mainProcess(context)
+        guard context.shouldExecute || (OpCode.OP_IF <= self && self <= OpCode.OP_ENDIF) else {
+            if context.verbose {
+                print("[SKIP execution :  \(name)(\(value))]\n" + String(repeating: "-", count: 100))
+            }
+            return
         }
-        postProcess(context)
+        if context.verbose {
+            print("OpCount : \(context.opCount)\n[pre execution : \(name)(\(value))]\n\(context)")
+        }
+
+        try mainProcess(context)
+
+        if context.verbose {
+            print("[post execution : \(name)(\(value))]\n\(context)\n" + String(repeating: "-", count: 100))
+        }
     }
 }
 
