@@ -64,6 +64,10 @@ public struct ScriptMachine {
         // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
         try run(unlockScript, context: context)
 
+        // Make a copy of the stack if we have P2SH script.
+        // We will run deserialized P2SH script on this stack.
+        let stackForP2SH: [Data] = context.stack
+
         // Second step: run output script to see that the input satisfies all conditions laid in the output script.
         try run(lockScript, context: context)
 
@@ -82,7 +86,7 @@ public struct ScriptMachine {
             guard unlockScript.isDataOnly else {
                 throw ScriptMachineError.error("Input script for P2SH spending must be literals-only.")
             }
-            let deserializedLockScript = try context.deserializeP2SHLockScript()
+            let deserializedLockScript = try context.deserializeP2SHLockScript(stackForP2SH: stackForP2SH)
             try run(deserializedLockScript, context: context)
 
             // We need to have something on stack
@@ -94,6 +98,9 @@ public struct ScriptMachine {
             guard context.bool(at: -1) else {
                 throw ScriptMachineError.error("Last item on the stack is false.")
             }
+        } else {
+            print("This is not p2sh")
+            print(context.shouldVerifyP2SH(), lockScript.isPayToScriptHashScript)
         }
 
         // If nothing failed, validation passed.

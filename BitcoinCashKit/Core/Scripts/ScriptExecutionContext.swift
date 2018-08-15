@@ -49,7 +49,7 @@ public class ScriptExecutionContext {
 
     // A timestamp of the current block. Default is current timestamp.
     // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
-    public var blockTimeStamp: UInt32 = UInt32(NSTimeIntervalSince1970)
+    public var blockTimeStamp: UInt32 = UInt32(Date().timeIntervalSince1970)
 
     // Constants
     private let blobFalse: Data = Data()
@@ -74,6 +74,7 @@ public class ScriptExecutionContext {
     }
 
     public func shouldVerifyP2SH() -> Bool {
+        print(NSTimeIntervalSince1970, blockTimeStamp, BTC_BIP16_TIMESTAMP)
         return blockTimeStamp >= BTC_BIP16_TIMESTAMP
     }
 
@@ -123,10 +124,8 @@ public class ScriptExecutionContext {
         }
     }
 
-    public func deserializeP2SHLockScript() throws -> Script {
-        // Make a copy of the stack if we have P2SH script.
-        // We will run deserialized P2SH script on this stack.
-        var stackForP2SH: [Data] = stack
+    public func deserializeP2SHLockScript(stackForP2SH: [Data]) throws -> Script {
+        var stackForP2SH: [Data] = stackForP2SH
 
         // Instantiate the script from the last data on the stack.
         guard let last = stackForP2SH.last, let deserializedLockScript = Script(data: last) else {

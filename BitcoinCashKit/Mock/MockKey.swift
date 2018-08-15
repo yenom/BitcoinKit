@@ -62,3 +62,9 @@ extension MockKey: CustomStringConvertible {
         }
     }
 }
+
+extension MockKey: Equatable {
+    public static func == (lhs: MockKey, rhs: MockKey) -> Bool {
+        return lhs.wif == rhs.wif
+    }
+}

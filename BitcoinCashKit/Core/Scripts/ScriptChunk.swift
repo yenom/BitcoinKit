@@ -58,7 +58,7 @@ extension ScriptChunk {
         return OpCodeFactory.get(with: opcodeValue)
     }
 
-    private var opcodeValue: UInt8 {
+    public var opcodeValue: UInt8 {
         return UInt8(scriptData[range.lowerBound])
     }
 

@@ -299,7 +299,7 @@ public class Script {
 
     // Include both PUSHDATA ops and OP_0..OP_16 literals.
     public var isDataOnly: Bool {
-        return !chunks.contains { $0.opCode > OpCode.OP_16 }
+        return !chunks.contains { $0.opcodeValue > OpCode.OP_16 }
     }
 
     public var scriptChunks: [ScriptChunk] {
