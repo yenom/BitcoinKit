@@ -1,7 +1,7 @@
 //
 //  OP_INVERT.swift
 //
-//  Copyright © 2018 BitcoinCashKit developers
+//  Copyright © 2018 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,10 @@ public struct OpInvert: OpCodeProtocol {
     // input : in
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
+        try context.assertStackHeightGreaterThanOrEqual(1)
 
+        let x = context.stack.removeLast()
+        let output: Data = Data(from: x.map { ~$0 })
+        context.stack.append(output)
     }
 }
