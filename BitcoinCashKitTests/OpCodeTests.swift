@@ -405,7 +405,7 @@ class OpCodeTests: XCTestCase {
         } catch OpCodeExecutionError.error("Invalid operand size") {
             // success
         } catch let error {
-            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid OP_SPLIT range\"), but threw \(error)")
+            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid operand size\"), but threw \(error)")
         }
         
         // x1 x2 OP_AND -> x1 & x2. Check valid results.
@@ -416,6 +416,34 @@ class OpCodeTests: XCTestCase {
             try opcode.execute(context)
             XCTAssertEqual(context.stack.count, 1)
             XCTAssertEqual(context.data(at: -1), Data(from: 0b00111100))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
+    func testOpOr() {
+        let opcode = OpCode.OP_OR
+        
+        // x1 x2 OP_OR -> failure, where len(x1) != len(x2). The two operands must be the same size.
+        do {
+            try context.pushToStack(Data(count: 1))
+            try context.pushToStack(Data(count: 3))
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error with Invalid operand size.")
+        } catch OpCodeExecutionError.error("Invalid operand size") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid operand size\"), but threw \(error)")
+        }
+        
+        // x1 x2 OP_OR -> x1 | x2. Check valid results.
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(from: 0b10110010))
+            try context.pushToStack(Data(from: 0b01011110))
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(from: 0b11111110))
         } catch let error {
             fail(with: opcode, error: error)
         }
