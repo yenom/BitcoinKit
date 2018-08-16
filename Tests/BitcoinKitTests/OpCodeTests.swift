@@ -393,6 +393,102 @@ class OpCodeTests: XCTestCase {
         }
     }
     
+    func testOpInvert() {
+        let opcode = OpCode.OP_INVERT
+        
+        do {
+            try opcode.execute(context)
+        } catch OpCodeExecutionError.disabled {
+            // success
+        } catch let error {
+            XCTFail("Shoud throw OpCodeExecutionError.disabled, but threw \(error)")
+        }
+    }
+    
+    func testOpAnd() {
+        let opcode = OpCode.OP_AND
+        
+        // x1 x2 OP_AND -> failure, where len(x1) != len(x2). The two operands must be the same size.
+        do {
+            try context.pushToStack(Data(count: 1))
+            try context.pushToStack(Data(count: 3))
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error with Invalid operand size.")
+        } catch OpCodeExecutionError.error("Invalid operand size") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid operand size\"), but threw \(error)")
+        }
+        
+        // x1 x2 OP_AND -> x1 & x2. Check valid results.
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(from: 0b11111100))
+            try context.pushToStack(Data(from: 0b00111111))
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(from: 0b00111100))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
+    func testOpOr() {
+        let opcode = OpCode.OP_OR
+        
+        // x1 x2 OP_OR -> failure, where len(x1) != len(x2). The two operands must be the same size.
+        do {
+            try context.pushToStack(Data(count: 1))
+            try context.pushToStack(Data(count: 3))
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error with Invalid operand size.")
+        } catch OpCodeExecutionError.error("Invalid operand size") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid operand size\"), but threw \(error)")
+        }
+        
+        // x1 x2 OP_OR -> x1 | x2. Check valid results.
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(from: 0b10110010))
+            try context.pushToStack(Data(from: 0b01011110))
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(from: 0b11111110))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
+    func testOpXor() {
+        let opcode = OpCode.OP_XOR
+        
+        // x1 x2 OP_XOR -> failure, where len(x1) != len(x2). The two operands must be the same size.
+        do {
+            try context.pushToStack(Data(count: 1))
+            try context.pushToStack(Data(count: 3))
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error with Invalid operand size.")
+        } catch OpCodeExecutionError.error("Invalid operand size") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid operand size\"), but threw \(error)")
+        }
+        
+        // x1 x2 OP_XOR -> x1 xor x2. Check valid results.
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(from: 0b00010100))
+            try context.pushToStack(Data(from: 0b00000101))
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(from: 0b00010001))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
     func testOpEqualVerify() {
         let opcode = OpCode.OP_EQUALVERIFY
         // OP_EQUALVERIFY success

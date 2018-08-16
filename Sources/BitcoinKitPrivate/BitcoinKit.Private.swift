@@ -10,6 +10,15 @@ import Foundation
 import COpenSSL
 
 public class _Hash {
+    public static func sha1(_ data: Data) -> Data {
+        var result = [UInt8](repeating: 0, count: Int(SHA_DIGEST_LENGTH))
+        data.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
+            SHA1(ptr, data.count, &result)
+            return
+        }
+        return Data(result)
+    }
+    
     public static func sha256(_ data: Data) -> Data {
         var result = [UInt8](repeating: 0, count: Int(SHA256_DIGEST_LENGTH))
         data.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
