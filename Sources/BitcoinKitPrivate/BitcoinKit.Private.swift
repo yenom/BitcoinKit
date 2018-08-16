@@ -11,7 +11,7 @@ import COpenSSL
 
 public class _Hash {
     public static func sha1(_ data: Data) -> Data {
-        var result = [UInt8](repeating: 0, count: Int(SHA1_DIGEST_LENGTH))
+        var result = [UInt8](repeating: 0, count: Int(SHA_DIGEST_LENGTH))
         data.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
             SHA1(ptr, data.count, &result)
             return
