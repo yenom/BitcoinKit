@@ -45,8 +45,8 @@ final public class Wallet {
 
     public func serialized() -> Data {
         var data = Data()
-        data = privateKey.raw
-        data = publicKey.raw
+        data += privateKey.raw
+        data += publicKey.raw
         return data
     }
 }
