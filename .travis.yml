@@ -7,6 +7,7 @@ script:
 - xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration "$CONFIGURATION"
   -sdk "$SDK" -destination "$DESTINATION" -derivedDataPath build
   -enableCodeCoverage YES ENABLE_TESTABILITY=YES "$ACTION"
+- swift test
 after_success:
 - ruby scripts/coverage.rb "$SCHEME"
 - bash <(curl -s https://codecov.io/bash) -f 'coverage.txt' -y '.codecov.yml'
@@ -17,8 +18,8 @@ env:
   global:
   - LANG=en_US.UTF-8
   - LC_ALL=en_US.UTF-8
-  - WORKSPACE=BitcoinCashKit.xcworkspace
-  - SCHEME=BitcoinCashKit
+  - WORKSPACE=BitcoinKit.xcworkspace
+  - SCHEME=BitcoinKit
   - DESTINATION='name=iPhone 7,OS=11.2'
 branches:
   only:

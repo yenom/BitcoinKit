@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import BitcoinCashKit
+import BitcoinKit
 
 class APIClient {
 

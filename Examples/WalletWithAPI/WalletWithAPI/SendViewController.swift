@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import BitcoinCashKit
+import BitcoinKit
 
 class SendViewController: UIViewController {
 

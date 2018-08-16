@@ -1,14 +1,14 @@
-![BitcoinCashKit: Let's Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/43385824-be9ac974-941c-11e8-835c-39188c4ed7c9.jpg)
+![BitcoinKit: Let's Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/43385824-be9ac974-941c-11e8-835c-39188c4ed7c9.jpg)
 
-[![CI Status](http://img.shields.io/travis/BitcoinCashKit/BitcoinCashKit.svg)](https://travis-ci.org/BitcoinCashKit/BitcoinCashKit)
-[![codecov](https://codecov.io/gh/BitcoinCashKit/BitcoinCashKit/branch/master/graph/badge.svg)](https://codecov.io/gh/BitcoinCashKit/BitcoinCashKit)
+[![CI Status](http://img.shields.io/travis/BitcoinKit/BitcoinKit.svg)](https://travis-ci.org/BitcoinKit/BitcoinKit)
+[![codecov](https://codecov.io/gh/BitcoinKit/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/BitcoinKit/BitcoinKit)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Version](https://img.shields.io/cocoapods/v/BitcoinCashKit.svg)](http://cocoadocs.org/docsets/BitcoinCashKit)
-[![Platform](https://img.shields.io/cocoapods/p/BitcoinCashKit.svg)](http://cocoadocs.org/docsets/BitcoinCashKit)
+[![Version](https://img.shields.io/cocoapods/v/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
+[![Platform](https://img.shields.io/cocoapods/p/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
 
-### Welcome to BitcoinCashKit
+### Welcome to BitcoinKit
 
-The BitcoinCashKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system.
+The BitcoinKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system.
 
 It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.
 
@@ -128,9 +128,9 @@ Installation
 $ gem install cocoapods
 ```
 
-> CocoaPods 1.5.0+ is required to build BitcoinCashKit.
+> CocoaPods 1.5.0+ is required to build BitcoinKit.
 
-To integrate BitcoinCashKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
+To integrate BitcoinKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
@@ -138,12 +138,11 @@ platform :ios, '10.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'BitcoinCashKit'
+    pod 'BitcoinKit'
 end
 ```
 
 Then, run the following command:
-
 ```bash
 $ pod install
 ```
@@ -159,17 +158,32 @@ $ brew update
 $ brew install carthage
 ```
 
-To integrate BitcoinCashKit into your Xcode project using Carthage, specify it in your `Cartfile`:
+To integrate BitcoinKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "BitcoinCashKit/BitcoinCashKit"
+github "BitcoinKit/BitcoinKit"
 ```
 
-Run `carthage update` to build the framework and drag the built `BitcoinCashKit.framework` into your Xcode project.
+Run `carthage update` to build the framework and drag the built `BitcoinKit.framework` into your Xcode project.
+
+
+### Swift Package Manager
+
+BitcoinKit is available through [Swift Package Manager](https://github.com/apple/swift-package-manager). To install
+it, simply add the following lines to dependencies of your Package.swift:
+
+```swift
+.package(url: "https://github.com/kishikawakatsumi/BitcoinKit.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Note that following data types and features are currently not supported on Linux platform.  
+
+* `Peer` and `PeerGroup`
+* SQLite based BlockStore
 
 Contribute
 ----------
-Contributions to BitcoinCashKit are welcome and encouraged!
+Contributions to BitcoinKit are welcome and encouraged!
 Feel free to open issues, drop us pull requests.
 
 ## Authors & Maintainers
@@ -179,4 +193,4 @@ Feel free to open issues, drop us pull requests.
 License
 -------
 
-BitcoinCashKit is available under the MIT license. See the LICENSE file for more info.
+BitcoinKit is available under the MIT license. See the LICENSE file for more info.

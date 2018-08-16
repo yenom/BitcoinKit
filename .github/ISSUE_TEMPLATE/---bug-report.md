@@ -19,6 +19,6 @@ Please paste the **developer tool** open (console tab) when you report a bug.
 
 # Environment
 
-- BitcoinCashKit: *?.?*
+- BitcoinKit: *?.?*
 - Xcode Version: *?.? (????)*
 - Swift Version: *?.?*

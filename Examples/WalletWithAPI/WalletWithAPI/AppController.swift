@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import BitcoinCashKit
+import BitcoinKit
 import KeychainAccess
 
 class AppController {

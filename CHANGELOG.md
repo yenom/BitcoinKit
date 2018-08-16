@@ -19,7 +19,7 @@
 - etc...
 
 ## 0.2.0 Release notes (2018-07-29)
-First Version for BitcoinCashKit!
+First Version for BitcoinKit!
 Bunch of changes included.
 
 - Cashaddr
