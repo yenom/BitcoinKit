@@ -393,6 +393,18 @@ class OpCodeTests: XCTestCase {
         }
     }
     
+    func testOpInvert() {
+        let opcode = OpCode.OP_INVERT
+        
+        do {
+            try opcode.execute(context)
+        } catch OpCodeExecutionError.disabled {
+            // success
+        } catch let error {
+            XCTFail("Shoud throw OpCodeExecutionError.disabled, but threw \(error)")
+        }
+    }
+    
     func testOpAnd() {
         let opcode = OpCode.OP_AND
         
