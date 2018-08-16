@@ -1,7 +1,7 @@
 //
 //  OP_AND.swift
 //
-//  Copyright © 2018 BitcoinCashKit developers
+//  Copyright © 2018 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,21 @@ public struct OpAnd: OpCodeProtocol {
     // input : x1 x2
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
+        try context.assertStackHeightGreaterThanOrEqual(2)
 
+        let x1 = context.stack.removeLast()
+        let x2 = context.stack.removeLast()
+
+        // Inputs must be the same size
+        let count: Int = x1.count
+        guard count == x2.count else {
+            throw OpCodeExecutionError.error("Invalid operand size")
+        }
+
+        var output = Data(count: count)
+        for i in 0..<count {
+            output[i] = x1[i] & x2[i]
+        }
+        context.stack.append(output)
     }
 }
