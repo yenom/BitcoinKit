@@ -34,15 +34,15 @@ public struct OpOr: OpCodeProtocol {
     public func mainProcess(_ context: ScriptExecutionContext) throws {
         try context.assertStackHeightGreaterThanOrEqual(2)
 
-        let x1 = context.stack.removeLast()
         let x2 = context.stack.removeLast()
+        let x1 = context.stack.removeLast()
 
         // Inputs must be the same size
-        let count: Int = x1.count
-        guard count == x2.count else {
+        guard x1.count == x2.count else {
             throw OpCodeExecutionError.error("Invalid operand size")
         }
 
+        let count: Int = x1.count
         var output = Data(count: count)
         for i in 0..<count {
             output[i] = x1[i] | x2[i]
