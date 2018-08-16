@@ -12,6 +12,24 @@
 
 * None.  
 
+## 0.2.1 Release notes (2018-07-30)
+- Fix Carthage install problem
+- Add OP_CODEs
+- Refactor ScriptMachine
+- etc...
+
+## 0.2.0 Release notes (2018-07-29)
+First Version for BitcoinKit!
+Bunch of changes included.
+
+- Cashaddr
+- Bech32
+- BIP143 based Transaction Digest Algorithm
+- Script Machine
+- UnitTests
+- Minor bug fixes
+- etc...
+
 ## 0.1.2 Release notes (2018-02-10)
 
 ##### Breaking

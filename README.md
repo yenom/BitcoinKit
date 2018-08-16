@@ -1,28 +1,47 @@
-BitcoinKit
-===========
-[![CI Status](http://img.shields.io/travis/kishikawakatsumi/BitcoinKit.svg)](https://travis-ci.org/kishikawakatsumi/BitcoinKit)
-[![codecov](https://codecov.io/gh/kishikawakatsumi/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/kishikawakatsumi/BitcoinKit)
+![BitcoinKit: Let's Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/43385824-be9ac974-941c-11e8-835c-39188c4ed7c9.jpg)
+
+[![CI Status](http://img.shields.io/travis/BitcoinKit/BitcoinKit.svg)](https://travis-ci.org/BitcoinKit/BitcoinKit)
+[![codecov](https://codecov.io/gh/BitcoinKit/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/BitcoinKit/BitcoinKit)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
 [![Platform](https://img.shields.io/cocoapods/p/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
 
-BitcoinKit implements Bitcoin protocol in Swift. It is an implementation of the Bitcoin SPV protocol written (almost) entirely in swift.
+### Welcome to BitcoinKit
 
-<img src="https://user-images.githubusercontent.com/40610/35793683-0d497b4e-0a96-11e8-8e49-2b0ce09211a4.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/40610/35793685-0da36a32-0a96-11e8-855b-ecbc3ce1474c.png" width="320px" />
+The BitcoinKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system.
+
+It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.
+
+Release notes are [here](CHANGELOG.md).
+
+<img src="https://user-images.githubusercontent.com/24402451/43367286-8753b4cc-9385-11e8-9fba-78e5283c1158.png" width="320px" />&nbsp;<img src="https://user-images.githubusercontent.com/24402451/43367196-523d5f46-9384-11e8-9fee-10e72318e67b.png" width="319px" />
 
 Features
 --------
 
-- Send/receive transactions.
-- See current balance in a wallet.
-- Encoding/decoding addresses: P2PKH, WIF format.
+- Encoding/decoding addresses: base58, Cashaddr, P2PKH, P2SH, WIF format.
 - Transaction building blocks: inputs, outputs, scripts.
 - EC keys and signatures.
 - BIP32, BIP44 hierarchical deterministic wallets.
 - BIP39 implementation.
+- SPV features **are under construction**. The following functions cannot work well sometimes.
+  - Send/receive transactions.
+  - See current balance in a wallet.
 
 Usage
 -----
+
+#### Generate addresses
+```swift
+// from Testnet Cashaddr
+let cashaddrTest = try AddressFactory.create("bchtest:pr6m7j9njldwwzlg9v7v53unlr4jkmx6eyvwc0uz5t")
+
+// from Mainnet Cashaddr
+let cashaddrMain = try AddressFactory.create("bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
+
+// from Base58 format
+let address = try AddressFactory.create("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
+```
 
 #### Creating new wallet
 
@@ -51,7 +70,7 @@ let wallet = HDWallet(seed: seed, network: .testnet)
 
 #### Key derivation
 
-```
+```swift
 let mnemonic = try Mnemonic.generate()
 let seed = Mnemonic.seed(mnemonic: mnemonic)
 
@@ -69,23 +88,22 @@ let m012prv = try! m01prv.derived(at: 2, hardened: true)
 
 #### HD Wallet Key derivation
 
-```
+```swift
 let keychain = HDKeychain(seed: seed, network: .mainnet)
 let privateKey = try! keychain.derivedKey(path: "m/44'/1'/0'/0/0")
-...
 ```
 
 #### Extended Keys
 
-```
+```swift
 let extendedKey = privateKey.extended()
 ```
 
 #### Sync blockchain
 
-```
+```swift
 let blockStore = try! SQLiteBlockStore.default()
-let blockChain = BlockChain(wallet: wallet, blockStore: blockStore)
+let blockChain = BlockChain(network: .testnet, blockStore: blockStore)
 
 let peerGroup = PeerGroup(blockChain: blockChain)
 let peerGroup.delegate = self
@@ -93,37 +111,86 @@ let peerGroup.delegate = self
 let peerGroup.start()
 ```
 
+Requirements
+------------
+- iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
+- Xcode 9.0+
+- Swift 4.1+
+
 Installation
 ------------
 
-### Carthage
-
-BitcoinKit is available through [Carthage](https://github.com/Carthage/Carthage). To install
-it, simply add the following line to your Cartfile:
-
-`github "kishikawakatsumi/BitcoinKit"`
-
 ### CocoaPods
 
-BitcoinKit is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following lines to your Podfile:
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+> CocoaPods 1.5.0+ is required to build BitcoinKit.
+
+To integrate BitcoinKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
 use_frameworks!
-pod 'BitcoinKit'
+
+target '<Your Target Name>' do
+    pod 'BitcoinKit'
+end
 ```
+
+Then, run the following command:
+```bash
+$ pod install
+```
+
+### Carthage
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+
+You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+To integrate BitcoinKit into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```ogdl
+github "BitcoinKit/BitcoinKit"
+```
+
+Run `carthage update` to build the framework and drag the built `BitcoinKit.framework` into your Xcode project.
+
+
+### Swift Package Manager
+
+BitcoinKit is available through [Swift Package Manager](https://github.com/apple/swift-package-manager). To install
+it, simply add the following lines to dependencies of your Package.swift:
+
+```swift
+.package(url: "https://github.com/kishikawakatsumi/BitcoinKit.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Note that following data types and features are currently not supported on Linux platform.  
+
+* `Peer` and `PeerGroup`
+* SQLite based BlockStore
 
 Contribute
 ----------
+Contributions to BitcoinKit are welcome and encouraged!
+Feel free to open issues, drop us pull requests.
 
-Feel free to open issues, drop us pull requests or contact us to discuss how to do things.
-
-Email: [kishikawakatsumi@mac.com](mailto:kishikawakatsumi@mac.com)
-
-Twitter: [@k_katsumi](http://twitter.com/k_katsumi)
-
+## Authors & Maintainers
+ - [usatie](https://github.com/usatie)
+ - [akifuji](https://github.com/akifuj)
 
 License
 -------
 
-BitcoinKit is available under the Apache 2.0 license. See the LICENSE file for more info.
+BitcoinKit is available under the MIT license. See the LICENSE file for more info.
