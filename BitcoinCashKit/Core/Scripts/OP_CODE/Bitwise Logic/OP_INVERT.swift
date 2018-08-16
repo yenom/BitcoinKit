@@ -28,14 +28,14 @@ import Foundation
 public struct OpInvert: OpCodeProtocol {
     public var value: UInt8 { return 0x83 }
     public var name: String { return "OP_INVERT" }
-    
+
     public func isEnabled() -> Bool {
         return false
     }
-    
+
     // input : in
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        
+
     }
 }

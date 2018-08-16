@@ -25,13 +25,13 @@
 import Foundation
 
 // Boolean EXCLUSIVE OR between each bit of the inputs
-public struct OP_XOR: OpCodeProtocol {
+public struct OpXor: OpCodeProtocol {
     public var value: UInt8 { return 0x86 }
     public var name: String { return "OP_XOR" }
-    
+
     // input : x1 x2
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        
+
     }
 }

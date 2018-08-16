@@ -97,10 +97,10 @@ public enum OpCode: OpCodeProtocol {
         case .OP_BIN2NUM: return OpExample()
 
         // 5. Bitwise logic
-        case .OP_INVERT: return OpExample()
-        case .OP_AND: return OpExample()
-        case .OP_OR: return OpExample()
-        case .OP_XOR: return OpExample()
+        case .OP_INVERT: return OpInvert()
+        case .OP_AND: return OpAnd()
+        case .OP_OR: return OpOr()
+        case .OP_XOR: return OpXor()
         case .OP_EQUAL: return OpEqual()
         case .OP_EQUALVERIFY: return OpEqualVerify()
         case .OP_RESERVED1: return OpReserved1() // reserved and fail if executed

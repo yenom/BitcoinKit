@@ -28,10 +28,10 @@ import Foundation
 public struct OpOr: OpCodeProtocol {
     public var value: UInt8 { return 0x85 }
     public var name: String { return "OP_OR" }
-    
+
     // input : x1 x2
     // output : out
     public func mainProcess(_ context: ScriptExecutionContext) throws {
-        
+
     }
 }
