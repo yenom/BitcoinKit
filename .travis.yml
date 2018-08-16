@@ -4,9 +4,6 @@ cache:
   directories:
   - Libraries
 script:
-- pwd
-- ls
-- xcodebuild -workspace BitcoinKit.xcworkspace -list
 - xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration "$CONFIGURATION"
   -sdk "$SDK" -destination "$DESTINATION" -derivedDataPath build
   -enableCodeCoverage YES ENABLE_TESTABILITY=YES "$ACTION"
