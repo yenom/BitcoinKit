@@ -393,6 +393,34 @@ class OpCodeTests: XCTestCase {
         }
     }
     
+    func testOpAnd() {
+        let opcode = OpCode.OP_AND
+        
+        // x1 x2 OP_AND -> failure, where len(x1) != len(x2). The two operands must be the same size.
+        do {
+            try context.pushToStack(Data(count: 1))
+            try context.pushToStack(Data(count: 3))
+            try opcode.execute(context)
+            XCTFail("\(opcode.name)(\(opcode.value) execution should throw error with Invalid operand size.")
+        } catch OpCodeExecutionError.error("Invalid operand size") {
+            // success
+        } catch let error {
+            XCTFail("Should throw OpCodeExecutionError .error(\"Invalid OP_SPLIT range\"), but threw \(error)")
+        }
+        
+        // x1 x2 OP_AND -> x1 & x2. Check valid results.
+        do {
+            context.resetStack()
+            try context.pushToStack(Data(from: 0b11111100))
+            try context.pushToStack(Data(from: 0b00111111))
+            try opcode.execute(context)
+            XCTAssertEqual(context.stack.count, 1)
+            XCTAssertEqual(context.data(at: -1), Data(from: 0b00111100))
+        } catch let error {
+            fail(with: opcode, error: error)
+        }
+    }
+    
     func testOpEqualVerify() {
         let opcode = OpCode.OP_EQUALVERIFY
         // OP_EQUALVERIFY success
