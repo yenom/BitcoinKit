@@ -1,7 +1,7 @@
 ![BitcoinKit: Let's Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/43385824-be9ac974-941c-11e8-835c-39188c4ed7c9.jpg)
 
-[![CI Status](http://img.shields.io/travis/BitcoinKit/BitcoinKit.svg)](https://travis-ci.org/BitcoinKit/BitcoinKit)
-[![codecov](https://codecov.io/gh/BitcoinKit/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/BitcoinKit/BitcoinKit)
+[![CI Status](http://img.shields.io/travis/yenom/BitcoinKit.svg)](https://travis-ci.org/yenom/BitcoinKit)
+[![codecov](https://codecov.io/gh/yenom/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/yenom/BitcoinKit)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
 [![Platform](https://img.shields.io/cocoapods/p/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
@@ -161,7 +161,7 @@ $ brew install carthage
 To integrate BitcoinKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "BitcoinKit/BitcoinKit"
+github "yenom/BitcoinKit"
 ```
 
 Run `carthage update` to build the framework and drag the built `BitcoinKit.framework` into your Xcode project.
@@ -173,7 +173,7 @@ BitcoinKit is available through [Swift Package Manager](https://github.com/apple
 it, simply add the following lines to dependencies of your Package.swift:
 
 ```swift
-.package(url: "https://github.com/kishikawakatsumi/BitcoinKit.git", .upToNextMinor(from: "0.1.0"))
+.package(url: "https://github.com/yenom/BitcoinKit.git", .upToNextMinor(from: "0.1.0"))
 ```
 
 Note that following data types and features are currently not supported on Linux platform.  
