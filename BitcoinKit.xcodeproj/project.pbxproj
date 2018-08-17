@@ -483,6 +483,7 @@
 			isa = PBXGroup;
 			children = (
 				292AEA3C2112EB190012D7E5 /* Core */,
+				296ADC1E2112EBAD007EE5C7 /* Scripts */,
 				296ADC1F2112EBF4007EE5C7 /* Wallet */,
 				296ADC212112EC8C007EE5C7 /* Networking */,
 				296ADC202112EC5A007EE5C7 /* Messages */,
@@ -561,7 +562,6 @@
 		292AEA3C2112EB190012D7E5 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				296ADC1E2112EBAD007EE5C7 /* Scripts */,
 				141FE2E32022589E00A08B04 /* PrivateKey.swift */,
 				141FE2E12022588C00A08B04 /* PublicKey.swift */,
 				14A2961C2032316900E19177 /* HDKeychain.swift */,
