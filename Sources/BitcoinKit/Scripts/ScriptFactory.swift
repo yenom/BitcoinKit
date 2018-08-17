@@ -30,6 +30,7 @@ public struct ScriptFactory {
     public struct MultiSig {}
     public struct OpReturn {}
     public struct Condition {}
+    public struct HashedTimeLockedContract {}
 }
 
 // MARK: - Standard
@@ -58,17 +59,18 @@ public extension ScriptFactory.Standard {
 
 // MARK: - LockTime
 public extension ScriptFactory.LockTime {
-    // Script + LockTime
-    public static func build(script: Script, lockIntervalSinceNow: TimeInterval) -> Script? {
-        let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
-        return build(script: script, lockDate: lockDate)
-    }
-
+    // Base
     public static func build(script: Script, lockDate: Date) -> Script? {
         return try? Script()
             .appendData(lockDate.bigNumData)
             .append(.OP_CHECKLOCKTIMEVERIFY)
+            .append(.OP_DROP)
             .appendScript(script)
+    }
+    
+    public static func build(script: Script, lockIntervalSinceNow: TimeInterval) -> Script? {
+        let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
+        return build(script: script, lockDate: lockDate)
     }
 
     // P2PKH + LockTime
@@ -76,7 +78,8 @@ public extension ScriptFactory.LockTime {
         guard let p2pkh = Script(address: address) else {
             return nil
         }
-        return build(script: p2pkh, lockIntervalSinceNow: lockIntervalSinceNow)
+        let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
+        return build(script: p2pkh, lockDate: lockDate)
     }
 
     public static func build(address: Address, lockDate: Date) -> Script? {
@@ -139,6 +142,83 @@ public extension ScriptFactory.Condition {
         }
 
         return scripts[0]
+    }
+}
+
+// MARK: - HTLC
+public extension ScriptFactory.HashedTimeLockedContract {
+    // Base
+    public static func build(recipient: Address, sender: Address, lockDate: Date, hash: Data, hashOp: HashOperator) -> Script? {
+        guard hash.count == hashOp.hashSize else {
+            return nil
+        }
+        
+        return try? Script()
+            .append(.OP_IF)
+                .append(hashOp.opcode)
+                .appendData(hash)
+                .append(.OP_EQUALVERIFY)
+                .append(.OP_DUP)
+                .append(.OP_HASH160)
+                .appendData(recipient.data)
+            .append(.OP_ELSE)
+                .appendData(lockDate.bigNumData)
+                .append(.OP_CHECKLOCKTIMEVERIFY)
+                .append(.OP_DROP)
+                .append(.OP_DUP)
+                .append(.OP_HASH160)
+                .appendData(sender.data)
+            .append(.OP_ENDIF)
+            .append(.OP_EQUALVERIFY)
+            .append(.OP_CHECKSIG)
+    }
+    
+    // convenience
+    public static func build(recipient: Address, sender: Address, lockIntervalSinceNow: TimeInterval, hash: Data, hashOp: HashOperator) -> Script? {
+        let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
+        return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
+    }
+    
+    public static func build(recipient: Address, sender: Address, lockIntervalSinceNow: TimeInterval, secret: Data, hashOp: HashOperator) -> Script? {
+        let hash = hashOp.hash(secret)
+        let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
+        return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
+    }
+    
+    public static func build(recipient: Address, sender: Address, lockDate: Date, secret: Data, hashOp: HashOperator) -> Script? {
+        let hash = hashOp.hash(secret)
+        return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
+    }
+
+}
+
+public enum HashOperator {
+    case SHA256, HASH160
+    var opcode: OpCode {
+        switch self {
+        case .SHA256:
+            return .OP_SHA256
+        case .HASH160:
+            return .OP_HASH160
+        }
+    }
+    
+    var hashSize: Int {
+        switch self {
+        case .SHA256:
+            return 32
+        case .HASH160:
+            return 20
+        }
+    }
+    
+    func hash(_ data: Data) -> Data {
+        switch self {
+        case .SHA256:
+            return Crypto.sha256(data)
+        case .HASH160:
+            return Crypto.sha256ripemd160(data)
+        }
     }
 }
 
