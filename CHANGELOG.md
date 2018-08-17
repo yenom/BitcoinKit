@@ -12,6 +12,9 @@
 
 * None.  
 
+## 1.0.1 Release notes (2018-08-17)
+- ScriptFactory is added!
+
 ## 1.0.0 Release notes (2018-08-17)
 - First major release!
 - All OP_CODEs are available now!
