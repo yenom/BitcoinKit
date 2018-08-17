@@ -25,11 +25,14 @@
 import Foundation
 
 public struct ScriptFactory {
+    // Basic
     public struct Standard {}
     public struct LockTime {}
     public struct MultiSig {}
     public struct OpReturn {}
     public struct Condition {}
+
+    // Contract
     public struct HashedTimeLockedContract {}
 }
 
@@ -67,7 +70,7 @@ public extension ScriptFactory.LockTime {
             .append(.OP_DROP)
             .appendScript(script)
     }
-    
+
     public static func build(script: Script, lockIntervalSinceNow: TimeInterval) -> Script? {
         let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
         return build(script: script, lockDate: lockDate)
@@ -146,13 +149,22 @@ public extension ScriptFactory.Condition {
 }
 
 // MARK: - HTLC
+/*
+ OP_IF
+    [HASHOP] <digest> OP_EQUALVERIFY OP_DUP OP_HASH160 <recipient pubkey hash>
+ OP_ELSE
+    <num> [TIMEOUTOP] OP_DROP OP_DUP OP_HASH160 <sender pubkey hash>
+ OP_ENDIF
+ OP_EQUALVERIFYs
+ OP_CHECKSIG
+*/
 public extension ScriptFactory.HashedTimeLockedContract {
     // Base
     public static func build(recipient: Address, sender: Address, lockDate: Date, hash: Data, hashOp: HashOperator) -> Script? {
         guard hash.count == hashOp.hashSize else {
             return nil
         }
-        
+
         return try? Script()
             .append(.OP_IF)
                 .append(hashOp.opcode)
@@ -172,19 +184,19 @@ public extension ScriptFactory.HashedTimeLockedContract {
             .append(.OP_EQUALVERIFY)
             .append(.OP_CHECKSIG)
     }
-    
+
     // convenience
     public static func build(recipient: Address, sender: Address, lockIntervalSinceNow: TimeInterval, hash: Data, hashOp: HashOperator) -> Script? {
         let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
         return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
     }
-    
+
     public static func build(recipient: Address, sender: Address, lockIntervalSinceNow: TimeInterval, secret: Data, hashOp: HashOperator) -> Script? {
         let hash = hashOp.hash(secret)
         let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
         return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
     }
-    
+
     public static func build(recipient: Address, sender: Address, lockDate: Date, secret: Data, hashOp: HashOperator) -> Script? {
         let hash = hashOp.hash(secret)
         return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
@@ -192,33 +204,31 @@ public extension ScriptFactory.HashedTimeLockedContract {
 
 }
 
-public enum HashOperator {
-    case SHA256, HASH160
-    var opcode: OpCode {
-        switch self {
-        case .SHA256:
-            return .OP_SHA256
-        case .HASH160:
-            return .OP_HASH160
-        }
+public class HashOperator {
+    public static let SHA256: HashOperator = HashOperatorSha256()
+    public static let HASH160: HashOperator = HashOperatorHash160()
+
+    public var opcode: OpCode { return .OP_INVALIDOPCODE }
+    public var hashSize: Int { return 0 }
+    public func hash(_ data: Data) -> Data { return Data() }
+    fileprivate init() {}
+}
+
+final public class HashOperatorSha256: HashOperator {
+    override public var opcode: OpCode { return .OP_SHA256 }
+    override public var hashSize: Int { return 32 }
+
+    override public func hash(_ data: Data) -> Data {
+        return Crypto.sha256(data)
     }
-    
-    var hashSize: Int {
-        switch self {
-        case .SHA256:
-            return 32
-        case .HASH160:
-            return 20
-        }
-    }
-    
-    func hash(_ data: Data) -> Data {
-        switch self {
-        case .SHA256:
-            return Crypto.sha256(data)
-        case .HASH160:
-            return Crypto.sha256ripemd160(data)
-        }
+}
+
+final public class HashOperatorHash160: HashOperator {
+    override public var opcode: OpCode { return .OP_HASH160 }
+    override public var hashSize: Int { return 20 }
+
+    override public func hash(_ data: Data) -> Data {
+        return Crypto.sha256ripemd160(data)
     }
 }
 
