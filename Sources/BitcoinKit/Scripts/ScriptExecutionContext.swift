@@ -59,7 +59,9 @@ public class ScriptExecutionContext {
     // If verbose is true, stack will be printed each time OP_CODEs are executed
     public var verbose: Bool = false
 
-    public init() {}
+    public init(isDebug: Bool = false) {
+        self.verbose = isDebug
+    }
     public init?(transaction: Transaction, utxoToVerify: TransactionOutput, inputIndex: UInt32) {
         guard transaction.inputs.count > inputIndex else {
             return nil
