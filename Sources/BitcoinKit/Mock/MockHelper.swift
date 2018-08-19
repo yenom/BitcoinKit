@@ -79,12 +79,13 @@ public struct MockHelper {
                            lockTime: tx.lockTime)
     }
 
-    public static func verifySingleKey(lockScript: Script, unlockScriptBuilder: SingleKeyScriptBuilder, hashType: SighashType, key: MockKey) throws -> Bool {
+    public static func verifySingleKey(lockScript: Script, unlockScriptBuilder: SingleKeyScriptBuilder, key: MockKey) throws -> Bool {
         // mocks
         let utxoMock: UnspentTransaction = MockHelper.createUtxo(lockScript: lockScript)
         let txMock: Transaction = MockHelper.createTransaction(utxo: utxoMock)
 
         // signature, unlockScript(scriptSig)
+        let hashType = SighashType.BCH.ALL
         let signature: Data = key.privkey.sign(txMock, utxoToSign: utxoMock, hashType: hashType)
         let sigWithHashType: Data = signature + UInt8(hashType)
         let unlockScript: Script = unlockScriptBuilder(sigWithHashType, key)
@@ -100,12 +101,13 @@ public struct MockHelper {
         return try ScriptMachine.verify(lockScript: lockScript, unlockScript: unlockScript, context: context)
     }
 
-    public static func verifyMultiKey(lockScript: Script, unlockScriptBuilder: MultiKeyScriptBuilder, hashType: SighashType, keys: [MockKey]) throws -> Bool {
+    public static func verifyMultiKey(lockScript: Script, unlockScriptBuilder: MultiKeyScriptBuilder, keys: [MockKey]) throws -> Bool {
         // mocks
         let utxoMock: UnspentTransaction = MockHelper.createUtxo(lockScript: lockScript)
         let txMock: Transaction = MockHelper.createTransaction(utxo: utxoMock)
 
         // signature, unlockScript(scriptSig)
+        let hashType = SighashType.BCH.ALL
         var sigKeyPairs: [SigKeyPair] = []
         for key in keys {
             let signature: Data = key.privkey.sign(txMock, utxoToSign: utxoMock, hashType: hashType)
