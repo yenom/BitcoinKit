@@ -24,9 +24,10 @@
 
 import Foundation
 
-public protocol SingleKeyScriptBuilder {
-    func build(with sigWithHashType: Data, key: MockKey) -> Script
-}
+public typealias SigKeyPair = (sig: Data, key: MockKey)
+
+public typealias SingleKeyScriptBuilder = ((Data, MockKey) -> Script)
+public typealias MultiKeyScriptBuilder = (([SigKeyPair]) -> Script)
 
 public struct MockHelper {
     public static func createUtxo(lockScript: Script) -> UnspentTransaction {
@@ -78,7 +79,7 @@ public struct MockHelper {
                            lockTime: tx.lockTime)
     }
 
-    public static func testScriptWithSingleKey(lockScript: Script, unlockScriptBuilder: SingleKeyScriptBuilder, hashType: SighashType, key: MockKey) throws -> Bool {
+    public static func verifySingleKey(lockScript: Script, unlockScriptBuilder: SingleKeyScriptBuilder, hashType: SighashType, key: MockKey) throws -> Bool {
         // mocks
         let utxoMock: UnspentTransaction = MockHelper.createUtxo(lockScript: lockScript)
         let txMock: Transaction = MockHelper.createTransaction(utxo: utxoMock)
@@ -86,7 +87,7 @@ public struct MockHelper {
         // signature, unlockScript(scriptSig)
         let signature: Data = key.privkey.sign(txMock, utxoToSign: utxoMock, hashType: hashType)
         let sigWithHashType: Data = signature + UInt8(hashType)
-        let unlockScript: Script = unlockScriptBuilder.build(with: sigWithHashType, key: key)
+        let unlockScript: Script = unlockScriptBuilder(sigWithHashType, key)
 
         // signed tx
         let signedTxMock = MockHelper.updateTransaction(txMock, unlockScriptData: unlockScript.data)
@@ -98,4 +99,31 @@ public struct MockHelper {
         // script test
         return try ScriptMachine.verify(lockScript: lockScript, unlockScript: unlockScript, context: context)
     }
+
+    public static func verifyMultiKey(lockScript: Script, unlockScriptBuilder: MultiKeyScriptBuilder, hashType: SighashType, keys: [MockKey]) throws -> Bool {
+        // mocks
+        let utxoMock: UnspentTransaction = MockHelper.createUtxo(lockScript: lockScript)
+        let txMock: Transaction = MockHelper.createTransaction(utxo: utxoMock)
+
+        // signature, unlockScript(scriptSig)
+        var sigKeyPairs: [SigKeyPair] = []
+        for key in keys {
+            let signature: Data = key.privkey.sign(txMock, utxoToSign: utxoMock, hashType: hashType)
+            let sigWithHashType: Data = signature + UInt8(hashType)
+            sigKeyPairs.append(SigKeyPair(sigWithHashType, key))
+        }
+
+        let unlockScript: Script = unlockScriptBuilder(sigKeyPairs)
+
+        // signed tx
+        let signedTxMock = MockHelper.updateTransaction(txMock, unlockScriptData: unlockScript.data)
+
+        // context
+        let context = ScriptExecutionContext(transaction: signedTxMock, utxoToVerify: utxoMock.output, inputIndex: 0)!
+        context.verbose = true
+
+        // script test
+        return try ScriptMachine.verify(lockScript: lockScript, unlockScript: unlockScript, context: context)
+    }
+
 }
