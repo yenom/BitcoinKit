@@ -1,4 +1,5 @@
 //: Playground - noun: a place where people can play
+// No such module "BitcoinKit" error is thrown when you are selecting "Generic iOS Device" as a build target. Please select any of iOS simulators.
 
 import BitcoinKit
 
@@ -7,11 +8,11 @@ import BitcoinKit
 let lockScript = try! Script()
     .append(.OP_6)
     .append(.OP_ADD)
-    .append(.OP_9)
+    .append(.OP_16)
     .append(.OP_EQUAL)
 
 // Unlock Script
-let unlockScript = try! Script().append(.OP_3)
+let unlockScript = try! Script().appendData(BigNumber(10).data)
 
 // Test [integrated]
 let context = ScriptExecutionContext(isDebug: true)
