@@ -366,7 +366,7 @@
 		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
 		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
 		298FA5802126C77A009EFAC4 /* ScriptFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptFactory.swift; sourceTree = "<group>"; };
-		298FA582212788A8009EFAC4 /* Sample.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Sample.playground; path = Examples/Sample.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		298FA582212788A8009EFAC4 /* BitcoinKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BitcoinKit.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
 		299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureSerializer.swift; sourceTree = "<group>"; };
 		29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_EXAMPLE.swift; sourceTree = "<group>"; };
@@ -469,6 +469,7 @@
 			children = (
 				147494C9201F9A29006D1CF8 /* BitcoinKit */,
 				147494D4201F9A29006D1CF8 /* BitcoinKitTests */,
+				298FA582212788A8009EFAC4 /* BitcoinKit.playground */,
 				147494C8201F9A29006D1CF8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -496,7 +497,6 @@
 				1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */,
 				1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */,
 				147494CB201F9A29006D1CF8 /* Info.plist */,
-				298FA582212788A8009EFAC4 /* Sample.playground */,
 			);
 			name = BitcoinKit;
 			path = Sources/BitcoinKit;
