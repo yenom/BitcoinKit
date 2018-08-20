@@ -5,21 +5,6 @@ CONTRIBUTING.md
 
 The following is a set of guidelines for contributing to BitcoinKit, which are hosted in the [Yenom Organization](https://github.com/yenom) on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-#### Table Of Contents
-
-[Code of Conduct](#code-of-conduct)
-
-[Where Can I Ask a Question?](#where-can-i-ask-a-question)
-
-[How Can I Contribute?](#how-can-i-contribute)
-  * [Reporting Bugs](#reporting-bugs)
-  * [Suggesting Enhancements](#suggesting-enhancements)
-  * [Your First Code Contribution](#your-first-code-contribution)
-  * [Pull Requests](#pull-requests)
-
-[Styleguides](#styleguides)
-  * [Git Commit Messages](#git-commit-messages)
-
 ## Code of Conduct
 This project and everyone participating in it is governed by this code. By participating, you are expected to uphold this code.
 
@@ -60,7 +45,7 @@ Unsure where to begin contributing to BitcoinKit? You can start by looking throu
 
 ## Styleguides
 
-## Git Commit Messages
+### Git Commit Messages
 * Use the present tense ("Add feature" not "Added feature")
 * Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
 * Consider starting the commit message with an applicable emoji:
