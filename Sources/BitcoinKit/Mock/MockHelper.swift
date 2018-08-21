@@ -26,7 +26,7 @@ import Foundation
 
 public typealias SigKeyPair = (sig: Data, key: MockKey)
 
-public typealias SingleKeyScriptBuilder = ((Data, MockKey) -> Script)
+public typealias SingleKeyScriptBuilder = ((SigKeyPair) -> Script)
 public typealias MultiKeyScriptBuilder = (([SigKeyPair]) -> Script)
 
 public struct MockHelper {
@@ -88,7 +88,7 @@ public struct MockHelper {
         let hashType = SighashType.BCH.ALL
         let signature: Data = key.privkey.sign(txMock, utxoToSign: utxoMock, hashType: hashType)
         let sigWithHashType: Data = signature + UInt8(hashType)
-        let unlockScript: Script = unlockScriptBuilder(sigWithHashType, key)
+        let unlockScript: Script = unlockScriptBuilder((sigWithHashType, key))
 
         // signed tx
         let signedTxMock = MockHelper.updateTransaction(txMock, unlockScriptData: unlockScript.data)
