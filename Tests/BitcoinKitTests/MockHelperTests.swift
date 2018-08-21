@@ -59,7 +59,6 @@ class MockHelperTests: XCTestCase {
                 XCTAssertFalse(result, "P2SHMultisig: \(key) Should fail but succeeds.")
             } catch {
                 // Expected fail:  do nothing
-                // print(error)
             }
         }
         
@@ -106,7 +105,6 @@ class MockHelperTests: XCTestCase {
                 XCTAssertFalse(result, "P2SHMultisig: \(key) Should fail but succeeds.")
             } catch {
                 // Expected fail:  do nothing
-                // print(error)
             }
         }
         
@@ -192,7 +190,6 @@ class MockHelperTests: XCTestCase {
                 XCTAssertFalse(result, "CustomMultisig: \(key) Should fail but succeeds.")
             } catch {
                 // Expected fail:  do nothing
-                // print(error)
             }
         }
 
@@ -240,7 +237,6 @@ class MockHelperTests: XCTestCase {
                 XCTAssertFalse(result, "P2SHMultisig: \(keys) Should fail but succeeds.")
             } catch {
                 // Expected fail:  do nothing
-                // print(error)
             }
         }
         
