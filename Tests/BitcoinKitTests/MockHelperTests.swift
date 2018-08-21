@@ -26,11 +26,22 @@ import XCTest
 @testable import BitcoinKit
 
 class MockHelperTests: XCTestCase {
-    // MARK: - Tests
-    // multisig
-    func testMultisig() {
+    // MARK: - 1 of 3 Multi-Sig [ABC]
+    // Standard Multi-Sig
+    func testStandard() {
         func verify(with key: MockKey) throws -> Bool {
-            return try MockHelper.testScriptWithSingleKey(lockScript: multisigScript, unlockScriptBuilder: MultisigUnlockScriptBuilder(), hashType: SighashType.BCH.ALL, key: key)
+            // lock script
+            let standardLockScript = Script(publicKeys: [MockKey.keyA.pubkey, MockKey.keyB.pubkey, MockKey.keyC.pubkey], signaturesRequired: 1)!
+            
+            // unlock script builder
+            let standardUnlockScript = { (sig: Data, key: MockKey) -> Script in
+                let script = try! Script()
+                    .append(.OP_0)
+                    .appendData(sig)
+                return script
+            }
+
+            return try MockHelper.verifySingleKey(lockScript: standardLockScript, unlockScriptBuilder: standardUnlockScript, key: key)
         }
         
         func succeed(with key: MockKey) {
@@ -46,10 +57,8 @@ class MockHelperTests: XCTestCase {
             do {
                 let result = try verify(with: key)
                 XCTAssertFalse(result, "P2SHMultisig: \(key) Should fail but succeeds.")
-            } catch ScriptMachineError.error("Last item on the stack is false.") {
+            } catch {
                 // Expected fail:  do nothing
-            } catch let error {
-                XCTFail("P2SHMultisig: Inappropriate error for \(key) : \(error)")
             }
         }
         
@@ -62,10 +71,23 @@ class MockHelperTests: XCTestCase {
         fail(with: .keyD)
     }
 
-    // p2sh multisig
-    func testP2SHMultisig() {
+    // P2SH Multi-Sig
+    func testP2SH() {
         func verify(with key: MockKey) throws -> Bool {
-            return try MockHelper.testScriptWithSingleKey(lockScript: p2shMultisigLockScript, unlockScriptBuilder: P2SHMultisigUnlockScriptBuilder(), hashType: SighashType.BCH.ALL, key: key)
+            // P2SH multisig[ABC]
+            let redeemScript: Script = Script(publicKeys: [MockKey.keyA.pubkey, MockKey.keyB.pubkey, MockKey.keyC.pubkey], signaturesRequired: 1)!
+            
+            let p2shLockScript: Script = redeemScript.toP2SH()
+            
+            // p2sh multisig[ABC] unlock
+            let p2shUnlockScriptBuilder = { (sigWithHashType: Data, key: MockKey) -> Script in
+                return try! Script()
+                    .append(.OP_0)
+                    .appendData(sigWithHashType)
+                    .appendData(redeemScript.data)
+            }
+
+            return try MockHelper.verifySingleKey(lockScript: p2shLockScript, unlockScriptBuilder: p2shUnlockScriptBuilder, key: key)
         }
         
         func succeed(with key: MockKey) {
@@ -81,10 +103,8 @@ class MockHelperTests: XCTestCase {
             do {
                 let result = try verify(with: key)
                 XCTAssertFalse(result, "P2SHMultisig: \(key) Should fail but succeeds.")
-            } catch ScriptMachineError.error("Last item on the stack is false.") {
+            } catch {
                 // Expected fail:  do nothing
-            } catch let error {
-                XCTFail("P2SHMultisig: Inappropriate error for \(key) : \(error)")
             }
         }
         
@@ -97,10 +117,62 @@ class MockHelperTests: XCTestCase {
         fail(with: .keyD)
     }
 
-    // custom multisig
-    func testCustomMultisig() {
+    // Custom Multi-Sig
+    func testCustom() {
         func verify(with key: MockKey) throws -> Bool {
-            return try MockHelper.testScriptWithSingleKey(lockScript: customMultisigLockScript, unlockScriptBuilder: CustomMultisigUnlockScriptBuilder(), hashType: SighashType.BCH.ALL, key: key)
+            let customLockScript = try! Script()
+                // stack: sig pub bool2 bool1
+                .append(.OP_IF)
+                    .append(.OP_IF)
+                        .append(.OP_DUP)
+                        .append(.OP_HASH160)
+                        .appendData(MockKey.keyA.pubkeyHash)
+                    .append(.OP_ELSE)
+                        .append(.OP_DUP)
+                        .append(.OP_HASH160)
+                        .appendData(MockKey.keyB.pubkeyHash)
+                    .append(.OP_ENDIF)
+                .append(.OP_ELSE)
+                    .append(.OP_DUP)
+                    .append(.OP_HASH160)
+                    .appendData(MockKey.keyC.pubkeyHash)
+                .append(.OP_ENDIF)
+                // stack: sig pub pubkeyhash pubkeyhash
+                .append(.OP_EQUALVERIFY)
+                // stack: sig pub
+                .append(.OP_CHECKSIG)
+
+            // custom multisig unlock
+            let customUnlockScript = { (sigWithHashType: Data, key: MockKey) -> Script in
+                switch key {
+                case .keyA:
+                    return try! Script()
+                        .appendData(sigWithHashType)
+                        .appendData(key.pubkey.raw)
+                        .append(.OP_TRUE)
+                        .append(.OP_TRUE)
+                case .keyB:
+                    return try! Script()
+                        .appendData(sigWithHashType)
+                        .appendData(key.pubkey.raw)
+                        .append(.OP_FALSE)
+                        .append(.OP_TRUE)
+                case .keyC:
+                    return try! Script()
+                        .appendData(sigWithHashType)
+                        .appendData(key.pubkey.raw)
+                        .append(.OP_FALSE)
+                default:
+                    // unlock script for keyA
+                    return try! Script()
+                        .appendData(sigWithHashType)
+                        .appendData(key.pubkey.raw)
+                        .append(.OP_TRUE)
+                        .append(.OP_TRUE)
+                }
+            }
+
+            return try MockHelper.verifySingleKey(lockScript: customLockScript, unlockScriptBuilder: customUnlockScript, key: key)
         }
         
         func succeed(with key: MockKey) {
@@ -116,10 +188,8 @@ class MockHelperTests: XCTestCase {
             do {
                 let result = try verify(with: key)
                 XCTAssertFalse(result, "CustomMultisig: \(key) Should fail but succeeds.")
-            } catch OpCodeExecutionError.error("OP_EQUALVERIFY failed.") {
+            } catch {
                 // Expected fail:  do nothing
-            } catch let error {
-                XCTFail("CustomMultisig: Inappropriate error for \(key) : \(error)")
             }
         }
 
@@ -132,91 +202,53 @@ class MockHelperTests: XCTestCase {
         fail(with: .keyD)
     }
     
-    // MARK: - Unlock Script Builder
-    // multisig unlock
-    struct MultisigUnlockScriptBuilder: SingleKeyScriptBuilder {
-        func build(with sigWithHashType: Data, key: MockKey) -> Script {
-            return try! Script()
-                .append(.OP_0)
-                .appendData(sigWithHashType)
+    // MARK: - 2 of 3 Multi-Sig [ABC]
+    // Standard Multi-Sig
+    func testStandard2of3() {
+        func verify(with keys: [MockKey]) throws -> Bool {
+            // lock script
+            let standardLockScript = Script(publicKeys: [MockKey.keyA.pubkey, MockKey.keyB.pubkey, MockKey.keyC.pubkey], signaturesRequired: 2)!
+            
+            // unlock script builder
+            let standardUnlockScript = { (pairs: [SigKeyPair]) -> Script in
+                let script = try! Script()
+                    .append(.OP_0)
+                for pair in pairs {
+                    try! script.appendData(pair.sig)
+                }
+                return script
+            }
+            
+            return try MockHelper.verifyMultiKey(lockScript: standardLockScript, unlockScriptBuilder: standardUnlockScript, keys: keys)
         }
-    }
-    
-    // p2sh multisig unlock
-    struct P2SHMultisigUnlockScriptBuilder: SingleKeyScriptBuilder {
-        func build(with sigWithHashType: Data, key: MockKey) -> Script {
-            let redeemScript = Script(publicKeys: [MockKey.keyA.pubkey, MockKey.keyB.pubkey, MockKey.keyC.pubkey], signaturesRequired: 1)!
-            return try! Script()
-                .append(.OP_0)
-                .appendData(sigWithHashType)
-                .appendData(redeemScript.data)
-        }
-    }
-    
-    // custom multisig unlock
-    struct CustomMultisigUnlockScriptBuilder: SingleKeyScriptBuilder {
-        func build(with sigWithHashType: Data, key: MockKey) -> Script {
-            switch key {
-            case .keyA:
-                return try! Script()
-                    .appendData(sigWithHashType)
-                    .appendData(key.pubkey.raw)
-                    .append(.OP_TRUE)
-                    .append(.OP_TRUE)
-            case .keyB:
-                return try! Script()
-                    .appendData(sigWithHashType)
-                    .appendData(key.pubkey.raw)
-                    .append(.OP_FALSE)
-                    .append(.OP_TRUE)
-            case .keyC:
-                return try! Script()
-                    .appendData(sigWithHashType)
-                    .appendData(key.pubkey.raw)
-                    .append(.OP_FALSE)
-            default:
-                // unlock script for keyA
-                return try! Script()
-                    .appendData(sigWithHashType)
-                    .appendData(key.pubkey.raw)
-                    .append(.OP_TRUE)
-                    .append(.OP_TRUE)
+        
+        func succeed(with keys: [MockKey]) {
+            do {
+                let result = try verify(with: keys)
+                XCTAssertTrue(result, "P2SHMultisig: \(keys) should be able to sign.")
+            } catch let error {
+                XCTFail("P2SHMultisig: \(keys) should succeed, but ScriptMachine throw error: \(error)")
             }
         }
+        
+        func fail(with keys: [MockKey]) {
+            do {
+                let result = try verify(with: keys)
+                XCTAssertFalse(result, "P2SHMultisig: \(keys) Should fail but succeeds.")
+            } catch {
+                // Expected fail:  do nothing
+            }
+        }
+        
+        
+        // success with AB, AC, BC
+        succeed(with: [.keyA, .keyB])
+        succeed(with: [.keyA, .keyC])
+        succeed(with: [.keyB, .keyC])
+        // Fail with AD, BD, CD
+        fail(with: [.keyA, .keyD])
+        fail(with: [.keyB, .keyD])
+        fail(with: [.keyC, .keyD])
     }
-    
-    // MARK: - Lock Script
-    // multisig[ABC]
-    let multisigScript = Script(publicKeys: [MockKey.keyA.pubkey, MockKey.keyB.pubkey, MockKey.keyC.pubkey], signaturesRequired: 1)!
 
-    // P2SH multisig[ABC]
-    var p2shMultisigLockScript: Script {
-        return multisigScript.toP2SH()
-    }
-    
-    // custom multisig[ABCD]
-    var customMultisigLockScript: Script {
-        let lockScript = try! Script()
-            // stack: sig pub bool2 bool1
-            .append(.OP_IF)
-                .append(.OP_IF)
-                    .append(.OP_DUP)
-                    .append(.OP_HASH160)
-                    .appendData(MockKey.keyA.pubkeyHash)
-                .append(.OP_ELSE)
-                    .append(.OP_DUP)
-                    .append(.OP_HASH160)
-                    .appendData(MockKey.keyB.pubkeyHash)
-                .append(.OP_ENDIF)
-            .append(.OP_ELSE)
-                .append(.OP_DUP)
-                .append(.OP_HASH160)
-                .appendData(MockKey.keyC.pubkeyHash)
-            .append(.OP_ENDIF)
-            // stack: sig pub pubkeyhash pubkeyhash
-            .append(.OP_EQUALVERIFY)
-            // stack: sig pub
-            .append(.OP_CHECKSIG)
-        return lockScript
-    }
 }
