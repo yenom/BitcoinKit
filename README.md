@@ -8,7 +8,8 @@
 
 ### Welcome to BitcoinKit
 
-The BitcoinKit library is a Swift implementation of the Bitcoin cash protocol. This library is a fork of Katsumi Kishikawa's original BitcoinKit library aimed at supporting the Bitcoin cash eco-system.
+The BitcoinKit library is a Swift implementation of the Bitcoin protocol, supporting both of BCH and BTC. 
+Our mission is improving the mobile ecosystem for Bitcoin developers.
 
 It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.
 
