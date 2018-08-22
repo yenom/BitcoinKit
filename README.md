@@ -190,6 +190,13 @@ Feel free to open issues, drop us pull requests.
  - [usatie](https://github.com/usatie)
  - [akifuji](https://github.com/akifuj)
 
+ ## About
+
+ <img width=220 src="https://user-images.githubusercontent.com/24402451/44437525-9169ca00-a5f5-11e8-8a77-9c1b906fb864.jpg"></img>
+
+ BitcoinKit is maintained and funded by Yenom.
+ Visit our [website](https://yenom.tech) or say hi on twitter ([@Yenom_wallet_en](https://twitter.com/Yenom_wallet_en))
+
 License
 -------
 
