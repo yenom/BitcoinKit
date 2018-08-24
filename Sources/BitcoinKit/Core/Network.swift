@@ -124,7 +124,7 @@ public class BCHMainnet: Mainnet {
         return [
             "seed.bitcoinabc.org", // - Bitcoin ABC seeder
             "seed-abc.bitcoinforks.org", // - bitcoinforks seeders
-            "seed.bitcoinunlimited.info", // - BU seeder
+            "btccash-seeder.bitcoinunlimited.info", // - BU seeder
             "seed.bitprim.org", // - Bitprim
             "seed.deadalnix.me" // - Amaury SÉCHET
         ]
