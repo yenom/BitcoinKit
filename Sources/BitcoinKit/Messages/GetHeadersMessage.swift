@@ -1,5 +1,5 @@
 //
-//  GetBlocksMessage.swift
+//  GetHeadersMessage.swift
 //
 //  Copyright © 2018 Kishikawa Katsumi
 //  Copyright © 2018 BitcoinKit developers
