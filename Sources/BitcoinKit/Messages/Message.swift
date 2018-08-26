@@ -72,3 +72,7 @@ public struct Message {
         return Message(magic: magic, command: command, length: length, checksum: checksum, payload: payload)
     }
 }
+
+enum ProtocolError: Error {
+    case error(String)
+}
