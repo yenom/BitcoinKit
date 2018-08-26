@@ -41,7 +41,7 @@ public class Network {
     var scripthash: UInt8 { return 0 }
     var xpubkey: UInt32 { return 0 }
     var xprivkey: UInt32 { return 0 }
-    
+
     var magic: UInt32 { return 0 }
     public var port: UInt32 { return 0 }
     public var dnsSeeds: [String] { return [] }
