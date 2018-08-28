@@ -34,16 +34,18 @@ public class Network {
     public var name: String { return "" }
     public var alias: String { return "" }
     public var scheme: String { return "" }
-    // 名前はpubkeyhash, privatekey, scripthashとかじゃなくて、version byteとした方が良さげ。
+
+    // version byte
     var pubkeyhash: UInt8 { return 0 }
     var privatekey: UInt8 { return 0 }
     var scripthash: UInt8 { return 0 }
     var xpubkey: UInt32 { return 0 }
     var xprivkey: UInt32 { return 0 }
-    var magic: UInt32 { return 0 } // QUESTION: magicって何だろう
+
+    var magic: UInt32 { return 0 }
     public var port: UInt32 { return 0 }
     public var dnsSeeds: [String] { return [] }
-    var checkpoints: [Checkpoint] { return [] } // QUESTION: Bitcoinにもcheckpointあるのか。ある意味finalizeしてるの・・・？
+    var checkpoints: [Checkpoint] { return [] }
     var genesisBlock: Data { return Data() }
 
     fileprivate init() {}

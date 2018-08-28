@@ -60,6 +60,10 @@ public struct BlockMessage {
 
     public static func deserialize(_ data: Data) -> BlockMessage {
         let byteStream = ByteStream(data)
+        return deserialize(byteStream)
+    }
+
+    static func deserialize(_ byteStream: ByteStream) -> BlockMessage {
         let version = byteStream.read(Int32.self)
         let prevBlock = byteStream.read(Data.self, count: 32)
         let merkleRoot = byteStream.read(Data.self, count: 32)
