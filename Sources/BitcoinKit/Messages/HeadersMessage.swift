@@ -30,7 +30,9 @@ public struct HeadersMessage {
     public static let MAX_HEADERS: Int = 2000
 
     /// Number of block headers
-    public let count: VarInt
+    public var count: VarInt {
+        return VarInt(headers.count)
+    }
     /// Block headers
     public let headers: [BlockMessage]
 
@@ -58,6 +60,6 @@ public struct HeadersMessage {
             }
             blockHeaders.append(blockHeader)
         }
-        return HeadersMessage(count: count, headers: blockHeaders)
+        return HeadersMessage(headers: blockHeaders)
     }
 }
