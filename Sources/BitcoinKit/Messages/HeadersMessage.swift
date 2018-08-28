@@ -55,7 +55,7 @@ public struct HeadersMessage {
         var blockHeaders = [BlockMessage]()
         for _ in 0..<countValue {
             let blockHeader: BlockMessage = BlockMessage.deserialize(byteStream)
-            guard blockHeader.transactions == nil else {
+            guard blockHeader.transactions.isEmpty else {
                 throw ProtocolError.error("Block header does not have transaction")
             }
             blockHeaders.append(blockHeader)

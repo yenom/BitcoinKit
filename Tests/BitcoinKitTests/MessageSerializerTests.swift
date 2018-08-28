@@ -46,7 +46,7 @@ class MessageSerializerTests: XCTestCase {
         XCTAssertEqual(header.bits, Data(hex: "30c31b18")!.to(type: UInt32.self))
         XCTAssertEqual(header.nonce, Data(hex: "fe9f0864")!.to(type: UInt32.self))
         XCTAssertEqual(header.transactionCount.underlyingValue, 0)
-        XCTAssertNil(header.transactions)
+        XCTAssertTrue(header.transactions.isEmpty)
     }
     
     func testHeadersMessage1() {
@@ -63,7 +63,7 @@ class MessageSerializerTests: XCTestCase {
         let headersMessage = try! HeadersMessage.deserialize(data)
         XCTAssertEqual(headersMessage.count.underlyingValue, 1)
         let header = headersMessage.headers[0]
-        XCTAssertNil(header.transactions)
+        XCTAssertTrue(header.transactions.isEmpty)
         //XCTAssertEqual(header.merkleRoot.hex, "0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098")
         
         XCTAssertEqual(headersMessage.serialized().hex, data.hex)
