@@ -43,6 +43,11 @@ public struct TransactionInput {
         self.sequence = sequence
     }
 
+    public func isCoinbase() -> Bool {
+        return previousOutput.hash == Data(count: 32)
+            && previousOutput.index == 0xFFFF_FFFF
+    }
+
     public func serialized() -> Data {
         var data = Data()
         data += previousOutput.serialized()

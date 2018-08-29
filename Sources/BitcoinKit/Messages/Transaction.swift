@@ -74,6 +74,10 @@ public struct Transaction {
         return data
     }
 
+    public func isCoinbase() -> Bool {
+        return inputs.count == 1 && inputs[0].isCoinbase()
+    }
+
     public static func deserialize(_ data: Data) -> Transaction {
         let byteStream = ByteStream(data)
         return deserialize(byteStream)
