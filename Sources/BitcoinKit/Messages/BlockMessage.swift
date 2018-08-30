@@ -77,4 +77,29 @@ public struct BlockMessage {
         }
         return BlockMessage(version: version, prevBlock: prevBlock, merkleRoot: merkleRoot, timestamp: timestamp, bits: bits, nonce: nonce, transactionCount: transactionCount, transactions: transactions)
     }
+
+    public func computeMerkleRoot() -> Data {
+        var hashes = transactions.map { (tx) -> Data in tx.txHash }
+
+        while hashes.count > 1 {
+            if hashes.count % 2 != 0 {
+                let last = hashes.last!
+                hashes.append(last)
+            }
+
+            for i in 0..<(hashes.count / 2) {
+                let left = hashes[2 * i]
+                let right = hashes[2 * i + 1]
+
+                var parent = Data()
+                parent.append(left)
+                parent.append(right)
+
+                hashes[i] = Crypto.sha256sha256(parent)
+            }
+            hashes = Array(hashes.prefix(upTo: hashes.count / 2))
+        }
+
+        return hashes[0]
+    }
 }

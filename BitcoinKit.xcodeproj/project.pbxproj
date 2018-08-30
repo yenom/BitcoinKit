@@ -64,6 +64,9 @@
 		0C66CD07212542730049DB89 /* OP_OR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C66CD06212542730049DB89 /* OP_OR.swift */; };
 		0C66CD092125427C0049DB89 /* OP_XOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C66CD082125427C0049DB89 /* OP_XOR.swift */; };
 		0CD92D3B2118153700DD3148 /* OP_LESSTHANOREQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */; };
+		0F59D2EC213712B2008B9C0B /* BlockMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F59D2EA21370FD8008B9C0B /* BlockMessageTests.swift */; };
+		0FFA78002138D9CC00B7EC42 /* block1.raw in Resources */ = {isa = PBXBuildFile; fileRef = 0FFA77FD2138D9CB00B7EC42 /* block1.raw */; };
+		0FFA78012138D9CC00B7EC42 /* block413567.raw in Resources */ = {isa = PBXBuildFile; fileRef = 0FFA77FE2138D9CB00B7EC42 /* block413567.raw */; };
 		1419E83A202CDBE500FCB0BE /* BitcoinKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */; };
 		141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E12022588C00A08B04 /* PublicKey.swift */; };
@@ -274,6 +277,9 @@
 		0C66CD06212542730049DB89 /* OP_OR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_OR.swift; sourceTree = "<group>"; };
 		0C66CD082125427C0049DB89 /* OP_XOR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_XOR.swift; sourceTree = "<group>"; };
 		0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_LESSTHANOREQUAL.swift; sourceTree = "<group>"; };
+		0F59D2EA21370FD8008B9C0B /* BlockMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockMessageTests.swift; sourceTree = "<group>"; };
+		0FFA77FD2138D9CB00B7EC42 /* block1.raw */ = {isa = PBXFileReference; lastKnownFileType = file; path = block1.raw; sourceTree = "<group>"; };
+		0FFA77FE2138D9CB00B7EC42 /* block413567.raw */ = {isa = PBXFileReference; lastKnownFileType = file; path = block413567.raw; sourceTree = "<group>"; };
 		1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BitcoinKitPrivate.h; path = ../../BitcoinKit/BitcoinKitPrivate.h; sourceTree = "<group>"; };
 		1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BitcoinKitPrivate.m; path = ../../BitcoinKit/BitcoinKitPrivate.m; sourceTree = "<group>"; };
 		141FE2E12022588C00A08B04 /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
@@ -528,8 +534,11 @@
 		147494D4201F9A29006D1CF8 /* BitcoinKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				0FFA77FD2138D9CB00B7EC42 /* block1.raw */,
+				0FFA77FE2138D9CB00B7EC42 /* block413567.raw */,
 				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
 				297C408021100810003AF4EF /* MnemonicTests.swift */,
+				0F59D2EA21370FD8008B9C0B /* BlockMessageTests.swift */,
 				2949920320F22A1500D078B6 /* TestHelpers.swift */,
 				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
 				CF432AF520F0ED4500AD4020 /* AddressTests.swift */,
@@ -924,6 +933,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FFA78012138D9CC00B7EC42 /* block413567.raw in Resources */,
+				0FFA78002138D9CC00B7EC42 /* block1.raw in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1159,6 +1170,7 @@
 				CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */,
 				2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */,
 				29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */,
+				0F59D2EC213712B2008B9C0B /* BlockMessageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
