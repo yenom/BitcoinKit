@@ -70,7 +70,7 @@ public class HDPublicKey {
             fatalError("invalid child index")
         }
         guard let derivedKey = _HDKey(privateKey: nil, publicKey: raw, chainCode: chainCode, depth: depth, fingerprint: fingerprint, childIndex: childIndex).derived(at: index, hardened: false) else {
-            throw DerivationError.derivateionFailed
+            throw DerivationError.derivationFailed
         }
         return HDPublicKey(raw: derivedKey.publicKey!, chainCode: derivedKey.chainCode, network: network, depth: derivedKey.depth, fingerprint: derivedKey.fingerprint, childIndex: derivedKey.childIndex)
     }
