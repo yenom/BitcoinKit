@@ -96,12 +96,12 @@ public class HDPrivateKey {
         }
 
         guard let derivedKey = _HDKey(privateKey: raw, publicKey: extendedPublicKey().raw, chainCode: chainCode, depth: depth, fingerprint: fingerprint, childIndex: childIndex).derived(at: index, hardened: hardened) else {
-            throw DerivationError.derivateionFailed
+            throw DerivationError.derivationFailed
         }
         return HDPrivateKey(privateKey: derivedKey.privateKey!, chainCode: derivedKey.chainCode, network: network, depth: derivedKey.depth, fingerprint: derivedKey.fingerprint, childIndex: derivedKey.childIndex)
     }
 }
 
 public enum DerivationError: Error {
-    case derivateionFailed
+    case derivationFailed
 }
