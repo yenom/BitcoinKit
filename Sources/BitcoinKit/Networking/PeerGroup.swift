@@ -103,6 +103,24 @@ public class PeerGroup: PeerDelegate {
     }
 
     public func peer(_ peer: Peer, didReceiveMerkleBlockMessage message: MerkleBlockMessage, hash: Data) {
+		if !ProofOfWork.isValidProofOfWork(blockHash: hash, bits: message.bits) {
+			print("insufficient proof of work!")
+			return
+		}
+		do {
+			let root: Data = try MerkleTree.buildMerkleRoot(numberOfHashes: UInt32(message.numberOfHashes.underlyingValue),
+													  hashes: message.hashes,
+													  numberOfFlags: UInt32(message.numberOfFlags.underlyingValue),
+													  flags: message.flags,
+													  totalTransactions: message.totalTransactions)
+			if root != message.merkleRoot {
+				print("not match merkelroot!")
+				return
+			}
+		} catch {
+			print("merkleroot build failed!")
+			return
+		}
         try! blockChain.addMerkleBlock(message, hash: hash)
     }
 
