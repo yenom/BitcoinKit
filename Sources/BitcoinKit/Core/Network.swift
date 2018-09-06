@@ -129,7 +129,7 @@ public class BCHMainnet: Mainnet {
             "btccash-seeder.bitcoinunlimited.info", // - BU seeder
             "seed.bitprim.org", // - Bitprim
             "seed.deadalnix.me", // - Amaury SÉCHET
-            "seeder.criptolayer.net", // - criptolayer.net
+            "seeder.criptolayer.net" // - criptolayer.net
         ]
     }
     override var checkpoints: [Checkpoint] {

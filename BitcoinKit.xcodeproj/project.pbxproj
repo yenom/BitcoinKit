@@ -199,13 +199,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0C237598212FF94F00DB2872 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0C237594212FF94F00DB2872 /* Wallet.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14749514201FBC3E006D1CF8;
-			remoteInfo = Wallet;
-		};
 		147494D2201F9A29006D1CF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 147494BE201F9A29006D1CF8 /* Project object */;
@@ -263,7 +256,6 @@
 		0C1DE17B211E8A0100FE8E43 /* OP_SPLIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SPLIT.swift; sourceTree = "<group>"; };
 		0C1DE17F211EACE800FE8E43 /* OP_NUM2BIN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OP_NUM2BIN.swift; sourceTree = "<group>"; };
 		0C1DE183211EB32D00FE8E43 /* OP_SIZE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SIZE.swift; sourceTree = "<group>"; };
-		0C237594212FF94F00DB2872 /* Wallet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wallet.xcodeproj; path = Examples/Wallet/Wallet.xcodeproj; sourceTree = "<group>"; };
 		0C23759C2132419400DB2872 /* GetHeadersMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetHeadersMessage.swift; sourceTree = "<group>"; };
 		0C23759F2132431B00DB2872 /* HeadersMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersMessage.swift; sourceTree = "<group>"; };
 		0C2375A32132501700DB2872 /* MessageSerializerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSerializerTests.swift; sourceTree = "<group>"; };
@@ -478,18 +470,9 @@
 			path = Splice;
 			sourceTree = "<group>";
 		};
-		0C237595212FF94F00DB2872 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0C237599212FF94F00DB2872 /* Wallet.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		147494BD201F9A29006D1CF8 = {
 			isa = PBXGroup;
 			children = (
-				0C237594212FF94F00DB2872 /* Wallet.xcodeproj */,
 				147494C9201F9A29006D1CF8 /* BitcoinKit */,
 				147494D4201F9A29006D1CF8 /* BitcoinKitTests */,
 				298FA582212788A8009EFAC4 /* BitcoinKit.playground */,
@@ -888,12 +871,6 @@
 			mainGroup = 147494BD201F9A29006D1CF8;
 			productRefGroup = 147494C8201F9A29006D1CF8 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 0C237595212FF94F00DB2872 /* Products */;
-					ProjectRef = 0C237594212FF94F00DB2872 /* Wallet.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				147494C6201F9A29006D1CF8 /* BitcoinKit */,
@@ -901,16 +878,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		0C237599212FF94F00DB2872 /* Wallet.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Wallet.app;
-			remoteRef = 0C237598212FF94F00DB2872 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		147494C5201F9A29006D1CF8 /* Resources */ = {
