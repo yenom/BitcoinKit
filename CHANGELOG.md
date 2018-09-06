@@ -12,6 +12,13 @@
 
 * None.  
 
+## 1.0.2 Release notes (2018-09-06)
+- Added Multisig Script Mock!
+- Added isCoinbase() in Transaction class by @federicobond
+- Fix some typo by @federicobond
+- Add HeadersMessage by @akifuj
+- Add open collective committers and backers by @monkeywithacupcake
+
 ## 1.0.1 Release notes (2018-08-17)
 - ScriptFactory is added!
 
