@@ -17,11 +17,11 @@ class ProofOfWork {
 			// invalid bits
 			return false
 		}
-		if target == UInt256.zero {
+		guard target != UInt256.zero else {
 			// invalid zero target
 			return false
 		}
-		if target > maxProofOfWork {
+		guard target <= maxProofOfWork else {
 			// too high target
 			return false
 		}
@@ -29,7 +29,7 @@ class ProofOfWork {
 			// invalid blockHash data length
 			return false
 		}
-		if arith_hash > target {
+		guard arith_hash <= target else {
 			// insufficient proof of work
 			return false
 		}

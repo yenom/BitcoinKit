@@ -103,7 +103,7 @@ public class PeerGroup: PeerDelegate {
     }
 
     public func peer(_ peer: Peer, didReceiveMerkleBlockMessage message: MerkleBlockMessage, hash: Data) {
-		if !ProofOfWork.isValidProofOfWork(blockHash: hash, bits: message.bits) {
+		guard ProofOfWork.isValidProofOfWork(blockHash: hash, bits: message.bits) else {
 			print("insufficient proof of work!")
 			return
 		}
