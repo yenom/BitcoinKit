@@ -44,7 +44,7 @@ class TransactionTests: XCTestCase {
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
 
         let fromPublicKey = privateKey.publicKey()
-        let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.raw)
+        let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.data)
         let toPubKeyHash = Base58.decode(toAddress)!.dropFirst().dropLast(4)
 
         let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: toPubKeyHash)
@@ -71,8 +71,8 @@ class TransactionTests: XCTestCase {
 
         // scriptSig: <sig> <pubKey>
         var unlockingScript: Data = Data([UInt8(signature.count + 1)]) + signature + UInt8(hashType)
-        unlockingScript += UInt8(fromPublicKey.raw.count)
-        unlockingScript += fromPublicKey.raw
+        unlockingScript += UInt8(fromPublicKey.data.count)
+        unlockingScript += fromPublicKey.data
         let input = TransactionInput(previousOutput: outpoint, signatureScript: unlockingScript, sequence: UInt32.max)
         let transaction = Transaction(version: 1, inputs: [input], outputs: [sending, payback], lockTime: 0)
 

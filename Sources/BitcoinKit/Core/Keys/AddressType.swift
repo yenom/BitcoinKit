@@ -40,8 +40,7 @@ public class AddressType {
 }
 
 extension AddressType: Equatable {
-    // swiftlint:disable:next operator_whitespace
-    public static func ==(lhs: AddressType, rhs: AddressType) -> Bool {
+    public static func == (lhs: AddressType, rhs: AddressType) -> Bool {
         return lhs.versionByte == rhs.versionByte
     }
 }

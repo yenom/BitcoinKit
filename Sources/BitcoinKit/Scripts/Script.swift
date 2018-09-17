@@ -153,7 +153,7 @@ public class Script {
             self.init()
             try append(mOpcode)
             for pubkey in publicKeys {
-                try appendData(pubkey.raw)
+                try appendData(pubkey.data)
             }
             try append(nOpcode)
             try append(.OP_CHECKMULTISIG)
@@ -465,8 +465,8 @@ extension Script {
 
     public static func buildPublicKeyUnlockingScript(signature: Data, pubkey: PublicKey, hashType: SighashType) -> Data {
         var data: Data = Data([UInt8(signature.count + 1)]) + signature + UInt8(hashType)
-        data += VarInt(pubkey.raw.count).serialized()
-        data += pubkey.raw
+        data += VarInt(pubkey.data.count).serialized()
+        data += pubkey.data
         return data
     }
 

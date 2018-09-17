@@ -31,7 +31,9 @@ import BitcoinKitPrivate
 #endif
 
 public struct PrivateKey {
-    public let raw: Data
+    @available(*, deprecated, renamed: "data")
+    public var raw: Data { return data }
+    public let data: Data
     public let network: Network
     public let isPublicKeyCompressed: Bool
 
@@ -74,7 +76,7 @@ public struct PrivateKey {
             status = key.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, count, $0) }
         } while (status != 0 || !check([UInt8](key)))
 
-        self.raw = key
+        self.data = key
     }
 
     public init(wif: String) throws {
@@ -108,17 +110,17 @@ public struct PrivateKey {
         self.isPublicKeyCompressed = (checksumDropped.count == (1 + 32 + 1))
 
         // Private key itself is always 32 bytes.
-        raw = checksumDropped.dropFirst().prefix(32)
+        data = checksumDropped.dropFirst().prefix(32)
     }
 
     public init(data: Data, network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
-        raw = data
+        self.data = data
         self.network = network
         self.isPublicKeyCompressed = isPublicKeyCompressed
     }
 
     private func computePublicKeyData() -> Data {
-        return _Key.computePublicKey(fromPrivateKey: raw, compression: isPublicKeyCompressed)
+        return _Key.computePublicKey(fromPrivateKey: data, compression: isPublicKeyCompressed)
     }
 
     public func publicKey() -> PublicKey {
@@ -126,13 +128,13 @@ public struct PrivateKey {
     }
 
     public func toWIF() -> String {
-        var data = Data([network.privatekey]) + raw
+        var payload = Data([network.privatekey]) + data
         if isPublicKeyCompressed {
             // Add extra byte 0x01 in the end.
-            data += Int8(1)
+            payload += Int8(1)
         }
-        let checksum = Crypto.sha256sha256(data).prefix(4)
-        return Base58.encode(data + checksum)
+        let checksum = Crypto.sha256sha256(payload).prefix(4)
+        return Base58.encode(payload + checksum)
     }
 
     public func sign(_ tx: Transaction, utxoToSign: UnspentTransaction, hashType: SighashType, inputIndex: Int = 0) -> Data {
@@ -143,7 +145,7 @@ public struct PrivateKey {
 
 extension PrivateKey: Equatable {
     public static func == (lhs: PrivateKey, rhs: PrivateKey) -> Bool {
-        return lhs.network == rhs.network && lhs.raw == rhs.raw
+        return lhs.network == rhs.network && lhs.data == rhs.data
     }
 }
 

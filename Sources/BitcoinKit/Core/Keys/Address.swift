@@ -31,9 +31,7 @@ public protocol Address: QRCodeConvertible {
     var data: Data { get }
     var publicKey: Data? { get }
 
-    @available(*, deprecated, message: "'base58' will be removed from Address protocol.")
     var base58: String { get }
-    @available(*, deprecated, message: "'cashaddr' will be removed from Address protocol.")
     var cashaddr: String { get }
 }
 
@@ -120,8 +118,7 @@ public struct LegacyAddress: Address {
 }
 
 extension LegacyAddress: Equatable {
-    // swiftlint:disable:next operator_whitespace
-    public static func ==(lhs: LegacyAddress, rhs: LegacyAddress) -> Bool {
+    public static func == (lhs: LegacyAddress, rhs: LegacyAddress) -> Bool {
         return lhs.network == rhs.network && lhs.data == rhs.data && lhs.type == rhs.type
     }
 }
@@ -200,8 +197,7 @@ public struct Cashaddr: Address {
 }
 
 extension Cashaddr: Equatable {
-    // swiftlint:disable:next operator_whitespace
-    public static func ==(lhs: Cashaddr, rhs: Cashaddr) -> Bool {
+    public static func == (lhs: Cashaddr, rhs: Cashaddr) -> Bool {
         return lhs.network == rhs.network && lhs.data == rhs.data && lhs.type == rhs.type
     }
 }

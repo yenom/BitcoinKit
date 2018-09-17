@@ -164,7 +164,7 @@ extension Encoding {
 public struct Bech32 {
     private static let base32Alphabets = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
 
-    public static func encode(_ bytes: Data, prefix: String) -> String {
+    public static func encode(_ bytes: Data, prefix: String, seperator: String = ":") -> String {
         let payload = convertTo5bit(data: bytes, pad: true)
         let checksum: Data = createChecksum(prefix: prefix, payload: payload) // Data of [UInt5]
         let combined: Data = payload + checksum // Data of [UInt5]
@@ -173,18 +173,18 @@ public struct Bech32 {
             base32 += String(base32Alphabets[String.Index(encodedOffset: Int(b))])
         }
 
-        return prefix + ":" + base32
+        return prefix + seperator + base32
     }
 
     // string : "bitcoincash:qql8zpwglr3q5le9jnjxkmypefaku39dkygsx29fzk"
-    public static func decode(_ string: String) -> (prefix: String, data: Data)? {
+    public static func decode(_ string: String, seperator: String = ":") -> (prefix: String, data: Data)? {
         // We can't have empty string.
         // Bech32 should be uppercase only / lowercase only.
         guard !string.isEmpty && [string.lowercased(), string.uppercased()].contains(string) else {
             return nil
         }
 
-        let components = string.components(separatedBy: ":")
+        let components = string.components(separatedBy: seperator)
         // We can only handle string contains both scheme and base32
         guard components.count == 2 else {
             return nil

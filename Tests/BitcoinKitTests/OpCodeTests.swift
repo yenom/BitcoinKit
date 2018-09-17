@@ -603,7 +603,7 @@ class OpCodeTests: XCTestCase {
         }
 
         let sigData: Data = signature + UInt8(hashType)
-        let pubkeyData: Data = fromPublicKey.raw
+        let pubkeyData: Data = fromPublicKey.data
 
         // OP_CHECKSIG success
         do {
@@ -689,7 +689,7 @@ class OpCodeTests: XCTestCase {
         }
 
         let sigData: Data = signature + UInt8(hashType)
-        let pubkeyData: Data = fromPublicKey.raw
+        let pubkeyData: Data = fromPublicKey.data
 
         // OP_CHECKSIG success
         do {

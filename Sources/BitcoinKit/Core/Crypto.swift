@@ -63,7 +63,7 @@ public struct Crypto {
         let signature = UnsafeMutablePointer<secp256k1_ecdsa_signature>.allocate(capacity: 1)
         defer { signature.deallocate() }
         let status = data.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
-            privateKey.raw.withUnsafeBytes { secp256k1_ecdsa_sign(ctx, signature, ptr, $0, nil, nil) }
+            privateKey.data.withUnsafeBytes { secp256k1_ecdsa_sign(ctx, signature, ptr, $0, nil, nil) }
         }
         guard status == 1 else { throw CryptoError.signFailed }
 

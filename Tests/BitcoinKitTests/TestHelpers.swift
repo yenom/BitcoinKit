@@ -170,8 +170,8 @@ public func signTx(unsignedTx: UnsignedTransaction, keys: [PrivateKey]) -> Trans
         let pubkey = key.publicKey()
         
         var unlockingScript: Data = Data([UInt8(signature.count + 1)]) + signature + UInt8(hashType)
-        unlockingScript += VarInt(pubkey.raw.count).serialized()
-        unlockingScript += pubkey.raw
+        unlockingScript += VarInt(pubkey.data.count).serialized()
+        unlockingScript += pubkey.data
         
         // TODO: sequenceの更新
         inputsToSign[i] = TransactionInput(previousOutput: txin.previousOutput, signatureScript: unlockingScript, sequence: txin.sequence)

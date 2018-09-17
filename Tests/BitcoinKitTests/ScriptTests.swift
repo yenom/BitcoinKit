@@ -31,7 +31,7 @@ class ScriptTests: XCTestCase {
         let toAddress = "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB" // https://testnet.coinfaucet.eu/en/
 
         let fromPublicKey = privateKey.publicKey()
-        let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.raw)
+        let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.data)
         let toPubKeyHash = Base58.decode(toAddress)!.dropFirst().dropLast(4)
 
         let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: fromPubKeyHash)
