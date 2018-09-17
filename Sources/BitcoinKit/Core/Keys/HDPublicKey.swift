@@ -76,8 +76,11 @@ public class HDPublicKey {
     }
 }
 
-extension HDPublicKey: CustomStringConvertible, QRCodeConvertible {
+extension HDPublicKey: CustomStringConvertible {
     public var description: String {
         return extended()
     }
 }
+#if os(iOS) || os(tvOS) || os(watchOS)
+extension HDPublicKey: QRCodeConvertible {}
+#endif

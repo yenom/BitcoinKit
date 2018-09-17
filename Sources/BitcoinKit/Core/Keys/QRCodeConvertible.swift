@@ -6,6 +6,7 @@
 //  Copyright © 2018 BitcoinKit developers. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS) || os(watchOS)
 import UIKit
 
 public protocol QRCodeConvertible {
@@ -24,3 +25,4 @@ extension CustomStringConvertible where Self: QRCodeConvertible {
         return description
     }
 }
+#endif

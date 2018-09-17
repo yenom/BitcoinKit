@@ -79,7 +79,7 @@ public struct MockHelper {
                            lockTime: tx.lockTime)
     }
 
-    public static func verifySingleKey(lockScript: Script, unlockScriptBuilder: SingleKeyScriptBuilder, key: MockKey) throws -> Bool {
+    public static func verifySingleKey(lockScript: Script, unlockScriptBuilder: SingleKeyScriptBuilder, key: MockKey, verbose: Bool = true) throws -> Bool {
         // mocks
         let utxoMock: UnspentTransaction = MockHelper.createUtxo(lockScript: lockScript)
         let txMock: Transaction = MockHelper.createTransaction(utxo: utxoMock)
@@ -95,13 +95,13 @@ public struct MockHelper {
 
         // context
         let context = ScriptExecutionContext(transaction: signedTxMock, utxoToVerify: utxoMock.output, inputIndex: 0)!
-        context.verbose = true
+        context.verbose = verbose
 
         // script test
         return try ScriptMachine.verify(lockScript: lockScript, unlockScript: unlockScript, context: context)
     }
 
-    public static func verifyMultiKey(lockScript: Script, unlockScriptBuilder: MultiKeyScriptBuilder, keys: [MockKey]) throws -> Bool {
+    public static func verifyMultiKey(lockScript: Script, unlockScriptBuilder: MultiKeyScriptBuilder, keys: [MockKey], verbose: Bool = true) throws -> Bool {
         // mocks
         let utxoMock: UnspentTransaction = MockHelper.createUtxo(lockScript: lockScript)
         let txMock: Transaction = MockHelper.createTransaction(utxo: utxoMock)
@@ -122,7 +122,7 @@ public struct MockHelper {
 
         // context
         let context = ScriptExecutionContext(transaction: signedTxMock, utxoToVerify: utxoMock.output, inputIndex: 0)!
-        context.verbose = true
+        context.verbose = verbose
 
         // script test
         return try ScriptMachine.verify(lockScript: lockScript, unlockScript: unlockScript, context: context)

@@ -6,6 +6,7 @@
 //  Copyright © 2018 BitcoinKit developers. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS) || os(watchOS)
 import UIKit
 
 public struct QRCodeGenerator {
@@ -39,3 +40,4 @@ public struct QRCodeGenerator {
         return uiImage
     }
 }
+#endif

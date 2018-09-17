@@ -102,11 +102,15 @@ public class HDPrivateKey {
     }
 }
 
-extension HDPrivateKey: CustomStringConvertible, QRCodeConvertible {
+extension HDPrivateKey: CustomStringConvertible {
     public var description: String {
         return extended()
     }
 }
+
+#if os(iOS) || os(tvOS) || os(watchOS)
+extension HDPrivateKey: QRCodeConvertible {}
+#endif
 
 public enum DerivationError: Error {
     case derivationFailed

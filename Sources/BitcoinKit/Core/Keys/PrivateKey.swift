@@ -149,11 +149,15 @@ extension PrivateKey: Equatable {
     }
 }
 
-extension PrivateKey: CustomStringConvertible, QRCodeConvertible {
+extension PrivateKey: CustomStringConvertible {
     public var description: String {
         return toWIF()
     }
 }
+
+#if os(iOS) || os(tvOS) || os(watchOS)
+extension PrivateKey: QRCodeConvertible {}
+#endif
 
 public enum PrivateKeyError: Error {
     case invalidFormat

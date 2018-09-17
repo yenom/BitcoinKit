@@ -76,8 +76,12 @@ extension PublicKey: Equatable {
     }
 }
 
-extension PublicKey: CustomStringConvertible, QRCodeConvertible {
+extension PublicKey: CustomStringConvertible {
     public var description: String {
         return data.hex
     }
 }
+
+#if os(iOS) || os(tvOS) || os(watchOS)
+extension PublicKey: QRCodeConvertible {}
+#endif

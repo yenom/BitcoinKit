@@ -25,7 +25,7 @@
 
 import Foundation
 
-public protocol Address: QRCodeConvertible {
+public protocol AddressProtocol {
     var network: Network { get }
     var type: AddressType { get }
     var data: Data { get }
@@ -34,6 +34,12 @@ public protocol Address: QRCodeConvertible {
     var base58: String { get }
     var cashaddr: String { get }
 }
+
+#if os(iOS) || os(tvOS) || os(watchOS)
+public typealias Address = AddressProtocol & QRCodeConvertible
+#else
+public typealias Address = AddressProtocol
+#endif
 
 public enum AddressError: Error {
     case invalid
