@@ -30,6 +30,7 @@ public protocol WalletDataStoreProtocol {
     func setString(_ value: String, forKey key: String)
 }
 
+// MARK: - WalletDataStoreProtocol Extension
 internal enum WalletDataStoreKey: String {
     case wif, internalIndex, extenralIndex
 }
@@ -40,20 +41,5 @@ internal extension WalletDataStoreProtocol {
     }
     internal func setString(_ value: String, forKey key: WalletDataStoreKey) {
         setString(value, forKey: key.rawValue)
-    }
-}
-
-// MARK: - UserDefaults
-extension UserDefaults: WalletDataStoreProtocol {
-    public static var defaultWalletDataStore: UserDefaults {
-        return UserDefaults(suiteName: "BitcoinKit.WalletDataStore")!
-    }
-    public func getString(forKey key: String) -> String? {
-        return string(forKey: key)
-    }
-
-    public func setString(_ value: String, forKey key: String) {
-        setValue(value, forKey: key)
-        synchronize()
     }
 }

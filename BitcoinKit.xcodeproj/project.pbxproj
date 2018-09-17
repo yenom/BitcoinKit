@@ -151,6 +151,7 @@
 		29330149214FC8E30028946B /* WalletUtxoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330148214FC8E30028946B /* WalletUtxoProvider.swift */; };
 		2933014D214FCE150028946B /* WalletTransactionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933014C214FCE150028946B /* WalletTransactionProvider.swift */; };
 		2933014F214FCE2D0028946B /* WalletTransactionBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933014E214FCE2D0028946B /* WalletTransactionBroadcaster.swift */; };
+		29330152214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330151214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift */; };
 		29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330F6D210597B700106AFA /* UnitsAndLimits.swift */; };
 		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
@@ -363,6 +364,7 @@
 		29330148214FC8E30028946B /* WalletUtxoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtxoProvider.swift; sourceTree = "<group>"; };
 		2933014C214FCE150028946B /* WalletTransactionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionProvider.swift; sourceTree = "<group>"; };
 		2933014E214FCE2D0028946B /* WalletTransactionBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionBroadcaster.swift; sourceTree = "<group>"; };
+		29330151214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+WalletDataStoreProtocol.swift"; sourceTree = "<group>"; };
 		29330F6D210597B700106AFA /* UnitsAndLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsAndLimits.swift; sourceTree = "<group>"; };
 		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
@@ -613,6 +615,7 @@
 			isa = PBXGroup;
 			children = (
 				29330146214F97450028946B /* WalletDataStoreProtocol.swift */,
+				29330151214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift */,
 				29330148214FC8E30028946B /* WalletUtxoProvider.swift */,
 				2933014C214FCE150028946B /* WalletTransactionProvider.swift */,
 				2933014E214FCE2D0028946B /* WalletTransactionBroadcaster.swift */,
@@ -1016,6 +1019,7 @@
 				294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */,
 				0C66CD07212542730049DB89 /* OP_OR.swift in Sources */,
 				0C1DE15F211E6FA700FE8E43 /* OP_NIP.swift in Sources */,
+				29330152214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift in Sources */,
 				CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */,
 				29290BA1210AF90D00D2BE78 /* OP_VERIFY.swift in Sources */,
 				2914BE41211BAAC900B349CB /* OP_RIPEMD160.swift in Sources */,
