@@ -142,15 +142,14 @@ public struct PrivateKey {
 }
 
 extension PrivateKey: Equatable {
-    // swiftlint:disable:next operator_whitespace
-    public static func ==(lhs: PrivateKey, rhs: PrivateKey) -> Bool {
+    public static func == (lhs: PrivateKey, rhs: PrivateKey) -> Bool {
         return lhs.network == rhs.network && lhs.raw == rhs.raw
     }
 }
 
-extension PrivateKey: CustomStringConvertible {
+extension PrivateKey: CustomStringConvertible, QRCodeConvertible {
     public var description: String {
-        return raw.hex
+        return toWIF()
     }
 }
 

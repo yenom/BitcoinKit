@@ -75,7 +75,7 @@ extension PublicKey: Equatable {
     }
 }
 
-extension PublicKey: CustomStringConvertible {
+extension PublicKey: CustomStringConvertible, QRCodeConvertible {
     public var description: String {
         return raw.hex
     }

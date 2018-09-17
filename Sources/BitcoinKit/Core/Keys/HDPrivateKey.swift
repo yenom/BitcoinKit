@@ -102,6 +102,12 @@ public class HDPrivateKey {
     }
 }
 
+extension HDPrivateKey: CustomStringConvertible, QRCodeConvertible {
+    public var description: String {
+        return extended()
+    }
+}
+
 public enum DerivationError: Error {
     case derivationFailed
 }

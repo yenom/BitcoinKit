@@ -25,13 +25,16 @@
 
 import Foundation
 
-public protocol Address {
+public protocol Address: QRCodeConvertible {
     var network: Network { get }
     var type: AddressType { get }
     var data: Data { get }
-    var base58: String { get }
-    var cashaddr: String { get }
     var publicKey: Data? { get }
+
+    @available(*, deprecated, message: "'base58' will be removed from Address protocol.")
+    var base58: String { get }
+    @available(*, deprecated, message: "'cashaddr' will be removed from Address protocol.")
+    var cashaddr: String { get }
 }
 
 public enum AddressError: Error {

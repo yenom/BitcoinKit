@@ -75,3 +75,9 @@ public class HDPublicKey {
         return HDPublicKey(raw: derivedKey.publicKey!, chainCode: derivedKey.chainCode, network: network, depth: derivedKey.depth, fingerprint: derivedKey.fingerprint, childIndex: derivedKey.childIndex)
     }
 }
+
+extension HDPublicKey: CustomStringConvertible, QRCodeConvertible {
+    public var description: String {
+        return extended()
+    }
+}

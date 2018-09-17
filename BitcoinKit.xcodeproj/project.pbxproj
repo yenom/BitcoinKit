@@ -146,6 +146,7 @@
 		29290BA3210AF9D600D2BE78 /* ScriptExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */; };
 		29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */; };
 		29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */; };
+		29330145214F749C0028946B /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330144214F749C0028946B /* QRCodeGenerator.swift */; };
 		29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330F6D210597B700106AFA /* UnitsAndLimits.swift */; };
 		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
@@ -168,6 +169,7 @@
 		298FA5812126C77A009EFAC4 /* ScriptFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298FA5802126C77A009EFAC4 /* ScriptFactory.swift */; };
 		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
 		299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */; };
+		29AC9965214E8A7000AE82FE /* QRCodeConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */; };
 		29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */; };
 		29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */; };
 		29E1ED73210ECD35007F4627 /* OP_CHECKMULTISIG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */; };
@@ -352,6 +354,7 @@
 		29290BA2210AF9D600D2BE78 /* ScriptExecutionContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptExecutionContext.swift; sourceTree = "<group>"; };
 		29290BA4210AFD7A00D2BE78 /* OP_PUSHDATA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_PUSHDATA.swift; sourceTree = "<group>"; };
 		29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSIGVERIFY.swift; sourceTree = "<group>"; };
+		29330144214F749C0028946B /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		29330F6D210597B700106AFA /* UnitsAndLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsAndLimits.swift; sourceTree = "<group>"; };
 		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
@@ -375,6 +378,7 @@
 		298FA582212788A8009EFAC4 /* BitcoinKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BitcoinKit.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
 		299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureSerializer.swift; sourceTree = "<group>"; };
+		29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeConvertible.swift; sourceTree = "<group>"; };
 		29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_EXAMPLE.swift; sourceTree = "<group>"; };
 		29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1NEGATE.swift; sourceTree = "<group>"; };
 		29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKMULTISIG.swift; sourceTree = "<group>"; };
@@ -573,15 +577,7 @@
 		292AEA3C2112EB190012D7E5 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				141FE2E32022589E00A08B04 /* PrivateKey.swift */,
-				141FE2E12022588C00A08B04 /* PublicKey.swift */,
-				14A2961C2032316900E19177 /* HDKeychain.swift */,
-				1482B5E7202721FF0098B612 /* HDPrivateKey.swift */,
-				1482B5E920273B8A0098B612 /* HDPublicKey.swift */,
-				14CDC3892021881A00C01556 /* Address.swift */,
-				294991FF20F227EB00D078B6 /* VersionByte.swift */,
-				297DB97220EB12E60077EEEE /* AddressType.swift */,
-				297DB97420EB13320077EEEE /* AddressFactory.swift */,
+				29AC9962214E898800AE82FE /* Keys */,
 				147494EB201F9E4F006D1CF8 /* Network.swift */,
 				1463E6B52025E99C0033DAAE /* BlockChain.swift */,
 				1463E6B32025E9480033DAAE /* BlockStore.swift */,
@@ -784,6 +780,24 @@
 				296ADC232112EC8C007EE5C7 /* Peer.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		29AC9962214E898800AE82FE /* Keys */ = {
+			isa = PBXGroup;
+			children = (
+				141FE2E32022589E00A08B04 /* PrivateKey.swift */,
+				141FE2E12022588C00A08B04 /* PublicKey.swift */,
+				14A2961C2032316900E19177 /* HDKeychain.swift */,
+				1482B5E7202721FF0098B612 /* HDPrivateKey.swift */,
+				1482B5E920273B8A0098B612 /* HDPublicKey.swift */,
+				14CDC3892021881A00C01556 /* Address.swift */,
+				294991FF20F227EB00D078B6 /* VersionByte.swift */,
+				297DB97220EB12E60077EEEE /* AddressType.swift */,
+				297DB97420EB13320077EEEE /* AddressFactory.swift */,
+				29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */,
+				29330144214F749C0028946B /* QRCodeGenerator.swift */,
+			);
+			path = Keys;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1009,6 +1023,7 @@
 				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
 				299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */,
 				294DDE49211B322E00B7F645 /* OP_ENDIF.swift in Sources */,
+				29AC9965214E8A7000AE82FE /* QRCodeConvertible.swift in Sources */,
 				0C1DD40E21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift in Sources */,
 				2914BE5A211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift in Sources */,
 				0C1DD41D21182043004BA8A8 /* OP_SUB.swift in Sources */,
@@ -1060,6 +1075,7 @@
 				14A2961D2032316900E19177 /* HDKeychain.swift in Sources */,
 				296ADC242112EC8C007EE5C7 /* PeerGroup.swift in Sources */,
 				14CDC38A2021881A00C01556 /* Address.swift in Sources */,
+				29330145214F749C0028946B /* QRCodeGenerator.swift in Sources */,
 				141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */,
 				0C1DE175211E816E00FE8E43 /* OP_2SWAP.swift in Sources */,
 				0C1DE16F211E7D5800FE8E43 /* OP_3DUP.swift in Sources */,
