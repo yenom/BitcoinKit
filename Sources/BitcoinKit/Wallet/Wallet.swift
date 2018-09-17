@@ -30,17 +30,33 @@ final public class Wallet {
     public let publicKey: PublicKey
 
     public let network: Network
+    private var walletDataStore: WalletDataStoreProtocol
 
-    public init(privateKey: PrivateKey) {
+    public init?(walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore) {
+        guard let wif = walletDataStore.getString(forKey: .wif) else { return nil }
+        do {
+            self.walletDataStore = walletDataStore
+            self.privateKey = try PrivateKey(wif: wif)
+            self.publicKey = privateKey.publicKey()
+            self.network = privateKey.network
+        } catch {
+            return nil
+        }
+    }
+    public init(privateKey: PrivateKey, walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore) {
         self.privateKey = privateKey
         self.publicKey = privateKey.publicKey()
         self.network = privateKey.network
+        self.walletDataStore = walletDataStore
+        walletDataStore.setString(privateKey.toWIF(), forKey: .wif)
     }
 
-    public init(wif: String) throws {
+    public init(wif: String, walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore) throws {
         self.privateKey = try PrivateKey(wif: wif)
         self.publicKey = privateKey.publicKey()
         self.network = privateKey.network
+        self.walletDataStore = walletDataStore
+        walletDataStore.setString(wif, forKey: .wif)
     }
 
     public func serialized() -> Data {
