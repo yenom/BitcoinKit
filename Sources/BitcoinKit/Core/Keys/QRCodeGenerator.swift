@@ -6,7 +6,7 @@
 //  Copyright © 2018 BitcoinKit developers. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public struct QRCodeGenerator {
     private static func generateCGImage(from string: String) -> CGImage? {
