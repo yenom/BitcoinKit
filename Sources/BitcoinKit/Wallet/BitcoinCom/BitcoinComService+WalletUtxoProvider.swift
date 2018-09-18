@@ -12,13 +12,16 @@ extension BitcoinComService: UtxoProvider {
     // GET API: reload utxos
     public func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?) {
         let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
-        let url = URL(string: "https://rest.bitcoin.com/v1/address/utxo/\(parameter)")!
+        let urlString = baseUrl + "address/utxo/\(parameter)"
+        let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             guard let data = data else {
+                print("data is nil.")
                 completion?([])
                 return
             }
             guard let response = try? JSONDecoder().decode([[BitcoinComUtxoModel]].self, from: data) else {
+                print("decode failed.")
                 completion?([])
                 return
             }
@@ -36,11 +39,11 @@ extension BitcoinComService: UtxoProvider {
             return []
         }
 
-        guard let response = try? JSONDecoder().decode([BitcoinComUtxoModel].self, from: data) else {
+        guard let response = try? JSONDecoder().decode([[BitcoinComUtxoModel]].self, from: data) else {
             print("data cannot be decoded to response")
             return []
         }
-        return response.asUtxos()
+        return response.joined().asUtxos()
     }
 }
 
@@ -57,7 +60,7 @@ private struct BitcoinComUtxoModel: Codable {
     let scriptPubKey: String
     let amount: Decimal
     let satoshis: UInt64
-    let height: Int
+    let height: Int?
     let confirmations: Int
     let legacyAddress: String
     let cashAddress: String

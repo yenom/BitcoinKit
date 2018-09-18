@@ -10,7 +10,8 @@ import Foundation
 
 extension BitcoinComService: TransactionBroadcaster {
     public func post(_ rawtx: String, completion: ((_ txid: String?) -> Void)?) {
-        let url = URL(string: "https://rest.bitcoin.com/v1/rawtransactions/sendRawTransaction/\(rawtx)")!
+        let urlString = baseUrl + "rawtransactions/sendRawTransaction/\(rawtx)"
+        let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let task = URLSession.shared.dataTask(with: request) { data, _, _ in
@@ -19,12 +20,12 @@ extension BitcoinComService: TransactionBroadcaster {
                 completion?(nil)
                 return
             }
-            guard let response = try? JSONDecoder().decode(BitcoinComTxBroadcastResponse.self, from: data) else {
-                print("response cannot be decoded as BitcoinComTxBroadcastResponse.")
-                completion?(nil)
+            guard let response = String(bytes: data, encoding: .utf8) else {
+                print("broadcast response cannot be decoded.")
                 return
             }
-            completion?(response.hex)
+
+            completion?(response)
         }
         task.resume()
     }

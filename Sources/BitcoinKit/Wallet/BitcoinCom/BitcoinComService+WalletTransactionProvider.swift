@@ -12,7 +12,9 @@ extension BitcoinComService: TransactionProvider {
     // GET API: reload utxos
     public func reload(addresses: [Address], completion: (([Transaction]) -> Void)?) {
         let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
-        let url = URL(string: "https://rest.bitcoin.com/v1/address/transactions/\(parameter)")!
+        let urlString = baseUrl + "address/transactions/\(parameter)"
+        let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             guard let data = data else {
                 completion?([])
@@ -36,11 +38,11 @@ extension BitcoinComService: TransactionProvider {
             return []
         }
 
-        guard let response = try? JSONDecoder().decode([BitcoinComTransaction].self, from: data) else {
+        guard let response = try? JSONDecoder().decode([[BitcoinComTransaction]].self, from: data) else {
             print("data cannot be decoded to response")
             return []
         }
-        return response.asTransactions()
+        return response.joined().asTransactions()
     }
 
 }

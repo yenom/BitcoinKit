@@ -74,6 +74,10 @@ final public class Wallet {
         return utxoProvider.list().sum()
     }
 
+    public func utxos() -> [UnspentTransaction] {
+        return utxoProvider.list()
+    }
+
     public func transactions() -> [Transaction] {
         return transactionProvider.list()
     }
