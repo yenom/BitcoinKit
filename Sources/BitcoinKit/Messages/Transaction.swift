@@ -28,7 +28,7 @@ import Foundation
 /// tx describes a bitcoin transaction, in reply to getdata
 public struct Transaction {
     /// Transaction data format version (note, this is signed)
-    public let version: Int32
+    public let version: UInt32
     /// If present, always 0001, and indicates the presence of witness data
     // public let flag: UInt16 // If present, always 0001, and indicates the presence of witness data
     /// Number of Transaction inputs (never zero)
@@ -56,7 +56,7 @@ public struct Transaction {
         return Data(txHash.reversed()).hex
     }
 
-    public init(version: Int32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
+    public init(version: UInt32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
         self.version = version
         self.inputs = inputs
         self.outputs = outputs
@@ -84,7 +84,7 @@ public struct Transaction {
     }
 
     static func deserialize(_ byteStream: ByteStream) -> Transaction {
-        let version = byteStream.read(Int32.self)
+        let version = byteStream.read(UInt32.self)
         let txInCount = byteStream.read(VarInt.self)
         var inputs = [TransactionInput]()
         for _ in 0..<Int(txInCount.underlyingValue) {
