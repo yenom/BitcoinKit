@@ -174,6 +174,7 @@
 		298E17BA2150971800FF6C77 /* BitcoinComService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17B92150971800FF6C77 /* BitcoinComService.swift */; };
 		298E17BC215097C000FF6C77 /* BitcoinComService+WalletUtxoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17BB215097C000FF6C77 /* BitcoinComService+WalletUtxoProvider.swift */; };
 		298E17BE2150983C00FF6C77 /* BitcoinComService+WalletTransactionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17BD2150983C00FF6C77 /* BitcoinComService+WalletTransactionProvider.swift */; };
+		298E17C021509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17BF21509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift */; };
 		298FA5812126C77A009EFAC4 /* ScriptFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298FA5802126C77A009EFAC4 /* ScriptFactory.swift */; };
 		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
 		299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */; };
@@ -390,6 +391,7 @@
 		298E17B92150971800FF6C77 /* BitcoinComService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinComService.swift; sourceTree = "<group>"; };
 		298E17BB215097C000FF6C77 /* BitcoinComService+WalletUtxoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinComService+WalletUtxoProvider.swift"; sourceTree = "<group>"; };
 		298E17BD2150983C00FF6C77 /* BitcoinComService+WalletTransactionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinComService+WalletTransactionProvider.swift"; sourceTree = "<group>"; };
+		298E17BF21509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinComService+WalletTransactionBroadcaster.swift"; sourceTree = "<group>"; };
 		298FA5802126C77A009EFAC4 /* ScriptFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptFactory.swift; sourceTree = "<group>"; };
 		298FA582212788A8009EFAC4 /* BitcoinKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BitcoinKit.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
@@ -817,6 +819,7 @@
 				298E17B92150971800FF6C77 /* BitcoinComService.swift */,
 				298E17BB215097C000FF6C77 /* BitcoinComService+WalletUtxoProvider.swift */,
 				298E17BD2150983C00FF6C77 /* BitcoinComService+WalletTransactionProvider.swift */,
+				298E17BF21509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift */,
 			);
 			path = BitcoinCom;
 			sourceTree = "<group>";
@@ -1090,6 +1093,7 @@
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
 				1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */,
 				0C1DD40C21181A40004BA8A8 /* OP_LESSTHAN.swift in Sources */,
+				298E17C021509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift in Sources */,
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
 				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
 				2933014F214FCE2D0028946B /* WalletTransactionBroadcaster.swift in Sources */,

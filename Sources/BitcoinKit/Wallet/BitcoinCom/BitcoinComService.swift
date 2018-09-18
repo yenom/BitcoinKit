@@ -9,11 +9,13 @@
 import Foundation
 
 final public class BitcoinComService {
-    internal let userDefaults: UserDefaults = UserDefaults.defaultWalletDataStore
+    public static let shared: BitcoinComService = BitcoinComService(userDefaults: UserDefaults.defaultWalletDataStore)
+    internal let userDefaults: UserDefaults
     enum UserDefaultsKey: String {
         case utxos, transactions
     }
 
-    public init() {}
-
+    public init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+    }
 }

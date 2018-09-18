@@ -31,6 +31,9 @@ final public class Wallet {
 
     public let network: Network
     public var walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore
+    public var utxoProvider: WalletUtxoProvider = BitcoinComService.shared
+    public var transactionProvider: WalletTransactionProvider = BitcoinComService.shared
+    public var transactionBroadcaster: WalletTransactionBroadcaster = BitcoinComService.shared
 
     public init?(walletDataStore dataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore) {
         self.walletDataStore = dataStore
@@ -57,5 +60,25 @@ final public class Wallet {
 
     public func save() {
         walletDataStore.setString(privateKey.toWIF(), forKey: .wif)
+    }
+
+    public func reloadBalance(completion: (([UnspentTransaction]) -> Void)? = nil) {
+        utxoProvider.reload(completion: completion)
+    }
+
+    public func balance() -> UInt64 {
+        return utxoProvider.list().reduce(UInt64()) { $0 + $1.output.value }
+    }
+
+    public func transactions() -> [Transaction] {
+        return transactionProvider.list()
+    }
+
+    public func reloadTransactions(completion: (([Transaction]) -> Void)? = nil) {
+        transactionProvider.reload(completion: completion)
+    }
+
+    public func broadcast(rawtx: String, completion: ((_ txid: String?) -> Void)? = nil) {
+        transactionBroadcaster.post(rawtx, completion: completion)
     }
 }

@@ -25,5 +25,5 @@
 import Foundation
 
 public protocol WalletTransactionBroadcaster {
-    func post(_ rawtx: String, completion: ((_ txid: String) -> Void)?)
+    func post(_ rawtx: String, completion: ((_ txid: String?) -> Void)?)
 }
