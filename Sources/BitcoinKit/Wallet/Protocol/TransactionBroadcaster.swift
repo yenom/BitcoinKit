@@ -1,5 +1,5 @@
 //
-//  WalletTransactionBroadcaster.swift
+//  TransactionBroadcaster.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,6 +24,6 @@
 
 import Foundation
 
-public protocol WalletTransactionBroadcaster {
+public protocol TransactionBroadcaster {
     func post(_ rawtx: String, completion: ((_ txid: String?) -> Void)?)
 }

@@ -1,5 +1,5 @@
 //
-//  WalletTransactionBuilder.swift
+//  TransactionBuilder.swift
 //  BitcoinKit
 //
 //  Created by Shun Usami on 2018/09/18.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-public protocol WalletTransactionBuilder {
+public protocol TransactionBuilder {
     func build(destinations: [(address: Address, amount: UInt64)], utxos: [UnspentTransaction]) throws -> UnsignedTransaction
 }

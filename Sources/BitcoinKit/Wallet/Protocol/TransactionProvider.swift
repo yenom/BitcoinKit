@@ -1,5 +1,5 @@
 //
-//  UtxoProvider.swift
+//  TransactionProvider.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,11 +24,10 @@
 
 import Foundation
 
-public protocol WalletUtxoProvider {
-    // GET API: reload utxos
-    func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?)
+public protocol TransactionProvider {
+    // GET API: reload transactions
+    func reload(addresses: [Address], completion: (([Transaction]) -> Void)?)
 
-    // List utxos
-    func list() -> [UnspentTransaction]
-
+    // List transactions
+    func list() -> [Transaction]
 }

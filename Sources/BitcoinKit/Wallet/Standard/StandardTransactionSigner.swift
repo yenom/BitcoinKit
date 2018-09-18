@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct StandardTransactionSigner: WalletTransactionSigner {
+public struct StandardTransactionSigner: TransactionSigner {
     public func sign(_ unsignedTransaction: UnsignedTransaction, with keys: [PrivateKey]) throws -> Transaction {
         // Define Transaction
         var signingInputs: [TransactionInput]

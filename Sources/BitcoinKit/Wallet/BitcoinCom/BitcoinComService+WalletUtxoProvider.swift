@@ -1,5 +1,5 @@
 //
-//  BitcoinComService+WalletUtxoProvider.swift
+//  BitcoinComService+UtxoProvider.swift
 //  BitcoinKit
 //
 //  Created by Shun Usami on 2018/09/18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension BitcoinComService: WalletUtxoProvider {
+extension BitcoinComService: UtxoProvider {
     // GET API: reload utxos
     public func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?) {
         let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"

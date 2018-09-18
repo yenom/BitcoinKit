@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct StandardTransactionBuilder: WalletTransactionBuilder {
+public struct StandardTransactionBuilder: TransactionBuilder {
     public func build(destinations: [(address: Address, amount: UInt64)], utxos: [UnspentTransaction]) throws -> UnsignedTransaction {
         let outputs = try destinations.map { (address: Address, amount: UInt64) -> TransactionOutput in
             guard let lockingScript = Script(address: address)?.data else {

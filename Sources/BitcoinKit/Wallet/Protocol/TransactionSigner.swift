@@ -1,5 +1,5 @@
 //
-//  WalletTransactionSigner.swift
+//  TransactionSigner.swift
 //  BitcoinKit
 //
 //  Created by Shun Usami on 2018/09/18.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-public protocol WalletTransactionSigner {
+public protocol TransactionSigner {
     func sign(_ unsignedTransaction: UnsignedTransaction, with keys: [PrivateKey]) throws -> Transaction
 }

@@ -1,5 +1,5 @@
 //
-//  WalletUtxoSelector.swift
+//  UtxoSelector.swift
 //  BitcoinKit
 //
 //  Created by Shun Usami on 2018/09/18.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-public protocol WalletUtxoSelector {
+public protocol UtxoSelector {
     func select(from utxos: [UnspentTransaction], targetValue: UInt64) throws -> (utxos: [UnspentTransaction], fee: UInt64)
 }

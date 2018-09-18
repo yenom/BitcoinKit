@@ -148,9 +148,9 @@
 		29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */; };
 		29330145214F749C0028946B /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330144214F749C0028946B /* QRCodeGenerator.swift */; };
 		29330147214F97450028946B /* WalletDataStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330146214F97450028946B /* WalletDataStoreProtocol.swift */; };
-		29330149214FC8E30028946B /* WalletUtxoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330148214FC8E30028946B /* WalletUtxoProvider.swift */; };
-		2933014D214FCE150028946B /* WalletTransactionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933014C214FCE150028946B /* WalletTransactionProvider.swift */; };
-		2933014F214FCE2D0028946B /* WalletTransactionBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933014E214FCE2D0028946B /* WalletTransactionBroadcaster.swift */; };
+		29330149214FC8E30028946B /* UtxoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330148214FC8E30028946B /* UtxoProvider.swift */; };
+		2933014D214FCE150028946B /* TransactionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933014C214FCE150028946B /* TransactionProvider.swift */; };
+		2933014F214FCE2D0028946B /* TransactionBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933014E214FCE2D0028946B /* TransactionBroadcaster.swift */; };
 		29330152214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330151214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift */; };
 		29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330F6D210597B700106AFA /* UnitsAndLimits.swift */; };
 		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
@@ -175,9 +175,9 @@
 		298E17BC215097C000FF6C77 /* BitcoinComService+WalletUtxoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17BB215097C000FF6C77 /* BitcoinComService+WalletUtxoProvider.swift */; };
 		298E17BE2150983C00FF6C77 /* BitcoinComService+WalletTransactionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17BD2150983C00FF6C77 /* BitcoinComService+WalletTransactionProvider.swift */; };
 		298E17C021509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17BF21509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift */; };
-		298E17C22150AD6000FF6C77 /* WalletUtxoSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17C12150AD6000FF6C77 /* WalletUtxoSelector.swift */; };
-		298E17C42150AD6900FF6C77 /* WalletTransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17C32150AD6900FF6C77 /* WalletTransactionBuilder.swift */; };
-		298E17C62150AD7100FF6C77 /* WalletTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17C52150AD7100FF6C77 /* WalletTransactionSigner.swift */; };
+		298E17C22150AD6000FF6C77 /* UtxoSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17C12150AD6000FF6C77 /* UtxoSelector.swift */; };
+		298E17C42150AD6900FF6C77 /* TransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17C32150AD6900FF6C77 /* TransactionBuilder.swift */; };
+		298E17C62150AD7100FF6C77 /* TransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17C52150AD7100FF6C77 /* TransactionSigner.swift */; };
 		298E17CB2150AEA600FF6C77 /* StandardUtxoSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17CA2150AEA600FF6C77 /* StandardUtxoSelector.swift */; };
 		298E17CD2150AEB300FF6C77 /* StandardTransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17CC2150AEB300FF6C77 /* StandardTransactionBuilder.swift */; };
 		298E17CF2150AEBD00FF6C77 /* StandardTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E17CE2150AEBD00FF6C77 /* StandardTransactionSigner.swift */; };
@@ -371,9 +371,9 @@
 		29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSIGVERIFY.swift; sourceTree = "<group>"; };
 		29330144214F749C0028946B /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		29330146214F97450028946B /* WalletDataStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDataStoreProtocol.swift; sourceTree = "<group>"; };
-		29330148214FC8E30028946B /* WalletUtxoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtxoProvider.swift; sourceTree = "<group>"; };
-		2933014C214FCE150028946B /* WalletTransactionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionProvider.swift; sourceTree = "<group>"; };
-		2933014E214FCE2D0028946B /* WalletTransactionBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionBroadcaster.swift; sourceTree = "<group>"; };
+		29330148214FC8E30028946B /* UtxoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtxoProvider.swift; sourceTree = "<group>"; };
+		2933014C214FCE150028946B /* TransactionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProvider.swift; sourceTree = "<group>"; };
+		2933014E214FCE2D0028946B /* TransactionBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBroadcaster.swift; sourceTree = "<group>"; };
 		29330151214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+WalletDataStoreProtocol.swift"; sourceTree = "<group>"; };
 		29330F6D210597B700106AFA /* UnitsAndLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsAndLimits.swift; sourceTree = "<group>"; };
 		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
@@ -398,9 +398,9 @@
 		298E17BB215097C000FF6C77 /* BitcoinComService+WalletUtxoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinComService+WalletUtxoProvider.swift"; sourceTree = "<group>"; };
 		298E17BD2150983C00FF6C77 /* BitcoinComService+WalletTransactionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinComService+WalletTransactionProvider.swift"; sourceTree = "<group>"; };
 		298E17BF21509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinComService+WalletTransactionBroadcaster.swift"; sourceTree = "<group>"; };
-		298E17C12150AD6000FF6C77 /* WalletUtxoSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtxoSelector.swift; sourceTree = "<group>"; };
-		298E17C32150AD6900FF6C77 /* WalletTransactionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionBuilder.swift; sourceTree = "<group>"; };
-		298E17C52150AD7100FF6C77 /* WalletTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionSigner.swift; sourceTree = "<group>"; };
+		298E17C12150AD6000FF6C77 /* UtxoSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtxoSelector.swift; sourceTree = "<group>"; };
+		298E17C32150AD6900FF6C77 /* TransactionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBuilder.swift; sourceTree = "<group>"; };
+		298E17C52150AD7100FF6C77 /* TransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSigner.swift; sourceTree = "<group>"; };
 		298E17CA2150AEA600FF6C77 /* StandardUtxoSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardUtxoSelector.swift; sourceTree = "<group>"; };
 		298E17CC2150AEB300FF6C77 /* StandardTransactionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTransactionBuilder.swift; sourceTree = "<group>"; };
 		298E17CE2150AEBD00FF6C77 /* StandardTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTransactionSigner.swift; sourceTree = "<group>"; };
@@ -635,12 +635,12 @@
 			isa = PBXGroup;
 			children = (
 				29330146214F97450028946B /* WalletDataStoreProtocol.swift */,
-				29330148214FC8E30028946B /* WalletUtxoProvider.swift */,
-				2933014C214FCE150028946B /* WalletTransactionProvider.swift */,
-				2933014E214FCE2D0028946B /* WalletTransactionBroadcaster.swift */,
-				298E17C12150AD6000FF6C77 /* WalletUtxoSelector.swift */,
-				298E17C32150AD6900FF6C77 /* WalletTransactionBuilder.swift */,
-				298E17C52150AD7100FF6C77 /* WalletTransactionSigner.swift */,
+				29330148214FC8E30028946B /* UtxoProvider.swift */,
+				2933014C214FCE150028946B /* TransactionProvider.swift */,
+				2933014E214FCE2D0028946B /* TransactionBroadcaster.swift */,
+				298E17C12150AD6000FF6C77 /* UtxoSelector.swift */,
+				298E17C32150AD6900FF6C77 /* TransactionBuilder.swift */,
+				298E17C52150AD7100FF6C77 /* TransactionSigner.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1023,7 +1023,7 @@
 				1482B5E42026F2590098B612 /* WordList.swift in Sources */,
 				14839A93202FE6AC00A6CB34 /* FilterLoadMessage.swift in Sources */,
 				14839A9D202FE72600A6CB34 /* TransactionOutPoint.swift in Sources */,
-				2933014D214FCE150028946B /* WalletTransactionProvider.swift in Sources */,
+				2933014D214FCE150028946B /* TransactionProvider.swift in Sources */,
 				0C1DE155211D787100FE8E43 /* OP_TOTALSTACK.swift in Sources */,
 				147494E6201F9BF0006D1CF8 /* Encoding.swift in Sources */,
 				2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */,
@@ -1067,7 +1067,7 @@
 				0C1DE17C211E8A0100FE8E43 /* OP_SPLIT.swift in Sources */,
 				294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */,
 				0C66CD07212542730049DB89 /* OP_OR.swift in Sources */,
-				298E17C42150AD6900FF6C77 /* WalletTransactionBuilder.swift in Sources */,
+				298E17C42150AD6900FF6C77 /* TransactionBuilder.swift in Sources */,
 				0C1DE15F211E6FA700FE8E43 /* OP_NIP.swift in Sources */,
 				29330152214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift in Sources */,
 				CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */,
@@ -1102,7 +1102,7 @@
 				29AC9965214E8A7000AE82FE /* QRCodeConvertible.swift in Sources */,
 				0C1DD40E21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift in Sources */,
 				2914BE5A211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift in Sources */,
-				298E17C62150AD7100FF6C77 /* WalletTransactionSigner.swift in Sources */,
+				298E17C62150AD7100FF6C77 /* TransactionSigner.swift in Sources */,
 				0C1DD41D21182043004BA8A8 /* OP_SUB.swift in Sources */,
 				29290B93210AF86400D2BE78 /* OP_0.swift in Sources */,
 				0C1DE163211E724E00FE8E43 /* OP_PICK.swift in Sources */,
@@ -1126,7 +1126,7 @@
 				298E17C021509DC200FF6C77 /* BitcoinComService+WalletTransactionBroadcaster.swift in Sources */,
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
 				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
-				2933014F214FCE2D0028946B /* WalletTransactionBroadcaster.swift in Sources */,
+				2933014F214FCE2D0028946B /* TransactionBroadcaster.swift in Sources */,
 				0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */,
 				14839A9F202FE73B00A6CB34 /* TransactionOutput.swift in Sources */,
 				1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */,
@@ -1163,7 +1163,7 @@
 				14839A97202FE6D000A6CB34 /* BlockMessage.swift in Sources */,
 				0C1DE16D211E7CC300FE8E43 /* OP_2DUP.swift in Sources */,
 				1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */,
-				29330149214FC8E30028946B /* WalletUtxoProvider.swift in Sources */,
+				29330149214FC8E30028946B /* UtxoProvider.swift in Sources */,
 				2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */,
 				14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */,
 				2914BE43211BAAE500B349CB /* OP_SHA256.swift in Sources */,
@@ -1187,7 +1187,7 @@
 				0C1DD421211820D4004BA8A8 /* OP_DIV.swift in Sources */,
 				0C1DE157211D79D900FE8E43 /* OP_FROMALTSTACK.swift in Sources */,
 				14839A99202FE6E700A6CB34 /* MerkleBlockMessage.swift in Sources */,
-				298E17C22150AD6000FF6C77 /* WalletUtxoSelector.swift in Sources */,
+				298E17C22150AD6000FF6C77 /* UtxoSelector.swift in Sources */,
 				0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
 				14839A8D202FE66A00A6CB34 /* PingMessage.swift in Sources */,

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct StandardUtxoSelector: WalletUtxoSelector {
+public struct StandardUtxoSelector: UtxoSelector {
     public let feePerByte: UInt64
     public let dustThreshhold: UInt64
 

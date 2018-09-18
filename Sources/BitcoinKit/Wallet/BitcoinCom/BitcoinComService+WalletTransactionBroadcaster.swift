@@ -1,5 +1,5 @@
 //
-//  BitcoinComService+WalletTransactionBroadcaster.swift
+//  BitcoinComService+TransactionBroadcaster.swift
 //  BitcoinKit
 //
 //  Created by Shun Usami on 2018/09/18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension BitcoinComService: WalletTransactionBroadcaster {
+extension BitcoinComService: TransactionBroadcaster {
     public func post(_ rawtx: String, completion: ((_ txid: String?) -> Void)?) {
         let url = URL(string: "https://rest.bitcoin.com/v1/rawtransactions/sendRawTransaction/\(rawtx)")!
         var request = URLRequest(url: url)

@@ -32,12 +32,12 @@ final public class Wallet {
 
     public let network: Network
     public var walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore
-    public var utxoProvider: WalletUtxoProvider = BitcoinComService.shared
-    public var transactionProvider: WalletTransactionProvider = BitcoinComService.shared
-    public var transactionBroadcaster: WalletTransactionBroadcaster = BitcoinComService.shared
-    public var utxoSelector: WalletUtxoSelector = StandardUtxoSelector(feePerByte: 1)
-    public var transactionBuilder: WalletTransactionBuilder = StandardTransactionBuilder()
-    public var transactionSigner: WalletTransactionSigner = StandardTransactionSigner()
+    public var utxoProvider: UtxoProvider = BitcoinComService.shared
+    public var transactionProvider: TransactionProvider = BitcoinComService.shared
+    public var transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared
+    public var utxoSelector: UtxoSelector = StandardUtxoSelector(feePerByte: 1)
+    public var transactionBuilder: TransactionBuilder = StandardTransactionBuilder()
+    public var transactionSigner: TransactionSigner = StandardTransactionSigner()
 
     public init?(walletDataStore dataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore) {
         self.walletDataStore = dataStore
