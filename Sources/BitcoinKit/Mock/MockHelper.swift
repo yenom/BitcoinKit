@@ -46,9 +46,9 @@ public struct MockHelper {
 
         // 2. outputs
         // 2-1. amount, change, fee
-        let amount: Int64 = 10_000
-        let fee: Int64 = 1000
-        let change: Int64 = utxo.output.value - amount - fee
+        let amount: UInt64 = 10_000
+        let fee: UInt64 = 1000
+        let change: UInt64 = utxo.output.value - amount - fee
 
         // 2-2. Script
         let lockingScriptTo = Script(address: toAddress)!

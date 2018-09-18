@@ -27,7 +27,7 @@ import Foundation
 
 public struct TransactionOutput {
     /// Transaction Value
-    public let value: Int64
+    public let value: UInt64
     /// Length of the pk_script
     public var scriptLength: VarInt {
         return VarInt(lockingScript.count)
@@ -42,7 +42,7 @@ public struct TransactionOutput {
         return data
     }
 
-    public init(value: Int64, lockingScript: Data) {
+    public init(value: UInt64, lockingScript: Data) {
         self.value = value
         self.lockingScript = lockingScript
     }
@@ -60,7 +60,7 @@ public struct TransactionOutput {
     }
 
     static func deserialize(_ byteStream: ByteStream) -> TransactionOutput {
-        let value = byteStream.read(Int64.self)
+        let value = byteStream.read(UInt64.self)
         let scriptLength = byteStream.read(VarInt.self)
         let lockingScript = byteStream.read(Data.self, count: Int(scriptLength.underlyingValue))
         return TransactionOutput(value: value, lockingScript: lockingScript)
