@@ -15,7 +15,7 @@ extension UserDefaults: WalletDataStoreProtocol {
     public func getString(forKey key: String) -> String? {
         return string(forKey: key)
     }
-    
+
     public func setString(_ value: String, forKey key: String) {
         setValue(value, forKey: key)
         synchronize()

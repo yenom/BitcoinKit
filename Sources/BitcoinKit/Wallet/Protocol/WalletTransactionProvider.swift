@@ -27,7 +27,7 @@ import Foundation
 public protocol WalletTransactionProvider {
     // GET API: reload transactions
     func reload(completion: (([Transaction]) -> Void)?)
-    
+
     // List transactions
     func list() -> [Transaction]
 }
