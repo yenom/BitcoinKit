@@ -32,6 +32,7 @@ final public class Wallet {
 
     public let network: Network
     private let walletDataStore: WalletDataStoreProtocol
+    private let addressProvider: AddressProvider
     private let utxoProvider: UtxoProvider
     private let transactionProvider: TransactionProvider
     private let transactionBroadcaster: TransactionBroadcaster
@@ -41,6 +42,7 @@ final public class Wallet {
 
     public init(privateKey: PrivateKey,
                 walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
+                addressProvider: AddressProvider = StandardAddressProvider.shared,
                 utxoProvider: UtxoProvider = BitcoinComService.shared,
                 transactionProvider: TransactionProvider = BitcoinComService.shared,
                 transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
@@ -52,6 +54,7 @@ final public class Wallet {
         self.network = privateKey.network
 
         self.walletDataStore = walletDataStore
+        self.addressProvider = addressProvider
         self.utxoProvider = utxoProvider
         self.transactionProvider = transactionProvider
         self.transactionBroadcaster = transactionBroadcaster
@@ -62,6 +65,7 @@ final public class Wallet {
 
     public init?(wif: String,
                  walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
+                 addressProvider: AddressProvider = StandardAddressProvider.shared,
                  utxoProvider: UtxoProvider = BitcoinComService.shared,
                  transactionProvider: TransactionProvider = BitcoinComService.shared,
                  transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
@@ -76,6 +80,7 @@ final public class Wallet {
         self.network = privkey.network
 
         self.walletDataStore = walletDataStore
+        self.addressProvider = addressProvider
         self.utxoProvider = utxoProvider
         self.transactionProvider = transactionProvider
         self.transactionBroadcaster = transactionBroadcaster
@@ -85,6 +90,7 @@ final public class Wallet {
     }
 
     public init?(walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
+                 addressProvider: AddressProvider = StandardAddressProvider.shared,
                  utxoProvider: UtxoProvider = BitcoinComService.shared,
                  transactionProvider: TransactionProvider = BitcoinComService.shared,
                  transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
@@ -102,6 +108,7 @@ final public class Wallet {
         self.network = privkey.network
 
         self.walletDataStore = walletDataStore
+        self.addressProvider = addressProvider
         self.utxoProvider = utxoProvider
         self.transactionProvider = transactionProvider
         self.transactionBroadcaster = transactionBroadcaster
@@ -114,8 +121,17 @@ final public class Wallet {
         walletDataStore.setString(privateKey.toWIF(), forKey: .wif)
     }
 
+    public func addresses() -> [Address] {
+        let cache = addressProvider.list()
+        guard !cache.isEmpty else {
+            addressProvider.reload(keys: [privateKey], completion: nil)
+            return [address]
+        }
+        return cache
+    }
+
     public func reloadBalance(completion: (([UnspentTransaction]) -> Void)? = nil) {
-        utxoProvider.reload(addresses: [address], completion: completion)
+        utxoProvider.reload(addresses: addresses(), completion: completion)
     }
 
     public func balance() -> UInt64 {
@@ -131,7 +147,7 @@ final public class Wallet {
     }
 
     public func reloadTransactions(completion: (([Transaction]) -> Void)? = nil) {
-        transactionProvider.reload(addresses: [address], completion: completion)
+        transactionProvider.reload(addresses: addresses(), completion: completion)
     }
 
     public func send(to toAddress: Address, amount: UInt64, completion: ((_ txid: String?) -> Void)? = nil) throws {
