@@ -41,7 +41,6 @@ public struct StandardTransactionSigner: TransactionSigner {
                 .appendData(sigWithHashType)
                 .appendData(pubkey.data)
 
-            // TODO: Update sequence
             // Update TransactionInput
             signingInputs[i] = TransactionInput(previousOutput: txin.previousOutput, signatureScript: unlockingScript.data, sequence: txin.sequence)
         }
