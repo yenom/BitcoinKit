@@ -1,5 +1,5 @@
 //
-//  BitcoinComService+TransactionProvider.swift
+//  BitcoinComService+TransactionHistoryProvider.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension BitcoinComService: TransactionProvider {
+extension BitcoinComService: TransactionHistoryProvider {
     // GET API: reload utxos
     public func reload(addresses: [Address], completion: (([Transaction]) -> Void)?) {
         let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"

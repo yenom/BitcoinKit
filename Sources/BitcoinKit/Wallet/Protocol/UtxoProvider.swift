@@ -25,7 +25,7 @@
 import Foundation
 
 public protocol UtxoProvider {
-    // GET API: reload utxos
+    // Reload utxos [GET API, SPV, etc...]
     func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?)
 
     // List utxos

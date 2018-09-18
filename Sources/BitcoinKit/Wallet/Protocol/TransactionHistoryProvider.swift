@@ -1,5 +1,5 @@
 //
-//  TransactionProvider.swift
+//  TransactionHistoryProvider.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,8 +24,8 @@
 
 import Foundation
 
-public protocol TransactionProvider {
-    // GET API: reload transactions
+public protocol TransactionHistoryProvider {
+    // Reload transactions [GET API, SPV, etc...]
     func reload(addresses: [Address], completion: (([Transaction]) -> Void)?)
 
     // List transactions

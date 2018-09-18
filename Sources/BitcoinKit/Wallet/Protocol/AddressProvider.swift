@@ -25,9 +25,9 @@
 import Foundation
 
 public protocol AddressProvider {
-    // GET API: reload utxos
+    // Reload addresses [Convert PrivateKey to Address, GET API, etc...]
     func reload(keys: [PrivateKey], completion: (([Address]) -> Void)?)
 
-    // List utxos
+    // List addresses
     func list() -> [Address]
 }

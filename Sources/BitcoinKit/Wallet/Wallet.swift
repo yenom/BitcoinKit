@@ -34,7 +34,7 @@ final public class Wallet {
     private let walletDataStore: WalletDataStoreProtocol
     private let addressProvider: AddressProvider
     private let utxoProvider: UtxoProvider
-    private let transactionProvider: TransactionProvider
+    private let transactionHistoryProvider: TransactionHistoryProvider
     private let transactionBroadcaster: TransactionBroadcaster
     private let utxoSelector: UtxoSelector
     private let transactionBuilder: TransactionBuilder
@@ -44,7 +44,7 @@ final public class Wallet {
                 walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
                 addressProvider: AddressProvider = StandardAddressProvider.shared,
                 utxoProvider: UtxoProvider = BitcoinComService.shared,
-                transactionProvider: TransactionProvider = BitcoinComService.shared,
+                transactionProvider: TransactionHistoryProvider = BitcoinComService.shared,
                 transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
                 utxoSelector: UtxoSelector = StandardUtxoSelector.default,
                 transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
@@ -56,7 +56,7 @@ final public class Wallet {
         self.walletDataStore = walletDataStore
         self.addressProvider = addressProvider
         self.utxoProvider = utxoProvider
-        self.transactionProvider = transactionProvider
+        self.transactionHistoryProvider = transactionProvider
         self.transactionBroadcaster = transactionBroadcaster
         self.utxoSelector = utxoSelector
         self.transactionBuilder = transactionBuilder
@@ -67,7 +67,7 @@ final public class Wallet {
                  walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
                  addressProvider: AddressProvider = StandardAddressProvider.shared,
                  utxoProvider: UtxoProvider = BitcoinComService.shared,
-                 transactionProvider: TransactionProvider = BitcoinComService.shared,
+                 transactionProvider: TransactionHistoryProvider = BitcoinComService.shared,
                  transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
                  utxoSelector: UtxoSelector = StandardUtxoSelector.default,
                  transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
@@ -82,7 +82,7 @@ final public class Wallet {
         self.walletDataStore = walletDataStore
         self.addressProvider = addressProvider
         self.utxoProvider = utxoProvider
-        self.transactionProvider = transactionProvider
+        self.transactionHistoryProvider = transactionProvider
         self.transactionBroadcaster = transactionBroadcaster
         self.utxoSelector = utxoSelector
         self.transactionBuilder = transactionBuilder
@@ -92,7 +92,7 @@ final public class Wallet {
     public init?(walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
                  addressProvider: AddressProvider = StandardAddressProvider.shared,
                  utxoProvider: UtxoProvider = BitcoinComService.shared,
-                 transactionProvider: TransactionProvider = BitcoinComService.shared,
+                 transactionProvider: TransactionHistoryProvider = BitcoinComService.shared,
                  transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
                  utxoSelector: UtxoSelector = StandardUtxoSelector.default,
                  transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
@@ -110,7 +110,7 @@ final public class Wallet {
         self.walletDataStore = walletDataStore
         self.addressProvider = addressProvider
         self.utxoProvider = utxoProvider
-        self.transactionProvider = transactionProvider
+        self.transactionHistoryProvider = transactionProvider
         self.transactionBroadcaster = transactionBroadcaster
         self.utxoSelector = utxoSelector
         self.transactionBuilder = transactionBuilder
@@ -143,11 +143,11 @@ final public class Wallet {
     }
 
     public func transactions() -> [Transaction] {
-        return transactionProvider.list()
+        return transactionHistoryProvider.list()
     }
 
     public func reloadTransactions(completion: (([Transaction]) -> Void)? = nil) {
-        transactionProvider.reload(addresses: addresses(), completion: completion)
+        transactionHistoryProvider.reload(addresses: addresses(), completion: completion)
     }
 
     public func send(to toAddress: Address, amount: UInt64, completion: ((_ txid: String?) -> Void)? = nil) throws {

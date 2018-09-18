@@ -32,7 +32,7 @@ public protocol WalletDataStoreProtocol {
 
 // MARK: - WalletDataStoreProtocol Extension
 internal enum WalletDataStoreKey: String {
-    case wif, internalIndex, extenralIndex
+    case wif
 }
 
 internal extension WalletDataStoreProtocol {
