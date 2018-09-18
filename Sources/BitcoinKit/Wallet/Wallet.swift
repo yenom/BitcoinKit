@@ -63,7 +63,7 @@ final public class Wallet {
     }
 
     public func reloadBalance(completion: (([UnspentTransaction]) -> Void)? = nil) {
-        utxoProvider.reload(completion: completion)
+        utxoProvider.reload(addresses: [publicKey.toCashaddr()], completion: completion)
     }
 
     public func balance() -> UInt64 {
@@ -75,10 +75,11 @@ final public class Wallet {
     }
 
     public func reloadTransactions(completion: (([Transaction]) -> Void)? = nil) {
-        transactionProvider.reload(completion: completion)
+        transactionProvider.reload(addresses: [publicKey.toCashaddr()], completion: completion)
     }
 
-    public func broadcast(rawtx: String, completion: ((_ txid: String?) -> Void)? = nil) {
+    public func sendTo(address: Address, amount: UInt64, completion: ((_ txid: String?) -> Void)? = nil) {
+        let rawtx = "" // TODO:
         transactionBroadcaster.post(rawtx, completion: completion)
     }
 }

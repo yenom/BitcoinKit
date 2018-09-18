@@ -10,20 +10,21 @@ import Foundation
 
 extension BitcoinComService: WalletTransactionProvider {
     // GET API: reload utxos
-    public func reload(completion: (([Transaction]) -> Void)?) {
-        let url = URL(string: "https://rest.bitcoin.com/v1/address/transactions/bitcoincash:qzs02v05l7qs5s24srqju498qu55dwuj0cx5ehjm2c")!
+    public func reload(addresses: [Address], completion: (([Transaction]) -> Void)?) {
+        let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
+        let url = URL(string: "https://rest.bitcoin.com/v1/address/transactions/\(parameter)")!
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             guard let data = data else {
                 completion?([])
                 return
             }
-            guard let response = try? JSONDecoder().decode([BitcoinComTransaction].self, from: data) else {
+            guard let response = try? JSONDecoder().decode([[BitcoinComTransaction]].self, from: data) else {
                 completion?([])
                 return
             }
             self?.userDefaults.set(data, forKey: UserDefaultsKey.transactions.rawValue)
             self?.userDefaults.synchronize()
-            completion?(response.asTransactions())
+            completion?(response.joined().asTransactions())
         }
         task.resume()
     }
@@ -44,7 +45,7 @@ extension BitcoinComService: WalletTransactionProvider {
 
 }
 
-private extension Array where Element == BitcoinComTransaction {
+private extension Sequence where Element == BitcoinComTransaction {
     func asTransactions() -> [Transaction] {
         return compactMap { $0.asTransaction() }
     }

@@ -10,20 +10,21 @@ import Foundation
 
 extension BitcoinComService: WalletUtxoProvider {
     // GET API: reload utxos
-    public func reload(completion: (([UnspentTransaction]) -> Void)?) {
-        let url = URL(string: "https://rest.bitcoin.com/v1/address/utxo/bitcoincash:qzs02v05l7qs5s24srqju498qu55dwuj0cx5ehjm2c")!
+    public func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?) {
+        let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
+        let url = URL(string: "https://rest.bitcoin.com/v1/address/utxo/\(parameter)")!
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             guard let data = data else {
                 completion?([])
                 return
             }
-            guard let response = try? JSONDecoder().decode([BitcoinComUtxoModel].self, from: data) else {
+            guard let response = try? JSONDecoder().decode([[BitcoinComUtxoModel]].self, from: data) else {
                 completion?([])
                 return
             }
             self?.userDefaults.set(data, forKey: UserDefaultsKey.utxos.rawValue)
             self?.userDefaults.synchronize()
-            completion?(response.asUtxos())
+            completion?(response.joined().asUtxos())
         }
         task.resume()
     }
@@ -43,7 +44,7 @@ extension BitcoinComService: WalletUtxoProvider {
     }
 }
 
-private extension Array where Element == BitcoinComUtxoModel {
+private extension Sequence where Element == BitcoinComUtxoModel {
     func asUtxos() -> [UnspentTransaction] {
         return compactMap { $0.asUtxo() }
     }

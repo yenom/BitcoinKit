@@ -26,7 +26,7 @@ import Foundation
 
 public protocol WalletUtxoProvider {
     // GET API: reload utxos
-    func reload(completion: (([UnspentTransaction]) -> Void)?)
+    func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?)
 
     // List utxos
     func list() -> [UnspentTransaction]
