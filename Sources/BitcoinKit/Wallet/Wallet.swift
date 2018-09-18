@@ -28,12 +28,16 @@ import Foundation
 final public class Wallet {
     public let privateKey: PrivateKey
     public let publicKey: PublicKey
+    public var address: Address { return publicKey.toCashaddr() }
 
     public let network: Network
     public var walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore
     public var utxoProvider: WalletUtxoProvider = BitcoinComService.shared
     public var transactionProvider: WalletTransactionProvider = BitcoinComService.shared
     public var transactionBroadcaster: WalletTransactionBroadcaster = BitcoinComService.shared
+    public var utxoSelector: WalletUtxoSelector = StandardUtxoSelector(feePerByte: 1)
+    public var transactionBuilder: WalletTransactionBuilder = StandardTransactionBuilder()
+    public var transactionSigner: WalletTransactionSigner = StandardTransactionSigner()
 
     public init?(walletDataStore dataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore) {
         self.walletDataStore = dataStore
@@ -63,11 +67,11 @@ final public class Wallet {
     }
 
     public func reloadBalance(completion: (([UnspentTransaction]) -> Void)? = nil) {
-        utxoProvider.reload(addresses: [publicKey.toCashaddr()], completion: completion)
+        utxoProvider.reload(addresses: [address], completion: completion)
     }
 
     public func balance() -> UInt64 {
-        return utxoProvider.list().reduce(UInt64()) { $0 + $1.output.value }
+        return utxoProvider.list().sum()
     }
 
     public func transactions() -> [Transaction] {
@@ -75,11 +79,25 @@ final public class Wallet {
     }
 
     public func reloadTransactions(completion: (([Transaction]) -> Void)? = nil) {
-        transactionProvider.reload(addresses: [publicKey.toCashaddr()], completion: completion)
+        transactionProvider.reload(addresses: [address], completion: completion)
     }
 
-    public func sendTo(address: Address, amount: UInt64, completion: ((_ txid: String?) -> Void)? = nil) {
-        let rawtx = "" // TODO:
+    public func send(to toAddress: Address, amount: UInt64, completion: ((_ txid: String?) -> Void)? = nil) throws {
+        let utxos = utxoProvider.list()
+        let (utxosToSpend, fee) = try utxoSelector.select(from: utxos, targetValue: amount)
+        let totalAmount: UInt64 = utxosToSpend.sum()
+        let change: UInt64 = totalAmount - amount - fee
+        let destinations: [(Address, UInt64)] = [(toAddress, amount), (address, change)]
+        let unsignedTx = try transactionBuilder.build(destinations: destinations, utxos: utxosToSpend)
+        let signedTx = try transactionSigner.sign(unsignedTx, with: [privateKey])
+
+        let rawtx = signedTx.serialized().hex
         transactionBroadcaster.post(rawtx, completion: completion)
+    }
+}
+
+internal extension Sequence where Element == UnspentTransaction {
+    func sum() -> UInt64 {
+        return reduce(UInt64()) { $0 + $1.output.value }
     }
 }
