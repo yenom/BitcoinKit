@@ -189,6 +189,8 @@
 		29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */; };
 		29E1ED73210ECD35007F4627 /* OP_CHECKMULTISIG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */; };
 		29E1ED75210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED74210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift */; };
+		29EA70362150EB76009B6485 /* AddressProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EA70352150EB76009B6485 /* AddressProvider.swift */; };
+		29EA70382150EC4E009B6485 /* StandardAddressProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EA70372150EC4E009B6485 /* StandardAddressProvider.swift */; };
 		29F5D1E02110495F007DA3BF /* OpCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */; };
 		29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E321106772007DA3BF /* BigNumberTests.swift */; };
 		29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E5211068E8007DA3BF /* BigNumber.swift */; };
@@ -413,6 +415,8 @@
 		29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1NEGATE.swift; sourceTree = "<group>"; };
 		29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKMULTISIG.swift; sourceTree = "<group>"; };
 		29E1ED74210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKMULTISIGVERIFY.swift; sourceTree = "<group>"; };
+		29EA70352150EB76009B6485 /* AddressProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressProvider.swift; sourceTree = "<group>"; };
+		29EA70372150EC4E009B6485 /* StandardAddressProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardAddressProvider.swift; sourceTree = "<group>"; };
 		29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeTests.swift; sourceTree = "<group>"; };
 		29F5D1E321106772007DA3BF /* BigNumberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumberTests.swift; sourceTree = "<group>"; };
 		29F5D1E5211068E8007DA3BF /* BigNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumber.swift; sourceTree = "<group>"; };
@@ -635,6 +639,7 @@
 			isa = PBXGroup;
 			children = (
 				29330146214F97450028946B /* WalletDataStoreProtocol.swift */,
+				29EA70352150EB76009B6485 /* AddressProvider.swift */,
 				29330148214FC8E30028946B /* UtxoProvider.swift */,
 				2933014C214FCE150028946B /* TransactionProvider.swift */,
 				2933014E214FCE2D0028946B /* TransactionBroadcaster.swift */,
@@ -843,6 +848,7 @@
 		298E17C92150AE9700FF6C77 /* Standard */ = {
 			isa = PBXGroup;
 			children = (
+				29EA70372150EC4E009B6485 /* StandardAddressProvider.swift */,
 				298E17CA2150AEA600FF6C77 /* StandardUtxoSelector.swift */,
 				298E17CC2150AEB300FF6C77 /* StandardTransactionBuilder.swift */,
 				298E17CE2150AEBD00FF6C77 /* StandardTransactionSigner.swift */,
@@ -1143,6 +1149,7 @@
 				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
 				2914BE5E211C062200B349CB /* OP_PUBKEYHASH.swift in Sources */,
 				0C1DE15B211D819A00FE8E43 /* OP_DEPTH.swift in Sources */,
+				29EA70362150EB76009B6485 /* AddressProvider.swift in Sources */,
 				0C1DD41221181B41004BA8A8 /* OP_BOOLOR.swift in Sources */,
 				294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */,
 				29089F102122D06300E0C305 /* MockKey.swift in Sources */,
@@ -1189,6 +1196,7 @@
 				14839A99202FE6E700A6CB34 /* MerkleBlockMessage.swift in Sources */,
 				298E17C22150AD6000FF6C77 /* UtxoSelector.swift in Sources */,
 				0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */,
+				29EA70382150EC4E009B6485 /* StandardAddressProvider.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
 				14839A8D202FE66A00A6CB34 /* PingMessage.swift in Sources */,
 				0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */,
