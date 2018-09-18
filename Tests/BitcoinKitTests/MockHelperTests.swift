@@ -41,7 +41,7 @@ class MockHelperTests: XCTestCase {
                 return script
             }
 
-            return try MockHelper.verifySingleKey(lockScript: standardLockScript, unlockScriptBuilder: standardUnlockScript, key: key)
+            return try MockHelper.verifySingleKey(lockScript: standardLockScript, unlockScriptBuilder: standardUnlockScript, key: key, verbose: false)
         }
         
         func succeed(with key: MockKey) {
@@ -87,7 +87,7 @@ class MockHelperTests: XCTestCase {
                     .appendData(redeemScript.data)
             }
 
-            return try MockHelper.verifySingleKey(lockScript: p2shLockScript, unlockScriptBuilder: p2shUnlockScriptBuilder, key: key)
+            return try MockHelper.verifySingleKey(lockScript: p2shLockScript, unlockScriptBuilder: p2shUnlockScriptBuilder, key: key, verbose: false)
         }
         
         func succeed(with key: MockKey) {
@@ -148,31 +148,31 @@ class MockHelperTests: XCTestCase {
                 case .keyA:
                     return try! Script()
                         .appendData(sigWithHashType)
-                        .appendData(key.pubkey.raw)
+                        .appendData(key.pubkey.data)
                         .append(.OP_TRUE)
                         .append(.OP_TRUE)
                 case .keyB:
                     return try! Script()
                         .appendData(sigWithHashType)
-                        .appendData(key.pubkey.raw)
+                        .appendData(key.pubkey.data)
                         .append(.OP_FALSE)
                         .append(.OP_TRUE)
                 case .keyC:
                     return try! Script()
                         .appendData(sigWithHashType)
-                        .appendData(key.pubkey.raw)
+                        .appendData(key.pubkey.data)
                         .append(.OP_FALSE)
                 default:
                     // unlock script for keyA
                     return try! Script()
                         .appendData(sigWithHashType)
-                        .appendData(key.pubkey.raw)
+                        .appendData(key.pubkey.data)
                         .append(.OP_TRUE)
                         .append(.OP_TRUE)
                 }
             }
 
-            return try MockHelper.verifySingleKey(lockScript: customLockScript, unlockScriptBuilder: customUnlockScript, key: key)
+            return try MockHelper.verifySingleKey(lockScript: customLockScript, unlockScriptBuilder: customUnlockScript, key: key, verbose: false)
         }
         
         func succeed(with key: MockKey) {
@@ -219,7 +219,7 @@ class MockHelperTests: XCTestCase {
                 return script
             }
             
-            return try MockHelper.verifyMultiKey(lockScript: standardLockScript, unlockScriptBuilder: standardUnlockScript, keys: keys)
+            return try MockHelper.verifyMultiKey(lockScript: standardLockScript, unlockScriptBuilder: standardUnlockScript, keys: keys, verbose: false)
         }
         
         func succeed(with keys: [MockKey]) {

@@ -1,7 +1,6 @@
 //
-//  Wallet.swift
+//  QRImageConvertable.swift
 //
-//  Copyright © 2018 Kishikawa Katsumi
 //  Copyright © 2018 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,30 +22,23 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
+#if os(iOS) || os(tvOS) || os(watchOS)
+import UIKit
 
-final public class Wallet {
-    public let privateKey: PrivateKey
-    public let publicKey: PublicKey
+public protocol QRCodeConvertible {
+    var qrcodeString: String { get }
+    func qrImage(size: CGSize) -> UIImage?
+}
 
-    public let network: Network
-
-    public init(privateKey: PrivateKey) {
-        self.privateKey = privateKey
-        self.publicKey = privateKey.publicKey()
-        self.network = privateKey.network
-    }
-
-    public init(wif: String) throws {
-        self.privateKey = try PrivateKey(wif: wif)
-        self.publicKey = privateKey.publicKey()
-        self.network = privateKey.network
-    }
-
-    public func serialized() -> Data {
-        var data = Data()
-        data += privateKey.data
-        data += publicKey.data
-        return data
+extension QRCodeConvertible {
+    public func qrImage(size: CGSize = CGSize(width: 200, height: 200)) -> UIImage? {
+        return QRCodeGenerator.generate(from: qrcodeString, size: size)
     }
 }
+
+extension CustomStringConvertible where Self: QRCodeConvertible {
+    public var qrcodeString: String {
+        return description
+    }
+}
+#endif

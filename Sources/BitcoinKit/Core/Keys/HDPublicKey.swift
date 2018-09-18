@@ -75,3 +75,12 @@ public class HDPublicKey {
         return HDPublicKey(raw: derivedKey.publicKey!, chainCode: derivedKey.chainCode, network: network, depth: derivedKey.depth, fingerprint: derivedKey.fingerprint, childIndex: derivedKey.childIndex)
     }
 }
+
+extension HDPublicKey: CustomStringConvertible {
+    public var description: String {
+        return extended()
+    }
+}
+#if os(iOS) || os(tvOS) || os(watchOS)
+extension HDPublicKey: QRCodeConvertible {}
+#endif

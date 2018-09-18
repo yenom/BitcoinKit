@@ -46,8 +46,7 @@ public struct Payment {
 }
 
 extension Payment: Equatable {
-    // swiftlint:disable:next operator_whitespace
-    static public func ==(lhs: Payment, rhs: Payment) -> Bool {
+    static public func == (lhs: Payment, rhs: Payment) -> Bool {
         return lhs.txid == rhs.txid
     }
 }

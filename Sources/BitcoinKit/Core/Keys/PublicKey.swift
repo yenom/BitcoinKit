@@ -31,17 +31,19 @@ import BitcoinKitPrivate
 #endif
 
 public struct PublicKey {
-    public let raw: Data
+    public let data: Data
+    @available(*, deprecated, renamed: "data")
+    public var raw: Data { return data }
     public var pubkeyHash: Data {
-        return Crypto.sha256ripemd160(raw)
+        return Crypto.sha256ripemd160(data)
     }
     public let network: Network
     public let isCompressed: Bool
 
-    init(bytes raw: Data, network: Network) {
-        self.raw = raw
+    init(bytes data: Data, network: Network) {
+        self.data = data
         self.network = network
-        let header = raw[0]
+        let header = data[0]
         self.isCompressed = (header == 0x02 || header == 0x03)
     }
 
@@ -60,23 +62,26 @@ public struct PublicKey {
     }
 
     public func toLegacy() -> LegacyAddress {
-        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: raw)
+        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: data)
     }
 
     public func toCashaddr() -> Cashaddr {
-        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: raw)
+        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: data)
     }
 }
 
 extension PublicKey: Equatable {
-    // swiftlint:disable:next operator_whitespace
-    public static func ==(lhs: PublicKey, rhs: PublicKey) -> Bool {
-        return lhs.network == rhs.network && lhs.raw == rhs.raw
+    public static func == (lhs: PublicKey, rhs: PublicKey) -> Bool {
+        return lhs.network == rhs.network && lhs.data == rhs.data
     }
 }
 
 extension PublicKey: CustomStringConvertible {
     public var description: String {
-        return raw.hex
+        return data.hex
     }
 }
+
+#if os(iOS) || os(tvOS) || os(watchOS)
+extension PublicKey: QRCodeConvertible {}
+#endif

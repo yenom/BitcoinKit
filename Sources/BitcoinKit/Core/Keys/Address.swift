@@ -25,14 +25,21 @@
 
 import Foundation
 
-public protocol Address {
+public protocol AddressProtocol {
     var network: Network { get }
     var type: AddressType { get }
     var data: Data { get }
+    var publicKey: Data? { get }
+
     var base58: String { get }
     var cashaddr: String { get }
-    var publicKey: Data? { get }
 }
+
+#if os(iOS) || os(tvOS) || os(watchOS)
+public typealias Address = AddressProtocol & QRCodeConvertible
+#else
+public typealias Address = AddressProtocol
+#endif
 
 public enum AddressError: Error {
     case invalid
@@ -117,8 +124,7 @@ public struct LegacyAddress: Address {
 }
 
 extension LegacyAddress: Equatable {
-    // swiftlint:disable:next operator_whitespace
-    public static func ==(lhs: LegacyAddress, rhs: LegacyAddress) -> Bool {
+    public static func == (lhs: LegacyAddress, rhs: LegacyAddress) -> Bool {
         return lhs.network == rhs.network && lhs.data == rhs.data && lhs.type == rhs.type
     }
 }
@@ -197,8 +203,7 @@ public struct Cashaddr: Address {
 }
 
 extension Cashaddr: Equatable {
-    // swiftlint:disable:next operator_whitespace
-    public static func ==(lhs: Cashaddr, rhs: Cashaddr) -> Bool {
+    public static func == (lhs: Cashaddr, rhs: Cashaddr) -> Bool {
         return lhs.network == rhs.network && lhs.data == rhs.data && lhs.type == rhs.type
     }
 }
