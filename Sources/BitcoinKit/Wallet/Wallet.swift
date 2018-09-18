@@ -31,35 +31,83 @@ final public class Wallet {
     public var address: Address { return publicKey.toCashaddr() }
 
     public let network: Network
-    public var walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore
-    public var utxoProvider: UtxoProvider = BitcoinComService.shared
-    public var transactionProvider: TransactionProvider = BitcoinComService.shared
-    public var transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared
-    public var utxoSelector: UtxoSelector = StandardUtxoSelector(feePerByte: 1)
-    public var transactionBuilder: TransactionBuilder = StandardTransactionBuilder()
-    public var transactionSigner: TransactionSigner = StandardTransactionSigner()
+    private let walletDataStore: WalletDataStoreProtocol
+    private let utxoProvider: UtxoProvider
+    private let transactionProvider: TransactionProvider
+    private let transactionBroadcaster: TransactionBroadcaster
+    private let utxoSelector: UtxoSelector
+    private let transactionBuilder: TransactionBuilder
+    private let transactionSigner: TransactionSigner
 
-    public init?(walletDataStore dataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore) {
-        self.walletDataStore = dataStore
-        guard let wif = walletDataStore.getString(forKey: .wif) else { return nil }
-        do {
-            self.privateKey = try PrivateKey(wif: wif)
-            self.publicKey = privateKey.publicKey()
-            self.network = privateKey.network
-        } catch {
-            return nil
-        }
-    }
-    public init(privateKey: PrivateKey) {
+    public init(privateKey: PrivateKey,
+                walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
+                utxoProvider: UtxoProvider = BitcoinComService.shared,
+                transactionProvider: TransactionProvider = BitcoinComService.shared,
+                transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
+                utxoSelector: UtxoSelector = StandardUtxoSelector.default,
+                transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
+                transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
         self.privateKey = privateKey
         self.publicKey = privateKey.publicKey()
         self.network = privateKey.network
+
+        self.walletDataStore = walletDataStore
+        self.utxoProvider = utxoProvider
+        self.transactionProvider = transactionProvider
+        self.transactionBroadcaster = transactionBroadcaster
+        self.utxoSelector = utxoSelector
+        self.transactionBuilder = transactionBuilder
+        self.transactionSigner = transactionSigner
     }
 
-    public init(wif: String) throws {
-        self.privateKey = try PrivateKey(wif: wif)
-        self.publicKey = privateKey.publicKey()
-        self.network = privateKey.network
+    public init?(wif: String,
+                 walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
+                 utxoProvider: UtxoProvider = BitcoinComService.shared,
+                 transactionProvider: TransactionProvider = BitcoinComService.shared,
+                 transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
+                 utxoSelector: UtxoSelector = StandardUtxoSelector.default,
+                 transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
+                 transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
+        guard let privkey = try? PrivateKey(wif: wif) else {
+            return nil
+        }
+        self.privateKey = privkey
+        self.publicKey = privkey.publicKey()
+        self.network = privkey.network
+
+        self.walletDataStore = walletDataStore
+        self.utxoProvider = utxoProvider
+        self.transactionProvider = transactionProvider
+        self.transactionBroadcaster = transactionBroadcaster
+        self.utxoSelector = utxoSelector
+        self.transactionBuilder = transactionBuilder
+        self.transactionSigner = transactionSigner
+    }
+
+    public init?(walletDataStore: WalletDataStoreProtocol = UserDefaults.defaultWalletDataStore,
+                 utxoProvider: UtxoProvider = BitcoinComService.shared,
+                 transactionProvider: TransactionProvider = BitcoinComService.shared,
+                 transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
+                 utxoSelector: UtxoSelector = StandardUtxoSelector.default,
+                 transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
+                 transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
+        guard let wif = walletDataStore.getString(forKey: .wif) else {
+            return nil
+        }
+        guard let privkey = try? PrivateKey(wif: wif) else {
+            return nil
+        }
+        self.privateKey = privkey
+        self.publicKey = privkey.publicKey()
+        self.network = privkey.network
+
+        self.walletDataStore = walletDataStore
+        self.utxoProvider = utxoProvider
+        self.transactionProvider = transactionProvider
+        self.transactionBroadcaster = transactionBroadcaster
+        self.utxoSelector = utxoSelector
+        self.transactionBuilder = transactionBuilder
+        self.transactionSigner = transactionSigner
     }
 
     public func save() {

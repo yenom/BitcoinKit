@@ -9,6 +9,8 @@
 import Foundation
 
 public struct StandardTransactionSigner: TransactionSigner {
+    public static let `default`: StandardTransactionSigner = StandardTransactionSigner()
+
     public func sign(_ unsignedTransaction: UnsignedTransaction, with keys: [PrivateKey]) throws -> Transaction {
         // Define Transaction
         var signingInputs: [TransactionInput]

@@ -9,10 +9,12 @@
 import Foundation
 
 public struct StandardUtxoSelector: UtxoSelector {
+    public static let `default`: StandardUtxoSelector = StandardUtxoSelector(feePerByte: 1, dustThreshhold: 3 * 182)
+
     public let feePerByte: UInt64
     public let dustThreshhold: UInt64
 
-    public init(feePerByte: UInt64 = 1, dustThreshhold: UInt64 = 3 * 182) {
+    public init(feePerByte: UInt64, dustThreshhold: UInt64) {
         self.feePerByte = feePerByte
         self.dustThreshhold = dustThreshhold
     }
