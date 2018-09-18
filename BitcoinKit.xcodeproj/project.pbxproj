@@ -623,7 +623,6 @@
 			isa = PBXGroup;
 			children = (
 				29330146214F97450028946B /* WalletDataStoreProtocol.swift */,
-				29330151214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift */,
 				29330148214FC8E30028946B /* WalletUtxoProvider.swift */,
 				2933014C214FCE150028946B /* WalletTransactionProvider.swift */,
 				2933014E214FCE2D0028946B /* WalletTransactionBroadcaster.swift */,
@@ -766,6 +765,7 @@
 			children = (
 				14CDC3852021824200C01556 /* Wallet.swift */,
 				14A2961E2032317B00E19177 /* HDWallet.swift */,
+				29330151214FDC880028946B /* UserDefaults+WalletDataStoreProtocol.swift */,
 				298E17B8215096FA00FF6C77 /* BitcoinCom */,
 				29330150214FDBEC0028946B /* Protocol */,
 			);
