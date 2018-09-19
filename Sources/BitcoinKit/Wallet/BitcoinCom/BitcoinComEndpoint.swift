@@ -24,9 +24,47 @@
 
 import Foundation
 
-public struct BitcoinComEndpoint {
-    public static let testnet: BitcoinComEndpoint = BitcoinComEndpoint(baseUrl: "https://trest.bitcoin.com/v1/")
-    public static let mainnet: BitcoinComEndpoint = BitcoinComEndpoint(baseUrl: "https://rest.bitcoin.com/v1/")
+public struct ApiEndPoint {
+    public struct BitcoinCom {
+        private let baseUrl: String
 
-    public let baseUrl: String
+        init(network: Network) throws {
+            switch network {
+            case .mainnet:
+                self.baseUrl = "https://rest.bitcoin.com/v1/"
+            case .testnet:
+                self.baseUrl = "https://trest.bitcoin.com/v1/"
+            default:
+                throw BitcoinComApiInitializationError.invalidNetwork
+            }
+        }
+
+        public func getUtxoURL(with addresses: [Address]) -> URL {
+            let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
+            let url = baseUrl + "address/utxo/\(parameter)"
+            return ApiEndPoint.convert(string: url)!
+        }
+
+        public func getTransactionHistoryURL(with addresses: [Address]) -> URL {
+            let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
+            let url = baseUrl + "address/transactions/\(parameter)"
+            return ApiEndPoint.convert(string: url)!
+        }
+
+        public func postRawtxURL(rawtx: String) -> URL {
+            let url = baseUrl + "rawtransactions/sendRawTransaction/\(rawtx)"
+            return ApiEndPoint.convert(string: url)!
+        }
+    }
+    public static func convert(string: String) -> URL? {
+        guard let encoded = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return nil
+        }
+        return URL(string: encoded)
+    }
+
+}
+
+enum BitcoinComApiInitializationError: Error {
+    case invalidNetwork
 }

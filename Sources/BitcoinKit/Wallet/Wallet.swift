@@ -41,23 +41,30 @@ final public class Wallet {
     private let transactionSigner: TransactionSigner
 
     public init(privateKey: PrivateKey,
-                walletDataStore: BitcoinKitDataStoreProtocol = UserDefaults.defaultWalletDataStore,
+                dataStore: BitcoinKitDataStoreProtocol = UserDefaults.defaultWalletDataStore,
                 addressProvider: AddressProvider = StandardAddressProvider.shared,
-                utxoProvider: UtxoProvider = BitcoinComUtxoProvider(service: BitcoinComEndpoint.testnet, dataStore: UserDefaults.defaultWalletDataStore),
-                transactionProvider: TransactionHistoryProvider = BitcoinComTransactionHistoryProvider(service: BitcoinComEndpoint.testnet, dataStore: UserDefaults.defaultWalletDataStore),
-                transactionBroadcaster: TransactionBroadcaster = BitcoinComTransactionBroadcaster(service: BitcoinComEndpoint.testnet),
+                utxoProvider: UtxoProvider? = nil,
+                transactionHistoryProvider: TransactionHistoryProvider? = nil,
+                transactionBroadcaster: TransactionBroadcaster? = nil,
                 utxoSelector: UtxoSelector = StandardUtxoSelector.default,
                 transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
-                transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
+                transactionSigner: TransactionSigner = StandardTransactionSigner.default) throws {
+        let network = privateKey.network
         self.privateKey = privateKey
         self.publicKey = privateKey.publicKey()
-        self.network = privateKey.network
+        self.network = network
 
-        self.walletDataStore = walletDataStore
+        let defaultDataStore: BitcoinKitDataStoreProtocol = UserDefaults.defaultWalletDataStore
+        
+        self.utxoProvider = try utxoProvider
+            ?? BitcoinComUtxoProvider(network: network, dataStore: defaultDataStore)
+        self.transactionHistoryProvider = try transactionHistoryProvider
+            ?? BitcoinComTransactionHistoryProvider(network: network, dataStore: defaultDataStore)
+        self.transactionBroadcaster = try transactionBroadcaster
+            ?? BitcoinComTransactionBroadcaster(network: network)
+
+        self.walletDataStore = dataStore
         self.addressProvider = addressProvider
-        self.utxoProvider = utxoProvider
-        self.transactionHistoryProvider = transactionProvider
-        self.transactionBroadcaster = transactionBroadcaster
         self.utxoSelector = utxoSelector
         self.transactionBuilder = transactionBuilder
         self.transactionSigner = transactionSigner

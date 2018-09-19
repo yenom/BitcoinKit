@@ -25,19 +25,16 @@
 import Foundation
 
 final public class BitcoinComTransactionHistoryProvider: TransactionHistoryProvider {
-    private let service: BitcoinComEndpoint
+    private let endpoint: ApiEndPoint.BitcoinCom
     private let dataStore: BitcoinKitDataStoreProtocol
-    public init(service: BitcoinComEndpoint, dataStore: BitcoinKitDataStoreProtocol) {
-        self.service = service
+    public init(network: Network, dataStore: BitcoinKitDataStoreProtocol) throws {
+        self.endpoint = try ApiEndPoint.BitcoinCom(network: network)
         self.dataStore = dataStore
     }
 
     // Reload transactions [GET API]
     public func reload(addresses: [Address], completion: (([Transaction]) -> Void)?) {
-        let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
-        let urlString = service.baseUrl + "address/transactions/\(parameter)"
-        let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-
+        let url = endpoint.getTransactionHistoryURL(with: addresses)
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             guard let data = data else {
                 completion?([])

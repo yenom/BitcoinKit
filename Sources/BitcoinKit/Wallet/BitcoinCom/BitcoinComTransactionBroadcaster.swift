@@ -25,14 +25,13 @@
 import Foundation
 
 public final class BitcoinComTransactionBroadcaster: TransactionBroadcaster {
-    private let service: BitcoinComEndpoint
-    public init(service: BitcoinComEndpoint) {
-        self.service = service
+    private let endpoint: ApiEndPoint.BitcoinCom
+    public init(network: Network) throws {
+        self.endpoint = try ApiEndPoint.BitcoinCom(network: network)
     }
 
     public func post(_ rawtx: String, completion: ((_ txid: String?) -> Void)?) {
-        let urlString = service.baseUrl + "rawtransactions/sendRawTransaction/\(rawtx)"
-        let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+        let url = endpoint.postRawtxURL(rawtx: rawtx)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let task = URLSession.shared.dataTask(with: request) { data, _, _ in
