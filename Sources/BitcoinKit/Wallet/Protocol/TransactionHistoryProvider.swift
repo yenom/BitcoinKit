@@ -28,6 +28,6 @@ public protocol TransactionHistoryProvider {
     // Reload transactions [GET API, SPV, etc...]
     func reload(addresses: [Address], completion: (([Transaction]) -> Void)?)
 
-    // List transactions
-    func list() -> [Transaction]
+    // List cached transactions
+    var cached: [Transaction] { get }
 }

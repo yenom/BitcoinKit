@@ -25,15 +25,11 @@
 import Foundation
 
 final public class BitcoinComService {
-    public static let shared: BitcoinComService = BitcoinComService(network: .testnet, userDefaults: UserDefaults.defaultWalletDataStore)!
+    public static let shared: BitcoinComService = BitcoinComService(network: .testnet)!
 
     public let baseUrl: String
-    internal let userDefaults: UserDefaults
-    enum UserDefaultsKey: String {
-        case utxos, transactions
-    }
 
-    public init?(network: Network, userDefaults: UserDefaults) {
+    public init?(network: Network) {
         switch network {
         case .testnet:
             self.baseUrl = "https://trest.bitcoin.com/v1/"
@@ -42,6 +38,5 @@ final public class BitcoinComService {
         default:
             return nil
         }
-        self.userDefaults = userDefaults
     }
 }

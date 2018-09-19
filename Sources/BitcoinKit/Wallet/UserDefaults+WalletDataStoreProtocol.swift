@@ -1,5 +1,5 @@
 //
-//  UserDefaults+WalletDataStoreProtocol.swift
+//  UserDefaults+BitcoinKitDataStoreProtocol.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension UserDefaults: WalletDataStoreProtocol {
+extension UserDefaults: BitcoinKitDataStoreProtocol {
     public static var defaultWalletDataStore: UserDefaults {
         return UserDefaults(suiteName: "BitcoinKit.WalletDataStore")!
     }
@@ -34,6 +34,13 @@ extension UserDefaults: WalletDataStoreProtocol {
 
     public func setString(_ value: String, forKey key: String) {
         setValue(value, forKey: key)
-        synchronize()
+    }
+
+    public func getData(forKey key: String) -> Data? {
+        return data(forKey: key)
+    }
+
+    public func setData(_ value: Data, forKey key: String) {
+        setValue(value, forKey: key)
     }
 }

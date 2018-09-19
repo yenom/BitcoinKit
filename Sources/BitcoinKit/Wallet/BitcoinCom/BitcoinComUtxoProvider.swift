@@ -1,5 +1,5 @@
 //
-//  BitcoinComService+UtxoProvider.swift
+//  BitcoinComUtxoProvider.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,11 +24,18 @@
 
 import Foundation
 
-extension BitcoinComService: UtxoProvider {
+//extension BitcoinComService: UtxoProvider {
+final public class BitcoinComUtxoProvider: UtxoProvider {
+    private let service: BitcoinComService
+    private let dataStore: BitcoinKitDataStoreProtocol
+    public init(service: BitcoinComService, dataStore: BitcoinKitDataStoreProtocol) {
+        self.service = service
+        self.dataStore = dataStore
+    }
     // GET API: reload utxos
     public func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?) {
         let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
-        let urlString = baseUrl + "address/utxo/\(parameter)"
+        let urlString = service.baseUrl + "address/utxo/\(parameter)"
         let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             guard let data = data else {
@@ -41,16 +48,15 @@ extension BitcoinComService: UtxoProvider {
                 completion?([])
                 return
             }
-            self?.userDefaults.set(data, forKey: UserDefaultsKey.utxos.rawValue)
-            self?.userDefaults.synchronize()
+            self?.dataStore.setData(data, forKey: .utxos)
             completion?(response.joined().asUtxos())
         }
         task.resume()
     }
 
     // List utxos
-    public func list() -> [UnspentTransaction] {
-        guard let data = userDefaults.data(forKey: UserDefaultsKey.utxos.rawValue) else {
+    public var cached: [UnspentTransaction] {
+        guard let data = dataStore.getData(forKey: .utxos) else {
             print("data is  nil")
             return []
         }

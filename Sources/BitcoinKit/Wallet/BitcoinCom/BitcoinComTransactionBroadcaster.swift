@@ -1,5 +1,5 @@
 //
-//  BitcoinComService+TransactionBroadcaster.swift
+//  BitcoinComTransactionBroadcaster.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,9 +24,14 @@
 
 import Foundation
 
-extension BitcoinComService: TransactionBroadcaster {
+public final class BitcoinComTransactionBroadcaster: TransactionBroadcaster {
+    private let service: BitcoinComService
+    public init(service: BitcoinComService) {
+        self.service = service
+    }
+
     public func post(_ rawtx: String, completion: ((_ txid: String?) -> Void)?) {
-        let urlString = baseUrl + "rawtransactions/sendRawTransaction/\(rawtx)"
+        let urlString = service.baseUrl + "rawtransactions/sendRawTransaction/\(rawtx)"
         let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -45,9 +50,4 @@ extension BitcoinComService: TransactionBroadcaster {
         }
         task.resume()
     }
-}
-
-// MARK: - GET Unspent Transaction Outputs
-private struct BitcoinComTxBroadcastResponse: Codable {
-    let hex: String
 }

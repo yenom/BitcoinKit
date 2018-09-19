@@ -1,5 +1,5 @@
 //
-//  WalletDataStoreProtocol.swift
+//  BitcoinKitDataStoreProtocol.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,22 +24,29 @@
 
 import Foundation
 
-// MARK: - WalletDataStoreProtocol
-public protocol WalletDataStoreProtocol {
+// MARK: - BitcoinKitDataStoreProtocol
+public protocol BitcoinKitDataStoreProtocol {
     func getString(forKey key: String) -> String?
     func setString(_ value: String, forKey key: String)
+    func getData(forKey key: String) -> Data?
+    func setData(_ value: Data, forKey key: String)
 }
 
-// MARK: - WalletDataStoreProtocol Extension
-internal enum WalletDataStoreKey: String {
-    case wif
+internal enum DataStoreKey: String {
+    case wif, utxos, transactions
 }
 
-internal extension WalletDataStoreProtocol {
-    internal func getString(forKey key: WalletDataStoreKey) -> String? {
+internal extension BitcoinKitDataStoreProtocol {
+    internal func getString(forKey key: DataStoreKey) -> String? {
         return getString(forKey: key.rawValue)
     }
-    internal func setString(_ value: String, forKey key: WalletDataStoreKey) {
+    internal func setString(_ value: String, forKey key: DataStoreKey) {
         setString(value, forKey: key.rawValue)
+    }
+    func getData(forKey key: DataStoreKey) -> Data? {
+        return getData(forKey: key.rawValue)
+    }
+    func setData(_ value: Data, forKey key: DataStoreKey) {
+        setData(value, forKey: key.rawValue)
     }
 }

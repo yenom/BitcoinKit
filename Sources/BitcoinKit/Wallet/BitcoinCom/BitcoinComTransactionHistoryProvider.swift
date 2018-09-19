@@ -1,5 +1,5 @@
 //
-//  BitcoinComService+TransactionHistoryProvider.swift
+//  BitcoinComTransactionHistoryProvider.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,11 +24,19 @@
 
 import Foundation
 
-extension BitcoinComService: TransactionHistoryProvider {
-    // GET API: reload utxos
+// extension BitcoinComService: TransactionHistoryProvider {
+final public class BitcoinComTransactionHistoryProvider: TransactionHistoryProvider {
+    private let service: BitcoinComService
+    private let dataStore: BitcoinKitDataStoreProtocol
+    public init(service: BitcoinComService, dataStore: BitcoinKitDataStoreProtocol) {
+        self.service = service
+        self.dataStore = dataStore
+    }
+
+    // Reload transactions [GET API]
     public func reload(addresses: [Address], completion: (([Transaction]) -> Void)?) {
         let parameter: String = "[" + addresses.map { "\"\($0.cashaddr)\"" }.joined(separator: ",") + "]"
-        let urlString = baseUrl + "address/transactions/\(parameter)"
+        let urlString = service.baseUrl + "address/transactions/\(parameter)"
         let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
@@ -40,16 +48,16 @@ extension BitcoinComService: TransactionHistoryProvider {
                 completion?([])
                 return
             }
-            self?.userDefaults.set(data, forKey: UserDefaultsKey.transactions.rawValue)
-            self?.userDefaults.synchronize()
+            self?.dataStore.setData(data, forKey: .transactions)
             completion?(response.joined().asTransactions())
         }
+
         task.resume()
     }
 
-    // List utxos
-    public func list() -> [Transaction] {
-        guard let data = userDefaults.data(forKey: UserDefaultsKey.transactions.rawValue) else {
+    // List cached transactions
+    public var cached: [Transaction] {
+        guard let data = dataStore.getData(forKey: .transactions) else {
             print("data is  nil")
             return []
         }
@@ -60,7 +68,6 @@ extension BitcoinComService: TransactionHistoryProvider {
         }
         return response.joined().asTransactions()
     }
-
 }
 
 private extension Sequence where Element == BitcoinComTransaction {

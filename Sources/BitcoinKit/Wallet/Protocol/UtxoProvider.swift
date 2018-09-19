@@ -28,7 +28,6 @@ public protocol UtxoProvider {
     // Reload utxos [GET API, SPV, etc...]
     func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?)
 
-    // List utxos
-    func list() -> [UnspentTransaction]
-
+    // List cached utxos
+    var cached: [UnspentTransaction] { get }
 }
