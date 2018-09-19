@@ -72,12 +72,12 @@ final public class Wallet {
                  utxoSelector: UtxoSelector = StandardUtxoSelector.default,
                  transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
                  transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
-        guard let privkey = try? PrivateKey(wif: wif) else {
+        guard let privateKey = try? PrivateKey(wif: wif) else {
             return nil
         }
-        self.privateKey = privkey
-        self.publicKey = privkey.publicKey()
-        self.network = privkey.network
+        self.privateKey = privateKey
+        self.publicKey = privateKey.publicKey()
+        self.network = privateKey.network
 
         self.walletDataStore = walletDataStore
         self.addressProvider = addressProvider
@@ -100,12 +100,12 @@ final public class Wallet {
         guard let wif = walletDataStore.getString(forKey: .wif) else {
             return nil
         }
-        guard let privkey = try? PrivateKey(wif: wif) else {
+        guard let privateKey = try? PrivateKey(wif: wif) else {
             return nil
         }
-        self.privateKey = privkey
-        self.publicKey = privkey.publicKey()
-        self.network = privkey.network
+        self.privateKey = privateKey
+        self.publicKey = privateKey.publicKey()
+        self.network = privateKey.network
 
         self.walletDataStore = walletDataStore
         self.addressProvider = addressProvider
