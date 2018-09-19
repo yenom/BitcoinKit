@@ -36,8 +36,10 @@ public struct StandardAddressProvider: AddressProvider {
     }
 
     public func reload(keys: [PrivateKey], completion: (([Address]) -> Void)?) {
-        let data = try? JSONEncoder().encode(keys.map { $0.publicKey().toCashaddr() })
+        let addresses: [Cashaddr] = keys.map { $0.publicKey().toCashaddr() }
+        let data = try? JSONEncoder().encode(addresses)
         userDefaults.set(data, forKey: UserDefaultsKey.cashaddrs.rawValue)
+        completion?(addresses)
     }
 
     public func list() -> [Address] {
