@@ -25,8 +25,8 @@
 import Foundation
 
 public final class BitcoinComTransactionBroadcaster: TransactionBroadcaster {
-    private let service: BitcoinComService
-    public init(service: BitcoinComService) {
+    private let service: BitcoinComEndpoint
+    public init(service: BitcoinComEndpoint) {
         self.service = service
     }
 

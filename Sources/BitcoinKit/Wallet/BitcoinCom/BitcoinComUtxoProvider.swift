@@ -24,11 +24,10 @@
 
 import Foundation
 
-//extension BitcoinComService: UtxoProvider {
 final public class BitcoinComUtxoProvider: UtxoProvider {
-    private let service: BitcoinComService
+    private let service: BitcoinComEndpoint
     private let dataStore: BitcoinKitDataStoreProtocol
-    public init(service: BitcoinComService, dataStore: BitcoinKitDataStoreProtocol) {
+    public init(service: BitcoinComEndpoint, dataStore: BitcoinKitDataStoreProtocol) {
         self.service = service
         self.dataStore = dataStore
     }

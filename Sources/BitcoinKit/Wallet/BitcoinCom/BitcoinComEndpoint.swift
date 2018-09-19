@@ -1,5 +1,5 @@
 //
-//  BitcoinComService.swift
+//  BitcoinComEndpoint.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,19 +24,9 @@
 
 import Foundation
 
-final public class BitcoinComService {
-    public static let shared: BitcoinComService = BitcoinComService(network: .testnet)!
+public struct BitcoinComEndpoint {
+    public static let testnet: BitcoinComEndpoint = BitcoinComEndpoint(baseUrl: "https://trest.bitcoin.com/v1/")
+    public static let mainnet: BitcoinComEndpoint = BitcoinComEndpoint(baseUrl: "https://rest.bitcoin.com/v1/")
 
     public let baseUrl: String
-
-    public init?(network: Network) {
-        switch network {
-        case .testnet:
-            self.baseUrl = "https://trest.bitcoin.com/v1/"
-        case .mainnet:
-            self.baseUrl = "https://rest.bitcoin.com/v1/"
-        default:
-            return nil
-        }
-    }
 }

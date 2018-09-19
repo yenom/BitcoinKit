@@ -43,9 +43,9 @@ final public class Wallet {
     public init(privateKey: PrivateKey,
                 walletDataStore: BitcoinKitDataStoreProtocol = UserDefaults.defaultWalletDataStore,
                 addressProvider: AddressProvider = StandardAddressProvider.shared,
-                utxoProvider: UtxoProvider = BitcoinComUtxoProvider(service: BitcoinComService.shared, dataStore: UserDefaults.defaultWalletDataStore),
-                transactionProvider: TransactionHistoryProvider = BitcoinComTransactionHistoryProvider(service: BitcoinComService.shared, dataStore: UserDefaults.defaultWalletDataStore),
-                transactionBroadcaster: TransactionBroadcaster = BitcoinComTransactionBroadcaster(service: BitcoinComService.shared),
+                utxoProvider: UtxoProvider = BitcoinComUtxoProvider(service: BitcoinComEndpoint.testnet, dataStore: UserDefaults.defaultWalletDataStore),
+                transactionProvider: TransactionHistoryProvider = BitcoinComTransactionHistoryProvider(service: BitcoinComEndpoint.testnet, dataStore: UserDefaults.defaultWalletDataStore),
+                transactionBroadcaster: TransactionBroadcaster = BitcoinComTransactionBroadcaster(service: BitcoinComEndpoint.testnet),
                 utxoSelector: UtxoSelector = StandardUtxoSelector.default,
                 transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
                 transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
