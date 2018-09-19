@@ -57,35 +57,22 @@ public struct Crypto {
     }
 
     public static func sign(_ data: Data, privateKey: PrivateKey) throws -> Data {
-        let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN))!
-        defer { secp256k1_context_destroy(ctx) }
-
-        let signature = UnsafeMutablePointer<secp256k1_ecdsa_signature>.allocate(capacity: 1)
-        defer { signature.deallocate() }
-        let status = data.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
-            privateKey.data.withUnsafeBytes { secp256k1_ecdsa_sign(ctx, signature, ptr, $0, nil, nil) }
-        }
-        guard status == 1 else { throw CryptoError.signFailed }
-
-        let normalizedsig = UnsafeMutablePointer<secp256k1_ecdsa_signature>.allocate(capacity: 1)
-        defer { normalizedsig.deallocate() }
-        secp256k1_ecdsa_signature_normalize(ctx, normalizedsig, signature)
-
-        var length: size_t = 128
-        var der = Data(count: length)
-        guard der.withUnsafeMutableBytes({ return secp256k1_ecdsa_signature_serialize_der(ctx, $0, &length, normalizedsig) }) == 1 else { throw CryptoError.noEnoughSpace }
-        der.count = length
-
-        return der
+        #if BitcoinKitXcode
+        return _Crypto.signMessage(data, withPrivateKey: privateKey.data)
+        #else
+        return try _Crypto.signMessage(data, withPrivateKey: privateKey.data)
+        #endif
     }
 
     public static func verifySignature(_ signature: Data, message: Data, publicKey: Data) throws -> Bool {
+        #if BitcoinKitXcode
         let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY))!
         defer { secp256k1_context_destroy(ctx) }
 
         let signaturePointer = UnsafeMutablePointer<secp256k1_ecdsa_signature>.allocate(capacity: 1)
         defer { signaturePointer.deallocate() }
         guard signature.withUnsafeBytes({ secp256k1_ecdsa_signature_parse_der(ctx, signaturePointer, $0, signature.count) }) == 1 else {
+            print("signature : ", signature.hex)
             throw CryptoError.signatureParseFailed
         }
 
@@ -98,8 +85,10 @@ public struct Crypto {
         guard message.withUnsafeBytes ({ secp256k1_ecdsa_verify(ctx, signaturePointer, $0, pubkeyPointer) }) == 1 else {
             return false
         }
-
         return true
+        #else
+        return try _Crypto.verifySignature(signature, message: message, publicKey: publicKey)
+        #endif
     }
 
     public static func verifySigData(for tx: Transaction, inputIndex: Int, utxo: TransactionOutput, sigData: Data, pubKeyData: Data) throws -> Bool {

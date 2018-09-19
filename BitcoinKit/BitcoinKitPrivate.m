@@ -29,6 +29,7 @@
 #import <openssl/hmac.h>
 #import <openssl/ec.h>
 #import <openssl/bn.h>
+#import <secp256k1.h>
 
 @implementation _Hash
 
@@ -203,6 +204,24 @@
 
     uint32_t *fingerPrint = (uint32_t *)[_Hash sha256ripemd160:self.publicKey].bytes;
     return [[_HDKey alloc] initWithPrivateKey:result publicKey:result chainCode:derivedChainCode depth:self.depth + 1 fingerprint:*fingerPrint childIndex:childIndex];
+}
+
+@end
+
+@implementation _Crypto
+
++ (NSData *)signMessage:(NSData *)message withPrivateKey:(NSData *)privateKey {
+    secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
+    secp256k1_ecdsa_signature signature;
+    secp256k1_ecdsa_signature normalizedSignature;
+    secp256k1_ecdsa_sign(ctx, &signature, message.bytes, privateKey.bytes, NULL, NULL);
+    secp256k1_ecdsa_signature_normalize(ctx, &normalizedSignature, &signature);
+    size_t siglen = 128;
+    NSMutableData *der = [NSMutableData dataWithLength:siglen];
+    secp256k1_ecdsa_signature_serialize_der(ctx, der.mutableBytes, &siglen, &normalizedSignature);
+    der.length = siglen;
+    secp256k1_context_destroy(ctx);
+    return der;
 }
 
 @end
