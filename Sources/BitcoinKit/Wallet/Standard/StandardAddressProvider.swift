@@ -25,7 +25,7 @@
 import Foundation
 
 public struct StandardAddressProvider: AddressProvider {
-    public static let shared: StandardAddressProvider = StandardAddressProvider(userDefaults: UserDefaults.defaultWalletDataStore)
+    public static let shared: StandardAddressProvider = StandardAddressProvider(userDefaults: UserDefaults.bitcoinKit)
     internal let userDefaults: UserDefaults
     enum UserDefaultsKey: String {
         case cashaddrs

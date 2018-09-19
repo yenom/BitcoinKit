@@ -25,6 +25,9 @@
 
 import Foundation
 
+// Some of default parameters of Wallet class [utxoProvider, transactionHistoryProvider, transactionBroadcaster] are only compatible with Bitcoin Cash(BCH).
+// They are using rest.bitcoin.com API endpoints and the endpoints are only available for Bitcoin Cash(BCH).
+// If you want to use BTC, please implement
 final public class Wallet {
     public let privateKey: PrivateKey
     public let publicKey: PublicKey
@@ -41,26 +44,26 @@ final public class Wallet {
     private let transactionSigner: TransactionSigner
 
     public init(privateKey: PrivateKey,
-                dataStore: BitcoinKitDataStoreProtocol = UserDefaults.defaultWalletDataStore,
+                dataStore: BitcoinKitDataStoreProtocol = UserDefaults.bitcoinKit,
                 addressProvider: AddressProvider = StandardAddressProvider.shared,
                 utxoProvider: UtxoProvider? = nil,
                 transactionHistoryProvider: TransactionHistoryProvider? = nil,
                 transactionBroadcaster: TransactionBroadcaster? = nil,
                 utxoSelector: UtxoSelector = StandardUtxoSelector.default,
                 transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
-                transactionSigner: TransactionSigner = StandardTransactionSigner.default) throws {
+                transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
         let network = privateKey.network
         self.privateKey = privateKey
         self.publicKey = privateKey.publicKey()
         self.network = network
 
-        let defaultDataStore: BitcoinKitDataStoreProtocol = UserDefaults.defaultWalletDataStore
-        
-        self.utxoProvider = try utxoProvider
-            ?? BitcoinComUtxoProvider(network: network, dataStore: defaultDataStore)
-        self.transactionHistoryProvider = try transactionHistoryProvider
-            ?? BitcoinComTransactionHistoryProvider(network: network, dataStore: defaultDataStore)
-        self.transactionBroadcaster = try transactionBroadcaster
+        let userDefaults: BitcoinKitDataStoreProtocol = UserDefaults.bitcoinKit
+
+        self.utxoProvider = utxoProvider
+            ?? BitcoinComUtxoProvider(network: network, dataStore: userDefaults)
+        self.transactionHistoryProvider = transactionHistoryProvider
+            ?? BitcoinComTransactionHistoryProvider(network: network, dataStore: userDefaults)
+        self.transactionBroadcaster = transactionBroadcaster
             ?? BitcoinComTransactionBroadcaster(network: network)
 
         self.walletDataStore = dataStore

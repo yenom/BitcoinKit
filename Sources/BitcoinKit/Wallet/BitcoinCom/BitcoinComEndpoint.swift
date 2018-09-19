@@ -28,14 +28,14 @@ public struct ApiEndPoint {
     public struct BitcoinCom {
         private let baseUrl: String
 
-        init(network: Network) throws {
+        init(network: Network) {
             switch network {
             case .mainnet:
                 self.baseUrl = "https://rest.bitcoin.com/v1/"
             case .testnet:
                 self.baseUrl = "https://trest.bitcoin.com/v1/"
             default:
-                throw BitcoinComApiInitializationError.invalidNetwork
+                fatalError("Bitcoin.com API is only available for Bitcoin Cash.")
             }
         }
 

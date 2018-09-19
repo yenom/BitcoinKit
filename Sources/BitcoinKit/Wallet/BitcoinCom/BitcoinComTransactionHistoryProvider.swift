@@ -27,8 +27,8 @@ import Foundation
 final public class BitcoinComTransactionHistoryProvider: TransactionHistoryProvider {
     private let endpoint: ApiEndPoint.BitcoinCom
     private let dataStore: BitcoinKitDataStoreProtocol
-    public init(network: Network, dataStore: BitcoinKitDataStoreProtocol) throws {
-        self.endpoint = try ApiEndPoint.BitcoinCom(network: network)
+    public init(network: Network, dataStore: BitcoinKitDataStoreProtocol) {
+        self.endpoint = ApiEndPoint.BitcoinCom(network: network)
         self.dataStore = dataStore
     }
 

@@ -26,8 +26,8 @@ import Foundation
 
 public final class BitcoinComTransactionBroadcaster: TransactionBroadcaster {
     private let endpoint: ApiEndPoint.BitcoinCom
-    public init(network: Network) throws {
-        self.endpoint = try ApiEndPoint.BitcoinCom(network: network)
+    public init(network: Network) {
+        self.endpoint = ApiEndPoint.BitcoinCom(network: network)
     }
 
     public func post(_ rawtx: String, completion: ((_ txid: String?) -> Void)?) {
