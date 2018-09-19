@@ -25,7 +25,7 @@
 import Foundation
 
 public struct StandardTransactionSigner: TransactionSigner {
-    public static let `default`: StandardTransactionSigner = StandardTransactionSigner()
+    public init() {}
 
     public func sign(_ unsignedTransaction: UnsignedTransaction, with keys: [PrivateKey]) throws -> Transaction {
         // Define Transaction

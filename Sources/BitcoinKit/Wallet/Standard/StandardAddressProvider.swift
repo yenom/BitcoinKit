@@ -24,48 +24,18 @@
 
 import Foundation
 
-public struct StandardAddressProvider: AddressProvider {
-    public static let shared: StandardAddressProvider = StandardAddressProvider(userDefaults: UserDefaults.bitcoinKit)
-    internal let userDefaults: UserDefaults
-    enum UserDefaultsKey: String {
-        case cashaddrs
-    }
-
-    public init(userDefaults: UserDefaults) {
-        self.userDefaults = userDefaults
+final public class StandardAddressProvider: AddressProvider {
+    private var addresses: [Address]
+    public init(keys: [PrivateKey]) {
+        self.addresses = keys.map { $0.publicKey().toCashaddr() }
     }
 
     public func reload(keys: [PrivateKey], completion: (([Address]) -> Void)?) {
-        let addresses: [Cashaddr] = keys.map { $0.publicKey().toCashaddr() }
-        let data = try? JSONEncoder().encode(addresses)
-        userDefaults.set(data, forKey: UserDefaultsKey.cashaddrs.rawValue)
+        addresses = keys.map { $0.publicKey().toCashaddr() }
         completion?(addresses)
     }
 
     public func list() -> [Address] {
-        guard let data = userDefaults.data(forKey: UserDefaultsKey.cashaddrs.rawValue) else {
-            return []
-        }
-        do {
-            return try JSONDecoder().decode([Cashaddr].self, from: data)
-        } catch {
-            return []
-        }
-    }
-}
-
-extension Cashaddr: Codable {
-    enum CodingKeys: String, CodingKey {
-        case string
-    }
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let string = try container.decode(String.self, forKey: .string)
-        try self.init(string)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.cashaddr, forKey: .string)
+        return addresses
     }
 }

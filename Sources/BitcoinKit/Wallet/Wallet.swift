@@ -45,13 +45,13 @@ final public class Wallet {
 
     public init(privateKey: PrivateKey,
                 dataStore: BitcoinKitDataStoreProtocol = UserDefaults.bitcoinKit,
-                addressProvider: AddressProvider = StandardAddressProvider.shared,
+                addressProvider: AddressProvider? = nil,
                 utxoProvider: UtxoProvider? = nil,
                 transactionHistoryProvider: TransactionHistoryProvider? = nil,
                 transactionBroadcaster: TransactionBroadcaster? = nil,
-                utxoSelector: UtxoSelector = StandardUtxoSelector.default,
-                transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
-                transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
+                utxoSelector: UtxoSelector = StandardUtxoSelector(),
+                transactionBuilder: TransactionBuilder = StandardTransactionBuilder(),
+                transactionSigner: TransactionSigner = StandardTransactionSigner()) {
         let network = privateKey.network
         self.privateKey = privateKey
         self.publicKey = privateKey.publicKey()
@@ -59,6 +59,8 @@ final public class Wallet {
 
         let userDefaults: BitcoinKitDataStoreProtocol = UserDefaults.bitcoinKit
 
+        self.addressProvider = addressProvider
+            ?? StandardAddressProvider(keys: [privateKey])
         self.utxoProvider = utxoProvider
             ?? BitcoinComUtxoProvider(network: network, dataStore: userDefaults)
         self.transactionHistoryProvider = transactionHistoryProvider
@@ -67,65 +69,24 @@ final public class Wallet {
             ?? BitcoinComTransactionBroadcaster(network: network)
 
         self.walletDataStore = dataStore
-        self.addressProvider = addressProvider
         self.utxoSelector = utxoSelector
         self.transactionBuilder = transactionBuilder
         self.transactionSigner = transactionSigner
     }
 
-//    public init?(wif: String,
-//                 walletDataStore: BitcoinKitDataStoreProtocol = UserDefaults.defaultWalletDataStore,
-//                 addressProvider: AddressProvider = StandardAddressProvider.shared,
-//                 utxoProvider: UtxoProvider = BitcoinComService.shared,
-//                 transactionProvider: TransactionHistoryProvider = BitcoinComService.shared,
-//                 transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
-//                 utxoSelector: UtxoSelector = StandardUtxoSelector.default,
-//                 transactionBuilder: TransactionBuilder = StandardTransactionBuilder.default,
-//                 transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
-//        guard let privateKey = try? PrivateKey(wif: wif) else {
-//            return nil
-//        }
-//        self.privateKey = privateKey
-//        self.publicKey = privateKey.publicKey()
-//        self.network = privateKey.network
-//
-//        self.walletDataStore = walletDataStore
-//        self.addressProvider = addressProvider
-//        self.utxoProvider = utxoProvider
-//        self.transactionHistoryProvider = transactionProvider
-//        self.transactionBroadcaster = transactionBroadcaster
-//        self.utxoSelector = utxoSelector
-//        self.transactionBuilder = transactionBuilder
-//        self.transactionSigner = transactionSigner
-//    }
-//
-//    public init?(walletDataStore: BitcoinKitDataStoreProtocol = UserDefaults.defaultWalletDataStore,
-//                 addressProvider: AddressProvider = StandardAddressProvider.shared,
-//                 utxoProvider: UtxoProvider = BitcoinComService.shared,
-//                 transactionProvider: TransactionHistoryProvider = BitcoinComService.shared,
-//                 transactionBroadcaster: TransactionBroadcaster = BitcoinComService.shared,
-//                 utxoSelector: UtxoSelector = StandardUtxoSelector.default,
-//                 transactionBuilder: TransactionBuilder = StandardTransactionBuilder(),
-//                 transactionSigner: TransactionSigner = StandardTransactionSigner.default) {
-//        guard let wif = walletDataStore.getString(forKey: .wif) else {
-//            return nil
-//        }
-//        guard let privateKey = try? PrivateKey(wif: wif) else {
-//            return nil
-//        }
-//        self.privateKey = privateKey
-//        self.publicKey = privateKey.publicKey()
-//        self.network = privateKey.network
-//
-//        self.walletDataStore = walletDataStore
-//        self.addressProvider = addressProvider
-//        self.utxoProvider = utxoProvider
-//        self.transactionHistoryProvider = transactionProvider
-//        self.transactionBroadcaster = transactionBroadcaster
-//        self.utxoSelector = utxoSelector
-//        self.transactionBuilder = transactionBuilder
-//        self.transactionSigner = transactionSigner
-//    }
+    public convenience init?(dataStore: BitcoinKitDataStoreProtocol = UserDefaults.bitcoinKit) {
+        guard let wif = dataStore.getString(forKey: .wif), let privateKey = try? PrivateKey(wif: wif) else {
+            return nil
+        }
+        self.init(privateKey: privateKey, dataStore: dataStore)
+    }
+
+    public convenience init?(wif: String) {
+        guard let privateKey = try? PrivateKey(wif: wif) else {
+            return nil
+        }
+        self.init(privateKey: privateKey)
+    }
 
     public func save() {
         walletDataStore.setString(privateKey.toWIF(), forKey: .wif)
