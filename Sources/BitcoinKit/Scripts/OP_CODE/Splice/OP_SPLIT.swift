@@ -41,8 +41,8 @@ public struct OpSplit: OpCodeProtocol {
             throw OpCodeExecutionError.error("Invalid OP_SPLIT range")
         }
 
-        let n1: Data = data.subdata(in: Range(0..<Int(position)))
-        let n2: Data = data.subdata(in: Range(Int(position)..<data.count))
+        let n1: Data = data.subdata(in: 0..<Int(position))
+        let n2: Data = data.subdata(in: Int(position)..<data.count)
 
         // Replace existing stack values by the new values.
         context.stack[context.stack.count - 2] = n1
