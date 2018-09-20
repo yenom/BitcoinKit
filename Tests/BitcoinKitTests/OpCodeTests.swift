@@ -582,7 +582,7 @@ class OpCodeTests: XCTestCase {
         let index: UInt32 = 1
         let outpoint = TransactionOutPoint(hash: hash, index: index)
 
-        let balance: Int64 = 169012961
+        let balance: UInt64 = 169012961
 
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
 
@@ -668,7 +668,7 @@ class OpCodeTests: XCTestCase {
         let index: UInt32 = 1
         let outpoint = TransactionOutPoint(hash: hash, index: index)
 
-        let balance: Int64 = 2047900000
+        let balance: UInt64 = 2047900000
 
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
 

@@ -41,29 +41,29 @@ extension Array {
 }
 
 extension Array where Element == UnspentTransaction {
-    func sum() -> Int64 {
+    func sum() -> UInt64 {
         return reduce(0) { $0 + $1.output.value }
     }
 }
 
 public struct Fee {
-    public static let feePerByte: Int64 = 1 // ideally get this value from Bitcoin node
-    public static let dust: Int64 = 3 * 182 * feePerByte
+    public static let feePerByte: UInt64 = 1 // ideally get this value from Bitcoin node
+    public static let dust: UInt64 = 3 * 182 * feePerByte
     
     // size for txin(P2PKH) : 148 bytes
     // size for txout(P2PKH) : 34 bytes
     // cf. size for txin(P2SH) : not determined to one
     // cf. size for txout(P2SH) : 32 bytes
     // cf. size for txout(OP_RETURN + String) : Roundup([#characters]/32) + [#characters] + 11 bytes
-    public static func calculate(nIn: Int, nOut: Int = 2, extraOutputSize: Int = 0) -> Int64 {
+    public static func calculate(nIn: Int, nOut: Int = 2, extraOutputSize: Int = 0) -> UInt64 {
         var txsize: Int {
             return ((148 * nIn) + (34 * nOut) + 10) + extraOutputSize
         }
-        return Int64(txsize) * feePerByte
+        return UInt64(txsize) * feePerByte
     }
 }
 
-public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64, dustThreshhold: Int64 = Fee.dust) throws -> (utxos: [UnspentTransaction], fee: Int64) {
+public func selectTx(from utxos: [UnspentTransaction], targetValue: UInt64, dustThreshhold: UInt64 = Fee.dust) throws -> (utxos: [UnspentTransaction], fee: UInt64) {
     // if target value is zero, fee is zero
     guard targetValue > 0 else {
         return ([], 0)
@@ -73,13 +73,13 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64, dustT
     let doubleTargetValue = targetValue * 2
     var numOutputs = 2 // if allow multiple output, it will be changed.
     var numInputs = 2
-    var fee: Int64 {
+    var fee: UInt64 {
         return Fee.calculate(nIn: numInputs, nOut: numOutputs)
     }
-    var targetWithFee: Int64 {
+    var targetWithFee: UInt64 {
         return targetValue + fee
     }
-    var targetWithFeeAndDust: Int64 {
+    var targetWithFeeAndDust: UInt64 {
         return targetWithFee + dustThreshhold
     }
     
@@ -91,8 +91,9 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64, dustT
     }
     
     // difference from 2x targetValue
-    func distFrom2x(_ val: Int64) -> Int64 {
-        return abs(val - doubleTargetValue)
+    func distFrom2x(_ val: UInt64) -> UInt64 {
+        if val > doubleTargetValue { return val - doubleTargetValue }
+        else { return doubleTargetValue - val }
     }
     
     // 1. Find a combination of the fewest outputs that is
@@ -128,10 +129,10 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: Int64, dustT
     throw UtxoSelectError.insufficient
 }
 
-public func createUnsignedTx(toAddress: Address, amount: Int64, changeAddress: Address, utxos: [UnspentTransaction]) -> UnsignedTransaction {
+public func createUnsignedTx(toAddress: Address, amount: UInt64, changeAddress: Address, utxos: [UnspentTransaction]) -> UnsignedTransaction {
     let (utxos, fee) = try! selectTx(from: utxos, targetValue: amount)
-    let totalAmount: Int64 = utxos.reduce(0) { $0 + $1.output.value }
-    let change: Int64 = totalAmount - amount - fee
+    let totalAmount: UInt64 = utxos.reduce(0) { $0 + $1.output.value }
+    let change: UInt64 = totalAmount - amount - fee
     
     let toPubKeyHash: Data = toAddress.data
     let changePubkeyHash: Data = changeAddress.data

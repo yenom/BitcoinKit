@@ -36,9 +36,9 @@ class ScriptMachineTests: XCTestCase {
         let index: UInt32 = 1
         let outpoint = TransactionOutPoint(hash: hash, index: index)
         
-        let balance: Int64 = 169012961
-        let amount: Int64  =  50000000
-        let fee: Int64     =  10000000
+        let balance: UInt64 = 169012961
+        let amount: UInt64  =  50000000
+        let fee: UInt64     =  10000000
         let toAddress = "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB" // https://testnet.coinfaucet.eu/en/
         
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
