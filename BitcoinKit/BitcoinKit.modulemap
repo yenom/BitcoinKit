@@ -7,5 +7,6 @@ framework module BitcoinKit {
     explicit module Private {
         header "BitcoinKitPrivate.h"
         link "crypto"
+        link "secp256k1"
     }
 }

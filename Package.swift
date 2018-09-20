@@ -17,7 +17,8 @@ let package = Package(
             dependencies: ["BitcoinKitPrivate", "secp256k1", "Random"]
         ),
         .target(
-            name: "BitcoinKitPrivate"
+            name: "BitcoinKitPrivate",
+            dependencies: ["COpenSSL", "secp256k1"]
         ),
         .testTarget(
             name: "BitcoinKitTests",
