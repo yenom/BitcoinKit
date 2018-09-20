@@ -31,7 +31,7 @@ public struct QRCodeGenerator {
             "inputMessage": string.data(using: .utf8)!,
             "inputCorrectionLevel": "L"
         ]
-        guard let image = CIFilter(name: "CIQRCodeGenerator", withInputParameters: parameters)?.outputImage else {
+        guard let image = CIFilter(name: "CIQRCodeGenerator", parameters: parameters)?.outputImage else {
             return nil
         }
 

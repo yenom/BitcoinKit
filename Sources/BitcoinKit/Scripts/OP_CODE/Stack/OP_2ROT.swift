@@ -36,7 +36,7 @@ public struct Op2Rot: OpCodeProtocol {
         let x1: Data = context.data(at: -6)
         let x2: Data = context.data(at: -5)
         let count: Int = context.stack.count
-        context.stack.removeSubrange(Range(count - 6 ..< count - 4))
+        context.stack.removeSubrange(count - 6 ..< count - 4)
         context.stack.append(x1)
         context.stack.append(x2)
     }

@@ -65,7 +65,7 @@ public struct ScriptChunkHelper {
 
         if opcode > OpCode.OP_PUSHDATA4 {
             // simple opcode
-            let range = Range(offset..<offset + MemoryLayout.size(ofValue: opcode))
+            let range = (offset..<offset + MemoryLayout.size(ofValue: opcode))
             return OpcodeChunk(scriptData: scriptData, range: range)
         } else {
             // push data
@@ -119,7 +119,7 @@ public struct ScriptChunkHelper {
         guard offset + chunkLength <= count else {
             throw ScriptChunkError.error("Parse DataChunk failed. Push data is out of bounds error.")
         }
-        let range: Range<Int> = Range(offset..<offset + chunkLength)
+        let range = (offset..<offset + chunkLength)
         return DataChunk(scriptData: scriptData, range: range)
     }
 }
