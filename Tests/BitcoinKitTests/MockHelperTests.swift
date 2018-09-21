@@ -34,7 +34,7 @@ class MockHelperTests: XCTestCase {
                                                      MockKey.keyC.pubkey],
                                         signaturesRequired: 1)!
         
-        struct UnlockScriptBuilder: UnlockScriptBuilderProtocol {
+        struct UnlockScriptBuilder: MockUnlockScriptBuilder {
             func build(pairs: [SigKeyPair]) -> Script {
                 guard let signature = pairs.first?.signature else {
                     return Script()
@@ -91,7 +91,7 @@ class MockHelperTests: XCTestCase {
         
         static let lockScript: Script = redeemScript.toP2SH()
         
-        struct UnlockScriptBuilder: UnlockScriptBuilderProtocol {
+        struct UnlockScriptBuilder: MockUnlockScriptBuilder {
             func build(pairs: [SigKeyPair]) -> Script {
                 guard let signature = pairs.first?.signature else {
                     return Script()
@@ -165,7 +165,7 @@ class MockHelperTests: XCTestCase {
             // stack: sig pub
             .append(.OP_CHECKSIG)
         
-        struct UnlockScriptBuilder: UnlockScriptBuilderProtocol {
+        struct UnlockScriptBuilder: MockUnlockScriptBuilder {
             func build(pairs: [SigKeyPair]) -> Script {
                 guard let key = pairs.first?.key, let signature = pairs.first?.signature else {
                     return Script()
@@ -244,7 +244,7 @@ class MockHelperTests: XCTestCase {
                                                     MockKey.keyB.pubkey,
                                                     MockKey.keyC.pubkey],
                                        signaturesRequired: 2)!
-        struct UnlockScriptBuilder: UnlockScriptBuilderProtocol {
+        struct UnlockScriptBuilder: MockUnlockScriptBuilder {
             func build(pairs: [SigKeyPair]) -> Script {
                 let script = try! Script().append(.OP_0)
                 pairs.forEach { try! script.appendData($0.signature) }

@@ -132,7 +132,7 @@
 		2914BE5C211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5B211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift */; };
 		2914BE5E211C062200B349CB /* OP_PUBKEYHASH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5D211C062200B349CB /* OP_PUBKEYHASH.swift */; };
 		2914BE60211C063300B349CB /* OP_PUBKEY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5F211C063300B349CB /* OP_PUBKEY.swift */; };
-		292185372154B50E00570618 /* UnlockScriptBuilderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292185362154B50E00570618 /* UnlockScriptBuilderProtocol.swift */; };
+		292185372154B50E00570618 /* MockUnlockScriptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292185362154B50E00570618 /* MockUnlockScriptBuilder.swift */; };
 		29248EEF2104B64E00CC9051 /* ScriptChunkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */; };
 		29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */; };
 		29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B90210AF79300D2BE78 /* OP_DUP.swift */; };
@@ -358,7 +358,7 @@
 		2914BE5B211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSEQUENCEVERIFY.swift; sourceTree = "<group>"; };
 		2914BE5D211C062200B349CB /* OP_PUBKEYHASH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_PUBKEYHASH.swift; sourceTree = "<group>"; };
 		2914BE5F211C063300B349CB /* OP_PUBKEY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_PUBKEY.swift; sourceTree = "<group>"; };
-		292185362154B50E00570618 /* UnlockScriptBuilderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockScriptBuilderProtocol.swift; sourceTree = "<group>"; };
+		292185362154B50E00570618 /* MockUnlockScriptBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUnlockScriptBuilder.swift; sourceTree = "<group>"; };
 		29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptChunkHelper.swift; sourceTree = "<group>"; };
 		29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeFactory.swift; sourceTree = "<group>"; };
 		29290B90210AF79300D2BE78 /* OP_DUP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_DUP.swift; sourceTree = "<group>"; };
@@ -585,6 +585,7 @@
 		29089F112122D07500E0C305 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
+				292185362154B50E00570618 /* MockUnlockScriptBuilder.swift */,
 				29089F0B2122B9CD00E0C305 /* MockHelper.swift */,
 				29089F0F2122D06300E0C305 /* MockKey.swift */,
 			);
@@ -648,7 +649,6 @@
 				298E17C12150AD6000FF6C77 /* UtxoSelector.swift */,
 				298E17C32150AD6900FF6C77 /* TransactionBuilder.swift */,
 				298E17C52150AD7100FF6C77 /* TransactionSigner.swift */,
-				292185362154B50E00570618 /* UnlockScriptBuilderProtocol.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1193,7 +1193,7 @@
 				0C1DD40821181719004BA8A8 /* OP_ABS.swift in Sources */,
 				1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */,
 				298E17CD2150AEB300FF6C77 /* StandardTransactionBuilder.swift in Sources */,
-				292185372154B50E00570618 /* UnlockScriptBuilderProtocol.swift in Sources */,
+				292185372154B50E00570618 /* MockUnlockScriptBuilder.swift in Sources */,
 				0C09002621169B430077E9BC /* OP_MIN.swift in Sources */,
 				0C1DD421211820D4004BA8A8 /* OP_DIV.swift in Sources */,
 				0C1DE157211D79D900FE8E43 /* OP_FROMALTSTACK.swift in Sources */,
