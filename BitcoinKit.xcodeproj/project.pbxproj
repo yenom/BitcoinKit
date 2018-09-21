@@ -943,11 +943,12 @@
 				TargetAttributes = {
 					147494C6201F9A29006D1CF8 = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 					147494CF201F9A29006D1CF8 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1404,7 +1405,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1442,7 +1443,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1462,7 +1463,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoinkit.BitcoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1482,7 +1483,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoinkit.BitcoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
