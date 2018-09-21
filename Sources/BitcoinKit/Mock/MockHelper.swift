@@ -24,12 +24,8 @@
 
 import Foundation
 
-public typealias SigKeyPair = (sig: Data, key: MockKey)
-
-public typealias SingleKeyScriptBuilder = ((SigKeyPair) -> Script)
-public typealias MultiKeyScriptBuilder = (([SigKeyPair]) -> Script)
-
 public struct MockHelper {
+
     public static func createUtxo(lockScript: Script) -> UnspentTransaction {
         let outputMock = TransactionOutput(value: 100_000_000, lockingScript: lockScript.data)
         let outpointMock = TransactionOutPoint(hash: Data(), index: 0)
@@ -79,7 +75,7 @@ public struct MockHelper {
                            lockTime: tx.lockTime)
     }
 
-    public static func verifySingleKey(lockScript: Script, unlockScriptBuilder: SingleKeyScriptBuilder, key: MockKey, verbose: Bool = true) throws -> Bool {
+    public static func verifySingleKey(lockScript: Script, unlockScriptBuilder: MockUnlockScriptBuilder, key: MockKey, verbose: Bool = true) throws -> Bool {
         // mocks
         let utxoMock: UnspentTransaction = MockHelper.createUtxo(lockScript: lockScript)
         let txMock: Transaction = MockHelper.createTransaction(utxo: utxoMock)
@@ -88,8 +84,8 @@ public struct MockHelper {
         let hashType = SighashType.BCH.ALL
         let signature: Data = key.privkey.sign(txMock, utxoToSign: utxoMock, hashType: hashType)
         let sigWithHashType: Data = signature + UInt8(hashType)
-        let unlockScript: Script = unlockScriptBuilder((sigWithHashType, key))
-
+        let pair: SigKeyPair = SigKeyPair(sigWithHashType, key.pubkey)
+        let unlockScript: Script = unlockScriptBuilder.build(pairs: [pair])
         // signed tx
         let signedTxMock = MockHelper.updateTransaction(txMock, unlockScriptData: unlockScript.data)
 
@@ -101,7 +97,7 @@ public struct MockHelper {
         return try ScriptMachine.verify(lockScript: lockScript, unlockScript: unlockScript, context: context)
     }
 
-    public static func verifyMultiKey(lockScript: Script, unlockScriptBuilder: MultiKeyScriptBuilder, keys: [MockKey], verbose: Bool = true) throws -> Bool {
+    public static func verifyMultiKey(lockScript: Script, unlockScriptBuilder: MockUnlockScriptBuilder, keys: [MockKey], verbose: Bool = true) throws -> Bool {
         // mocks
         let utxoMock: UnspentTransaction = MockHelper.createUtxo(lockScript: lockScript)
         let txMock: Transaction = MockHelper.createTransaction(utxo: utxoMock)
@@ -112,11 +108,10 @@ public struct MockHelper {
         for key in keys {
             let signature: Data = key.privkey.sign(txMock, utxoToSign: utxoMock, hashType: hashType)
             let sigWithHashType: Data = signature + UInt8(hashType)
-            sigKeyPairs.append(SigKeyPair(sigWithHashType, key))
+            sigKeyPairs.append(SigKeyPair(sigWithHashType, key.pubkey))
         }
 
-        let unlockScript: Script = unlockScriptBuilder(sigKeyPairs)
-
+        let unlockScript: Script = unlockScriptBuilder.build(pairs: sigKeyPairs)
         // signed tx
         let signedTxMock = MockHelper.updateTransaction(txMock, unlockScriptData: unlockScript.data)
 
