@@ -40,7 +40,7 @@ public struct PublicKey {
     public let network: Network
     public let isCompressed: Bool
 
-    init(bytes data: Data, network: Network) {
+    public init(bytes data: Data, network: Network) {
         self.data = data
         self.network = network
         let header = data[0]
