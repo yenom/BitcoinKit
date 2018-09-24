@@ -42,15 +42,18 @@ public class _Hash {
     }
     
     public static func hmacsha512(_ data: Data, key: Data) -> Data {
-        var result = [UInt8](repeating: 0, count: Int(SHA512_DIGEST_LENGTH))
-        var length: UInt32 = UInt32(SHA512_DIGEST_LENGTH)
+        var length = UInt32(SHA512_DIGEST_LENGTH)
+        var result = Data(count: Int(length))
+        
         data.withUnsafeBytes { (dataPtr: UnsafePointer<UInt8>) in
             key.withUnsafeBytes { (keyPtr: UnsafePointer<UInt8>) in
-                HMAC(EVP_sha512(), keyPtr, Int32(key.count), dataPtr, data.count, &result, &length)
-                return
+                result.withUnsafeMutableBytes { (resultPtr: UnsafeMutablePointer<UInt8>) in
+                    HMAC(EVP_sha512(), keyPtr, Int32(key.count), dataPtr, data.count, resultPtr, &length)
+                    return
+                }
             }
         }
-        return Data(result)
+        return result
     }
 }
 
@@ -115,13 +118,13 @@ public class _Key {
 
 public class _HDKey {
     public let privateKey: Data?
-    public let publicKey: Data?
+    public let publicKey: Data
     public let chainCode: Data
     public let depth: UInt8
     public let fingerprint: UInt32
     public let childIndex: UInt32
     
-    public init(privateKey: Data?, publicKey: Data?, chainCode: Data, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
+    public init(privateKey: Data?, publicKey: Data, chainCode: Data, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
         self.privateKey = privateKey
         self.publicKey = publicKey
         self.chainCode = chainCode
@@ -140,11 +143,11 @@ public class _HDKey {
             data.append(0) // padding
             data += privateKey ?? Data()
         } else {
-            data += publicKey ?? Data()
+            data += publicKey
         }
-        
         var childIndex = UInt32(hardened ? (0x80000000 | index) : index).bigEndian
         data.append(UnsafeBufferPointer(start: &childIndex, count: 1))
+        
         let digest = _Hash.hmacsha512(data, key: self.chainCode)
         let derivedPrivateKey = digest[0..<32]
         let derivedChainCode = digest[32..<(32+32)]
@@ -158,6 +161,7 @@ public class _HDKey {
         defer {
             BN_free(factor)
         }
+
         derivedPrivateKey.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
             BN_bin2bn(ptr, Int32(derivedPrivateKey.count), factor)
             return
@@ -167,6 +171,7 @@ public class _HDKey {
             return nil
         }
         
+        var result: Data = Data()
         if let privateKey = self.privateKey {
             let privateKeyNum = BN_new()!
             defer {
@@ -186,20 +191,12 @@ public class _HDKey {
                 return nil
             }
             let numBytes = ((BN_num_bits(privateKeyNum)+7)/8) // BN_num_bytes
-            var result = [UInt8](repeating: 0, count: Int(numBytes))
-            BN_bn2bin(privateKeyNum, &result)
-            let fingerprintData = _Hash.sha256ripemd160(publicKey ?? Data())
-            let fingerprintArray = fingerprintData.withUnsafeBytes {
-                [UInt32](UnsafeBufferPointer(start: $0, count: fingerprintData.count))
+            result = Data(count: Int(numBytes))
+            result.withUnsafeMutableBytes { (ptr: UnsafeMutablePointer<UInt8>) in
+                BN_bn2bin(privateKeyNum, ptr)
+                return
             }
-            let reusltData = Data(result)
-            return _HDKey(privateKey: reusltData,
-                               publicKey: reusltData,
-                               chainCode: derivedChainCode,
-                               depth: depth + 1,
-                               fingerprint: fingerprintArray[0],
-                               childIndex: childIndex)
-        } else if let publicKey = self.publicKey {
+        } else {
             let publicKeyNum = BN_new()
             defer {
                 BN_free(publicKeyNum)
@@ -213,6 +210,7 @@ public class _HDKey {
             let point = EC_POINT_new(group)
             defer {
                 EC_POINT_free(point)
+                EC_GROUP_free(group)
             }
             EC_POINT_bn2point(group, publicKeyNum, point, ctx)
             EC_POINT_mul(group, point, factor, point, BN_value_one(), ctx)
@@ -225,23 +223,25 @@ public class _HDKey {
             defer {
                 BN_free(n)
             }
-            var result = [UInt8](repeating: 0, count: 33)
             EC_POINT_point2bn(group, point, POINT_CONVERSION_COMPRESSED, n, ctx)
-            BN_bn2bin(n, &result)
-            let fingerprintData = _Hash.sha256ripemd160(publicKey)
-            let fingerprintArray = fingerprintData.withUnsafeBytes {
-                [UInt32](UnsafeBufferPointer(start: $0, count: fingerprintData.count))
+            result = Data(count: 33)
+            result.withUnsafeMutableBytes { (ptr: UnsafeMutablePointer<UInt8>) in
+                BN_bn2bin(n, ptr)
+                return
             }
-            let reusltData = Data(result)
-            return _HDKey(privateKey: reusltData,
-                          publicKey: reusltData,
-                          chainCode: derivedChainCode,
-                          depth: depth + 1,
-                          fingerprint: fingerprintArray[0],
-                          childIndex: childIndex)
-        } else {
-            return nil
         }
+        
+        let fingerprintData = _Hash.sha256ripemd160(publicKey)
+        let fingerprint = fingerprintData.withUnsafeBytes{ (p: UnsafePointer<UInt32>) in
+            p.pointee
+        }
+        return _HDKey(privateKey: result,
+                      publicKey: result,
+                      chainCode: derivedChainCode,
+                      depth: depth + 1,
+                      fingerprint: fingerprint,
+                      childIndex: childIndex)
+
     }
 }
 
