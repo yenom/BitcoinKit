@@ -91,7 +91,11 @@ extension Data {
     }
 
     func to<T>(type: T.Type) -> T {
-        return self.withUnsafeBytes { $0.pointee }
+        var data = self
+        while data.count < MemoryLayout<T>.size {
+            data.append(0)
+        }
+        return data.withUnsafeBytes { $0.pointee }
     }
 
     func to(type: String.Type) -> String {
