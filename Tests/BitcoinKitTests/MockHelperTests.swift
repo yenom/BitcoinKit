@@ -105,12 +105,6 @@ class MockHelperTests: XCTestCase {
         }
     }
     
-    func testP2SHRecursively() {
-        for _ in 0...30 {
-            testP2SH()
-        }
-    }
-
     func testP2SH() {
         func verify(with key: MockKey) throws -> Bool {
             return try MockHelper.verifySingleKey(
