@@ -27,7 +27,7 @@ import Foundation
 
 class ProofOfWork {
 	static let maxProofOfWork: UInt256
-		= UInt256(data: Data(hex:"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff")!)!
+		= UInt256(data: Data(hex: "00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff")!)!
 	static func isValidProofOfWork(blockHash: Data, bits: UInt32) -> Bool {
 		let target: UInt256
 		do {

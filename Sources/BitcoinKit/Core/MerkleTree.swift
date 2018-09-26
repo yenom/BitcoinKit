@@ -34,18 +34,16 @@ struct MerkleTree {
 		case invalidNumberOfFlags
 		case nullHash
 	}
-	
-	static func buildMerkleRoot(numberOfHashes: UInt32, hashes: [Data], numberOfFlags: UInt32, flags: [UInt8],
-								totalTransactions: UInt32) throws -> Data
-	{
+
+	static func buildMerkleRoot(numberOfHashes: UInt32, hashes: [Data], numberOfFlags: UInt32, flags: [UInt8], totalTransactions: UInt32) throws -> Data {
 		if numberOfHashes != hashes.count {
 			throw MerkleError.invalidNumberOfHashes
 		}
-		if flags.count < numberOfFlags/8 {
+		if flags.count < numberOfFlags / 8 {
 			throw MerkleError.invalidNumberOfFlags
 		}
 		let parents: [Bool] = (0 ..< Int(numberOfFlags)).compactMap({
-			return (flags[$0/8] & UInt8(1 << ($0 % 8))) != 0
+			return (flags[$0 / 8] & UInt8(1 << ($0 % 8))) != 0
 		})
 		let maxdepth: UInt = UInt(ceil_log2(totalTransactions))
 		var hashIterator = hashes.makeIterator()
@@ -54,27 +52,26 @@ struct MerkleTree {
 		guard let h = root.hash else { throw MerkleError.nullHash }
 		return h
 	}
-	
+
 	struct PartialMerkleTree {
 		var hash: Data?
 		// zero size if depth is maxdepth
 		// leaf[0]: left, leaf[1]: right
 		var leaf: [PartialMerkleTree] = []
-		init(hash: Data, leafL: PartialMerkleTree, leafR: PartialMerkleTree){
+		init(hash: Data, leafL: PartialMerkleTree, leafR: PartialMerkleTree) {
 			self.hash = hash
 			leaf.append(leafL)
 			leaf.append(leafR)
 		}
-		init(hash: Data){
+		init(hash: Data) {
 			self.hash = hash
 		}
 	}
-	
+
 	private static func buildPartialMerkleTree(
-		hashIterator: inout IndexingIterator<Array<Data>>,
-		parentIterator: inout IndexingIterator<Array<Bool>>,
-		depth: UInt, maxdepth: UInt) throws -> PartialMerkleTree
-	{
+		hashIterator: inout IndexingIterator<[Data]>,
+		parentIterator: inout IndexingIterator<[Bool]>,
+		depth: UInt, maxdepth: UInt) throws -> PartialMerkleTree {
 		guard let parent = parentIterator.next() else { throw MerkleError.noEnoughParent }
 		if !parent || maxdepth <= depth {
 			// leaf

@@ -28,7 +28,7 @@ import Foundation
 func ceil_log2(_ x: UInt32) -> UInt32 {
 	if x == 0 { return 0 }
 	var xx = x
-	var r: UInt32 = (xx & (xx-1)) != 0 ? 1 : 0
+	var r: UInt32 = (xx & (xx - 1)) != 0 ? 1 : 0
 	while true {
 		xx >>= 1
 		if xx == 0 { break }

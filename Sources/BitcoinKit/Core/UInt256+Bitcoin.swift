@@ -26,7 +26,7 @@
 import Foundation
 
 extension UInt256 {
-	public enum CompactError: Error  {
+	public enum CompactError: Error {
 		case negative, overflow
 	}
 	// bitcoin "compact" format

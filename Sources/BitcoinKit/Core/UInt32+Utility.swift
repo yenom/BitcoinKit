@@ -27,6 +27,6 @@ import Foundation
 
 extension UInt32 {
 	public var hex: String {
-		return String(format:"%08x", self)
+		return String(format: "%08x", self)
 	}
 }
