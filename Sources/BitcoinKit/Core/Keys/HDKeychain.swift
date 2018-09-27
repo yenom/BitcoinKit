@@ -28,7 +28,7 @@ import Foundation
 public final class HDKeychain {
     let privateKey: HDPrivateKey
 
-    init(privateKey: HDPrivateKey) {
+    public init(privateKey: HDPrivateKey) {
         self.privateKey = privateKey
     }
 
@@ -54,7 +54,7 @@ public final class HDKeychain {
     /// "m / 0 / 1" (contains spaces)
     /// "m/b/c" (alphabetical characters instead of numerical indexes)
     /// "m/1.2^3" (contains illegal characters)
-    func derivedKey(path: String) throws -> HDPrivateKey {
+    public func derivedKey(path: String) throws -> HDPrivateKey {
         var key = privateKey
 
         var path = path
