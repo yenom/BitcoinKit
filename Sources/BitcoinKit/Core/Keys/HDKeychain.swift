@@ -26,14 +26,14 @@
 import Foundation
 
 public final class HDKeychain {
-    let privateKey: HDPrivateKey
+    private let rootKey: HDPrivateKey
 
-    public init(privateKey: HDPrivateKey) {
-        self.privateKey = privateKey
+    public init(rootKey: HDPrivateKey) {
+        self.rootKey = rootKey
     }
 
     public convenience init(seed: Data, network: Network) {
-        self.init(privateKey: HDPrivateKey(seed: seed, network: network))
+        self.init(rootKey: HDPrivateKey(seed: seed, network: network))
     }
     /// Parses the BIP32 path and derives the chain of keychains accordingly.
     /// Path syntax: (m?/)?([0-9]+'?(/[0-9]+'?)*)?
@@ -55,7 +55,7 @@ public final class HDKeychain {
     /// "m/b/c" (alphabetical characters instead of numerical indexes)
     /// "m/1.2^3" (contains illegal characters)
     public func derivedKey(path: String) throws -> HDPrivateKey {
-        var key = privateKey
+        var key = rootKey
 
         var path = path
         if path == "m" || path == "/" || path == "" {
