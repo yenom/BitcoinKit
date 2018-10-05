@@ -262,7 +262,7 @@ public class Script {
             && pushedData(at: 1) != nil
     }
 
-    public var retrieveOpReturnData: Data? {
+    public func standardOpReturnData() -> Data? {
         guard isStandardOpReturnScript else {
             return nil
         }
