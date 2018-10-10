@@ -85,6 +85,14 @@ public struct Mnemonic {
         return seed
     }
 
+    public static func verify(mnemonic m: [String], language: Language = .english) -> Bool {
+        let list = wordList(for: language)
+        let notIncludedIndex = m.firstIndex {
+            return !list.contains(String.SubSequence($0))
+        }
+        return notIncludedIndex == nil
+    }
+
     private static func wordList(for language: Language) -> [String.SubSequence] {
         switch language {
         case .english:
