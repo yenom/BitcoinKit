@@ -30,6 +30,7 @@ public class Network {
     public static let testnet: Network = BCHTestnet()
     public static let mainnetBTC: Network = BTCMainnet()
     public static let testnetBTC: Network = BTCTestnet()
+    public static let mainnetXVG: Network = XVGMainnet()
 
     public var name: String { return "" }
     public var alias: String { return "" }
@@ -63,6 +64,62 @@ struct Checkpoint {
     let hash: Data
     let timestamp: UInt32
     let target: UInt32
+}
+
+public class XVGMainnet: Network {
+    public override var scheme: String {
+        return "verge"
+    }
+    override var magic: UInt32 {
+        return 0xf7a77eff
+    }
+    public override var dnsSeeds: [String] {
+        return [
+            "159.89.202.56",
+            "138.197.68.130",
+            "165.227.31.52",
+            "159.89.202.56",
+            "188.40.78.31",
+            "176.9.143.143",
+            "198.27.82.41"
+        ]
+    }
+    public override var name: String {
+        return "livenet"
+    }
+    public override var alias: String {
+        return "mainnet"
+    }
+    override var pubkeyhash: UInt8 {
+        return 0x1e
+    }
+    override var privatekey: UInt8 {
+        return 0x9e
+    }
+    override var scripthash: UInt8 {
+        return 0x21
+    }
+    override var xpubkey: UInt32 {
+        return 0x022d2533
+    }
+    override var xprivkey: UInt32 {
+        return 0x0221312b
+    }
+    public override var port: UInt32 {
+        return 21102
+    }
+    /// blockchain checkpoints - these are also used as starting points for partial chain downloads, so they need to be at
+    /// difficulty transition boundaries in order to verify the block difficulty at the immediately following transition
+    override var checkpoints: [Checkpoint] {
+        return [
+            Checkpoint(height: 0, hash: Data(Data(hex: "00000fc63692467faeb20cdb3b53200dc601d75bdfa1001463304cc790d77278")!.reversed()), timestamp: 1_231_006_505, target: 0x0),
+            Checkpoint(height: 20_160, hash: Data(Data(hex: "000000000265c5f4683b169a68cb3cac89287c8b5df94e17b09ef19ac718026b")!.reversed()), timestamp: 1_248_481_816, target: 0x3f)
+        ]
+    }
+    // These hashes are genesis blocks' ones
+    override var genesisBlock: Data {
+        return Data(Data(hex: "00000fc63692467faeb20cdb3b53200dc601d75bdfa1001463304cc790d77278")!.reversed())
+    }
 }
 
 public class BTCMainnet: Mainnet {
