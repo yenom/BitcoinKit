@@ -29,6 +29,8 @@ import Foundation
 public struct Transaction {
     /// Transaction data format version (note, this is signed)
     public let version: UInt32
+    /// Transaction timestamp
+    public let timestamp: UInt32
     /// If present, always 0001, and indicates the presence of witness data
     // public let flag: UInt16 // If present, always 0001, and indicates the presence of witness data
     /// Number of Transaction inputs (never zero)
@@ -56,8 +58,9 @@ public struct Transaction {
         return Data(txHash.reversed()).hex
     }
 
-    public init(version: UInt32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
+    public init(version: UInt32, timestamp: UInt32, inputs: [TransactionInput], outputs: [TransactionOutput], lockTime: UInt32) {
         self.version = version
+        self.timestamp = timestamp
         self.inputs = inputs
         self.outputs = outputs
         self.lockTime = lockTime
@@ -66,6 +69,7 @@ public struct Transaction {
     public func serialized() -> Data {
         var data = Data()
         data += version
+        data += timestamp
         data += txInCount.serialized()
         data += inputs.flatMap { $0.serialized() }
         data += txOutCount.serialized()
@@ -85,6 +89,7 @@ public struct Transaction {
 
     static func deserialize(_ byteStream: ByteStream) -> Transaction {
         let version = byteStream.read(UInt32.self)
+        let timestamp = byteStream.read(UInt32.self)
         let txInCount = byteStream.read(VarInt.self)
         var inputs = [TransactionInput]()
         for _ in 0..<Int(txInCount.underlyingValue) {
@@ -96,6 +101,6 @@ public struct Transaction {
             outputs.append(TransactionOutput.deserialize(byteStream))
         }
         let lockTime = byteStream.read(UInt32.self)
-        return Transaction(version: version, inputs: inputs, outputs: outputs, lockTime: lockTime)
+        return Transaction(version: version, timestamp: timestamp, inputs: inputs, outputs: outputs, lockTime: lockTime)
     }
 }
