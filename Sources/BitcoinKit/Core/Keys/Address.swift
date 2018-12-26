@@ -81,14 +81,14 @@ public struct LegacyAddress: Address {
         let type: AddressType
         let addressPrefix = pubKeyHash[0]
         switch addressPrefix {
-        case Network.mainnet.pubkeyhash:
-            network = .mainnet
+        case Network.mainnetXVG.pubkeyhash:
+            network = .mainnetXVG
             type = .pubkeyHash
         case Network.testnet.pubkeyhash:
             network = .testnet
             type = .pubkeyHash
-        case Network.mainnet.scripthash:
-            network = .mainnet
+        case Network.mainnetXVG.scripthash:
+            network = .mainnetXVG
             type = .scriptHash
         case Network.testnet.scripthash:
             network = .testnet
@@ -163,8 +163,8 @@ public struct Cashaddr: Address {
         self.publicKey = nil
 
         switch prefix {
-        case Network.mainnet.scheme:
-            network = .mainnet
+        case Network.mainnetXVG.scheme:
+            network = .mainnetXVG
         case Network.testnet.scheme:
             network = .testnet
         default:
