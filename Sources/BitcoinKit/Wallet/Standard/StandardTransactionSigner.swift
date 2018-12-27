@@ -32,7 +32,7 @@ public struct StandardTransactionSigner: TransactionSigner {
         var signingInputs: [TransactionInput]
         var signingTransaction: Transaction {
             let tx: Transaction = unsignedTransaction.tx
-            return Transaction(version: tx.version, inputs: signingInputs, outputs: tx.outputs, lockTime: tx.lockTime)
+            return Transaction(version: tx.version, timestamp: tx.timestamp, inputs: signingInputs, outputs: tx.outputs, lockTime: tx.lockTime)
         }
 
         // Sign
