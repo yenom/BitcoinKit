@@ -55,7 +55,7 @@ public struct MockHelper {
         let changeOutput = TransactionOutput(value: change, lockingScript: lockingScriptChange.data)
 
         // 3. Tx
-        let tx = Transaction(version: 1, inputs: unsignedInputs, outputs: [toOutput, changeOutput], lockTime: 0)
+        let tx = Transaction(version: 1, timestamp: UInt32(Date(timeIntervalSinceNow: 0).timeIntervalSince1970), inputs: unsignedInputs, outputs: [toOutput, changeOutput], lockTime: 0)
         return tx
     }
 
@@ -70,6 +70,7 @@ public struct MockHelper {
                                      sequence: txin.sequence)
 
         return Transaction(version: tx.version,
+                           timestamp: tx.timestamp
                            inputs: inputs,
                            outputs: tx.outputs,
                            lockTime: tx.lockTime)

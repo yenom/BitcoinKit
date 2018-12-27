@@ -29,10 +29,10 @@ import Foundation
 public struct Transaction {
     /// Transaction data format version (note, this is signed)
     public let version: UInt32
-    /// Transaction timestamp
-    public let timestamp: UInt32
     /// If present, always 0001, and indicates the presence of witness data
     // public let flag: UInt16 // If present, always 0001, and indicates the presence of witness data
+    /// Transaction timestamp
+    public let timestamp: UInt32
     /// Number of Transaction inputs (never zero)
     public var txInCount: VarInt {
         return VarInt(inputs.count)

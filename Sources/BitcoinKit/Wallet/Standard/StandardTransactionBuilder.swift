@@ -35,7 +35,7 @@ public struct StandardTransactionBuilder: TransactionBuilder {
         }
 
         let unsignedInputs = utxos.map { TransactionInput(previousOutput: $0.outpoint, signatureScript: Data(), sequence: UInt32.max) }
-        let tx = Transaction(version: 1, inputs: unsignedInputs, outputs: outputs, lockTime: 0)
+        let tx = Transaction(version: 1, timestamp: UInt32(Date(timeIntervalSinceNow: 0).timeIntervalSince1970), inputs: unsignedInputs, outputs: outputs, lockTime: 0)
         return UnsignedTransaction(tx: tx, utxos: utxos)
     }
 }

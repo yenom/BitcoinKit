@@ -77,6 +77,7 @@ public struct TransactionSignatureSerializer {
         }
 
         let tmp = Transaction(version: tx.version,
+                              timestamp: tx.timestamp,
                                         inputs: inputsToSerialize,
                                         outputs: outputsToSerialize,
                                         lockTime: tx.lockTime)

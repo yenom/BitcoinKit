@@ -97,7 +97,7 @@ private struct BitcoinComTransaction: Codable {
             guard let output = txout.asTransactionOutput() else { return nil }
             outputs.append(output)
         }
-        return Transaction(version: version, inputs: inputs, outputs: outputs, lockTime: locktime)
+        return Transaction(version: version, timestamp: UInt32(Date(timeIntervalSinceNow: 0).timeIntervalSince1970), inputs: inputs, outputs: outputs, lockTime: locktime)
     }
 }
 
