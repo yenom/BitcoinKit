@@ -70,7 +70,7 @@ public struct MockHelper {
                                      sequence: txin.sequence)
 
         return Transaction(version: tx.version,
-                           timestamp: tx.timestamp
+                           timestamp: tx.timestamp,
                            inputs: inputs,
                            outputs: tx.outputs,
                            lockTime: tx.lockTime)
