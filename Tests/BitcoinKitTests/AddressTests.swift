@@ -178,22 +178,22 @@ class AddressTests: XCTestCase {
         let spendPublicKey = spendPrivateKey.privateKey().publicKey()
         
         let addressFromScanPublicKey = scanPublicKey.toLegacy()
-        XCTAssertEqual("\(addressFromScanPublicKey)", "D6PK4bV1bnjoDzP4WxPwFtiVQKuD8Lp3A9")
+        XCTAssertEqual("\(addressFromScanPublicKey)", "DJ5QbtffmrJr75pFeNcdgQg9SxrYXBprdK")
         
         let addressFromSpendPublicKey = spendPublicKey.toLegacy()
-        XCTAssertEqual("\(addressFromSpendPublicKey)", "DA96yGiYKdPGhwwievv1wJK9sAbvQAyece")
+        XCTAssertEqual("\(addressFromSpendPublicKey)", "D6WSnrGEZqWo9qJZ3TGq7CJRDLDdxZabdk")
         
         let stealthAddress = StealthAddress(
             scanPublicKey: scanPublicKey,
             spendPublicKey: spendPublicKey,
             network: .mainnetXVG
         )
-        XCTAssertEqual("\(stealthAddress)", "smYmwzdrjjKzLwoFAi3tZnjwEca6RjW51sKriEYEinbw9wof7xcBV31pHgiBngM4KTsTkD6Q5JzhCn5UvAaXnTz7ueYNfEKqZuutbH")
+        XCTAssertEqual("\(stealthAddress)", "smYnkGT73m5t9KhgSSJoR5JPSB8KfZS5mV1pzHo3M8tCAqoP2bv8V55mDnmHxbxu921cJMo4zPAJnHtYQvuQysLUgkqGX9y5mE7Y7Y")
         
         let addressFromStealthAddress = try! StealthAddress(
-            "smYmwzdrjjKzLwoFAi3tZnjwEca6RjW51sKriEYEinbw9wof7xcBV31pHgiBngM4KTsTkD6Q5JzhCn5UvAaXnTz7ueYNfEKqZuutbH"
+            "smYnkGT73m5t9KhgSSJoR5JPSB8KfZS5mV1pzHo3M8tCAqoP2bv8V55mDnmHxbxu921cJMo4zPAJnHtYQvuQysLUgkqGX9y5mE7Y7Y"
         )
         XCTAssertNotNil(addressFromStealthAddress)
-        XCTAssertEqual("\(addressFromStealthAddress)", "smYmwzdrjjKzLwoFAi3tZnjwEca6RjW51sKriEYEinbw9wof7xcBV31pHgiBngM4KTsTkD6Q5JzhCn5UvAaXnTz7ueYNfEKqZuutbH")
+        XCTAssertEqual("\(addressFromStealthAddress)", "smYnkGT73m5t9KhgSSJoR5JPSB8KfZS5mV1pzHo3M8tCAqoP2bv8V55mDnmHxbxu921cJMo4zPAJnHtYQvuQysLUgkqGX9y5mE7Y7Y")
     }
 }
