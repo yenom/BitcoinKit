@@ -15,7 +15,25 @@
 		29EA70342150C885009B6485 /* BitcoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29EA70332150C885009B6485 /* BitcoinKit.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		0C08143521FD51AC00175554 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0C08143021FD51AC00175554 /* SPVWalletExample.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C08140D21FD51A400175554;
+			remoteInfo = SPVWalletExample;
+		};
+		0C08143721FD51AC00175554 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0C08143021FD51AC00175554 /* SPVWalletExample.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C08142121FD51A500175554;
+			remoteInfo = SPVWalletExampleTests;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		0C08143021FD51AC00175554 /* SPVWalletExample.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SPVWalletExample.xcodeproj; path = ../SPVWalletExample/SPVWalletExample.xcodeproj; sourceTree = "<group>"; };
 		298E17DB2150C55C00FF6C77 /* WalletExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WalletExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		298E17DE2150C55C00FF6C77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		298E17E02150C55C00FF6C77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -38,9 +56,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C08143121FD51AC00175554 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0C08143621FD51AC00175554 /* SPVWalletExample.app */,
+				0C08143821FD51AC00175554 /* SPVWalletExampleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		298E17D22150C55C00FF6C77 = {
 			isa = PBXGroup;
 			children = (
+				0C08143021FD51AC00175554 /* SPVWalletExample.xcodeproj */,
 				298E17DD2150C55C00FF6C77 /* WalletExample */,
 				298E17DC2150C55C00FF6C77 /* Products */,
 				29EA70322150C885009B6485 /* Frameworks */,
@@ -123,12 +151,35 @@
 			mainGroup = 298E17D22150C55C00FF6C77;
 			productRefGroup = 298E17DC2150C55C00FF6C77 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0C08143121FD51AC00175554 /* Products */;
+					ProjectRef = 0C08143021FD51AC00175554 /* SPVWalletExample.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				298E17DA2150C55C00FF6C77 /* WalletExample */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0C08143621FD51AC00175554 /* SPVWalletExample.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = SPVWalletExample.app;
+			remoteRef = 0C08143521FD51AC00175554 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0C08143821FD51AC00175554 /* SPVWalletExampleTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SPVWalletExampleTests.xctest;
+			remoteRef = 0C08143721FD51AC00175554 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		298E17D92150C55C00FF6C77 /* Resources */ = {
