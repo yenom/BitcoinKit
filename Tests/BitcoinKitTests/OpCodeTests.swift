@@ -590,7 +590,7 @@ class OpCodeTests: XCTestCase {
 
         let subScript = Data(hex: "76a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac")!
         let inputForSign = TransactionInput(previousOutput: outpoint, signatureScript: subScript, sequence: UInt32.max)
-        let unsignedTx = Transaction(version: 1, inputs: [inputForSign], outputs: [], lockTime: 0)
+        let unsignedTx = Transaction(version: 1, timestamp: nil, inputs: [inputForSign], outputs: [], lockTime: 0)
 
         // sign
         let hashType: SighashType = SighashType.BTC.ALL
@@ -625,6 +625,7 @@ class OpCodeTests: XCTestCase {
             context = ScriptExecutionContext(
                 transaction: Transaction(
                     version: 1,
+                    timestamp: nil,
                     inputs: [TransactionInput(
                         previousOutput: TransactionOutPoint(hash: Data(), index: 0),
                         signatureScript: Data(),
@@ -676,7 +677,7 @@ class OpCodeTests: XCTestCase {
 
         let subScript = Data(hex: "30440220356c7a8d55d4a63b1eab9cf00886cb66fe114d31f59faf242295e0e6e2aec9e5022052b6c4ee09b6564edf5a6d13f386e43ca6f9b4af19e9fefea413ac28d5b8d2df41036b7b02cc5592256d22e45c2c70c41b34e962cc370bcf672cea6f476e1db318c8")!
         let inputForSign = TransactionInput(previousOutput: outpoint, signatureScript: subScript, sequence: UInt32.max)
-        let unsignedTx = Transaction(version: 1, inputs: [inputForSign], outputs: [], lockTime: 0)
+        let unsignedTx = Transaction(version: 1, timestamp: nil, inputs: [inputForSign], outputs: [], lockTime: 0)
 
         // sign
         let hashType: SighashType = SighashType.BCH.ALL
@@ -711,6 +712,7 @@ class OpCodeTests: XCTestCase {
             context = ScriptExecutionContext(
                 transaction: Transaction(
                     version: 1,
+                    timestamp: nil,
                     inputs: [TransactionInput(
                         previousOutput: TransactionOutPoint(hash: Data(), index: 0),
                         signatureScript: Data(),

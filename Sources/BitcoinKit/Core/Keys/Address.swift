@@ -81,17 +81,23 @@ public struct LegacyAddress: Address {
         let type: AddressType
         let addressPrefix = pubKeyHash[0]
         switch addressPrefix {
-        case Network.mainnetXVG.pubkeyhash:
-            network = .mainnetXVG
+        case Network.mainnet.pubkeyhash:
+            network = .mainnet
             type = .pubkeyHash
         case Network.testnet.pubkeyhash:
             network = .testnet
             type = .pubkeyHash
-        case Network.mainnetXVG.scripthash:
-            network = .mainnetXVG
+        case Network.mainnet.scripthash:
+            network = .mainnet
             type = .scriptHash
         case Network.testnet.scripthash:
             network = .testnet
+            type = .scriptHash
+        case Network.mainnetXVG.pubkeyhash:
+            network = .mainnetXVG
+            type = .pubkeyHash
+        case Network.mainnetXVG.scripthash:
+            network = .mainnetXVG
             type = .scriptHash
         default:
             throw AddressError.invalidVersionByte
@@ -163,8 +169,8 @@ public struct Cashaddr: Address {
         self.publicKey = nil
 
         switch prefix {
-        case Network.mainnetXVG.scheme:
-            network = .mainnetXVG
+        case Network.mainnet.scheme:
+            network = .mainnet
         case Network.testnet.scheme:
             network = .testnet
         default:
@@ -211,5 +217,71 @@ extension Cashaddr: Equatable {
 extension Cashaddr: CustomStringConvertible {
     public var description: String {
         return cashaddr
+    }
+}
+
+public struct StealthAddress: Address {
+    
+    public var network: Network
+    public var type: AddressType
+    public var data: Data
+    public var publicKey: Data?
+    public var base58: String
+    public var cashaddr: String = ""
+
+    public typealias Base58Check = String
+
+    init(scanPublicKey: PublicKey, spendPublicKey: PublicKey, network: Network) {
+        var addressData = Data()
+        addressData.append(network.stealthVersion)
+        addressData.append(0)
+        addressData.append(scanPublicKey.data)
+        addressData.append(1)
+        addressData.append(spendPublicKey.data)
+        addressData.append(0)
+        addressData.append(0)
+
+        self.network = network
+        self.type = AddressType.stealthHash
+        self.data = addressData
+        self.base58 = publicKeyHashToAddress(addressData)
+    }
+
+    public init(_ base58: Base58Check) throws {
+        guard let raw = Base58.decode(base58) else {
+            throw AddressError.invalid
+        }
+        let checksum = raw.suffix(4)
+        let stealthHash = raw.dropLast(4)
+        let checksumConfirm = Crypto.sha256sha256(stealthHash).prefix(4)
+        guard checksum == checksumConfirm else {
+            throw AddressError.invalid
+        }
+
+        let network: Network
+        let type: AddressType
+        let addressPrefix = stealthHash[0]
+        switch addressPrefix {
+        case Network.mainnetXVG.stealthVersion:
+            network = .mainnetXVG
+            type = .stealthHash
+        case Network.testnet.stealthVersion:
+            network = .testnet
+            type = .stealthHash
+        default:
+            throw AddressError.invalidVersionByte
+        }
+
+        self.network = network
+        self.type = type
+        self.publicKey = nil
+        self.data = stealthHash.dropFirst()
+        self.base58 = base58
+    }
+}
+
+extension StealthAddress: CustomStringConvertible {
+    public var description: String {
+        return base58
     }
 }

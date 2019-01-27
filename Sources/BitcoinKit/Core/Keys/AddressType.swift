@@ -27,6 +27,7 @@ import Foundation
 public class AddressType {
     static let pubkeyHash: AddressType = PubkeyHash()
     static let scriptHash: AddressType = ScriptHash()
+    static let stealthHash: AddressType = StealthHash()
 
     var versionByte: UInt8 { return 0 }
     var versionByte160: UInt8 { return versionByte + 0 }
@@ -49,4 +50,7 @@ public class PubkeyHash: AddressType {
 }
 public class ScriptHash: AddressType {
     public override var versionByte: UInt8 { return 8 }
+}
+public class StealthHash: AddressType {
+    public override var versionByte: UInt8 { return 16 }
 }

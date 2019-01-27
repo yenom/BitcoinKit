@@ -145,14 +145,14 @@ public func createUnsignedTx(toAddress: Address, amount: UInt64, changeAddress: 
     
     // この後、signatureScriptやsequenceは更新される
     let unsignedInputs = utxos.map { TransactionInput(previousOutput: $0.outpoint, signatureScript: Data(), sequence: UInt32.max) }
-    let tx = Transaction(version: 1, inputs: unsignedInputs, outputs: [toOutput, changeOutput], lockTime: 0)
+    let tx = Transaction(version: 1, timestamp: nil, inputs: unsignedInputs, outputs: [toOutput, changeOutput], lockTime: 0)
     return UnsignedTransaction(tx: tx, utxos: utxos)
 }
 
 public func signTx(unsignedTx: UnsignedTransaction, keys: [PrivateKey]) -> Transaction {
     var inputsToSign = unsignedTx.tx.inputs
     var transactionToSign: Transaction {
-        return Transaction(version: unsignedTx.tx.version, inputs: inputsToSign, outputs: unsignedTx.tx.outputs, lockTime: unsignedTx.tx.lockTime)
+        return Transaction(version: unsignedTx.tx.version, timestamp: nil, inputs: inputsToSign, outputs: unsignedTx.tx.outputs, lockTime: unsignedTx.tx.lockTime)
     }
 
     // Signing

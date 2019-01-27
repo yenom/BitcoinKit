@@ -118,4 +118,82 @@ class AddressTests: XCTestCase {
             XCTFail("Should throw wrong network invalid scheme error.")
         }
     }
+
+    func testMainnetStealthAddress() {
+        let scanPrivateKey = try! PrivateKey(wif: "KwpmnZfQvZxRaB6Bt2HXJhmmC1DFb3tszFG4ciRccxrY6V29iR8h")
+        let spendPrivateKey = try! PrivateKey(wif: "L2Y2s2WfTwdfCrtFyPWUTgYAnGTeEsC664rbCoa3m7ZKxWG74nZQ")
+        
+        let scanPublicKey = scanPrivateKey.publicKey()
+        let spendPublicKey = spendPrivateKey.publicKey()
+        
+        let addressFromScanPublicKey = scanPublicKey.toLegacy()
+        XCTAssertEqual("\(addressFromScanPublicKey)", "1HYEeWaMVQgCLWYArSbsSK4ZrvBHMxeVaN")
+        
+        let addressFromSpendPublicKey = spendPublicKey.toLegacy()
+        XCTAssertEqual("\(addressFromSpendPublicKey)", "1HNfWG62FH8hAPbGE5s5WXV3D4a8zWpzvt")
+
+        let stealthAddress = StealthAddress(
+            scanPublicKey: scanPublicKey,
+            spendPublicKey: spendPublicKey,
+            network: .mainnet
+        )
+        XCTAssertEqual("\(stealthAddress)", "vJmvrmc3wGrdoiGsT7HnbbdhSkL9Bb5TmrPZsGWz7nsJx4iC5c1E21Rypy14pEXFk273qg7WMwDvDnyrPzFyP7YVwzz89e7bdpJmte")
+
+        let addressFromStealthAddress = try! StealthAddress(
+            "vJmvrmc3wGrdoiGsT7HnbbdhSkL9Bb5TmrPZsGWz7nsJx4iC5c1E21Rypy14pEXFk273qg7WMwDvDnyrPzFyP7YVwzz89e7bdpJmte"
+        )
+        XCTAssertNotNil(addressFromStealthAddress)
+        XCTAssertEqual("\(addressFromStealthAddress)", "vJmvrmc3wGrdoiGsT7HnbbdhSkL9Bb5TmrPZsGWz7nsJx4iC5c1E21Rypy14pEXFk273qg7WMwDvDnyrPzFyP7YVwzz89e7bdpJmte")
+    }
+    
+    func testMainnetXVGStealthAddress() {
+        let seed = Mnemonic.seed(mnemonic: [
+            "january",
+            "february",
+            "march",
+            "may",
+            "june",
+            "july",
+            "august",
+            "september",
+            "october",
+            "november", 
+            "december"
+        ])
+        let hdPrivateKey = HDPrivateKey(seed: seed, network: .mainnetXVG)
+        let scanPrivateKey = try! hdPrivateKey
+            .derived(at: 47, hardened: true)
+            .derived(at: 0, hardened: true)
+            .derived(at: 0, hardened: true)
+            .derived(at: 0)
+        let spendPrivateKey = try! hdPrivateKey
+            .derived(at: 47, hardened: true)
+            .derived(at: 0, hardened: true)
+            .derived(at: 1, hardened: true)
+            .derived(at: 0)
+        
+        print(scanPrivateKey.privateKey().data)
+        
+        let scanPublicKey = scanPrivateKey.privateKey().publicKey()
+        let spendPublicKey = spendPrivateKey.privateKey().publicKey()
+        
+        let addressFromScanPublicKey = scanPublicKey.toLegacy()
+        XCTAssertEqual("\(addressFromScanPublicKey)", "D6PK4bV1bnjoDzP4WxPwFtiVQKuD8Lp3A9")
+        
+        let addressFromSpendPublicKey = spendPublicKey.toLegacy()
+        XCTAssertEqual("\(addressFromSpendPublicKey)", "DA96yGiYKdPGhwwievv1wJK9sAbvQAyece")
+        
+        let stealthAddress = StealthAddress(
+            scanPublicKey: scanPublicKey,
+            spendPublicKey: spendPublicKey,
+            network: .mainnetXVG
+        )
+        XCTAssertEqual("\(stealthAddress)", "smYmwzdrjjKzLwoFAi3tZnjwEca6RjW51sKriEYEinbw9wof7xcBV31pHgiBngM4KTsTkD6Q5JzhCn5UvAaXnTz7ueYNfEKqZuutbH")
+        
+        let addressFromStealthAddress = try! StealthAddress(
+            "smYmwzdrjjKzLwoFAi3tZnjwEca6RjW51sKriEYEinbw9wof7xcBV31pHgiBngM4KTsTkD6Q5JzhCn5UvAaXnTz7ueYNfEKqZuutbH"
+        )
+        XCTAssertNotNil(addressFromStealthAddress)
+        XCTAssertEqual("\(addressFromStealthAddress)", "smYmwzdrjjKzLwoFAi3tZnjwEca6RjW51sKriEYEinbw9wof7xcBV31pHgiBngM4KTsTkD6Q5JzhCn5UvAaXnTz7ueYNfEKqZuutbH")
+    }
 }

@@ -42,6 +42,7 @@ public class Network {
     var scripthash: UInt8 { return 0 }
     var xpubkey: UInt32 { return 0 }
     var xprivkey: UInt32 { return 0 }
+    var stealthVersion: UInt8 { return 0 }
 
     var magic: UInt32 { return 0 }
     public var port: UInt32 { return 0 }
@@ -104,6 +105,9 @@ public class XVGMainnet: Network {
     }
     override var xprivkey: UInt32 {
         return 0x0221312b
+    }
+    override var stealthVersion: UInt8 {
+        return 0x28
     }
     public override var port: UInt32 {
         return 21102
@@ -242,6 +246,9 @@ public class Mainnet: Network {
     override var xprivkey: UInt32 {
         return 0x0488ade4
     }
+    override var stealthVersion: UInt8 {
+        return 0x2A
+    }
     public override var port: UInt32 {
         return 8333
     }
@@ -302,6 +309,9 @@ public class Testnet: Network {
     }
     override var xprivkey: UInt32 {
         return 0x04358394
+    }
+    override var stealthVersion: UInt8 {
+        return 0x2B
     }
     public override var port: UInt32 {
         return 18_333
