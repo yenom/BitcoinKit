@@ -14,7 +14,11 @@ class BTCWallet {
     let peerGroup: PeerGroup!
     
     private init() {
-        peerGroup = PeerGroup(network: .testnetBTC, maxConnections: 2)
+        let dbPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        print("DB Path: \(dbPath)")
+        
+        let database = try! SQLiteDatabase.default()
+        peerGroup = PeerGroup(database: database, network: .testnetBTC, maxConnections: 2)
         peerGroup.start()
     }
 }

@@ -26,6 +26,7 @@
 import Foundation
 
 public class PeerGroup {
+    private let database: Database
     private let network: Network
     private let concurrentPeersQueue = DispatchQueue(label: "com.BitcoinKit.peersQueue", attributes: .concurrent)
     private let maxConnections: UInt
@@ -38,11 +39,15 @@ public class PeerGroup {
         return peersCopy
     }
     private var syncingPeer: Peer?
-    private var lastBlock: Block?
+    private var lastBlock: Block
+    private var nextCheckpointIndex: Int = 0
 
-    public init(network: Network, maxConnections: UInt) {
+    public init(database: Database, network: Network, maxConnections: UInt) {
+        self.database = database
         self.network = network
         self.maxConnections = maxConnections
+        lastBlock = network.genesisBlock
+        print(lastBlock.blockHash.hex)
     }
 
     public func start() {
@@ -78,19 +83,63 @@ extension PeerGroup: PeerDelegate {
             } else {
                 self.syncingPeer = peer
             }
-            if let lastBlock = self.lastBlock {
-                guard remoteNodeHeight + 10 > lastBlock.height else {
-                    peer.log("Node isn't synced: height is \(remoteNodeHeight)")
-                    peer.disconnect()
-                    return
-                }
-                guard remoteNodeHeight > lastBlock.height else {
-                    // no need to get new block headers
-                    return
-                }
+            let lastBlockHeight = self.lastBlock.height
+            guard remoteNodeHeight + 10 > lastBlockHeight else {
+                peer.log("Node isn't synced: height is \(remoteNodeHeight)")
+                peer.disconnect()
+                return
+            }
+            guard remoteNodeHeight > lastBlockHeight else {
+                // no need to get new block headers
+                return
             }
             // start blockchain sync
-            peer.sendGetHeadersMessage(blockHash: self.lastBlock?.blockHash ?? Data(count: 32))
+            // TODO: set block locator hash
+            peer.sendGetHeadersMessage(blockHash: Data(self.lastBlock.blockHash.reversed()))
+        }
+    }
+
+    func peer(_ peer: Peer, didReceiveBlockHeaders blockHeaders: [Block]) {
+        DispatchQueue.main.async {
+            // send GetHeadersMessage if necessary
+            let lastBlock = self.lastBlock
+            if peer.context.remoteNodeHeight > lastBlock.height + UInt32(blockHeaders.count) {
+                guard let lastBlockHeader = blockHeaders.last else {
+                    peer.log("Header message carries zero headers")
+                    return
+                }
+                peer.log("Received block header height is \(lastBlock.height + UInt32(blockHeaders.count))")
+                // TODO: set locator hash
+                peer.sendGetHeadersMessage(blockHash: lastBlockHeader.blockHash)
+            } else {
+                // load bloom filter if we're done syncing
+                peer.log("Sync done")
+            }
+
+            // save block header
+            for blockHeader in blockHeaders {
+                let blockHeight = lastBlock.height + 1
+                let (nextCheckpointIndex, checkpoints) = (self.nextCheckpointIndex, self.network.checkpoints)
+                if nextCheckpointIndex < checkpoints.count {
+                    let nextCheckpoint = checkpoints[nextCheckpointIndex]
+                    if blockHeight == nextCheckpoint.height {
+                        guard blockHeader.blockHash == nextCheckpoint.hash else {
+                            peer.log("block hash does not match the checkpoint, height: \(blockHeight), blockhash: \(Data(blockHeader.blockHash.reversed()).hex)")
+                            peer.disconnect()
+                            return
+                        }
+                        self.nextCheckpointIndex = nextCheckpointIndex + 1
+                    }
+                }
+                if lastBlock.blockHash == blockHeader.prevBlock {
+                    peer.log("Last block hash does not match the prev block.")
+                    // TODO: handle re-org case
+                    return
+                }
+                try! self.database.addBlockHeader(blockHeader, height: blockHeight)
+                self.lastBlock = blockHeader
+                self.lastBlock.height = blockHeight
+            }
         }
     }
 }

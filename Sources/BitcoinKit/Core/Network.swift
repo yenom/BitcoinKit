@@ -46,7 +46,9 @@ public class Network {
     public var port: UInt32 { return 0 }
     public var dnsSeeds: [String] { return [] }
     var checkpoints: [Checkpoint] { return [] }
-    var genesisBlock: Data { return Data() }
+    var genesisBlock: Block {
+        return Block(version: 0, prevBlock: Data(), merkleRoot: Data(), timestamp: 0, bits: 0, nonce: 0, transactionCount: 0, transactions: [], height: 0)
+    }
 
     fileprivate init() {}
 }
@@ -90,6 +92,9 @@ public class BTCMainnet: Mainnet {
             Checkpoint(height: 463_680, hash: Data(Data(hex: "000000000000000000431a2f4619afe62357cd16589b638bb638f2992058d88e")!.reversed()), timestamp: 1_493_259_601, target: 0x18021b3e)
         ]
     }
+    override var genesisBlock: Block {
+        return Block(version: 1, prevBlock: Data(), merkleRoot: Data(Data(hex: "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b")!.reversed()), timestamp: 1_376_543_922, bits: 0x1d00ffff, nonce: 2_083_236_893, transactionCount: 0, transactions: [], height: 1)
+    }
 }
 
 public class BTCTestnet: Testnet {
@@ -110,6 +115,9 @@ public class BTCTestnet: Testnet {
         return super.checkpoints + [
             Checkpoint(height: 1_108_800, hash: Data(Data(hex: "00000000000288d9a219419d0607fb67cc324d4b6d2945ca81eaa5e739fab81e")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0)
         ]
+    }
+    override var genesisBlock: Block {
+        return Block(version: 1, prevBlock: Data(), merkleRoot: Data(Data(hex: "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b")!.reversed()), timestamp: 1_376_543_922, bits: 0x1d00ffff, nonce: 414_098_458, transactionCount: 0, transactions: [], height: 1)
     }
 }
 
@@ -135,6 +143,9 @@ public class BCHMainnet: Mainnet {
             Checkpoint(height: 478_559, hash: Data(Data(hex: "000000000000000000651ef99cb9fcbe0dadde1d424bd9f15ff20136191a5eec")!.reversed()), timestamp: 1_501_611_161, target: 0x18021b3e)
         ]
     }
+    override var genesisBlock: Block {
+        return Block(version: 1, prevBlock: Data(), merkleRoot: Data(hex: "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b")!, timestamp: 1_376_543_922, bits: 0x1d00ffff, nonce: 2_083_236_893, transactionCount: 0, transactions: [], height: 1)
+    }
 }
 
 public class BCHTestnet: Testnet {
@@ -158,6 +169,9 @@ public class BCHTestnet: Testnet {
             Checkpoint(height: 1_200_000, hash: Data(Data(hex: "00000000d91bdbb5394bcf457c0f0b7a7e43eb978e2d881b6c2a4c2756abc558")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0),
             Checkpoint(height: 1_240_000, hash: Data(Data(hex: "0000000002a2bbefefa5aa5f0b7e95957537693808e753f4b4a8e26c5257891d")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0)
         ]
+    }
+    override var genesisBlock: Block {
+        return Block(version: 1, prevBlock: Data(), merkleRoot: Data(hex: "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b")!, timestamp: 1_376_543_922, bits: 0x1d00ffff, nonce: 414_098_458, transactionCount: 0, transactions: [], height: 1)
     }
 }
 
@@ -216,9 +230,8 @@ public class Mainnet: Network {
             Checkpoint(height: 463_680, hash: Data(Data(hex: "000000000000000000431a2f4619afe62357cd16589b638bb638f2992058d88e")!.reversed()), timestamp: 1_493_259_601, target: 0x18021b3e)
         ]
     }
-    // These hashes are genesis blocks' ones
-    override var genesisBlock: Data {
-        return Data(Data(hex: "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f")!.reversed())
+    override var genesisBlock: Block {
+        return Block(version: 1, prevBlock: Data(), merkleRoot: Data(hex: "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b")!, timestamp: 1_376_543_922, bits: 0x1d00ffff, nonce: 2_083_236_893, transactionCount: 0, transactions: [], height: 1)
     }
 }
 
@@ -262,7 +275,7 @@ public class Testnet: Network {
             Checkpoint(height: 1_008_000, hash: Data(Data(hex: "000000000000390aca616746a9456a0d64c1bd73661fd60a51b5bf1c92bae5a0")!.reversed()), timestamp: 1_490_751_239, target: 0x1a52ccc0)
         ]
     }
-    override var genesisBlock: Data {
-        return Data(Data(hex: "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943")!.reversed())
+    override var genesisBlock: Block {
+        return Block(version: 1, prevBlock: Data(), merkleRoot: Data(hex: "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b")!, timestamp: 1_376_543_922, bits: 0x1d00ffff, nonce: 414_098_458, transactionCount: 0, transactions: [], height: 1)
     }
 }

@@ -31,6 +31,7 @@ private let minimumProtocolVersion: Int32 = 70_011 // peers earlier than this pr
 
 protocol PeerDelegate: class {
     func peerDidHandShake(_ peer: Peer)
+    func peer(_ peer: Peer, didReceiveBlockHeaders blockHeaders: [Block])
 }
 
 class Peer {
@@ -135,6 +136,8 @@ class Peer {
                 switch command {
                 case VersionMessage.command:
                     try self.handleVersionMessage(payload: data)
+                case HeadersMessage.command:
+                    try self.handleHeadersMessage(payload: data)
                 case PingMessage.command:
                     self.handlePingMessage(payload: data)
                 default:
@@ -223,6 +226,12 @@ class Peer {
             log("Handshake completed")
             self.delegate?.peerDidHandShake(self)
         }
+    }
+
+    private func handleHeadersMessage(payload: Data) throws {
+        let headersMessage = try HeadersMessage.deserialize(payload)
+        log("\(headersMessage.count) header(s)")
+        delegate?.peer(self, didReceiveBlockHeaders: headersMessage.headers)
     }
 
     private func handlePingMessage(payload: Data) {

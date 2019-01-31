@@ -25,7 +25,10 @@
 
 import Foundation
 
-public struct HeadersMessage {
+public struct HeadersMessage: Message {
+    static var command: String {
+        return "headers"
+    }
     // The main client will never send us more than this number of headers.
     public static let MAX_HEADERS: Int = 2000
 
