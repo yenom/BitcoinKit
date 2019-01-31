@@ -44,10 +44,11 @@ public class PeerGroup {
     }
 
     public func start() {
-        for _ in 0..<maxConnections {
-            // TODO: select peer from db
+        for i in 0..<maxConnections {
+            // TODO: select unique peer
+            // TODO: select saved peers from db
             let dnsSeeds: [String] = network.dnsSeeds
-            let peer = Peer(host: dnsSeeds[Int(arc4random_uniform(UInt32(dnsSeeds.count)))], network: network)
+            let peer = Peer(host: dnsSeeds[Int(arc4random_uniform(UInt32(dnsSeeds.count)))], network: network, identifier: i)
             peer.connect()
             addPeer(peer)
         }

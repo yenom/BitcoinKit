@@ -27,7 +27,11 @@ import Foundation
 
 /// When a node creates an outgoing connection, it will immediately advertise its version.
 /// The remote node will respond with its version. No further communication is possible until both peers have exchanged their version.
-public struct VersionMessage {
+public struct VersionMessage: Message {
+    static let nodeBloomService: UInt64 = 0x04
+    static var command: String {
+        return "version"
+    }
     /// Identifies protocol version being used by the node
     public let version: Int32
     /// bitfield of features to be enabled for this connection

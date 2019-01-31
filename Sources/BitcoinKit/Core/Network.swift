@@ -102,10 +102,8 @@ public class BTCTestnet: Testnet {
     public override var dnsSeeds: [String] {
         return [
             "testnet-seed.bitcoin.jonasschnelli.ch", // Jonas Schnelli
-            "testnet-seed.bluematt.me",              // Matt Corallo
-            "testnet-seed.bitcoin.petertodd.org",    // Peter Todd
-            "testnet-seed.bitcoin.schildbach.de",    // Andreas Schildbach
-            "bitcoin-testnet.bloqseeds.net"         // Bloq
+            "testnet-seed.bitcoin.petertodd.org", // Peter Todd
+            "testnet-seed.bluematt.me."
         ]
     }
     override var checkpoints: [Checkpoint] {

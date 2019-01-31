@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C08144021FD7C7B00175554 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C08143F21FD7C7B00175554 /* Message.swift */; };
 		0C0900242116935E0077E9BC /* OP_MAX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0900232116935E0077E9BC /* OP_MAX.swift */; };
 		0C09002621169B430077E9BC /* OP_MIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002521169B430077E9BC /* OP_MIN.swift */; };
 		0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C09002721169C810077E9BC /* OP_1ADD.swift */; };
@@ -101,7 +102,7 @@
 		14839A9D202FE72600A6CB34 /* TransactionOutPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A9C202FE72600A6CB34 /* TransactionOutPoint.swift */; };
 		14839A9F202FE73B00A6CB34 /* TransactionOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A9E202FE73B00A6CB34 /* TransactionOutput.swift */; };
 		14839AA1202FE75500A6CB34 /* TransactionWitness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA0202FE75500A6CB34 /* TransactionWitness.swift */; };
-		14839AA3202FE78600A6CB34 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA2202FE78600A6CB34 /* Message.swift */; };
+		14839AA3202FE78600A6CB34 /* MessageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA2202FE78600A6CB34 /* MessageHeader.swift */; };
 		14839AA5202FE7A100A6CB34 /* ByteStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA4202FE7A100A6CB34 /* ByteStream.swift */; };
 		14839AA7202FE7C700A6CB34 /* VarInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA6202FE7C700A6CB34 /* VarInt.swift */; };
 		14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AA8202FE7DD00A6CB34 /* VarString.swift */; };
@@ -230,6 +231,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C08143F21FD7C7B00175554 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		0C0900232116935E0077E9BC /* OP_MAX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MAX.swift; sourceTree = "<group>"; };
 		0C09002521169B430077E9BC /* OP_MIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_MIN.swift; sourceTree = "<group>"; };
 		0C09002721169C810077E9BC /* OP_1ADD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1ADD.swift; sourceTree = "<group>"; };
@@ -327,7 +329,7 @@
 		14839A9C202FE72600A6CB34 /* TransactionOutPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOutPoint.swift; sourceTree = "<group>"; };
 		14839A9E202FE73B00A6CB34 /* TransactionOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOutput.swift; sourceTree = "<group>"; };
 		14839AA0202FE75500A6CB34 /* TransactionWitness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionWitness.swift; sourceTree = "<group>"; };
-		14839AA2202FE78600A6CB34 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		14839AA2202FE78600A6CB34 /* MessageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeader.swift; sourceTree = "<group>"; };
 		14839AA4202FE7A100A6CB34 /* ByteStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteStream.swift; sourceTree = "<group>"; };
 		14839AA6202FE7C700A6CB34 /* VarInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarInt.swift; sourceTree = "<group>"; };
 		14839AA8202FE7DD00A6CB34 /* VarString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarString.swift; sourceTree = "<group>"; };
@@ -802,7 +804,8 @@
 		296ADC202112EC5A007EE5C7 /* Messages */ = {
 			isa = PBXGroup;
 			children = (
-				14839AA2202FE78600A6CB34 /* Message.swift */,
+				14839AA2202FE78600A6CB34 /* MessageHeader.swift */,
+				0C08143F21FD7C7B00175554 /* Message.swift */,
 				14839AA6202FE7C700A6CB34 /* VarInt.swift */,
 				14839AA8202FE7DD00A6CB34 /* VarString.swift */,
 				14839AAA202FE7F000A6CB34 /* NetworkAddress.swift */,
@@ -1056,7 +1059,7 @@
 				2914BE60211C063300B349CB /* OP_PUBKEY.swift in Sources */,
 				294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */,
 				298FA5812126C77A009EFAC4 /* ScriptFactory.swift in Sources */,
-				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
+				14839AA3202FE78600A6CB34 /* MessageHeader.swift in Sources */,
 				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
 				0C1DE171211E7DE300FE8E43 /* OP_2OVER.swift in Sources */,
 				29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */,
@@ -1167,6 +1170,7 @@
 				29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */,
 				0C1DD41A21181DDF004BA8A8 /* OP_NUMEQUALVERIFY.swift in Sources */,
 				14A2961D2032316900E19177 /* HDKeychain.swift in Sources */,
+				0C08144021FD7C7B00175554 /* Message.swift in Sources */,
 				296ADC242112EC8C007EE5C7 /* PeerGroup.swift in Sources */,
 				14CDC38A2021881A00C01556 /* Address.swift in Sources */,
 				29330145214F749C0028946B /* QRCodeGenerator.swift in Sources */,

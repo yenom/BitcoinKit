@@ -13,7 +13,7 @@ class BTCWallet {
     static let shared = BTCWallet()
     
     private init() {
-        let peerGroup = PeerGroup(network: .testnetBTC, maxConnections: 1)
+        let peerGroup = PeerGroup(network: .testnetBTC, maxConnections: 2)
         peerGroup.start()
     }
 }
