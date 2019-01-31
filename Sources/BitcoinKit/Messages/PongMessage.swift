@@ -27,7 +27,10 @@ import Foundation
 
 /// The pong message is sent in response to a ping message.
 /// In modern protocol versions, a pong response is generated using a nonce included in the ping.
-public struct PongMessage {
+public struct PongMessage: Message {
+    static var command: String {
+        return "pong"
+    }
     /// nonce from ping
     public let nonce: UInt64
 
@@ -35,5 +38,9 @@ public struct PongMessage {
         var data = Data()
         data += nonce
         return data
+    }
+
+    static func deserialize(_ data: Data) throws -> PongMessage {
+        throw ProtocolError.notImplemented
     }
 }

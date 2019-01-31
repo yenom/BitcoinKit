@@ -130,6 +130,8 @@ class Peer {
                 switch command {
                 case VersionMessage.command:
                     try self.handleVersionMessage(payload: data)
+                case PingMessage.command:
+                    self.handlePingMessage(payload: data)
                 default:
                     break
                 }
@@ -209,6 +211,12 @@ class Peer {
         if context.sentVerack {
             log("Handshake completed")
         }
+    }
+
+    private func handlePingMessage(payload: Data) {
+        let ping = PingMessage.deserialize(payload)
+        let pong = PongMessage(nonce: ping.nonce)
+        sendMessage(pong)
     }
 
     private func log(_ message: String) {
