@@ -34,7 +34,7 @@ public struct HeadersMessage {
         return VarInt(headers.count)
     }
     /// Block headers
-    public let headers: [BlockMessage]
+    public let headers: [Block]
 
     public func serialized() -> Data {
         var data = Data()
@@ -52,9 +52,9 @@ public struct HeadersMessage {
         guard countValue <= MAX_HEADERS else {
             throw ProtocolError.error("Too many headers: got \(countValue) which is larger than \(MAX_HEADERS)")
         }
-        var blockHeaders = [BlockMessage]()
+        var blockHeaders = [Block]()
         for _ in 0..<countValue {
-            let blockHeader: BlockMessage = BlockMessage.deserialize(byteStream)
+            let blockHeader: Block = Block.deserialize(byteStream)
             guard blockHeader.transactions.isEmpty else {
                 throw ProtocolError.error("Block header does not have transaction")
             }

@@ -96,7 +96,7 @@
 		14839A91202FE69300A6CB34 /* RejectMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A90202FE69300A6CB34 /* RejectMessage.swift */; };
 		14839A93202FE6AC00A6CB34 /* FilterLoadMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A92202FE6AC00A6CB34 /* FilterLoadMessage.swift */; };
 		14839A95202FE6BE00A6CB34 /* GetBlocksMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A94202FE6BE00A6CB34 /* GetBlocksMessage.swift */; };
-		14839A97202FE6D000A6CB34 /* BlockMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A96202FE6D000A6CB34 /* BlockMessage.swift */; };
+		14839A97202FE6D000A6CB34 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A96202FE6D000A6CB34 /* Block.swift */; };
 		14839A99202FE6E700A6CB34 /* MerkleBlockMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A98202FE6E700A6CB34 /* MerkleBlockMessage.swift */; };
 		14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A9A202FE71200A6CB34 /* TransactionInput.swift */; };
 		14839A9D202FE72600A6CB34 /* TransactionOutPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A9C202FE72600A6CB34 /* TransactionOutPoint.swift */; };
@@ -323,7 +323,7 @@
 		14839A90202FE69300A6CB34 /* RejectMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RejectMessage.swift; sourceTree = "<group>"; };
 		14839A92202FE6AC00A6CB34 /* FilterLoadMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterLoadMessage.swift; sourceTree = "<group>"; };
 		14839A94202FE6BE00A6CB34 /* GetBlocksMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBlocksMessage.swift; sourceTree = "<group>"; };
-		14839A96202FE6D000A6CB34 /* BlockMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockMessage.swift; sourceTree = "<group>"; };
+		14839A96202FE6D000A6CB34 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		14839A98202FE6E700A6CB34 /* MerkleBlockMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerkleBlockMessage.swift; sourceTree = "<group>"; };
 		14839A9A202FE71200A6CB34 /* TransactionInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionInput.swift; sourceTree = "<group>"; };
 		14839A9C202FE72600A6CB34 /* TransactionOutPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOutPoint.swift; sourceTree = "<group>"; };
@@ -822,7 +822,7 @@
 				14839A92202FE6AC00A6CB34 /* FilterLoadMessage.swift */,
 				14839A94202FE6BE00A6CB34 /* GetBlocksMessage.swift */,
 				0C23759C2132419400DB2872 /* GetHeadersMessage.swift */,
-				14839A96202FE6D000A6CB34 /* BlockMessage.swift */,
+				14839A96202FE6D000A6CB34 /* Block.swift */,
 				0C23759F2132431B00DB2872 /* HeadersMessage.swift */,
 				14839A98202FE6E700A6CB34 /* MerkleBlockMessage.swift */,
 				14F37A3920209B5400D34748 /* Transaction.swift */,
@@ -1177,7 +1177,7 @@
 				141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */,
 				0C1DE175211E816E00FE8E43 /* OP_2SWAP.swift in Sources */,
 				0C1DE16F211E7D5800FE8E43 /* OP_3DUP.swift in Sources */,
-				14839A97202FE6D000A6CB34 /* BlockMessage.swift in Sources */,
+				14839A97202FE6D000A6CB34 /* Block.swift in Sources */,
 				0C1DE16D211E7CC300FE8E43 /* OP_2DUP.swift in Sources */,
 				1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */,
 				29330149214FC8E30028946B /* UtxoProvider.swift in Sources */,

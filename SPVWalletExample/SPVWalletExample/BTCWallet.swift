@@ -11,9 +11,10 @@ import BitcoinKit
 
 class BTCWallet {
     static let shared = BTCWallet()
+    let peerGroup: PeerGroup!
     
     private init() {
-        let peerGroup = PeerGroup(network: .testnetBTC, maxConnections: 2)
+        peerGroup = PeerGroup(network: .testnetBTC, maxConnections: 2)
         peerGroup.start()
     }
 }

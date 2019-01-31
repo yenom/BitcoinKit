@@ -28,6 +28,7 @@ import Foundation
 public class PeerGroup {
     private let network: Network
     private let concurrentPeersQueue = DispatchQueue(label: "com.BitcoinKit.peersQueue", attributes: .concurrent)
+    private let maxConnections: UInt
     private var unsafePeers = [Peer]()
     private var peers: [Peer] {
         var peersCopy: [Peer]!
@@ -36,7 +37,8 @@ public class PeerGroup {
         }
         return peersCopy
     }
-    private let maxConnections: UInt
+    private var syncingPeer: Peer?
+    private var lastBlock: Block?
 
     public init(network: Network, maxConnections: UInt) {
         self.network = network
@@ -49,8 +51,9 @@ public class PeerGroup {
             // TODO: select saved peers from db
             let dnsSeeds: [String] = network.dnsSeeds
             let peer = Peer(host: dnsSeeds[Int(arc4random_uniform(UInt32(dnsSeeds.count)))], network: network, identifier: i)
-            peer.connect()
+            peer.delegate = self
             addPeer(peer)
+            peer.connect()
         }
     }
 
@@ -60,6 +63,34 @@ public class PeerGroup {
                 return
             }
             self.unsafePeers.append(peer)
+        }
+    }
+}
+
+extension PeerGroup: PeerDelegate {
+    func peerDidHandShake(_ peer: Peer) {
+        DispatchQueue.main.async {
+            let remoteNodeHeight = peer.context.remoteNodeHeight
+            if let syncingPeer = self.syncingPeer {
+                guard remoteNodeHeight > syncingPeer.context.remoteNodeHeight else {
+                    return
+                }
+            } else {
+                self.syncingPeer = peer
+            }
+            if let lastBlock = self.lastBlock {
+                guard remoteNodeHeight + 10 > lastBlock.height else {
+                    peer.log("Node isn't synced: height is \(remoteNodeHeight)")
+                    peer.disconnect()
+                    return
+                }
+                guard remoteNodeHeight > lastBlock.height else {
+                    // no need to get new block headers
+                    return
+                }
+            }
+            // start blockchain sync
+            peer.sendGetHeadersMessage(blockHash: self.lastBlock?.blockHash ?? Data(count: 32))
         }
     }
 }

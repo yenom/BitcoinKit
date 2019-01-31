@@ -25,7 +25,8 @@
 
 import Foundation
 
-public struct BlockMessage {
+public struct Block {
+    static let unknownHeight: UInt32 = UINT32_MAX
     /// Block version information (note, this is signed)
     public let version: Int32
     /// The hash value of the previous block this particular block references
@@ -42,6 +43,19 @@ public struct BlockMessage {
     public let transactionCount: VarInt
     /// Block transactions, in format of "tx" command
     public let transactions: [Transaction]
+    /// Block height
+    var height: UInt32
+
+    var blockHash: Data {
+        var data = Data()
+        data += version
+        data += prevBlock
+        data += merkleRoot
+        data += timestamp
+        data += bits
+        data += nonce
+        return Data(Crypto.sha256sha256(data))
+    }
 
     public func serialized() -> Data {
         var data = Data()
@@ -58,12 +72,12 @@ public struct BlockMessage {
         return data
     }
 
-    public static func deserialize(_ data: Data) -> BlockMessage {
+    public static func deserialize(_ data: Data) -> Block {
         let byteStream = ByteStream(data)
         return deserialize(byteStream)
     }
 
-    static func deserialize(_ byteStream: ByteStream) -> BlockMessage {
+    static func deserialize(_ byteStream: ByteStream) -> Block {
         let version = byteStream.read(Int32.self)
         let prevBlock = byteStream.read(Data.self, count: 32)
         let merkleRoot = byteStream.read(Data.self, count: 32)
@@ -75,6 +89,6 @@ public struct BlockMessage {
         for _ in 0..<transactionCount.underlyingValue {
             transactions.append(Transaction.deserialize(byteStream))
         }
-        return BlockMessage(version: version, prevBlock: prevBlock, merkleRoot: merkleRoot, timestamp: timestamp, bits: bits, nonce: nonce, transactionCount: transactionCount, transactions: transactions)
+        return Block(version: version, prevBlock: prevBlock, merkleRoot: merkleRoot, timestamp: timestamp, bits: bits, nonce: nonce, transactionCount: transactionCount, transactions: transactions, height: unknownHeight)
     }
 }

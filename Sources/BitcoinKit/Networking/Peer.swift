@@ -29,6 +29,10 @@ import Network
 private let protocolVersion: Int32 = 70_015
 private let minimumProtocolVersion: Int32 = 70_011 // peers earlier than this protocol version does not support bloom filter
 
+protocol PeerDelegate: class {
+    func peerDidHandShake(_ peer: Peer)
+}
+
 class Peer {
     private let identifier: UInt // identifier to distinguish from other peers
     private let connection: NWConnection
@@ -42,6 +46,7 @@ class Peer {
         var gotVerack = false
         var remoteNodeHeight: Int32 = 0
     }
+    weak var delegate: PeerDelegate?
 
     init(host: String, network: Network, identifier: UInt) {
         self.host = host
@@ -180,8 +185,14 @@ class Peer {
             self.context.sentVerack = true
             if self.context.gotVerack {
                 self.log("Handshake completed")
+                self.delegate?.peerDidHandShake(self)
             }
         })
+    }
+
+    func sendGetHeadersMessage(blockHash: Data) {
+        let getHeadersMessage = GetHeadersMessage(version: UInt32(protocolVersion), hashCount: 1, blockLocatorHashes: blockHash, hashStop: Data(count: 32))
+        sendMessage(getHeadersMessage)
     }
 
     // MARK: - Handle Message
@@ -210,6 +221,7 @@ class Peer {
         context.gotVerack = true
         if context.sentVerack {
             log("Handshake completed")
+            self.delegate?.peerDidHandShake(self)
         }
     }
 
@@ -219,7 +231,7 @@ class Peer {
         sendMessage(pong)
     }
 
-    private func log(_ message: String) {
+    func log(_ message: String) {
         print("Peer\(identifier): \(message)")
     }
 }

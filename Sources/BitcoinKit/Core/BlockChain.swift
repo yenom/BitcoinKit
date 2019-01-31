@@ -34,7 +34,7 @@ public class BlockChain {
         self.blockStore = blockStore
     }
 
-    public func addBlock(_ block: BlockMessage, hash: Data) throws {
+    public func addBlock(_ block: Block, hash: Data) throws {
         try blockStore.addBlock(block, hash: hash)
     }
 

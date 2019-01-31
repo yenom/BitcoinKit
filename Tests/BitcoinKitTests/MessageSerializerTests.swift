@@ -38,7 +38,7 @@ class MessageSerializerTests: XCTestCase {
             "fe9f0864" +    // Nonce
             "00")   // Transaction count (0x00)
         
-        let header = BlockMessage.deserialize(data!)
+        let header = Block.deserialize(data!)
         XCTAssertEqual(header.version, 2)
         XCTAssertEqual(header.prevBlock.hex, "b6ff0b1b1680a2862a30ca44d346d9e8910d334beb48ca0c0000000000000000")
         XCTAssertEqual(header.merkleRoot.hex, "9d10aa52ee949386ca9385695f04ede270dda20810decd12bc9b048aaab31471")

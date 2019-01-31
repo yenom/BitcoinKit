@@ -25,7 +25,10 @@
 
 import Foundation
 
-public struct GetHeadersMessage {
+public struct GetHeadersMessage: Message {
+    static var command: String {
+        return "getheaders"
+    }
     /// the protocol version
     public let version: UInt32
     /// number of block locator hash entries
@@ -42,5 +45,9 @@ public struct GetHeadersMessage {
         data += blockLocatorHashes
         data += hashStop
         return data
+    }
+
+    static func deserialize(_ data: Data) throws -> GetHeadersMessage {
+        throw ProtocolError.notImplemented
     }
 }
