@@ -75,7 +75,7 @@ class Peer {
                 break
             }
         }
-        readHead()
+        readAvailableBytes()
         connection.start(queue: concurrentConnectionQueue)
     }
 
@@ -89,7 +89,7 @@ class Peer {
         log("Disconnected")
     }
 
-    private func readHead() {
+    private func readAvailableBytes() {
         connection.receive(minimumIncompleteLength: MessageHeader.length, maximumLength: MessageHeader.length, completion: { [weak self] (data, _, _, error) in
             if let error = error {
                 self?.log(error.debugDescription)
@@ -98,22 +98,22 @@ class Peer {
             }
             guard let _data = data, let messageHeader = MessageHeader.deserialize(_data) else {
                 self?.log("failed to deserialize messageHeader: \(String(describing: data?.hex))")
-                self?.readHead()
+                self?.readAvailableBytes()
                 return
             }
             let command: String = messageHeader.command
             let bodyLength = Int(messageHeader.length)
             self?.log("Got \(command) message")
             if bodyLength > 0 {
-                self?.readBody(command: command, bodyLength: bodyLength)
+                self?.readMessageBodyBytes(command: command, bodyLength: bodyLength)
             } else if command == VerackMessage.command {
                 self?.handleVerackMessage()
             }
-            self?.readHead()
+            self?.readAvailableBytes()
         })
     }
 
-    private func readBody(command: String, bodyLength: Int) {
+    private func readMessageBodyBytes(command: String, bodyLength: Int) {
         connection.receive(minimumIncompleteLength: bodyLength, maximumLength: bodyLength, completion: { [weak self] (data, _, _, error) in
             if let error = error {
                 self?.log(error.debugDescription)
