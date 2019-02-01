@@ -74,7 +74,10 @@ public class PeerGroup {
 
 extension PeerGroup: PeerDelegate {
     func peerDidHandShake(_ peer: Peer) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
             let remoteNodeHeight = peer.context.remoteNodeHeight
             if let syncingPeer = self.syncingPeer {
                 guard remoteNodeHeight > syncingPeer.context.remoteNodeHeight else {
@@ -100,7 +103,10 @@ extension PeerGroup: PeerDelegate {
     }
 
     func peer(_ peer: Peer, didReceiveBlockHeaders blockHeaders: [Block]) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
             // send GetHeadersMessage if necessary
             let lastBlock = self.lastBlock
             if peer.context.remoteNodeHeight > lastBlock.height + UInt32(blockHeaders.count) {

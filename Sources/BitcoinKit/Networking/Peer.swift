@@ -62,15 +62,15 @@ class Peer {
     }
 
     func connect() {
-        connection.stateUpdateHandler = { newState in
+        connection.stateUpdateHandler = { [weak self] newState in
             switch newState {
             case .ready:
-                self.log("Connection ready: \(self.connection.endpoint)")
-                self.startConnect()
+                self?.log("Connection ready: \(String(describing: self?.connection.endpoint))")
+                self?.startConnect()
             case .waiting(let error):
-                self.log("Connection waiting: \(error)")
+                self?.log("Connection waiting: \(error)")
             case .failed(let error):
-                self.log("Connection failed: \(error)")
+                self?.log("Connection failed: \(error)")
             default:
                 break
             }
@@ -91,55 +91,47 @@ class Peer {
 
     private func readHead() {
         connection.receive(minimumIncompleteLength: MessageHeader.length, maximumLength: MessageHeader.length, completion: { [weak self] (data, _, _, error) in
-            guard let self = self else {
-                print("self is nil")
-                return
-            }
             if let error = error {
-                self.log(error.debugDescription)
-                self.disconnect()
+                self?.log(error.debugDescription)
+                self?.disconnect()
                 return
             }
             guard let _data = data, let messageHeader = MessageHeader.deserialize(_data) else {
-                self.log("failed to deserialize messageHeader: \(String(describing: data?.hex))")
-                self.readHead()
+                self?.log("failed to deserialize messageHeader: \(String(describing: data?.hex))")
+                self?.readHead()
                 return
             }
             let command: String = messageHeader.command
             let bodyLength = Int(messageHeader.length)
-            self.log("Got \(command) message")
+            self?.log("Got \(command) message")
             if bodyLength > 0 {
-                self.readBody(command: command, bodyLength: bodyLength)
+                self?.readBody(command: command, bodyLength: bodyLength)
             } else if command == VerackMessage.command {
-                self.handleVerackMessage()
+                self?.handleVerackMessage()
             }
-            self.readHead()
+            self?.readHead()
         })
     }
 
     private func readBody(command: String, bodyLength: Int) {
         connection.receive(minimumIncompleteLength: bodyLength, maximumLength: bodyLength, completion: { [weak self] (data, _, _, error) in
-            guard let self = self else {
-                print("self is nil")
-                return
-            }
             if let error = error {
-                self.log(error.debugDescription)
-                self.disconnect()
+                self?.log(error.debugDescription)
+                self?.disconnect()
                 return
             }
             guard let data = data else {
-                self.log("Message (\(command)) has no data")
+                self?.log("Message (\(command)) has no data")
                 return
             }
             do {
                 switch command {
                 case VersionMessage.command:
-                    try self.handleVersionMessage(payload: data)
+                    try self?.handleVersionMessage(payload: data)
                 case HeadersMessage.command:
-                    try self.handleHeadersMessage(payload: data)
+                    try self?.handleHeadersMessage(payload: data)
                 case PingMessage.command:
-                    self.handlePingMessage(payload: data)
+                    self?.handlePingMessage(payload: data)
                 default:
                     break
                 }
@@ -153,14 +145,10 @@ class Peer {
     private func sendMessage(_ message: Message, completion: (() -> Void)? = nil) {
         let data = message.combineHeader(network.magic)
         connection.send(content: data, completion: .contentProcessed { [weak self] (sendError) in
-            guard let strongSelf = self else {
-                print("self is nil")
-                return
-            }
             if let sendError = sendError {
-                strongSelf.log("Fail to send \(type(of: message).command): \(sendError.debugDescription)")
+                self?.log("Fail to send \(type(of: message).command): \(sendError.debugDescription)")
             }
-            strongSelf.log("Send \(type(of: message).command) message")
+            self?.log("Send \(type(of: message).command) message")
             completion?()
         })
     }
@@ -211,7 +199,7 @@ class Peer {
             throw PeerError.error("Version message doesn't carry startHeight")
         }
         log("Version: \(versionMessage.version) \(versionMessage.userAgent?.value ?? "")")
-        self.address = versionMessage.yourAddress.address
+        address = versionMessage.yourAddress.address
         context.remoteNodeHeight = startHeight
         sendVerackMessage()
     }
@@ -224,7 +212,7 @@ class Peer {
         context.gotVerack = true
         if context.sentVerack {
             log("Handshake completed")
-            self.delegate?.peerDidHandShake(self)
+            delegate?.peerDidHandShake(self)
         }
     }
 
