@@ -28,16 +28,8 @@ import Foundation
 public class PeerGroup {
     private let database: Database
     private let network: Network
-    private let concurrentPeersQueue = DispatchQueue(label: "com.BitcoinKit.peersQueue", attributes: .concurrent)
     private let maxConnections: UInt
-    private var unsafePeers = [Peer]()
-    private var peers: [Peer] {
-        var peersCopy: [Peer]!
-        concurrentPeersQueue.sync {
-            peersCopy = self.unsafePeers
-        }
-        return peersCopy
-    }
+    private var peers = [Peer]()
     private var syncingPeer: Peer?
     private var lastBlock: Block
     private var nextCheckpointIndex: Int = 0
@@ -57,17 +49,8 @@ public class PeerGroup {
             let dnsSeeds: [String] = network.dnsSeeds
             let peer = Peer(host: dnsSeeds[Int(arc4random_uniform(UInt32(dnsSeeds.count)))], network: network, identifier: i)
             peer.delegate = self
-            addPeer(peer)
+            peers.append(peer)
             peer.connect()
-        }
-    }
-
-    private func addPeer(_ peer: Peer) {
-        concurrentPeersQueue.async(flags: .barrier) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.unsafePeers.append(peer)
         }
     }
 }
