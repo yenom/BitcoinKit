@@ -28,16 +28,8 @@ import Foundation
 public class PeerGroup {
     private let database: Database
     private let network: Network
-    private let concurrentPeersQueue = DispatchQueue(label: "com.BitcoinKit.peersQueue", attributes: .concurrent)
     private let maxConnections: UInt
-    private var unsafePeers = [Peer]()
-    private var peers: [Peer] {
-        var peersCopy: [Peer]!
-        concurrentPeersQueue.sync {
-            peersCopy = self.unsafePeers
-        }
-        return peersCopy
-    }
+    private var peers = [Peer]()
     private var syncingPeer: Peer?
     private var lastBlock: Block
     private var nextCheckpointIndex: Int = 0
@@ -57,24 +49,18 @@ public class PeerGroup {
             let dnsSeeds: [String] = network.dnsSeeds
             let peer = Peer(host: dnsSeeds[Int(arc4random_uniform(UInt32(dnsSeeds.count)))], network: network, identifier: i)
             peer.delegate = self
-            addPeer(peer)
+            peers.append(peer)
             peer.connect()
-        }
-    }
-
-    private func addPeer(_ peer: Peer) {
-        concurrentPeersQueue.async(flags: .barrier) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.unsafePeers.append(peer)
         }
     }
 }
 
 extension PeerGroup: PeerDelegate {
     func peerDidHandShake(_ peer: Peer) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
             let remoteNodeHeight = peer.context.remoteNodeHeight
             if let syncingPeer = self.syncingPeer {
                 guard remoteNodeHeight > syncingPeer.context.remoteNodeHeight else {
@@ -100,7 +86,10 @@ extension PeerGroup: PeerDelegate {
     }
 
     func peer(_ peer: Peer, didReceiveBlockHeaders blockHeaders: [Block]) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
             // send GetHeadersMessage if necessary
             let lastBlock = self.lastBlock
             if peer.context.remoteNodeHeight > lastBlock.height + UInt32(blockHeaders.count) {
