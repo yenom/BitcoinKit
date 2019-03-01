@@ -213,3 +213,82 @@ extension Cashaddr: CustomStringConvertible {
         return cashaddr
     }
 }
+
+public struct SimpleLedgerAddress: Address {
+    public let network: Network
+    public let type: AddressType
+    public let data: Data
+    public let base58: String
+    public let sladdr: SimpleLedgerAddressWithScheme
+    public let publicKey: Data?
+    
+    public typealias SimpleLedgerAddressWithScheme = String
+    
+    public init(data: Data, type: AddressType, network: Network, base58: String, bech32: SimpleLedgerAddressWithScheme, publicKey: Data?) {
+        self.data = data
+        self.type = type
+        self.network = network
+        self.base58 = base58
+        self.cashaddr = bech32
+        self.publicKey = publicKey
+    }
+    
+    public init(_ sladdr: SimpleLedgerAddressWithScheme) throws {
+        guard let decoded = Bech32.decode(cashaddr) else {
+            throw AddressError.invalid
+        }
+        let (prefix, raw) = (decoded.prefix, decoded.data)
+        self.sladdr = sladdr
+        self.publicKey = nil
+        
+        switch prefix {
+        case "simpleledger":
+            network = .mainnet
+        case "slptest":
+            network = .testnet
+        default:
+            throw AddressError.invalidScheme
+        }
+        
+        let versionByte = raw[0]
+        let hash = raw.dropFirst()
+        
+        guard hash.count == VersionByte.getSize(from: versionByte) else {
+            throw AddressError.invalidVersionByte
+        }
+        self.data = hash
+        guard let typeBits = VersionByte.TypeBits(rawValue: (versionByte & 0b01111000)) else {
+            throw AddressError.invalidVersionByte
+        }
+        
+        switch typeBits {
+        case .pubkeyHash:
+            type = .pubkeyHash
+            base58 = publicKeyHashToAddress(Data([network.pubkeyhash]) + data)
+        case .scriptHash:
+            type = .scriptHash
+            base58 = publicKeyHashToAddress(Data([network.scripthash]) + data)
+        }
+    }
+    public init(data: Data, type: AddressType, network: Network) {
+        let addressData: Data = [type.versionByte] + data
+        self.data = data
+        self.type = type
+        self.network = network
+        self.publicKey = nil
+        self.base58 = publicKeyHashToAddress(addressData)
+        self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
+    }
+}
+
+extension SimpleLedgerAddress: Equatable {
+    public static func == (lhs: SimpleLedgerAddress, rhs: SimpleLedgerAddress) -> Bool {
+        return lhs.network == rhs.network && lhs.data == rhs.data && lhs.type == rhs.type
+    }
+}
+
+extension SimpleLedgerAddress: CustomStringConvertible {
+    public var description: String {
+        return sladdr
+    }
+}

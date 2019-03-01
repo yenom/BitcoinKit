@@ -31,7 +31,7 @@ public struct AddressFactory {
         } catch AddressError.invalidVersionByte {
             throw AddressError.invalidVersionByte
         } catch AddressError.invalidScheme {
-            throw AddressError.invalidScheme
+            return try SimpleLedgerAddress(plainAddress)
         } catch AddressError.invalid {
             return try LegacyAddress(plainAddress)
         }
