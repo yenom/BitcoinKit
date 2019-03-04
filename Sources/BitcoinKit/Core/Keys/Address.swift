@@ -33,6 +33,7 @@ public protocol AddressProtocol {
 
     var base58: String { get }
     var cashaddr: String { get }
+    var slpaddr: String { get }
 }
 
 #if os(iOS) || os(tvOS) || os(watchOS)
@@ -132,6 +133,7 @@ public struct LegacyAddress: Address {
         self.publicKey = nil
         self.base58 = publicKeyHashToAddress(addressData)
         self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
+        self.slpaddr = Bech32.encode(addressData, prefix: network.scheme == "bitcoincash" ? "simpleledger" : "slptest")
     }
 }
 
@@ -224,6 +226,7 @@ public struct Cashaddr: Address {
         self.publicKey = nil
         self.base58 = publicKeyHashToAddress(addressData)
         self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
+        self.slpaddr = Bech32.encode(addressData, prefix: network.scheme == "bitcoincash" ? "simpleledger" : "slptest")
     }
 }
 
@@ -316,6 +319,7 @@ public struct SimpleLedgerAddress: Address {
         self.publicKey = nil
         self.base58 = publicKeyHashToAddress(addressData)
         self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
+        self.slpaddr = Bech32.encode(addressData, prefix: network.scheme == "bitcoincash" ? "simpleledger" : "slptest")
     }
 }
 
