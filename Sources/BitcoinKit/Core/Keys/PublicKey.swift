@@ -62,11 +62,15 @@ public struct PublicKey {
     }
 
     public func toLegacy() -> LegacyAddress {
-        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: data)
+        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32(), publicKey: data)
     }
 
     public func toCashaddr() -> Cashaddr {
-        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: data)
+        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32(), publicKey: data)
+    }
+    
+    public func toSlpaddr() -> SimpleLedgerAddress {
+        return SimpleLedgerAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32(), publicKey: data)
     }
 }
 

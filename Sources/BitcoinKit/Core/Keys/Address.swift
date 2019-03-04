@@ -53,16 +53,18 @@ public struct LegacyAddress: Address {
     public let data: Data
     public let base58: Base58Check
     public let cashaddr: String
+    public let slpaddr: String
     public let publicKey: Data?
 
     public typealias Base58Check = String
 
-    public init(data: Data, type: AddressType, network: Network, base58: String, bech32: String, publicKey: Data?) {
+    public init(data: Data, type: AddressType, network: Network, base58: String, cashaddr: String, slpaddr: String, publicKey: Data?) {
         self.data = data
         self.type = type
         self.network = network
         self.base58 = base58
-        self.cashaddr = bech32
+        self.cashaddr = cashaddr
+        self.slpaddr = slpaddr
         self.publicKey = publicKey
     }
 
@@ -111,6 +113,16 @@ public struct LegacyAddress: Address {
         default:
             self.cashaddr = ""
         }
+        
+        // slpaddr
+        switch type {
+        case .pubkeyHash, .scriptHash:
+            let payload = Data([type.versionByte160]) + self.data
+            let scheme = network.scheme == "bitcoincash" ? "simpleledger" : "slptest"
+            self.slpaddr = Bech32.encode(payload, prefix: scheme)
+        default:
+            self.slpaddr = ""
+        }
     }
     public init(data: Data, type: AddressType, network: Network) {
         let addressData: Data = [type.versionByte] + data
@@ -141,9 +153,11 @@ public struct Cashaddr: Address {
     public let data: Data
     public let base58: String
     public let cashaddr: CashaddrWithScheme
+    public let slpaddr: SimpleLedgerAddressWithScheme
     public let publicKey: Data?
 
     public typealias CashaddrWithScheme = String
+    public typealias SimpleLedgerAddressWithScheme = String
 
     public init(data: Data, type: AddressType, network: Network, base58: String, bech32: CashaddrWithScheme, publicKey: Data?) {
         self.data = data
@@ -190,6 +204,16 @@ public struct Cashaddr: Address {
             type = .scriptHash
             base58 = publicKeyHashToAddress(Data([network.scripthash]) + data)
         }
+        
+        // slpaddr
+        switch type {
+        case .pubkeyHash, .scriptHash:
+            let payload = Data([type.versionByte160]) + self.data
+            let scheme = prefix == "bitcoincash" ? "simpleledger" : "slptest"
+            self.slpaddr = Bech32.encode(payload, prefix: scheme)
+        default:
+            self.slpaddr = ""
+        }
     }
     public init(data: Data, type: AddressType, network: Network) {
         let addressData: Data = [type.versionByte] + data
@@ -219,26 +243,29 @@ public struct SimpleLedgerAddress: Address {
     public let type: AddressType
     public let data: Data
     public let base58: String
-    public let sladdr: SimpleLedgerAddressWithScheme
+    public let cashaddr: CashaddrWithScheme
+    public let slpaddr: SimpleLedgerAddressWithScheme
     public let publicKey: Data?
     
+    public typealias CashaddrWithScheme = String
     public typealias SimpleLedgerAddressWithScheme = String
     
-    public init(data: Data, type: AddressType, network: Network, base58: String, bech32: SimpleLedgerAddressWithScheme, publicKey: Data?) {
+    public init(data: Data, type: AddressType, network: Network, base58: String, cashaddr: CashaddrWithScheme, slpaddr: SimpleLedgerAddressWithScheme, publicKey: Data?) {
         self.data = data
         self.type = type
         self.network = network
         self.base58 = base58
-        self.cashaddr = bech32
+        self.cashaddr = cashaddr
+        self.slpaddr = slpaddr
         self.publicKey = publicKey
     }
     
-    public init(_ sladdr: SimpleLedgerAddressWithScheme) throws {
-        guard let decoded = Bech32.decode(cashaddr) else {
+    public init(_ slpaddr: SimpleLedgerAddressWithScheme) throws {
+        guard let decoded = Bech32.decode(slpaddr) else {
             throw AddressError.invalid
         }
         let (prefix, raw) = (decoded.prefix, decoded.data)
-        self.sladdr = sladdr
+        self.slpaddr = slpaddr
         self.publicKey = nil
         
         switch prefix {
@@ -269,6 +296,16 @@ public struct SimpleLedgerAddress: Address {
             type = .scriptHash
             base58 = publicKeyHashToAddress(Data([network.scripthash]) + data)
         }
+        
+        // cashaddr
+        switch type {
+        case .pubkeyHash, .scriptHash:
+            let payload = Data([type.versionByte160]) + self.data
+            let scheme = prefix == "simpleledger" ? "bitcoincash" : "bchtest"
+            self.cashaddr = Bech32.encode(payload, prefix: scheme)
+        default:
+            self.cashaddr = ""
+        }
     }
     public init(data: Data, type: AddressType, network: Network) {
         let addressData: Data = [type.versionByte] + data
@@ -289,6 +326,6 @@ extension SimpleLedgerAddress: Equatable {
 
 extension SimpleLedgerAddress: CustomStringConvertible {
     public var description: String {
-        return sladdr
+        return slpaddr
     }
 }
