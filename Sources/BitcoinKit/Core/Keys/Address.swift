@@ -159,12 +159,13 @@ public struct Cashaddr: Address {
     public typealias CashaddrWithScheme = String
     public typealias SimpleLedgerAddressWithScheme = String
 
-    public init(data: Data, type: AddressType, network: Network, base58: String, bech32: CashaddrWithScheme, publicKey: Data?) {
+    public init(data: Data, type: AddressType, network: Network, base58: String, cashaddr: CashaddrWithScheme, slpaddr: SimpleLedgerAddressWithScheme, publicKey: Data?) {
         self.data = data
         self.type = type
         self.network = network
         self.base58 = base58
-        self.cashaddr = bech32
+        self.cashaddr = cashaddr
+        self.slpaddr = slpaddr
         self.publicKey = publicKey
     }
 
