@@ -22,7 +22,7 @@ Release notes are [here](CHANGELOG.md).
 Features
 --------
 
-- Encoding/decoding addresses: base58, Cashaddr, P2PKH, P2SH, WIF format.
+- Encoding/decoding addresses: base58, Cashaddr, SLP, P2PKH, P2SH, WIF format.
 - Transaction building blocks: inputs, outputs, scripts.
 - EC keys and signatures.
 - BIP32, BIP44 hierarchical deterministic wallets.
