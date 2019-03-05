@@ -1,6 +1,6 @@
 ![BitcoinKit: Let’s Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/44261174-cc64aa00-a251-11e8-85b6-145e0bcae102.jpg)
 
-[![CI Status](http://img.shields.io/travis/yenom/BitcoinKit.svg)](https://travis-ci.org/yenom/BitcoinKit)
+[![Build Status](https://travis-ci.com/Bitcoin-com/BitcoinKit.svg?branch=master)](https://travis-ci.com/Bitcoin-com/BitcoinKit)
 [![codecov](https://codecov.io/gh/yenom/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/yenom/BitcoinKit)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
