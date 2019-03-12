@@ -6,12 +6,12 @@ Pod::Spec.new do |spec|
                        The BitcoinKit library is a Swift implementation of the Bitcoin(BCH/BTC) protocol. This library was originally made by Katsumi Kishikawa, and now is maintained by Yenom Inc. It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.
                        ```
                     DESC
-  spec.homepage = 'https://github.com/yenom/BitcoinKit'
+  spec.homepage = 'https://github.com/Bitcoin-com/BitcoinKit'
   spec.license = { :type => 'MIT', :file => 'LICENSE' }
   spec.author = { 'BitcoinKit developers' => 'usatie@yenom.tech' }
 
   spec.requires_arc = true
-  spec.source = { git: 'https://github.com/yenom/BitcoinKit.git', tag: "v#{spec.version}" }
+  spec.source = { git: 'https://github.com/Bitcoin-com/BitcoinKit.git', tag: "v#{spec.version}" }
   spec.source_files = 'BitcoinKit/**/*.{h,m,swift}', 'Sources/BitcoinKit/**/*.{h,m,swift}'
   spec.private_header_files = 'BitcoinKit/**/BitcoinKitPrivate.h'
   spec.exclude_files = 'Sources/**/LinuxSupport.swift'
