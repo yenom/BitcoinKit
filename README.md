@@ -1,12 +1,9 @@
 ![BitcoinKit: Let’s Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/44261174-cc64aa00-a251-11e8-85b6-145e0bcae102.jpg)
 
 [![Build Status](https://travis-ci.com/Bitcoin-com/BitcoinKit.svg?branch=master)](https://travis-ci.com/Bitcoin-com/BitcoinKit)
-[![codecov](https://codecov.io/gh/yenom/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/yenom/BitcoinKit)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Version](https://img.shields.io/cocoapods/v/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
-[![Platform](https://img.shields.io/cocoapods/p/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
-[![Backers on Open Collective](https://opencollective.com/BitcoinKit/backers/badge.svg)](#backers) 
-[![Sponsors on Open Collective](https://opencollective.com/BitcoinKit/sponsors/badge.svg)](#sponsors) 
+[![codecov](https://codecov.io/gh/yenom/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/bitcoin-com/BitcoinKit)
+![Version](https://img.shields.io/badge/version-v1.1.0-blue.svg)
+![Platform](https://img.shields.io/badge/platform-ios-lightgrey.svg) 
 
 ### Welcome to BitcoinKit
 
@@ -136,6 +133,7 @@ $ gem install cocoapods
 To integrate BitcoinKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
+source 'https://github.com/Bitcoin-com/CocoaPods.git'
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '10.0'
 use_frameworks!
@@ -150,33 +148,13 @@ Then, run the following command:
 $ pod install
 ```
 
-### Carthage
-
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
-
-You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
-
-```bash
-$ brew update
-$ brew install carthage
-```
-
-To integrate BitcoinKit into your Xcode project using Carthage, specify it in your `Cartfile`:
-
-```ogdl
-github "yenom/BitcoinKit"
-```
-
-Run `carthage update` to build the framework and drag the built `BitcoinKit.framework` into your Xcode project.
-
-
 ### Swift Package Manager
 
 BitcoinKit is available through [Swift Package Manager](https://github.com/apple/swift-package-manager). To install
 it, simply add the following lines to dependencies of your Package.swift:
 
 ```swift
-.package(url: "https://github.com/yenom/BitcoinKit.git", .upToNextMinor(from: "0.1.0"))
+.package(url: "https://github.com/Bitcoin-com/BitcoinKit.git", .upToNextMinor(from: "0.1.0"))
 ```
 
 Note that following data types and features are currently not supported on Linux platform.  
