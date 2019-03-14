@@ -167,9 +167,15 @@ Contribute
 Contributions to BitcoinKit are welcome and encouraged!
 Feel free to open issues, drop us pull requests.
 
-## Authors & Maintainers
+## Authors
  - [usatie](https://github.com/usatie)
  - [akifuji](https://github.com/akifuj)
+ - Jean-Baptiste Dominguez [[Github](https://github.com/jbdtky), [Twitter](https://twitter.com/jbdtky)]
+ - Angel Mortega [[Github](https://github.com/holemcross)]
+
+## Maintainers
+ - Jean-Baptiste Dominguez [[Github](https://github.com/jbdtky), [Twitter](https://twitter.com/jbdtky)]
+ - Angel Mortega [[Github](https://github.com/holemcross)]
 
  ## About
 
