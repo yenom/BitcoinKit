@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
                     DESC
   spec.homepage = 'https://github.com/Bitcoin-com/BitcoinKit'
   spec.license = { :type => 'MIT', :file => 'LICENSE' }
-  spec.author = { 'BitcoinKit developers' => 'usatie@yenom.tech' }
+  spec.authors = { 'BitcoinKit developers' => 'usatie@yenom.tech', 'Bitcoin.com developers' => 'jb@bitcoin.com' }
 
   spec.requires_arc = true
   spec.source = { git: 'https://github.com/Bitcoin-com/BitcoinKit.git', tag: "v#{spec.version}" }
