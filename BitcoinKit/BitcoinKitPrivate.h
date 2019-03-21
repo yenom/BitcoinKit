@@ -37,10 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface _Key : NSObject
-+ (NSData *)multiplyECPointX:(NSData *)ecPointX andECPointY:(NSData *)ecPointY withScalar:(NSData *)scalar;
 + (NSData *)computePublicKeyFromPrivateKey:(NSData *)privateKey compression:(BOOL)compression;
 + (NSData *)deriveKey:(NSData *)password salt:(NSData *)salt iterations:(NSInteger)iterations keyLength:(NSInteger)keyLength;
 
+@end
+
+@interface _EllipticCurve : NSObject
++ (NSData *)multiplyECPointX:(NSData *)ecPointX andECPointY:(NSData *)ecPointY withScalar:(NSData *)scalar;
 @end
 
 @interface _HDKey : NSObject
