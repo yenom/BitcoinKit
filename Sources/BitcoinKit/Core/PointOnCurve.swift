@@ -21,9 +21,15 @@ public struct PointOnCurve {
 
 public extension PointOnCurve {
 
+    #if BitcoinKitXcode
     public enum Error: Swift.Error {
         case multiplicationResultedInTooFewBytes(expected: Int, butGot: Int)
     }
+    #else
+    public enum Error: Swift.Error {
+        case pointMultiplicationNotSuported
+    }
+    #endif
 
     init(x xData: Data, y yData: Data) throws {
         let x = try Scalar32Bytes(data: xData)
@@ -32,6 +38,7 @@ public extension PointOnCurve {
     }
 
     func multiplyBy(scalar: Scalar32Bytes) throws -> PointOnCurve {
+        #if BitcoinKitXcode
         let xAndY = _EllipticCurve.multiplyECPointX(x.data, andECPointY: y.data, withScalar: scalar.data)
         let expectedByteCount = Scalar32Bytes.expectedByteCount * 2
         guard xAndY.count == expectedByteCount else {
@@ -40,6 +47,9 @@ public extension PointOnCurve {
         let resultX = xAndY.prefix(Scalar32Bytes.expectedByteCount)
         let resultY = xAndY.suffix(Scalar32Bytes.expectedByteCount)
         return try PointOnCurve(x: resultX, y: resultY)
+        #else
+        throw Error.pointMultiplicationNotSuported
+        #endif
     }
 
     func multiplyBy(privateKey: PrivateKey) throws -> PointOnCurve {
