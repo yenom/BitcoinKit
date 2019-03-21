@@ -30,6 +30,66 @@ import BitcoinKit.Private
 import BitcoinKitPrivate
 #endif
 
+public struct PointOnCurve {
+
+    public struct Scalar32Bytes {
+        // swiftlint:disable:next nesting
+        public enum Error: Swift.Error {
+            case tooFewBytes(expectedCount: Int, butGot: Int)
+            case tooManyBytes(expectedCount: Int, butGot: Int)
+        }
+        public static let expectedByteCount = 32
+        public let data: Data
+        public init(data: Data) throws {
+            let byteCount = data.count
+            if byteCount < Scalar32Bytes.expectedByteCount {
+                throw Error.tooFewBytes(expectedCount: Scalar32Bytes.expectedByteCount, butGot: byteCount)
+            }
+            if byteCount > Scalar32Bytes.expectedByteCount {
+                throw Error.tooManyBytes(expectedCount: Scalar32Bytes.expectedByteCount, butGot: byteCount)
+            }
+            self.data = data
+        }
+    }
+
+    public enum Error: Swift.Error {
+        case multiplicationResultedInTooFewBytes(expected: Int, butGot: Int)
+    }
+
+    public let x: Scalar32Bytes
+    public let y: Scalar32Bytes
+    public init(x: Scalar32Bytes, y: Scalar32Bytes) {
+        self.x = x
+        self.y = y
+    }
+
+    public init(x xData: Data, y yData: Data) throws {
+        let x = try Scalar32Bytes(data: xData)
+        let y = try Scalar32Bytes(data: yData)
+        self.init(x: x, y: y)
+    }
+
+    public func multiplyBy(scalar: Scalar32Bytes) throws -> PointOnCurve {
+        let xAndY = _Key.multiplyECPointX(x.data, andECPointY: y.data, withScalar: scalar.data)
+        let expectedByteCount = Scalar32Bytes.expectedByteCount * 2
+        guard xAndY.count == expectedByteCount else {
+            throw Error.multiplicationResultedInTooFewBytes(expected: expectedByteCount, butGot: xAndY.count)
+        }
+        let resultX = xAndY.prefix(Scalar32Bytes.expectedByteCount)
+        let resultY = xAndY.suffix(Scalar32Bytes.expectedByteCount)
+        return try PointOnCurve(x: resultX, y: resultY)
+    }
+
+    public func multiplyBy(privateKey: PrivateKey) throws -> PointOnCurve {
+        return try multiplyBy(scalar: privateKey.data)
+    }
+
+    public func multiplyBy(scalar scalarData: Data) throws -> PointOnCurve {
+        let scalar = try Scalar32Bytes(data: scalarData)
+        return try multiplyBy(scalar: scalar)
+    }
+}
+
 public struct PrivateKey {
     @available(*, deprecated, renamed: "data")
     public var raw: Data { return data }
@@ -37,7 +97,6 @@ public struct PrivateKey {
     public let network: Network
     public let isPublicKeyCompressed: Bool
 
-    // QUESTION: これランダムに生成する場合かな？
     public init(network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
         self.network = network
         self.isPublicKeyCompressed = isPublicKeyCompressed
@@ -121,6 +180,18 @@ public struct PrivateKey {
 
     private func computePublicKeyData() -> Data {
         return _Key.computePublicKey(fromPrivateKey: data, compression: isPublicKeyCompressed)
+    }
+
+    public func publicKeyPoint() throws -> PointOnCurve {
+        let xAndY: Data = _Key.computePublicKey(fromPrivateKey: data, compression: false)
+        let expectedLengthOfScalar = PointOnCurve.Scalar32Bytes.expectedByteCount
+        let expectedLengthOfKey = expectedLengthOfScalar * 2
+        guard xAndY.count == expectedLengthOfKey else {
+            fatalError("expected length of key is \(expectedLengthOfKey) bytes, but got: \(xAndY.count)")
+        }
+        let x = xAndY.prefix(expectedLengthOfScalar)
+        let y = xAndY.suffix(expectedLengthOfScalar)
+        return try PointOnCurve(x: x, y: y)
     }
 
     public func publicKey() -> PublicKey {
