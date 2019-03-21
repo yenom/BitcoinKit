@@ -70,6 +70,45 @@
 
 @implementation _Key
 
+
++ (NSData *)multiplyECPointX:(NSData *)ecPointX andECPointY:(NSData *)ecPointY withScalar:(NSData *)scalar {
+    BN_CTX *ctx = BN_CTX_new();
+    const EC_GROUP *group = EC_GROUP_new_by_curve_name(NID_secp256k1);
+    
+    BIGNUM *multiplication_factor = BN_new();
+    BN_bin2bn(scalar.bytes, (int)scalar.length, multiplication_factor);
+    
+    BIGNUM *point_x = BN_new();
+    
+    BN_bin2bn(ecPointX.bytes, (int)ecPointX.length, point_x);
+    
+    BIGNUM *point_y = BN_new();
+    BN_bin2bn(ecPointY.bytes, (int)ecPointY.length, point_y);
+    
+    EC_POINT *point = EC_POINT_new(group);
+    EC_POINT_set_affine_coordinates_GFp(group, point, point_x, point_y, ctx);
+    
+    EC_POINT *point_result_of_ec_multiplication = EC_POINT_new(group);
+
+    EC_POINT_mul(group, point_result_of_ec_multiplication, nil, point, multiplication_factor, ctx);
+
+    NSMutableData *newPointXAndYPrefixedWithByte = [NSMutableData dataWithLength:65];
+    BIGNUM *new_point_x_and_y_as_single_bn = BN_new();
+    EC_POINT_point2bn(group, point_result_of_ec_multiplication, POINT_CONVERSION_UNCOMPRESSED, new_point_x_and_y_as_single_bn, ctx);
+    BN_bn2bin(new_point_x_and_y_as_single_bn, newPointXAndYPrefixedWithByte.mutableBytes);
+    BN_free(new_point_x_and_y_as_single_bn);
+    
+    EC_POINT_free(point_result_of_ec_multiplication);
+    EC_POINT_free(point);
+    BN_free(multiplication_factor);
+    BN_free(point_x);
+    BN_free(point_y);
+    BN_CTX_free(ctx);
+    NSData* newPointXAndYDataConcatenated = [newPointXAndYPrefixedWithByte subdataWithRange:NSMakeRange(1, 64)];
+    
+    return newPointXAndYDataConcatenated;
+}
+
 + (NSData *)computePublicKeyFromPrivateKey:(NSData *)privateKey compression:(BOOL)compression {
     BN_CTX *ctx = BN_CTX_new();
     EC_KEY *key = EC_KEY_new_by_curve_name(NID_secp256k1);
