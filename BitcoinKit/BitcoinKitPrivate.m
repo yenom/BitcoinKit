@@ -71,7 +71,7 @@
 @implementation _EllipticCurve
 + (NSData *)multiplyECPointX:(NSData *)ecPointX andECPointY:(NSData *)ecPointY withScalar:(NSData *)scalar {
     BN_CTX *ctx = BN_CTX_new();
-    const EC_GROUP *group = EC_GROUP_new_by_curve_name(NID_secp256k1);
+    EC_GROUP *group = EC_GROUP_new_by_curve_name(NID_secp256k1);
     
     BIGNUM *multiplication_factor = BN_new();
     BN_bin2bn(scalar.bytes, (int)scalar.length, multiplication_factor);
@@ -100,9 +100,31 @@
     BN_free(point_x);
     BN_free(point_y);
     BN_CTX_free(ctx);
+    EC_GROUP_free(group);
     
-    return [newPointXAndYPrefixedWithByte subdataWithRange:NSMakeRange(1, 64)];
+//    return [newPointXAndYPrefixedWithByte subdataWithRange:NSMakeRange(1, 64)];
+    return newPointXAndYPrefixedWithByte;
 }
+
++ (NSData *)decodePointOnCurveForCompressedPublicKey:(NSData *)publicKeyCompressed {
+    BN_CTX *ctx = BN_CTX_new();
+    EC_GROUP *group = EC_GROUP_new_by_curve_name(NID_secp256k1);
+    EC_GROUP_set_point_conversion_form(group, POINT_CONVERSION_COMPRESSED);
+    EC_POINT *point = EC_POINT_new(group);
+    EC_POINT_oct2point(group, point, publicKeyCompressed.bytes, (int)publicKeyCompressed.length, ctx);
+    
+    NSMutableData *newPointXAndYPrefixedWithByte = [NSMutableData dataWithLength:65];
+    BIGNUM *new_point_x_and_y_as_single_bn = BN_new();
+    EC_POINT_point2bn(group, point, POINT_CONVERSION_UNCOMPRESSED, new_point_x_and_y_as_single_bn, ctx);
+    BN_bn2bin(new_point_x_and_y_as_single_bn, newPointXAndYPrefixedWithByte.mutableBytes);
+    
+     BN_free(new_point_x_and_y_as_single_bn);
+    EC_POINT_free(point);
+    BN_CTX_free(ctx);
+    EC_GROUP_free(group);
+    return newPointXAndYPrefixedWithByte;
+}
+
 
 @end
 

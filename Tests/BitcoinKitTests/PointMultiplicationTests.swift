@@ -6,8 +6,8 @@
 //  Copyright © 2019 BitcoinKit developers. All rights reserved.
 //
 
+#if BitcoinKitXcode
 import Foundation
-
 import XCTest
 @testable import BitcoinKit
 
@@ -69,12 +69,9 @@ class PointMultiplicationTests: XCTestCase {
             XCTAssertEqual(pointOrderPlus1.x.data.hex, pointOne.x.data.hex)
             XCTAssertEqual(pointOrderPlus1.y.data.hex, pointOne.y.data.hex)
         } catch {
-            #if BitcoinKitXcode
             XCTFail("error: \(error)")
-            #else
-            XCTAssertTrue(true, "Cannot do point multiplication if `BitcoinKitXcode` is not defined")
-            #endif
         }
     }
-    
+
 }
+#endif
