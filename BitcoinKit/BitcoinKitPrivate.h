@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _EllipticCurve : NSObject
 + (NSData *)multiplyECPointX:(NSData *)ecPointX andECPointY:(NSData *)ecPointY withScalar:(NSData *)scalar;
++ (NSData *)decodePointOnCurveForCompressedPublicKey:(NSData *)publicKeyCompressed;
 @end
 
 @interface _HDKey : NSObject

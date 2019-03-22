@@ -218,6 +218,7 @@
 		CFA290742102B650001A1BAB /* ScriptMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA290732102B650001A1BAB /* ScriptMachineTests.swift */; };
 		E6A64306224418EB00CD4BFC /* PointOnCurve.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A64305224418EB00CD4BFC /* PointOnCurve.swift */; };
 		E6A643082244190400CD4BFC /* Scalar32Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A643072244190400CD4BFC /* Scalar32Bytes.swift */; };
+		E6A643102244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A6430F2244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift */; };
 		E6C9FB9D2243FF7A000AAE12 /* PointMultiplicationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C9FB9C2243FF7A000AAE12 /* PointMultiplicationTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -448,6 +449,7 @@
 		CFA290732102B650001A1BAB /* ScriptMachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptMachineTests.swift; sourceTree = "<group>"; };
 		E6A64305224418EB00CD4BFC /* PointOnCurve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointOnCurve.swift; sourceTree = "<group>"; };
 		E6A643072244190400CD4BFC /* Scalar32Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scalar32Bytes.swift; sourceTree = "<group>"; };
+		E6A6430F2244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodePointFromCompressedKeyTests.swift; sourceTree = "<group>"; };
 		E6C9FB9C2243FF7A000AAE12 /* PointMultiplicationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointMultiplicationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -573,6 +575,7 @@
 				6EE789DA2112C1E500EAB620 /* CryptoTests.swift */,
 				6E20AEC62112C290008A9810 /* PrivateKeyTests.swift */,
 				E6C9FB9C2243FF7A000AAE12 /* PointMultiplicationTests.swift */,
+				E6A6430F2244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift */,
 				6E20AEC82112C31A008A9810 /* LegacyAddressTests.swift */,
 				6E20AECA2112C434008A9810 /* HDPrivateKeyTests.swift */,
 				6E20AECC2112C559008A9810 /* CashAddrTests.swift */,
@@ -1233,6 +1236,7 @@
 				297C408121100810003AF4EF /* MnemonicTests.swift in Sources */,
 				6EE789DB2112C1E500EAB620 /* CryptoTests.swift in Sources */,
 				6E20AEC72112C290008A9810 /* PrivateKeyTests.swift in Sources */,
+				E6A643102244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift in Sources */,
 				CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */,
 				6E20AED32112C7DA008A9810 /* TransactionTests.swift in Sources */,
 				6E20AED72112D417008A9810 /* MurmurHashTests.swift in Sources */,
