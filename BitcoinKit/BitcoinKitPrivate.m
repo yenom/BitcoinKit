@@ -102,7 +102,6 @@
     BN_CTX_free(ctx);
     EC_GROUP_free(group);
     
-//    return [newPointXAndYPrefixedWithByte subdataWithRange:NSMakeRange(1, 64)];
     return newPointXAndYPrefixedWithByte;
 }
 
