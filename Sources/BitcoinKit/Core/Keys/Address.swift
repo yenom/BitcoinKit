@@ -119,7 +119,7 @@ public struct LegacyAddress: Address {
         switch type {
         case .pubkeyHash, .scriptHash:
             let payload = Data([type.versionByte160]) + self.data
-            let scheme = network.scheme == "bitcoincash" ? "simpleledger" : "slptest"
+            let scheme = network is Mainnet ? "simpleledger" : "slptest"
             self.slpaddr = Bech32.encode(payload, prefix: scheme)
         default:
             self.slpaddr = ""
@@ -133,7 +133,7 @@ public struct LegacyAddress: Address {
         self.publicKey = nil
         self.base58 = publicKeyHashToAddress(addressData)
         self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
-        self.slpaddr = Bech32.encode(addressData, prefix: network.scheme == "bitcoincash" ? "simpleledger" : "slptest")
+        self.slpaddr = Bech32.encode(addressData, prefix: network is Mainnet ? "simpleledger" : "slptest")
     }
 }
 
@@ -212,7 +212,7 @@ public struct Cashaddr: Address {
         switch type {
         case .pubkeyHash, .scriptHash:
             let payload = Data([type.versionByte160]) + self.data
-            let scheme = prefix == "bitcoincash" ? "simpleledger" : "slptest"
+            let scheme = network is Mainnet ? "simpleledger" : "slptest"
             self.slpaddr = Bech32.encode(payload, prefix: scheme)
         default:
             self.slpaddr = ""
@@ -226,7 +226,7 @@ public struct Cashaddr: Address {
         self.publicKey = nil
         self.base58 = publicKeyHashToAddress(addressData)
         self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
-        self.slpaddr = Bech32.encode(addressData, prefix: network.scheme == "bitcoincash" ? "simpleledger" : "slptest")
+        self.slpaddr = Bech32.encode(addressData, prefix: network is Mainnet ? "simpleledger" : "slptest")
     }
 }
 
@@ -305,7 +305,7 @@ public struct SimpleLedgerAddress: Address {
         switch type {
         case .pubkeyHash, .scriptHash:
             let payload = Data([type.versionByte160]) + self.data
-            let scheme = prefix == "simpleledger" ? "bitcoincash" : "bchtest"
+            let scheme = network is Mainnet ? "bitcoincash" : "bchtest"
             self.cashaddr = Bech32.encode(payload, prefix: scheme)
         default:
             self.cashaddr = ""
@@ -319,7 +319,7 @@ public struct SimpleLedgerAddress: Address {
         self.publicKey = nil
         self.base58 = publicKeyHashToAddress(addressData)
         self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
-        self.slpaddr = Bech32.encode(addressData, prefix: network.scheme == "bitcoincash" ? "simpleledger" : "slptest")
+        self.slpaddr = Bech32.encode(addressData, prefix: network is Mainnet ? "simpleledger" : "slptest")
     }
 }
 

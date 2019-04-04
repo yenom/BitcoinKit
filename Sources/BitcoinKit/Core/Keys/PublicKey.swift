@@ -60,17 +60,24 @@ public struct PublicKey {
         let versionByte: Data = Data([VersionByte.pubkeyHash160])
         return Bech32.encode(versionByte + pubkeyHash, prefix: network.scheme)
     }
+    
+    private func bech32Slp() -> String {
+        let versionByte: Data = Data([VersionByte.pubkeyHash160])
+        let slpPrefix = network is Mainnet ? "simpleledger" : "spltest"
+        
+        return Bech32.encode(versionByte + pubkeyHash, prefix: slpPrefix)
+    }
 
     public func toLegacy() -> LegacyAddress {
-        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32(), publicKey: data)
+        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32Slp(), publicKey: data)
     }
 
     public func toCashaddr() -> Cashaddr {
-        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32(), publicKey: data)
+        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32Slp(), publicKey: data)
     }
     
     public func toSlpaddr() -> SimpleLedgerAddress {
-        return SimpleLedgerAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32(), publicKey: data)
+        return SimpleLedgerAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32Slp(), publicKey: data)
     }
 }
 

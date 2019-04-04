@@ -30,6 +30,8 @@ public class Network {
     public static let testnet: Network = BCHTestnet()
     public static let mainnetBTC: Network = BTCMainnet()
     public static let testnetBTC: Network = BTCTestnet()
+    public static let mainnetSLP: Network = SLPMainnet()
+    public static let testnetSLP: Network = SLPTestnet()
 
     public var name: String { return "" }
     public var alias: String { return "" }
@@ -142,6 +144,54 @@ public class BCHMainnet: Mainnet {
 public class BCHTestnet: Testnet {
     public override var scheme: String {
         return "bchtest"
+    }
+    override var magic: UInt32 {
+        return 0xf4e5f3f4
+    }
+    public override var dnsSeeds: [String] {
+        return [
+            "testnet-seed.bitcoinabc.org",
+            "testnet-seed-abc.bitcoinforks.org",
+            "testnet-seed.bitprim.org",
+            "testnet-seed.deadalnix.me",
+            "testnet-seeder.criptolayer.net"
+        ]
+    }
+    override var checkpoints: [Checkpoint] {
+        return super.checkpoints + [
+            Checkpoint(height: 1_200_000, hash: Data(Data(hex: "00000000d91bdbb5394bcf457c0f0b7a7e43eb978e2d881b6c2a4c2756abc558")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0),
+            Checkpoint(height: 1_240_000, hash: Data(Data(hex: "0000000002a2bbefefa5aa5f0b7e95957537693808e753f4b4a8e26c5257891d")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0)
+        ]
+    }
+}
+
+public class SLPMainnet: Mainnet {
+    public override var scheme: String {
+        return "simpleledger"
+    }
+    override var magic: UInt32 {
+        return 0xe3e1f3e8
+    }
+    public override var dnsSeeds: [String] {
+        return [
+            "seed.bitcoinabc.org", // - Bitcoin ABC seeder
+            "seed-abc.bitcoinforks.org", // - bitcoinforks seeders
+            "btccash-seeder.bitcoinunlimited.info", // - BU seeder
+            "seed.bitprim.org", // - Bitprim
+            "seed.deadalnix.me", // - Amaury SÉCHET
+            "seeder.criptolayer.net" // - criptolayer.net
+        ]
+    }
+    override var checkpoints: [Checkpoint] {
+        return super.checkpoints + [
+            Checkpoint(height: 478_559, hash: Data(Data(hex: "000000000000000000651ef99cb9fcbe0dadde1d424bd9f15ff20136191a5eec")!.reversed()), timestamp: 1_501_611_161, target: 0x18021b3e)
+        ]
+    }
+}
+
+public class SLPTestnet: Testnet {
+    public override var scheme: String {
+        return "slptest"
     }
     override var magic: UInt32 {
         return 0xf4e5f3f4
