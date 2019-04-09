@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'BitcoinKit'
-  spec.version = '1.1.0'
+  spec.version = '1.1.1'
   spec.summary = 'Bitcoin(BCH/BTC) protocol toolkit for Swift'
   spec.description = <<-DESC
                        The BitcoinKit library is a Swift implementation of the Bitcoin(BCH/BTC) protocol. This library was originally made by Katsumi Kishikawa and Yenom Inc, and now is maintained by Bitcoin.com. It allows maintaining a wallet and sending/receiving transactions without needing a full blockchain node. It comes with a simple wallet app showing how to use it.
@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
                     DESC
   spec.homepage = 'https://github.com/Bitcoin-com/BitcoinKit'
   spec.license = { :type => 'MIT', :file => 'LICENSE' }
-  spec.authors = { 'BitcoinKit developers' => 'usatie@yenom.tech', 'Bitcoin.com developers' => 'jb@bitcoin.com' }
+  spec.authors = { 'Bitcoin.com developers' => 'jb@bitcoin.com', 'BitcoinKit developers' => 'usatie@yenom.tech' }
 
   spec.requires_arc = true
   spec.source = { git: 'https://github.com/Bitcoin-com/BitcoinKit.git', tag: "v#{spec.version}" }
