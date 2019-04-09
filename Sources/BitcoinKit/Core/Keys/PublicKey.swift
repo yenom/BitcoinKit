@@ -63,7 +63,7 @@ public struct PublicKey {
     
     private func bech32Slp() -> String {
         let versionByte: Data = Data([VersionByte.pubkeyHash160])
-        let slpPrefix = network is Mainnet ? "simpleledger" : "spltest"
+        let slpPrefix = network is Mainnet ? "simpleledger" : "slptest"
         
         return Bech32.encode(versionByte + pubkeyHash, prefix: slpPrefix)
     }
