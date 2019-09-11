@@ -1,3 +1,8 @@
+2019-09-01    Soft translation string freeze
+2019-09-15    Feature freeze
+2019-10-01    Split off 0.19 branch from master
+2019-11-03    Release 0.19.0 final (aim)
+
 ![BitcoinKit: Let’s Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/44261174-cc64aa00-a251-11e8-85b6-145e0bcae102.jpg)
 
 [![CI Status](http://img.shields.io/travis/yenom/BitcoinKit.svg)](https://travis-ci.org/yenom/BitcoinKit)
