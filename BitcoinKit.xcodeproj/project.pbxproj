@@ -158,6 +158,7 @@
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
 		2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920320F22A1500D078B6 /* TestHelpers.swift */; };
 		2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */; };
+		294D6CB6215A124700B75928 /* SerializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294D6CB5215A124700B75928 /* SerializationTests.swift */; };
 		294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE31211A05D200B7F645 /* OP_RETURN.swift */; };
 		294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3A211B31B100B7F645 /* OP_NOP.swift */; };
 		294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3C211B31C100B7F645 /* OP_VER.swift */; };
@@ -384,6 +385,7 @@
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
 		2949920320F22A1500D078B6 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
+		294D6CB5215A124700B75928 /* SerializationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializationTests.swift; sourceTree = "<group>"; };
 		294DDE31211A05D200B7F645 /* OP_RETURN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RETURN.swift; sourceTree = "<group>"; };
 		294DDE3A211B31B100B7F645 /* OP_NOP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOP.swift; sourceTree = "<group>"; };
 		294DDE3C211B31C100B7F645 /* OP_VER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VER.swift; sourceTree = "<group>"; };
@@ -577,6 +579,7 @@
 				6E20AED62112D417008A9810 /* MurmurHashTests.swift */,
 				6E797C442116C8A5003BEDFD /* OpCodeFactoryTests.swift */,
 				29089F0D2122BE7200E0C305 /* MockHelperTests.swift */,
+				294D6CB5215A124700B75928 /* SerializationTests.swift */,
 			);
 			name = BitcoinKitTests;
 			path = Tests/BitcoinKitTests;
@@ -1235,6 +1238,7 @@
 				29F5D1E02110495F007DA3BF /* OpCodeTests.swift in Sources */,
 				6E20AEC92112C31A008A9810 /* LegacyAddressTests.swift in Sources */,
 				6E20AED12112C6AA008A9810 /* PaymentURITests.swift in Sources */,
+				294D6CB6215A124700B75928 /* SerializationTests.swift in Sources */,
 				CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */,
 				2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */,
 				29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */,
@@ -1404,7 +1408,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1442,7 +1446,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Libraries";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1462,7 +1466,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoinkit.BitcoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1482,7 +1486,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoinkit.BitcoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

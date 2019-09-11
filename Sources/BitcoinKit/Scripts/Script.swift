@@ -411,7 +411,7 @@ public class Script {
 
     public func subScript(from index: Int) throws -> Script {
         let subScript: Script = Script()
-        for chunk in chunks[Range(index..<chunks.count)] {
+        for chunk in chunks[index..<chunks.count] {
             try subScript.appendData(chunk.chunkData)
         }
         return subScript
@@ -419,7 +419,7 @@ public class Script {
 
     public func subScript(to index: Int) throws -> Script {
         let subScript: Script = Script()
-        for chunk in chunks[Range(0..<index)] {
+        for chunk in chunks[0..<index] {
             try subScript.appendData(chunk.chunkData)
         }
         return subScript

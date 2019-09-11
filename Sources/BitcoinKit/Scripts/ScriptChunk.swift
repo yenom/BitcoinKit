@@ -121,7 +121,7 @@ public struct DataChunk: ScriptChunk {
             loc += 4
         }
 
-        return scriptData.subdata(in: Range((range.lowerBound + loc)..<(range.upperBound)))
+        return scriptData.subdata(in: (range.lowerBound + loc)..<(range.upperBound))
     }
 
     public var string: String {

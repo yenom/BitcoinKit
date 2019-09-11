@@ -104,7 +104,7 @@ class MockHelperTests: XCTestCase {
             }
         }
     }
-
+    
     func testP2SH() {
         func verify(with key: MockKey) throws -> Bool {
             return try MockHelper.verifySingleKey(
