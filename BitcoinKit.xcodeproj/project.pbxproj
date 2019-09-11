@@ -65,8 +65,6 @@
 		0C66CD092125427C0049DB89 /* OP_XOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C66CD082125427C0049DB89 /* OP_XOR.swift */; };
 		0CD92D3B2118153700DD3148 /* OP_LESSTHANOREQUAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD92D3A2118153700DD3148 /* OP_LESSTHANOREQUAL.swift */; };
 		0F59D2EC213712B2008B9C0B /* BlockMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F59D2EA21370FD8008B9C0B /* BlockMessageTests.swift */; };
-		0FFA78002138D9CC00B7EC42 /* block1.raw in Resources */ = {isa = PBXBuildFile; fileRef = 0FFA77FD2138D9CB00B7EC42 /* block1.raw */; };
-		0FFA78012138D9CC00B7EC42 /* block413567.raw in Resources */ = {isa = PBXBuildFile; fileRef = 0FFA77FE2138D9CB00B7EC42 /* block413567.raw */; };
 		1419E83A202CDBE500FCB0BE /* BitcoinKitPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */; };
 		141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FE2E12022588C00A08B04 /* PublicKey.swift */; };
@@ -135,6 +133,8 @@
 		2914BE5C211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5B211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift */; };
 		2914BE5E211C062200B349CB /* OP_PUBKEYHASH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5D211C062200B349CB /* OP_PUBKEYHASH.swift */; };
 		2914BE60211C063300B349CB /* OP_PUBKEY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2914BE5F211C063300B349CB /* OP_PUBKEY.swift */; };
+		291D369E23296980001B2D2A /* block413567.raw in Resources */ = {isa = PBXBuildFile; fileRef = 0FFA77FE2138D9CB00B7EC42 /* block413567.raw */; };
+		291D369F23296983001B2D2A /* block1.raw in Resources */ = {isa = PBXBuildFile; fileRef = 0FFA77FD2138D9CB00B7EC42 /* block1.raw */; };
 		292185372154B50E00570618 /* MockUnlockScriptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292185362154B50E00570618 /* MockUnlockScriptBuilder.swift */; };
 		29248EEF2104B64E00CC9051 /* ScriptChunkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29248EEE2104B64E00CC9051 /* ScriptChunkHelper.swift */; };
 		29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290B8C210AF59600D2BE78 /* OpCodeFactory.swift */; };
@@ -996,8 +996,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0FFA78012138D9CC00B7EC42 /* block413567.raw in Resources */,
-				0FFA78002138D9CC00B7EC42 /* block1.raw in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1005,6 +1003,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				291D369F23296983001B2D2A /* block1.raw in Resources */,
+				291D369E23296980001B2D2A /* block413567.raw in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1486,8 +1486,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoinkit.BitcoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG BitcoinKitXcode";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1507,8 +1507,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoinkit.BitcoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BitcoinKitXcode;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
