@@ -26,11 +26,11 @@ import Foundation
 
 public struct StandardUtxoSelector: UtxoSelector {
     public let feePerByte: UInt64
-    public let dustThreshhold: UInt64
+    public let dustThreshold: UInt64
 
-    public init(feePerByte: UInt64 = 1, dustThreshhold: UInt64 = 3 * 182) {
+    public init(feePerByte: UInt64 = 1, dustThreshold: UInt64 = 3 * 182) {
         self.feePerByte = feePerByte
-        self.dustThreshhold = dustThreshhold
+        self.dustThreshold = dustThreshold
     }
 
     public func select(from utxos: [UnspentTransaction], targetValue: UInt64) throws -> (utxos: [UnspentTransaction], fee: UInt64) {
@@ -50,7 +50,7 @@ public struct StandardUtxoSelector: UtxoSelector {
             return targetValue + fee
         }
         var targetWithFeeAndDust: UInt64 {
-            return targetWithFee + dustThreshhold
+            return targetWithFee + dustThreshold
         }
 
         let sortedUtxos: [UnspentTransaction] = utxos.sorted(by: { $0.output.value < $1.output.value })

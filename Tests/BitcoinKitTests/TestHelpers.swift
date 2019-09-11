@@ -63,7 +63,7 @@ public struct Fee {
     }
 }
 
-public func selectTx(from utxos: [UnspentTransaction], targetValue: UInt64, dustThreshhold: UInt64 = Fee.dust) throws -> (utxos: [UnspentTransaction], fee: UInt64) {
+public func selectTx(from utxos: [UnspentTransaction], targetValue: UInt64, dustThreshold: UInt64 = Fee.dust) throws -> (utxos: [UnspentTransaction], fee: UInt64) {
     // if target value is zero, fee is zero
     guard targetValue > 0 else {
         return ([], 0)
@@ -80,7 +80,7 @@ public func selectTx(from utxos: [UnspentTransaction], targetValue: UInt64, dust
         return targetValue + fee
     }
     var targetWithFeeAndDust: UInt64 {
-        return targetWithFee + dustThreshhold
+        return targetWithFee + dustThreshold
     }
     
     let sortedUtxos: [UnspentTransaction] = utxos.sorted(by: { $0.output.value < $1.output.value })
