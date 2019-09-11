@@ -133,15 +133,21 @@ public class _HDKey {
         self.childIndex = childIndex
     }
     public func derived(at index: UInt32, hardened: Bool) -> _HDKey? {
-        
+        // index should be 0 through 2^31-1
+        guard index < 0x80000000 else {
+            return nil
+        }
         let ctx = BN_CTX_new()
         defer {
             BN_CTX_free(ctx)
         }
         var data = Data()
         if hardened {
-            data.append(0) // padding
-            data += privateKey ?? Data()
+            guard let privateKey = privateKey else {
+                return nil
+            }
+            data.append(0) // pads the private key to make it 33 bytes long
+            data += privateKey
         } else {
             data += publicKey
         }
