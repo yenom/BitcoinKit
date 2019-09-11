@@ -26,11 +26,20 @@ import XCTest
 @testable import BitcoinKit
 
 class BlockMessageTests: XCTestCase {
-
     fileprivate func loadRawBlock(named name: String) throws -> BlockMessage {
-        let bundle = Bundle(for: type(of: self))
-        let url = bundle.url(forResource: name, withExtension: "raw")!
-        let data = try Data(contentsOf: url)
+        let data: Data
+        #if BitcoinKitXcode
+        let url = Bundle(for: type(of: self)).url(forResource: name, withExtension: "raw")!
+        data = try Data(contentsOf: url)
+        #else
+        // find raw files if using Swift Package Manager:
+        let currentDirectoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        let fileURL = currentDirectoryURL
+            .appendingPathComponent("TestResources", isDirectory: true)
+            .appendingPathComponent(name)
+            .appendingPathExtension("raw")
+        data = try Data(contentsOf: fileURL)
+        #endif
 
         return BlockMessage.deserialize(data)
     }
