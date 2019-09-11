@@ -176,7 +176,7 @@ BitcoinKit is available through [Swift Package Manager](https://github.com/apple
 it, simply add the following lines to dependencies of your Package.swift:
 
 ```swift
-.package(url: "https://github.com/yenom/BitcoinKit.git", .upToNextMinor(from: "0.1.0"))
+.package(url: "https://github.com/yenom/BitcoinKit.git", .upToNextMinor(from: "1.0.0"))
 ```
 
 Note that following data types and features are currently not supported on Linux platform.  
