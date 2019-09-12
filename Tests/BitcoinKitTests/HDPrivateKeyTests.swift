@@ -174,4 +174,23 @@ class HDPrivateKeyTests: XCTestCase {
         let m011pub = try! m01prv.extendedPublicKey().derived(at: 1)
         XCTAssertEqual(m011pub.extended(), "xpub6D4BDPcEgbv6teFCGk7PMijta2aSGvRbvFX8dthHedYVVMM8QBf9xp9TF6TeuHYD9xiHGcuGNZQkKmD9jvojPj7YqnqtB3iYXv3f8s1JzwS")
     }
+    
+    // https://github.com/yenom/BitcoinKit/issues/73
+    func testDeriveProblem() {
+        let seed = Data(hex: "f27fd395d30d00f1c11b7551a93961ca41c0a78bce21e9a618e83a99cf74aec159139ef3ef078bc0038557b7cb689933d0806ce33571df78bc4397e7f9976ff2")!
+        
+        let key = try! HDPrivateKey(seed: seed, network: .mainnet)
+            .derived(at: 44, hardened: true)
+            .derived(at: 0, hardened: true)
+            .derived(at: 0, hardened: true)
+            .derived(at: 1)
+            .derived(at: 19)
+        
+        let privKey = key.privateKey()
+        XCTAssertEqual(privKey.data.count, 32)
+        XCTAssertEqual(privKey.data.hex, "00f2c37dad54d1d2be57b06653ea655c6fd8eb3ca3f0b9671e036d50061d265b")
+        XCTAssertEqual(privKey.description, "KwFZ6jFtuvBu7w4R4x4WpzQgSSYTHLEw8Pr2PUkWjADkHJUPNDVg")
+        XCTAssertEqual(privKey.publicKey().description, "02a712f894d58baef44e4fbbc26ed6ca89487db1f17e944f9b45ca2ae666e99d72")
+        XCTAssertEqual(privKey.publicKey().toLegacy().description, "1DPUysR46jraybTwP3PfSbcBENeLScLxx")
+    }
 }
