@@ -38,9 +38,13 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface _Key : NSObject
-
 + (NSData *)deriveKey:(NSData *)password salt:(NSData *)salt iterations:(NSInteger)iterations keyLength:(NSInteger)keyLength;
 
+@end
+
+@interface _EllipticCurve : NSObject
++ (NSData *)multiplyECPointX:(NSData *)ecPointX andECPointY:(NSData *)ecPointY withScalar:(NSData *)scalar;
++ (NSData *)decodePointOnCurveForCompressedPublicKey:(NSData *)publicKeyCompressed;
 @end
 
 @interface _Crypto : NSObject

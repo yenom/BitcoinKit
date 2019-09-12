@@ -37,7 +37,6 @@ public struct PrivateKey {
     public let network: Network
     public let isPublicKeyCompressed: Bool
 
-    // QUESTION: これランダムに生成する場合かな？
     public init(network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
         self.network = network
         self.isPublicKeyCompressed = isPublicKeyCompressed
@@ -121,6 +120,18 @@ public struct PrivateKey {
 
     private func computePublicKeyData() -> Data {
         return _SwiftKey.computePublicKey(fromPrivateKey: data, compression: isPublicKeyCompressed)
+    }
+
+    public func publicKeyPoint() throws -> PointOnCurve {
+        let xAndY: Data = _SwiftKey.computePublicKey(fromPrivateKey: data, compression: false)
+        let expectedLengthOfScalar = Scalar32Bytes.expectedByteCount
+        let expectedLengthOfKey = expectedLengthOfScalar * 2
+        guard xAndY.count == expectedLengthOfKey else {
+            fatalError("expected length of key is \(expectedLengthOfKey) bytes, but got: \(xAndY.count)")
+        }
+        let x = xAndY.prefix(expectedLengthOfScalar)
+        let y = xAndY.suffix(expectedLengthOfScalar)
+        return try PointOnCurve(x: x, y: y)
     }
 
     public func publicKey() -> PublicKey {

@@ -308,3 +308,77 @@ public class _Crypto {
         case publicKeyParseFailed
     }
 }
+
+public class _EllipticCurve {
+    public static func multiplyECPointX(_ ecPointX: Data, andECPointY ecPointY: Data, withScalar scalar: Data) -> Data {
+        let ctx = BN_CTX_new()
+        defer { BN_CTX_free(ctx) }
+        let group = EC_GROUP_new_by_curve_name(NID_secp256k1)
+        defer { EC_GROUP_free(group) }
+        
+        let multiplication_factor = BN_new()
+        defer { BN_free(multiplication_factor) }
+        scalar.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
+            BN_bin2bn(ptr, Int32(scalar.count), multiplication_factor)
+            return
+        }
+        
+        let point_x = BN_new()
+        defer { BN_free(point_x) }
+        ecPointX.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
+            BN_bin2bn(ptr, Int32(ecPointX.count), point_x)
+            return
+        }
+
+        let point_y = BN_new();
+        defer { BN_free(point_y) }
+        ecPointY.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
+            BN_bin2bn(ptr, Int32(ecPointY.count), point_y)
+            return
+        }
+
+        let point = EC_POINT_new(group);
+        defer { EC_POINT_free(point) }
+        EC_POINT_set_affine_coordinates_GFp(group, point, point_x, point_y, ctx)
+
+        let point_result_of_ec_multiplication = EC_POINT_new(group)
+        defer { EC_POINT_free(point_result_of_ec_multiplication) }
+        EC_POINT_mul(group, point_result_of_ec_multiplication, nil, point, multiplication_factor, ctx)
+        
+        var newPointXAndYPrefixedWithByte = [UInt8](repeating: 0, count: 65)
+        let new_point_x_and_y_as_single_bn = BN_new()
+        defer { BN_free(new_point_x_and_y_as_single_bn) }
+        
+        EC_POINT_point2bn(group, point_result_of_ec_multiplication, POINT_CONVERSION_UNCOMPRESSED, new_point_x_and_y_as_single_bn, ctx)
+
+        BN_bn2bin(new_point_x_and_y_as_single_bn, &newPointXAndYPrefixedWithByte)
+        
+        return Data(newPointXAndYPrefixedWithByte)
+    }
+
+    public static func decodePointOnCurve(forCompressedPublicKey publicKeyCompressed: Data) -> Data {
+        let ctx = BN_CTX_new()
+        defer { BN_CTX_free(ctx) }
+        
+        let group = EC_GROUP_new_by_curve_name(NID_secp256k1)
+        defer { EC_GROUP_free(group) }
+        
+        EC_GROUP_set_point_conversion_form(group, POINT_CONVERSION_COMPRESSED)
+        let point = EC_POINT_new(group)
+        defer { EC_POINT_free(point) }
+        
+        publicKeyCompressed.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) in
+            EC_POINT_oct2point(group, point, ptr, Int(publicKeyCompressed.count), ctx)
+            return
+        }
+        
+        var newPointXAndYPrefixedWithByte = [UInt8](repeating: 0, count: 65)
+        let new_point_x_and_y_as_single_bn = BN_new()
+        defer { BN_free(new_point_x_and_y_as_single_bn) }
+        
+        EC_POINT_point2bn(group, point, POINT_CONVERSION_UNCOMPRESSED, new_point_x_and_y_as_single_bn, ctx)
+        BN_bn2bin(new_point_x_and_y_as_single_bn, &newPointXAndYPrefixedWithByte)
+        
+        return Data(newPointXAndYPrefixedWithByte)
+    }
+}
