@@ -7,6 +7,11 @@
 //
 
 import Foundation
+#if BitcoinKitXcode
+import BitcoinKit.Private
+#else
+import BitcoinKitPrivate
+#endif
 
 public struct PointOnCurve {
 
@@ -26,10 +31,8 @@ public struct PointOnCurve {
     }
 }
 
-#if BitcoinKitXcode
 public extension PointOnCurve {
-
-    public enum Error: Swift.Error {
+    enum Error: Swift.Error {
         case multiplicationResultedInTooFewBytes(expected: Int, butGot: Int)
         case expectedUncompressedPoint
         case publicKeyContainsTooFewBytes(expected: Int, butGot: Int)
@@ -74,4 +77,3 @@ public extension PointOnCurve {
         return try multiplyBy(scalar: scalar)
     }
 }
-#endif

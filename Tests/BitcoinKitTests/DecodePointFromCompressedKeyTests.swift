@@ -6,7 +6,6 @@
 //  Copyright © 2019 BitcoinKit developers. All rights reserved.
 //
 
-#if BitcoinKitXcode
 import Foundation
 @testable import BitcoinKit
 import XCTest
@@ -23,18 +22,17 @@ class DecodePointTests: XCTestCase {
             let decodedFromUncompressed: PointOnCurve = try PointOnCurve.decodePointFromPublicKey(publicKeyUncompressed)
             let expectedY = "ccfca71eff2101ad68238112e7585110e0f2c32d345225985356dc7cab8fdcc9"
             XCTAssertEqual(decodedFromUncompressed.y.data.hex, expectedY)
-            
+
             let privateKeyFromCompressed = try PrivateKey(wif: wifCompresssed)
             let publicKeyCompressed = privateKeyFromCompressed.publicKey()
             XCTAssertTrue(publicKeyCompressed.isCompressed)
-            
+
             let decodedFromCompressed: PointOnCurve = try PointOnCurve.decodePointFromPublicKey(publicKeyCompressed)
             XCTAssertEqual(decodedFromCompressed.y.data.hex, expectedY)
             XCTAssertEqual(decodedFromCompressed.y.data.hex, decodedFromUncompressed.y.data.hex)
-            
+
         } catch {
             XCTFail("Error: \(error)")
         }
     }
 }
-#endif

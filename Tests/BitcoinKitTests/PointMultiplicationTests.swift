@@ -6,7 +6,6 @@
 //  Copyright © 2019 BitcoinKit developers. All rights reserved.
 //
 
-#if BitcoinKitXcode
 import Foundation
 import XCTest
 @testable import BitcoinKit
@@ -74,4 +73,3 @@ class PointMultiplicationTests: XCTestCase {
     }
 
 }
-#endif
