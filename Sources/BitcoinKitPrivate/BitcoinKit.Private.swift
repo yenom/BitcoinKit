@@ -57,7 +57,7 @@ public class _Hash {
     }
 }
 
-public class _Key {
+public class _SwiftKey {
     public static func computePublicKey(fromPrivateKey privateKey: Data, compression: Bool) -> Data {
         
         let ctx = BN_CTX_new()
@@ -104,6 +104,9 @@ public class _Key {
             return Data(result)
         }
     }
+}
+
+public class _Key {
     public static func deriveKey(_ password: Data, salt: Data, iterations:Int, keyLength: Int) -> Data {
         var result = [UInt8](repeating: 0, count: keyLength)
         password.withUnsafeBytes { (passwordPtr: UnsafePointer<Int8>) in

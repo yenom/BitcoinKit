@@ -22,9 +22,11 @@
 //  THE SOFTWARE.
 //
 
+#if BitcoinKitXcode
 import Foundation
 import secp256k1
 
+// swiftlint:disable:next type_name
 class _SwiftKey {
 	public static func computePublicKey(fromPrivateKey privateKey: Data, compression: Bool) -> Data {
 		guard let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN)) else {
@@ -32,7 +34,7 @@ class _SwiftKey {
 		}
 		defer { secp256k1_context_destroy(ctx) }
 		var pubkey = secp256k1_pubkey()
-		var seckey: [UInt8] = privateKey.map{ $0 }
+		var seckey: [UInt8] = privateKey.map { $0 }
 		if seckey.count != 32 {
 			return Data()
 		}
@@ -48,10 +50,10 @@ class _SwiftKey {
 			if outputlen != 33 {
 				return Data()
 			}
-			return Data(bytes: serializedPubkey)			
+			return Data(bytes: serializedPubkey)
 		} else {
     		var serializedPubkey = [UInt8](repeating: 0, count: 65)
-    		var outputlen = 65 
+    		var outputlen = 65
     		if secp256k1_ec_pubkey_serialize(ctx, &serializedPubkey, &outputlen, &pubkey, UInt32(SECP256K1_EC_UNCOMPRESSED)) == 0 {
     			return Data()
     		}
@@ -63,15 +65,16 @@ class _SwiftKey {
 	}
 }
 
+// swiftlint:disable:next type_name
 class _HDKey {
 	private(set) var privateKey: Data?
-	private(set) var publicKey: Data?
+	private(set) var publicKey: Data
 	private(set) var chainCode: Data
 	private(set) var depth: UInt8
 	private(set) var fingerprint: UInt32
 	private(set) var childIndex: UInt32
 
-	init(privateKey: Data?, publicKey: Data?, chainCode: Data, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
+	init(privateKey: Data?, publicKey: Data, chainCode: Data, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
 		self.privateKey = privateKey
 		self.publicKey = publicKey
 		self.chainCode = chainCode
@@ -89,34 +92,31 @@ class _HDKey {
 			}
 			data.append(privateKey)
 		} else {
-			guard let publicKey = self.publicKey else {
-				return nil
-			}
 			data.append(publicKey)
 		}
 		var childIndex = CFSwapInt32HostToBig(hardened ? UInt32(0x80000000) | childIndex : childIndex)
 		data.append(Data(bytes: &childIndex, count: MemoryLayout<UInt32>.size))
 		var digest = _Hash.hmacsha512(data, key: self.chainCode)
-		let derivedPrivateKey: [UInt8] = digest[0..<32].map{ $0 }
-		let derivedChainCode: [UInt8] = digest[32..<64].map{ $0 }
+		let derivedPrivateKey: [UInt8] = digest[0..<32].map { $0 }
+		let derivedChainCode: [UInt8] = digest[32..<64].map { $0 }
 		var result: Data
 		if let privateKey = self.privateKey {
 			guard let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN)) else {
 				return nil
 			}
 			defer { secp256k1_context_destroy(ctx) }
-			var privateKeyBytes = privateKey.map{ $0 }
-			var derivedPrivateKeyBytes = derivedPrivateKey.map{ $0 }
+			var privateKeyBytes = privateKey.map { $0 }
+			var derivedPrivateKeyBytes = derivedPrivateKey.map { $0 }
 			if secp256k1_ec_privkey_tweak_add(ctx, &privateKeyBytes, &derivedPrivateKeyBytes) == 0 {
 				return nil
 			}
 			result = Data(bytes: privateKeyBytes)
-		} else if let publicKey = self.publicKey {
+		} else {
 			guard let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY)) else {
 				return nil
 			}
 			defer { secp256k1_context_destroy(ctx) }
-			let publicKeyBytes: [UInt8] = publicKey.map{ $0 }
+			let publicKeyBytes: [UInt8] = publicKey.map { $0 }
 			var secpPubkey = secp256k1_pubkey()
 			if secp256k1_ec_pubkey_parse(ctx, &secpPubkey, publicKeyBytes, publicKeyBytes.count) == 0 {
 				return nil
@@ -130,13 +130,9 @@ class _HDKey {
 				return nil
 			}
 			result = Data(bytes: compressedPublicKeyBytes)
-		} else {
-			return nil
 		}
-		guard let publicKey = self.publicKey else {
-			return nil
-		}
-	    let fingerPrint: UInt32 = _Hash.sha256ripemd160(publicKey).withUnsafeBytes{ $0.pointee }
-		return _HDKey(privateKey: result , publicKey: result, chainCode: Data(bytes: derivedChainCode), depth: self.depth + 1, fingerprint: fingerPrint, childIndex: childIndex)
+	    let fingerPrint: UInt32 = _Hash.sha256ripemd160(publicKey).withUnsafeBytes { $0.pointee }
+		return _HDKey(privateKey: result, publicKey: result, chainCode: Data(bytes: derivedChainCode), depth: self.depth + 1, fingerprint: fingerPrint, childIndex: childIndex)
 	}
 }
+#endif
