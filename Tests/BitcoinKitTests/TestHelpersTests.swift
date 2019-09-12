@@ -157,7 +157,7 @@ class TestHelpersTests: XCTestCase {
             utxos.append(UnspentTransaction(output: TransactionOutput(value: 4000, lockingScript: Data()), outpoint: transactionOutPoint))
             utxos.append(UnspentTransaction(output: TransactionOutput(value: 4000, lockingScript: Data()), outpoint: transactionOutPoint))
             
-            let (selectedOutputs, fee) = try selectTx(from: utxos, targetValue: 11000, dustThreshhold: 1000)
+            let (selectedOutputs, fee) = try selectTx(from: utxos, targetValue: 11000, dustThreshold: 1000)
             print("fee = ", fee)
             XCTAssertEqual(selectedOutputs.count, 3)
             XCTAssertEqual(selectedOutputs[0].output.value, 4000)
@@ -174,7 +174,7 @@ class TestHelpersTests: XCTestCase {
             utxos.append(UnspentTransaction(output: TransactionOutput(value: 5100, lockingScript: Data()), outpoint: transactionOutPoint))
             utxos.append(UnspentTransaction(output: TransactionOutput(value: 10000, lockingScript: Data()), outpoint: transactionOutPoint))
             
-            let (selectedOutputs, _) = try selectTx(from: utxos, targetValue: 15000, dustThreshhold: 1000)
+            let (selectedOutputs, _) = try selectTx(from: utxos, targetValue: 15000, dustThreshold: 1000)
             XCTAssertEqual(selectedOutputs.count, 3)
             XCTAssertEqual(selectedOutputs[0].output.value, 2000)
             XCTAssertEqual(selectedOutputs[1].output.value, 5100)
@@ -188,7 +188,7 @@ class TestHelpersTests: XCTestCase {
             var utxos = [UnspentTransaction]()
             utxos.append(UnspentTransaction(output: TransactionOutput(value: 79618, lockingScript: Data()), outpoint: transactionOutPoint))
             
-            let (selectedOutputs, _) = try selectTx(from: utxos, targetValue: 70838, dustThreshhold: 10000)
+            let (selectedOutputs, _) = try selectTx(from: utxos, targetValue: 70838, dustThreshold: 10000)
             XCTAssertEqual(selectedOutputs.count, 1)
             XCTAssertEqual(selectedOutputs[0].output.value, 79618)
             
@@ -198,7 +198,7 @@ class TestHelpersTests: XCTestCase {
         
         // 11. Target is zero and no utxo
         do {
-            let (selectedOutputs, _) = try selectTx(from: [], targetValue: 0, dustThreshhold: 10000)
+            let (selectedOutputs, _) = try selectTx(from: [], targetValue: 0, dustThreshold: 10000)
             XCTAssertEqual(selectedOutputs.count, 0)
         } catch {
             XCTFail("Unknown error occurred")

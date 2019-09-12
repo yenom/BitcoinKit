@@ -30,6 +30,6 @@ type_name:
   excluded:
 type_body_length: 500
 line_length: 300
-file_length: 500
+file_length: 1000
 number_separator:
   minimum_length: 5

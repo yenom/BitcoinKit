@@ -52,4 +52,11 @@ class CryptoTests: XCTestCase {
         XCTAssertNotNil(signature)
         XCTAssertEqual(signature?.hex, "3044022055f4b20035cbb2e85b7a04a0874c80d5822758f4e47a9a69db04b29f8b218f920220491e6a13296cfe2186da3a3ca565a179def3808b12d184553a8e3acfe1467273")
     }
+    
+    func testHMAC() {
+        let testStr = "param1=val1&param2=val2"
+        let secretKey = "password"
+        let result = Crypto.hmacsha512(data: testStr.data(using: .utf8)!, key: secretKey.data(using: .utf8)!)
+        XCTAssertEqual(result.hex, "051464ad12cd03cf6c0f968317dfcededafeb8a267d6da7869e0588aa887bde6f4f0fe2077aed2a32a748c9e2d59ddc2bb7c3f034a4aa9fc9b0752c750daae94")
+    }
 }

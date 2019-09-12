@@ -254,6 +254,21 @@ public class Script {
         return requirements.nSigRequired > 0
     }
 
+    public var isStandardOpReturnScript: Bool {
+        guard chunks.count == 2 else {
+            return false
+        }
+        return opcode(at: 0) == .OP_RETURN
+            && pushedData(at: 1) != nil
+    }
+
+    public func standardOpReturnData() -> Data? {
+        guard isStandardOpReturnScript else {
+            return nil
+        }
+        return pushedData(at: 1)
+    }
+
     // If typical multisig tx is detected, sets requirements:
     private func detectMultisigScript() {
         // multisig script must have at least 4 ops ("OP_1 <pubkey> OP_1 OP_CHECKMULTISIG")
@@ -396,7 +411,7 @@ public class Script {
 
     public func subScript(from index: Int) throws -> Script {
         let subScript: Script = Script()
-        for chunk in chunks[Range(index..<chunks.count)] {
+        for chunk in chunks[index..<chunks.count] {
             try subScript.appendData(chunk.chunkData)
         }
         return subScript
@@ -404,7 +419,7 @@ public class Script {
 
     public func subScript(to index: Int) throws -> Script {
         let subScript: Script = Script()
-        for chunk in chunks[Range(0..<index)] {
+        for chunk in chunks[0..<index] {
             try subScript.appendData(chunk.chunkData)
         }
         return subScript

@@ -1,5 +1,5 @@
 //
-//  SerializationTests.swift
+//  BlockMessageTests.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -25,35 +25,31 @@
 import XCTest
 @testable import BitcoinKit
 
-class SerializationTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-    
-    func testUInt32toHex() {
-		let d = Data(bytes: [1, 2, 3, 4])
-		let i: UInt32 = d.to(type: UInt32.self)
-		XCTAssertEqual(i.hex, "04030201")
-		XCTAssertEqual(i, 0x04030201)
-	}
-	
-	func testDataToUInt256() {
-		let d = Data(bytes: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2])
-		let i: UInt256 = d.to(type: UInt256.self)
-		XCTAssertEqual(i.hex, "0200000000000000000000000000000000000000000000000000000000000001")
+class BlockMessageTests: XCTestCase {
+    fileprivate func loadRawBlock(named name: String) throws -> BlockMessage {
+        let data: Data
+        #if BitcoinKitXcode
+        let url = Bundle(for: type(of: self)).url(forResource: name, withExtension: "raw")!
+        data = try Data(contentsOf: url)
+        #else
+        // find raw files if using Swift Package Manager:
+        let currentDirectoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        let fileURL = currentDirectoryURL
+            .appendingPathComponent("TestResources", isDirectory: true)
+            .appendingPathComponent(name)
+            .appendingPathExtension("raw")
+        data = try Data(contentsOf: fileURL)
+        #endif
+
+        return BlockMessage.deserialize(data)
     }
 
-    func testDataToInt32() {
-        for _ in 0..<10 {
-            for i in 0...255 {
-                let data: Data = Data([UInt8(i)])
-                let intValue: Int32 = data.to(type: Int32.self)
-                XCTAssertEqual(intValue, Int32(i), "\(i) time")
-            }
-        }
+    func testComputeMerkleRoot() throws {
+        let block1 = try loadRawBlock(named: "block1")
+        XCTAssertEqual(block1.computeMerkleRoot(), block1.merkleRoot)
+
+        let block413567 = try loadRawBlock(named: "block413567")
+        XCTAssertEqual(block413567.computeMerkleRoot(), block413567.merkleRoot)
     }
+    
 }

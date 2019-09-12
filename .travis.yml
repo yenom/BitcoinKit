@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode9.4
+osx_image: xcode10
 cache:
   directories:
   - Libraries
@@ -7,6 +7,7 @@ script:
 - xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration "$CONFIGURATION"
   -sdk "$SDK" -destination "$DESTINATION" -derivedDataPath build
   -enableCodeCoverage YES ENABLE_TESTABILITY=YES "$ACTION"
+- swift -version
 - swift test
 after_success:
 - ruby scripts/coverage.rb "$SCHEME"

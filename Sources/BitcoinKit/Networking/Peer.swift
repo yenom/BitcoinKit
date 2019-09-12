@@ -90,8 +90,13 @@ public class Peer: NSObject, StreamDelegate {
         inputStream.delegate = self
         outputStream.delegate = self
 
-        inputStream.schedule(in: .current, forMode: .commonModes)
-        outputStream.schedule(in: .current, forMode: .commonModes)
+        #if BitcoinKitXcode
+        inputStream.schedule(in: .current, forMode: .common)
+        outputStream.schedule(in: .current, forMode: .common)
+        #else
+        inputStream.schedule(in: .current, forMode: RunLoopMode.commonModes)
+        outputStream.schedule(in: .current, forMode: RunLoopMode.commonModes)
+        #endif
 
         inputStream.open()
         outputStream.open()
@@ -104,8 +109,14 @@ public class Peer: NSObject, StreamDelegate {
 
         inputStream.delegate = nil
         outputStream.delegate = nil
-        inputStream.remove(from: .current, forMode: .commonModes)
-        outputStream.remove(from: .current, forMode: .commonModes)
+        #if BitcoinKitXcode
+        inputStream.remove(from: .current, forMode: .common)
+        outputStream.remove(from: .current, forMode: .common)
+        #else
+        inputStream.remove(from: .current, forMode: RunLoopMode.commonModes)
+        outputStream.remove(from: .current, forMode: RunLoopMode.commonModes)
+        #endif
+
         inputStream.close()
         outputStream.close()
         readStream = nil
