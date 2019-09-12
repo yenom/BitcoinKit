@@ -1,5 +1,5 @@
 //
-//  SerializationTests.swift
+//  UInt32MathTests.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -25,42 +25,37 @@
 import XCTest
 @testable import BitcoinKit
 
-class SerializationTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-    
-    func testUInt32toHex() {
-		let d = Data(bytes: [1, 2, 3, 4])
-		let i: UInt32 = d.to(type: UInt32.self)
-		XCTAssertEqual(i.hex, "04030201")
-		XCTAssertEqual(i, 0x04030201)
+class UInt32MathTests: XCTestCase {
+	
+	override func setUp() {
+		super.setUp()
 	}
-
-    func testUInt64toHex() {
-        let d = Data(bytes: [1, 2, 3, 4, 5, 6, 7, 8])
-        let i: UInt64 = d.to(type: UInt64.self)
-        XCTAssertEqual(i.hex, "0807060504030201")
-        XCTAssertEqual(i, 0x0807060504030201)
-    }
-
-	func testDataToUInt256() {
-		let d = Data(bytes: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2])
-		let i: UInt256 = d.to(type: UInt256.self)
-		XCTAssertEqual(i.hex, "0200000000000000000000000000000000000000000000000000000000000001")
-    }
-
-    func testDataToInt32() {
-        for _ in 0..<10 {
-            for i in 0...255 {
-                let data: Data = Data([UInt8(i)])
-                let intValue: Int32 = data.to(type: Int32.self)
-                XCTAssertEqual(intValue, Int32(i), "\(i) time")
-            }
-        }
-    }
+	
+	override func tearDown() {
+		super.tearDown()
+	}
+	
+	func test1() {
+		XCTAssertEqual(ceil_log2(0), 0)
+		XCTAssertEqual(ceil_log2(1), 0)
+		XCTAssertEqual(ceil_log2(2), 1)
+		XCTAssertEqual(ceil_log2(3), 2)
+		XCTAssertEqual(ceil_log2(4), 2)
+		XCTAssertEqual(ceil_log2(5), 3)
+		XCTAssertEqual(ceil_log2(6), 3)
+		XCTAssertEqual(ceil_log2(7), 3)
+		XCTAssertEqual(ceil_log2(8), 3)
+		XCTAssertEqual(ceil_log2(9), 4)
+		XCTAssertEqual(ceil_log2(10), 4)
+		XCTAssertEqual(ceil_log2(11), 4)
+		XCTAssertEqual(ceil_log2(12), 4)
+		XCTAssertEqual(ceil_log2(13), 4)
+		XCTAssertEqual(ceil_log2(14), 4)
+		XCTAssertEqual(ceil_log2(15), 4)
+		XCTAssertEqual(ceil_log2(16), 4)
+		XCTAssertEqual(ceil_log2(17), 5)
+		
+		XCTAssertEqual(ceil_log2(UInt32.max-1), 32)
+		XCTAssertEqual(ceil_log2(UInt32.max), 32)
+	}
 }
