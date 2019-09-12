@@ -40,7 +40,14 @@ class SerializationTests: XCTestCase {
 		XCTAssertEqual(i.hex, "04030201")
 		XCTAssertEqual(i, 0x04030201)
 	}
-	
+
+    func testUInt64toHex() {
+        let d = Data(bytes: [1, 2, 3, 4, 5, 6, 7, 8])
+        let i: UInt64 = d.to(type: UInt64.self)
+        XCTAssertEqual(i.hex, "0807060504030201")
+        XCTAssertEqual(i, 0x0807060504030201)
+    }
+
 	func testDataToUInt256() {
 		let d = Data(bytes: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2])
 		let i: UInt256 = d.to(type: UInt256.self)

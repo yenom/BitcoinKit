@@ -129,7 +129,9 @@ extension UInt256: Comparable {
 extension UInt64 {
 	// MSB representation
 	public var hex: String {
-		return String(format: "%016lx", self)
+        let high: UInt64 = (self & 0xffffffff00000000) >> 32
+        let low: UInt64 = self & 0x00000000ffffffff
+        return String(format: "%08x", high) + String(format: "%08x", low)
 	}
 }
 
