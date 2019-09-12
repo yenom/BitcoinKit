@@ -180,7 +180,7 @@ public class _HDKey {
             return nil
         }
         
-        var result: Data = Data()
+        var result: Data
         if let privateKey = self.privateKey {
             let privateKeyNum = BN_new()!
             defer {
@@ -204,6 +204,9 @@ public class _HDKey {
             result.withUnsafeMutableBytes { (ptr: UnsafeMutablePointer<UInt8>) in
                 BN_bn2bin(privateKeyNum, ptr)
                 return
+            }
+            if result.count < 32 {
+                result = Data(repeating: 0, count: 32 - result.count) + result // 0 padding
             }
         } else {
             let publicKeyNum = BN_new()
