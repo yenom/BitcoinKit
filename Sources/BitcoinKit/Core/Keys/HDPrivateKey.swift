@@ -86,7 +86,7 @@ public class HDPrivateKey {
     }
 
     private func computePublicKeyData() -> Data {
-        return _Key.computePublicKey(fromPrivateKey: raw, compression: true)
+        return _SwiftKey.computePublicKey(fromPrivateKey: raw, compression: true)
     }
 
     public func derived(at index: UInt32, hardened: Bool = false) throws -> HDPrivateKey {

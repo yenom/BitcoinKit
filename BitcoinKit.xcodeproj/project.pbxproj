@@ -220,6 +220,7 @@
 		A2DE5110212AFCF200F54EA0 /* UInt256+BitcoinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DE510F212AFCF200F54EA0 /* UInt256+BitcoinTests.swift */; };
 		A2E11231212C400A00A0A40A /* ProofOfWorkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E11230212C400A00A0A40A /* ProofOfWorkTests.swift */; };
 		A2F06FBA2126785200DFF652 /* UInt32+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F06FB92126785200DFF652 /* UInt32+Utility.swift */; };
+		A201ABB6222ACF7100DEFE13 /* BitcoinKitPrivateSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A201ABB5222ACF7100DEFE13 /* BitcoinKitPrivateSwift.swift */; };
 		CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF120F0CF9100AD4020 /* Base58Tests.swift */; };
 		CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */; };
 		CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF520F0ED4500AD4020 /* AddressTests.swift */; };
@@ -461,6 +462,7 @@
 		A2DE510F212AFCF200F54EA0 /* UInt256+BitcoinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt256+BitcoinTests.swift"; sourceTree = "<group>"; };
 		A2E11230212C400A00A0A40A /* ProofOfWorkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofOfWorkTests.swift; sourceTree = "<group>"; };
 		A2F06FB92126785200DFF652 /* UInt32+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt32+Utility.swift"; sourceTree = "<group>"; };
+		A201ABB5222ACF7100DEFE13 /* BitcoinKitPrivateSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BitcoinKitPrivateSwift.swift; path = Core/BitcoinKitPrivateSwift.swift; sourceTree = "<group>"; };
 		CF432AF120F0CF9100AD4020 /* Base58Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58Tests.swift; sourceTree = "<group>"; };
 		CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bech32Tests.swift; sourceTree = "<group>"; };
 		CF432AF520F0ED4500AD4020 /* AddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTests.swift; sourceTree = "<group>"; };
@@ -572,6 +574,7 @@
 				1419E838202CDBE500FCB0BE /* BitcoinKitPrivate.h */,
 				1419E839202CDBE500FCB0BE /* BitcoinKitPrivate.m */,
 				147494CB201F9A29006D1CF8 /* Info.plist */,
+				A201ABB5222ACF7100DEFE13 /* BitcoinKitPrivateSwift.swift */,
 			);
 			name = BitcoinKit;
 			path = Sources/BitcoinKit;
@@ -1264,6 +1267,7 @@
 				0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */,
 				0C1DE15D211E6EB400FE8E43 /* OP_DROP.swift in Sources */,
 				299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */,
+				A201ABB6222ACF7100DEFE13 /* BitcoinKitPrivateSwift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

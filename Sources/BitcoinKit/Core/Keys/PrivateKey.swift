@@ -120,7 +120,7 @@ public struct PrivateKey {
     }
 
     private func computePublicKeyData() -> Data {
-        return _Key.computePublicKey(fromPrivateKey: data, compression: isPublicKeyCompressed)
+        return _SwiftKey.computePublicKey(fromPrivateKey: data, compression: isPublicKeyCompressed)
     }
 
     public func publicKey() -> PublicKey {
