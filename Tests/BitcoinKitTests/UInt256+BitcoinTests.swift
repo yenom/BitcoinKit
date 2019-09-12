@@ -1,7 +1,6 @@
 //
 //  UInt256+BitcoinTests.swift
 //
-//  Copyright © 2018 pebble8888
 //  Copyright © 2018 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,7 +36,12 @@ class UInt256_BitcoinTests: XCTestCase {
     }
     
     func test1() {
+        // size = 0
 		XCTAssertEqual(try UInt256(compact: 0x007fffff as UInt32).hex, "0000000000000000000000000000000000000000000000000000000000000000")
+        // target -0
+        XCTAssertEqual(try UInt256(compact: 0x22800000 as UInt32).hex, "0000000000000000000000000000000000000000000000000000000000000000")
+        // target 0
+        XCTAssertEqual(try UInt256(compact: 0x22000000 as UInt32).hex, "0000000000000000000000000000000000000000000000000000000000000000")
 		XCTAssertEqual(try UInt256(compact: 0x017fffff as UInt32).hex, "000000000000000000000000000000000000000000000000000000000000007f")
 		XCTAssertEqual(try UInt256(compact: 0x027fffff as UInt32).hex, "0000000000000000000000000000000000000000000000000000000000007fff")
 		XCTAssertEqual(try UInt256(compact: 0x03123456 as UInt32).hex, "0000000000000000000000000000000000000000000000000000000000123456")
@@ -93,7 +97,7 @@ class UInt256_BitcoinTests: XCTestCase {
 	// negative
 	func testNegative() {
 		do {
-			_ = try UInt256(compact: 0x008fffff as UInt32)
+			_ = try UInt256(compact: 0x108fffff as UInt32)
 			XCTFail()
 		} catch UInt256.CompactError.negative {
 		} catch {
@@ -101,7 +105,7 @@ class UInt256_BitcoinTests: XCTestCase {
 		}
 		
 		do {
-			_ = try UInt256(compact: 0x009fffff as UInt32)
+			_ = try UInt256(compact: 0x109fffff as UInt32)
 			XCTFail()
 		} catch UInt256.CompactError.negative {
 		} catch {
@@ -109,7 +113,7 @@ class UInt256_BitcoinTests: XCTestCase {
 		}
 		
 		do {
-			_ = try UInt256(compact: 0x00ffffff as UInt32)
+			_ = try UInt256(compact: 0x10ffffff as UInt32)
 			XCTFail()
 		} catch UInt256.CompactError.negative {
 		} catch {

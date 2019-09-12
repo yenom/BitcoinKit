@@ -1,7 +1,6 @@
 //
 //  UInt256.swift
 //
-//  Copyright © 2018 pebble8888
 //  Copyright © 2018 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -112,7 +111,15 @@ extension UInt256: CustomDebugStringConvertible {
 
 extension UInt256: Equatable {
 	public static func == (lhs: UInt256, rhs: UInt256) -> Bool {
-		if lhs.e0 != rhs.e0 { return false } else if lhs.e1 != rhs.e1 { return false } else if lhs.e2 != rhs.e2 { return false } else if lhs.e3 != rhs.e3 { return false }
+		if lhs.e0 != rhs.e0 {
+            return false
+        } else if lhs.e1 != rhs.e1 {
+            return false
+        } else if lhs.e2 != rhs.e2 {
+            return false
+        } else if lhs.e3 != rhs.e3 {
+            return false
+        }
 		return true
 	}
 }
@@ -120,7 +127,15 @@ extension UInt256: Equatable {
 extension UInt256: Comparable {
 	public static func < (lhs: UInt256, rhs: UInt256) -> Bool {
 		// compare higest digit at first
-		if lhs.e3 != rhs.e3 { return lhs.e3 < rhs.e3 } else if lhs.e2 != rhs.e2 { return lhs.e2 < rhs.e2 } else if lhs.e1 != rhs.e1 { return lhs.e1 < rhs.e1 } else if lhs.e0 != rhs.e0 { return lhs.e0 < rhs.e0 }
+		if lhs.e3 != rhs.e3 {
+            return lhs.e3 < rhs.e3
+        } else if lhs.e2 != rhs.e2 {
+            return lhs.e2 < rhs.e2
+        } else if lhs.e1 != rhs.e1 {
+            return lhs.e1 < rhs.e1
+        } else if lhs.e0 != rhs.e0 {
+            return lhs.e0 < rhs.e0
+        }
 		// a < a is always false (Irreflexivity)
 		return false
 	}
