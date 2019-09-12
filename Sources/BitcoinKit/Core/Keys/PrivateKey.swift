@@ -123,7 +123,7 @@ public struct PrivateKey {
     }
 
     public func publicKeyPoint() throws -> PointOnCurve {
-        let xAndY: Data = _Key.computePublicKey(fromPrivateKey: data, compression: false)
+        let xAndY: Data = _SwiftKey.computePublicKey(fromPrivateKey: data, compression: false)
         let expectedLengthOfScalar = Scalar32Bytes.expectedByteCount
         let expectedLengthOfKey = expectedLengthOfScalar * 2
         guard xAndY.count == expectedLengthOfKey else {
