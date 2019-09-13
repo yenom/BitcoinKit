@@ -76,7 +76,6 @@ public struct ScriptChunkHelper {
     private static func parseDataChunk(from scriptData: Data, offset: Int, opcode: UInt8) throws -> DataChunk {
         // for range
         let count: Int = scriptData.count
-//        let chunkLength: Int
         let opCodeSize: Int = MemoryLayout<UInt8>.size
         let dataLengthSize: Int
         let dataSize: Int
