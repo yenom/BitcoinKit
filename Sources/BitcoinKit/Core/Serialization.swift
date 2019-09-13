@@ -113,9 +113,9 @@ extension Data {
         case 0xfe:
             value = UInt64(self[1...4].to(type: UInt32.self))
         case 0xff:
-            fallthrough
-        default:
             value = self[1...8].to(type: UInt64.self)
+        default:
+            fatalError("This switch statement should be exhaustive without default clause")
         }
         return VarInt(value)
     }

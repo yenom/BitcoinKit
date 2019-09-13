@@ -115,7 +115,8 @@ extension Encoding {
         }
 
         for b in encodedBytes {
-            str += String(baseAlphabets[String.Index(encodedOffset: Int(b))])
+            let index = String.Index(utf16Offset: Int(b), in: baseAlphabets)
+            str += String(baseAlphabets[index])
         }
 
         return str
@@ -133,9 +134,8 @@ extension Encoding {
         let size = sizeFromBase(size: string.lengthOfBytes(using: .utf8) - zerosCount)
         var decodedBytes: [UInt8] = Array(repeating: 0, count: size)
         for c in string {
-            guard let baseIndex = baseAlphabets.index(of: c) else { return nil }
-
-            var carry = baseIndex.encodedOffset
+            guard let baseIndex: Int = baseAlphabets.index(of: c)?.utf16Offset(in: baseAlphabets) else { return nil }
+            var carry = baseIndex
             var i = 0
             for j in (0...decodedBytes.count - 1).reversed() where carry != 0 || i < length {
                 carry += base * Int(decodedBytes[j])
@@ -170,7 +170,8 @@ public struct Bech32 {
         let combined: Data = payload + checksum // Data of [UInt5]
         var base32 = ""
         for b in combined {
-            base32 += String(base32Alphabets[String.Index(encodedOffset: Int(b))])
+            let index = String.Index(utf16Offset: Int(b), in: base32Alphabets)
+            base32 += String(base32Alphabets[index])
         }
 
         return prefix + seperator + base32
@@ -194,7 +195,8 @@ public struct Bech32 {
         var decodedIn5bit: [UInt8] = [UInt8]()
         for c in base32.lowercased() {
             // We can't have characters other than base32 alphabets.
-            guard let baseIndex = base32Alphabets.index(of: c)?.encodedOffset else {
+            print(base32Alphabets)
+            guard let baseIndex = base32Alphabets.index(of: c)?.utf16Offset(in: base32Alphabets) else {
                 return nil
             }
             decodedIn5bit.append(UInt8(baseIndex))
