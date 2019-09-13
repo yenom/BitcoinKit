@@ -37,10 +37,10 @@ internal enum DataStoreKey: String {
 }
 
 internal extension BitcoinKitDataStoreProtocol {
-    internal func getString(forKey key: DataStoreKey) -> String? {
+    func getString(forKey key: DataStoreKey) -> String? {
         return getString(forKey: key.rawValue)
     }
-    internal func setString(_ value: String, forKey key: DataStoreKey) {
+    func setString(_ value: String, forKey key: DataStoreKey) {
         setString(value, forKey: key.rawValue)
     }
     func getData(forKey key: DataStoreKey) -> Data? {

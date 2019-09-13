@@ -39,7 +39,7 @@ func pton(_ address: String) -> Data {
         inet_pton(AF_INET6, address, UnsafeMutablePointer($0))
     }
     var buffer = Data(count: 16)
-    _ = buffer.withUnsafeMutableBytes { memcpy($0, &addr, 16) }
+    _ = buffer.withUnsafeMutableBytes { memcpy($0.baseAddress.unsafelyUnwrapped, &addr, 16) }
     return buffer
 }
 

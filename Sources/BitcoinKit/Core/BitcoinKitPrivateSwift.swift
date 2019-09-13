@@ -50,7 +50,7 @@ class _SwiftKey {
 			if outputlen != 33 {
 				return Data()
 			}
-			return Data(bytes: serializedPubkey)
+			return Data(serializedPubkey)
 		} else {
     		var serializedPubkey = [UInt8](repeating: 0, count: 65)
     		var outputlen = 65
@@ -60,7 +60,7 @@ class _SwiftKey {
     		if outputlen != 65 {
     			return Data()
     		}
-    		return Data(bytes: serializedPubkey)
+    		return Data(serializedPubkey)
 		}
 	}
 }
@@ -110,7 +110,7 @@ class _HDKey {
 			if secp256k1_ec_privkey_tweak_add(ctx, &privateKeyBytes, &derivedPrivateKeyBytes) == 0 {
 				return nil
 			}
-			result = Data(bytes: privateKeyBytes)
+			result = Data(privateKeyBytes)
 		} else {
 			guard let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY)) else {
 				return nil
@@ -129,10 +129,10 @@ class _HDKey {
 			if secp256k1_ec_pubkey_serialize(ctx, &compressedPublicKeyBytes, &compressedPublicKeyBytesLen, &secpPubkey, UInt32(SECP256K1_EC_COMPRESSED)) == 0 {
 				return nil
 			}
-			result = Data(bytes: compressedPublicKeyBytes)
+			result = Data(compressedPublicKeyBytes)
 		}
-	    let fingerPrint: UInt32 = _Hash.sha256ripemd160(publicKey).withUnsafeBytes { $0.pointee }
-		return _HDKey(privateKey: result, publicKey: result, chainCode: Data(bytes: derivedChainCode), depth: self.depth + 1, fingerprint: fingerPrint, childIndex: childIndex)
+	    let fingerPrint: UInt32 = _Hash.sha256ripemd160(publicKey).to(type: UInt32.self)
+		return _HDKey(privateKey: result, publicKey: result, chainCode: Data(derivedChainCode), depth: self.depth + 1, fingerprint: fingerPrint, childIndex: childIndex)
 	}
 }
 #endif

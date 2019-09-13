@@ -38,24 +38,24 @@ public struct ScriptFactory {
 
 // MARK: - Standard
 public extension ScriptFactory.Standard {
-    public static func buildP2PK(publickey: PublicKey) -> Script? {
+    static func buildP2PK(publickey: PublicKey) -> Script? {
         return try? Script()
             .appendData(publickey.data)
             .append(.OP_CHECKSIG)
     }
 
-    public static func buildP2PKH(address: Address) -> Script? {
+    static func buildP2PKH(address: Address) -> Script? {
         return Script(address: address)
     }
 
-    public static func buildP2SH(script: Script) -> Script {
+    static func buildP2SH(script: Script) -> Script {
         return script.toP2SH()
     }
 
-    public static func buildMultiSig(publicKeys: [PublicKey]) -> Script? {
+    static func buildMultiSig(publicKeys: [PublicKey]) -> Script? {
         return Script(publicKeys: publicKeys, signaturesRequired: UInt(publicKeys.count))
     }
-    public static func buildMultiSig(publicKeys: [PublicKey], signaturesRequired: UInt) -> Script? {
+    static func buildMultiSig(publicKeys: [PublicKey], signaturesRequired: UInt) -> Script? {
         return Script(publicKeys: publicKeys, signaturesRequired: signaturesRequired)
     }
 }
@@ -63,7 +63,7 @@ public extension ScriptFactory.Standard {
 // MARK: - LockTime
 public extension ScriptFactory.LockTime {
     // Base
-    public static func build(script: Script, lockDate: Date) -> Script? {
+    static func build(script: Script, lockDate: Date) -> Script? {
         return try? Script()
             .appendData(lockDate.bigNumData)
             .append(.OP_CHECKLOCKTIMEVERIFY)
@@ -71,13 +71,13 @@ public extension ScriptFactory.LockTime {
             .appendScript(script)
     }
 
-    public static func build(script: Script, lockIntervalSinceNow: TimeInterval) -> Script? {
+    static func build(script: Script, lockIntervalSinceNow: TimeInterval) -> Script? {
         let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
         return build(script: script, lockDate: lockDate)
     }
 
     // P2PKH + LockTime
-    public static func build(address: Address, lockIntervalSinceNow: TimeInterval) -> Script? {
+    static func build(address: Address, lockIntervalSinceNow: TimeInterval) -> Script? {
         guard let p2pkh = Script(address: address) else {
             return nil
         }
@@ -85,7 +85,7 @@ public extension ScriptFactory.LockTime {
         return build(script: p2pkh, lockDate: lockDate)
     }
 
-    public static func build(address: Address, lockDate: Date) -> Script? {
+    static func build(address: Address, lockDate: Date) -> Script? {
         guard let p2pkh = Script(address: address) else {
             return nil
         }
@@ -95,7 +95,7 @@ public extension ScriptFactory.LockTime {
 
 // MARK: - OpReturn
 public extension ScriptFactory.OpReturn {
-    public static func build(text: String) -> Script? {
+    static func build(text: String) -> Script? {
         let MAX_OP_RETURN_DATA_SIZE: Int = 220
         guard let data = text.data(using: .utf8), data.count <= MAX_OP_RETURN_DATA_SIZE else {
             return nil
@@ -108,7 +108,7 @@ public extension ScriptFactory.OpReturn {
 
 // MARK: - Condition
 public extension ScriptFactory.Condition {
-    public static func build(scripts: [Script]) -> Script? {
+    static func build(scripts: [Script]) -> Script? {
 
         guard !scripts.isEmpty else {
             return nil
@@ -160,7 +160,7 @@ public extension ScriptFactory.Condition {
 */
 public extension ScriptFactory.HashedTimeLockedContract {
     // Base
-    public static func build(recipient: Address, sender: Address, lockDate: Date, hash: Data, hashOp: HashOperator) -> Script? {
+    static func build(recipient: Address, sender: Address, lockDate: Date, hash: Data, hashOp: HashOperator) -> Script? {
         guard hash.count == hashOp.hashSize else {
             return nil
         }
@@ -186,18 +186,18 @@ public extension ScriptFactory.HashedTimeLockedContract {
     }
 
     // convenience
-    public static func build(recipient: Address, sender: Address, lockIntervalSinceNow: TimeInterval, hash: Data, hashOp: HashOperator) -> Script? {
+    static func build(recipient: Address, sender: Address, lockIntervalSinceNow: TimeInterval, hash: Data, hashOp: HashOperator) -> Script? {
         let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
         return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
     }
 
-    public static func build(recipient: Address, sender: Address, lockIntervalSinceNow: TimeInterval, secret: Data, hashOp: HashOperator) -> Script? {
+    static func build(recipient: Address, sender: Address, lockIntervalSinceNow: TimeInterval, secret: Data, hashOp: HashOperator) -> Script? {
         let hash = hashOp.hash(secret)
         let lockDate = Date(timeIntervalSinceNow: lockIntervalSinceNow)
         return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
     }
 
-    public static func build(recipient: Address, sender: Address, lockDate: Date, secret: Data, hashOp: HashOperator) -> Script? {
+    static func build(recipient: Address, sender: Address, lockDate: Date, secret: Data, hashOp: HashOperator) -> Script? {
         let hash = hashOp.hash(secret)
         return build(recipient: recipient, sender: sender, lockDate: lockDate, hash: hash, hashOp: hashOp)
     }

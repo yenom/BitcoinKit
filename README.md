@@ -1,12 +1,25 @@
-![BitcoinKit: Let’s Play with Bitcoin in Swift!](https://user-images.githubusercontent.com/23519083/44261174-cc64aa00-a251-11e8-85b6-145e0bcae102.jpg)
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/23519083/44261174-cc64aa00-a251-11e8-85b6-145e0bcae102.jpg" alt="BitcoinKit: Let’s Play with Bitcoin in Swift!">
+    <a href="https://travis-ci.org/yenom/BitcoinKit">
+      <img src="http://img.shields.io/travis/yenom/BitcoinKit.svg" alt="TravisCI">
+    </a>
+    <a href="https://codecov.io/gh/yenom/BitcoinKit">
+      <img src="https://codecov.io/gh/yenom/BitcoinKit/branch/master/graph/badge.svg" />
+    </a>
+    <a href="https://swift.org">
+        <img src="http://img.shields.io/badge/swift-5.0+-brightgreen.svg" alt="Swift 5.0+">
+    </a>
+    <a href="https://github.com/Carthage/Carthage">
+        <img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage">
+    </a>
+    <a href="https://swift.org/package-manager">
+        <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
+    </a>
+    <a href="http://cocoadocs.org/docsets/BitcoinKit">
+        <img src="https://img.shields.io/cocoapods/v/BitcoinKit.svg" alt="CococaPods" />
+    </a>
+</p>
 
-[![CI Status](http://img.shields.io/travis/yenom/BitcoinKit.svg)](https://travis-ci.org/yenom/BitcoinKit)
-[![codecov](https://codecov.io/gh/yenom/BitcoinKit/branch/master/graph/badge.svg)](https://codecov.io/gh/yenom/BitcoinKit)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Version](https://img.shields.io/cocoapods/v/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
-[![Platform](https://img.shields.io/cocoapods/p/BitcoinKit.svg)](http://cocoadocs.org/docsets/BitcoinKit)
-[![Backers on Open Collective](https://opencollective.com/BitcoinKit/backers/badge.svg)](#backers) 
-[![Sponsors on Open Collective](https://opencollective.com/BitcoinKit/sponsors/badge.svg)](#sponsors) 
 
 ### Welcome to BitcoinKit
 
