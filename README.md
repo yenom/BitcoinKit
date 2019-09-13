@@ -129,8 +129,8 @@ let peerGroup.start()
 Requirements
 ------------
 - iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 9.0+
-- Swift 4.1+
+- Xcode 10.0+
+- Swift 5.0+
 
 Installation
 ------------
