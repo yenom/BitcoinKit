@@ -76,41 +76,50 @@ public struct ScriptChunkHelper {
     private static func parseDataChunk(from scriptData: Data, offset: Int, opcode: UInt8) throws -> DataChunk {
         // for range
         let count: Int = scriptData.count
-        let chunkLength: Int
+//        let chunkLength: Int
+        let opCodeSize: Int = MemoryLayout<UInt8>.size
+        let dataLengthSize: Int
+        let dataSize: Int
+        var chunkLength: Int {
+            return opCodeSize + dataLengthSize + dataSize
+        }
 
         switch opcode {
         case 0..<OpCode.OP_PUSHDATA1.value:
-            let dataLength = opcode
-            chunkLength = MemoryLayout.size(ofValue: opcode) + Int(dataLength)
+            dataLengthSize = 0
+            dataSize = Int(opcode)
         case OpCode.OP_PUSHDATA1.value:
-            var dataLength = UInt8()
-            guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
+            dataLengthSize = MemoryLayout<UInt8>.size
+            guard offset + opCodeSize + dataLengthSize <= count else {
                 throw ScriptChunkError.error("Parse DataChunk failed. OP_PUSHDATA1 error")
             }
-            _ = scriptData.withUnsafeBytes {
-                memcpy(&dataLength, $0 + offset + MemoryLayout.size(ofValue: opcode), MemoryLayout.size(ofValue: dataLength))
+            dataSize = scriptData.withUnsafeBytes {
+                Int($0.load(fromByteOffset: offset + opCodeSize, as: UInt8.self))
             }
-            chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
         case OpCode.OP_PUSHDATA2.value:
-            var dataLength = UInt16()
-            guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
-                throw ScriptChunkError.error("Parse DataChunk failed.  OP_PUSHDATA2 error")
+            dataLengthSize = MemoryLayout<UInt16>.size
+            guard offset + opCodeSize + dataLengthSize <= count else {
+                throw ScriptChunkError.error("Parse DataChunk failed. OP_PUSHDATA2 error")
             }
-            _ = scriptData.withUnsafeBytes {
-                memcpy(&dataLength, $0 + offset + MemoryLayout.size(ofValue: opcode), MemoryLayout.size(ofValue: dataLength))
+            dataSize = scriptData.withUnsafeBytes {
+                Int(
+                    CFSwapInt16LittleToHost(
+                        $0.load(fromByteOffset: offset + opCodeSize, as: UInt16.self)
+                    )
+                )
             }
-            dataLength = CFSwapInt16LittleToHost(dataLength)
-            chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
         case OpCode.OP_PUSHDATA4.value:
-            var dataLength = UInt32()
-            guard offset + MemoryLayout.size(ofValue: dataLength) <= count else {
-                throw ScriptChunkError.error("Parse DataChunk failed.  OP_PUSHDATA4 error")
+            dataLengthSize = MemoryLayout<UInt32>.size
+            guard offset + opCodeSize + dataLengthSize <= count else {
+                throw ScriptChunkError.error("Parse DataChunk failed. OP_PUSHDATA4 error")
             }
-            _ = scriptData.withUnsafeBytes {
-                memcpy(&dataLength, $0 + offset + MemoryLayout.size(ofValue: opcode), MemoryLayout.size(ofValue: dataLength))
+            dataSize = scriptData.withUnsafeBytes {
+                Int(
+                    CFSwapInt32LittleToHost(
+                        $0.load(fromByteOffset: offset + opCodeSize, as: UInt32.self)
+                    )
+                )
             }
-            dataLength = CFSwapInt32LittleToHost(dataLength) // CoreBitcoin uses CFSwapInt16LittleToHost(dataLength)
-            chunkLength = MemoryLayout.size(ofValue: opcode) + MemoryLayout.size(ofValue: dataLength) + Int(dataLength)
         default:
             // cannot happen because it's opcode
             throw ScriptChunkError.error("Parse DataChunk failed. OP_CODE: \(opcode).")

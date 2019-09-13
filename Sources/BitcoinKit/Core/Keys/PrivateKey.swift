@@ -72,7 +72,7 @@ public struct PrivateKey {
         var key = Data(count: count)
         var status: Int32 = 0
         repeat {
-            status = key.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, count, $0) }
+            status = key.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, count, $0.baseAddress.unsafelyUnwrapped) }
         } while (status != 0 || !check([UInt8](key)))
 
         self.data = key

@@ -53,7 +53,7 @@ public struct Mnemonic {
     public static func generate(strength: Strength = .default, language: Language = .english) throws -> [String] {
         let byteCount = strength.rawValue / 8
         var bytes = Data(count: byteCount)
-        let status = bytes.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, byteCount, $0) }
+        let status = bytes.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, byteCount, $0.baseAddress.unsafelyUnwrapped) }
         guard status == errSecSuccess else { throw MnemonicError.randomBytesError }
         return generate(entropy: bytes, language: language)
     }

@@ -54,7 +54,7 @@ public class ScriptExecutionContext {
     // Constants
     private let blobFalse: Data = Data()
     private let blobZero: Data = Data()
-    private let blobTrue: Data = Data(bytes: [UInt8(1)])
+    private let blobTrue: Data = Data([UInt8(1)])
 
     // If verbose is true, stack will be printed each time OP_CODEs are executed
     public var verbose: Bool = false
