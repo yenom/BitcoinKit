@@ -159,6 +159,8 @@
 		294CE2E9232CBE8F00922458 /* HDWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2E7232CBE7100922458 /* HDWalletTests.swift */; };
 		294CE2EB232CE9AE00922458 /* FeeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2EA232CE9AE00922458 /* FeeCalculator.swift */; };
 		294CE2EF232CECCD00922458 /* FeeCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */; };
+		294CE2F1232CFE7200922458 /* UnspentTransactionOutputSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */; };
+		294CE2F3232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */; };
 		294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE31211A05D200B7F645 /* OP_RETURN.swift */; };
 		294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3A211B31B100B7F645 /* OP_NOP.swift */; };
 		294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3C211B31C100B7F645 /* OP_VER.swift */; };
@@ -390,6 +392,8 @@
 		294CE2E7232CBE7100922458 /* HDWalletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWalletTests.swift; sourceTree = "<group>"; };
 		294CE2EA232CE9AE00922458 /* FeeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeCalculator.swift; sourceTree = "<group>"; };
 		294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeCalculatorTests.swift; sourceTree = "<group>"; };
+		294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransactionOutputSelector.swift; sourceTree = "<group>"; };
+		294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransactionOutputSelectorTests.swift; sourceTree = "<group>"; };
 		294DDE31211A05D200B7F645 /* OP_RETURN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RETURN.swift; sourceTree = "<group>"; };
 		294DDE3A211B31B100B7F645 /* OP_NOP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOP.swift; sourceTree = "<group>"; };
 		294DDE3C211B31C100B7F645 /* OP_VER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VER.swift; sourceTree = "<group>"; };
@@ -692,6 +696,7 @@
 			children = (
 				294CE2E7232CBE7100922458 /* HDWalletTests.swift */,
 				294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */,
+				294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -870,6 +875,7 @@
 			children = (
 				14A2961E2032317B00E19177 /* HDWallet.swift */,
 				294CE2EA232CE9AE00922458 /* FeeCalculator.swift */,
+				294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -1223,6 +1229,7 @@
 				141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */,
 				0C1DE175211E816E00FE8E43 /* OP_2SWAP.swift in Sources */,
 				0C1DE16F211E7D5800FE8E43 /* OP_3DUP.swift in Sources */,
+				294CE2F1232CFE7200922458 /* UnspentTransactionOutputSelector.swift in Sources */,
 				14839A97202FE6D000A6CB34 /* BlockMessage.swift in Sources */,
 				0C1DE16D211E7CC300FE8E43 /* OP_2DUP.swift in Sources */,
 				1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */,
@@ -1277,6 +1284,7 @@
 				E6A643102244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift in Sources */,
 				CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */,
 				6E20AED32112C7DA008A9810 /* TransactionTests.swift in Sources */,
+				294CE2F3232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift in Sources */,
 				6E20AED72112D417008A9810 /* MurmurHashTests.swift in Sources */,
 				6E797C452116C8A5003BEDFD /* OpCodeFactoryTests.swift in Sources */,
 				CF432AFC20F25E0000AD4020 /* TestHelpersTests.swift in Sources */,
