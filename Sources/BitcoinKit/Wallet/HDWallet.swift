@@ -25,124 +25,248 @@
 
 import Foundation
 
-public final class HDWallet {
-    public let network: Network
+open class HDWallet {
+    public enum Chain: Int {
+        case external
+        case `internal`
+    }
 
+    /// [Secret] Be very careful. This is a group of easy to remember words to generate seed data
+    public let mnemonic: [String]?
+    /// [Secret] Be very careful. This is the data to generate deterministic wallets
+    public let seed: Data
+    /// Network for the coni i.e. mainnet/testnet
+    public let network: Network
+    /// HDKeychain to derive keys
+    private let keychain: HDKeychain
+    /// [Secret] Be very careful. This is a root HDPrivateKey
+    public var rootXPrivKey: HDPrivateKey
+    /// [Secret] Be very careful. This is a root HDPublicKey
+    public var rootXPubKey: HDPublicKey
+
+    /// Purpose is a constant set to 44' (or 0x8000002C) following the BIP43 recommendation.
+    open var purpose: UInt32 { return 44 }
+    /// BIP44 CoinType which splits the key space into independent cryptocoins such as Bitcoin and BitcoinCash.
+    open var coinType: UInt32 { return network.coinType.index }
+    /// BIP44 Account which splits the key space into independent user identities, so the wallet never mixes the coins across different accounts.
+    public var account: UInt32
+
+    // Index for keys (Increment only.)
+    /// Child index for BIP32 derivation to generate addresses that are meant to be visible outside of the wallet (e.g. for receiving payments).
+    public private(set) var externalIndex: UInt32
+    ///  Child index for BIP32 derivation to generate addresses which are not meant to be visible outside of the wallet and is used for return transaction change.
+    public private(set) var internalIndex: UInt32
+
+    /// [Cached] Latest Address for receiving payment.
+    public var address: Address { return externalAddresses.last! }
+    /// [Cached] Latest Address for change output.
+    public var changeAddress: Address { return internalAddresses.last! }
+
+    // MARK: - Private Keys
+    /// [Secret] [Cached] Private keys for external addresses (receive).
+    public private(set) var externalPrivKeys: [PrivateKey]!
+    /// [Secret] [Cached] Private keys for internal addresses (change).
+    public private(set) var internalPrivKeys: [PrivateKey]!
+    /// [Secret] [Cached] Private keys combined both external and internal.
+    public var privKeys: [PrivateKey] { return externalPrivKeys + internalPrivKeys }
+
+    // MARK: - Public Keys
+    /// [Cached] Public keys for external addresses (receive).
+    public private(set) var externalPubKeys: [PublicKey]!
+    /// [Cached] Public keys for internal addresses (change).
+    public private(set) var internalPubKeys: [PublicKey]!
+    /// [Cached] Public keys combined both external and internal.
+    public var pubKeys: [PublicKey] { return externalPubKeys + internalPubKeys }
+
+    // MARK: - Addresses
+    /// [Cached] External addresses for receiving payment.
+    public private(set) var externalAddresses: [Address]!
+    /// [Cached] Internal addresses for change output.
+    public private(set) var internalAddresses: [Address]!
+    /// [Cached] Addresses combined both external and internal.
+    public var addresses: [Address] { return externalAddresses + internalAddresses }
+
+    private init(mnemonic: [String]?,
+                 seed: Data,
+                 externalIndex: UInt32,
+                 internalIndex: UInt32,
+                 network: Network,
+                 account: UInt32) {
+        self.mnemonic = mnemonic
+        self.seed = seed
+        self.network = network
+        self.account = account
+        self.externalIndex = externalIndex
+        self.internalIndex = internalIndex
+        self.keychain = HDKeychain(seed: seed, network: network)
+        self.rootXPrivKey = HDPrivateKey(seed: seed, network: network)
+        self.rootXPubKey = rootXPrivKey.extendedPublicKey()
+
+        // Privkey cache
+        self.externalPrivKeys = (0...externalIndex).map { privKey(index: $0, chain: .external) }
+        self.internalPrivKeys = (0...internalIndex).map { privKey(index: $0, chain: .internal) }
+
+        // Pubkey cache
+        self.externalPubKeys = externalPrivKeys.map { $0.publicKey() }
+        self.internalPubKeys = internalPrivKeys.map { $0.publicKey() }
+
+        // Address cache
+        self.externalAddresses = externalPubKeys.map { $0.toAddress() }
+        self.internalAddresses = internalPubKeys.map { $0.toAddress() }
+    }
+
+    public convenience init(seed: Data,
+                            externalIndex: UInt32,
+                            internalIndex: UInt32,
+                            network: Network,
+                            account: UInt32 = 0) {
+        self.init(mnemonic: nil, seed: seed, externalIndex: externalIndex, internalIndex: internalIndex, network: network, account: account)
+    }
+
+    public convenience init(mnemonic: [String],
+                            passphrase: String,
+                            externalIndex: UInt32,
+                            internalIndex: UInt32,
+                            network: Network,
+                            account: UInt32 = 0) throws {
+        let seed: Data = try Mnemonic.seed(mnemonic: mnemonic, passphrase: passphrase)
+        self.init(mnemonic: mnemonic, seed: seed, externalIndex: externalIndex, internalIndex: internalIndex, network: network, account: account)
+    }
+
+    /// Create HDWallet by generating random mnemonic. Passphrase is used as salt to generate seed from the mnemonic.
+    public static func create(passphrase: String, network: Network) -> HDWallet {
+        // swiftlint:disable:next force_try
+        let mnemonic: [String] = try! Mnemonic.generate(strength: .default, language: .english)
+        return try! HDWallet(mnemonic: mnemonic, passphrase: passphrase, externalIndex: 0, internalIndex: 0, network: network)
+    }
+
+    // MARK: keys and addresses
+    /// m / purpose' / coin_type' / account' / change / address_index
+    private func derivationPath(for index: UInt32, chain: Chain) -> String {
+        return "m/\(purpose)'/\(coinType)'/\(account)'/\(chain.rawValue)/\(index)"
+    }
+
+    /// [Secret] [Non-Cache] Get xprivkey for index
+    public func xprivKey(index: UInt32, chain: Chain) -> HDPrivateKey {
+        // swiftlint:disable:next force_try
+        return try! keychain.derivedKey(path: derivationPath(for: index, chain: chain))
+    }
+
+    /// [Non-Cache] Get xpubkey for index
+    public func xpubKey(index: UInt32, chain: Chain) -> HDPublicKey {
+        return xprivKey(index: index, chain: chain).extendedPublicKey()
+    }
+
+    /// [Secret] [Non-Cache] Get privkey for index
+    public func privKey(index: UInt32, chain: Chain) -> PrivateKey {
+        return xprivKey(index: index, chain: chain).privateKey()
+    }
+
+    /// [Non-Cache] Get pubkey for index
+    public func pubKey(index: UInt32, chain: Chain) -> PublicKey {
+        return xpubKey(index: index, chain: chain).publicKey()
+    }
+
+    /// [Non-Cache] Get address for index
+    public func address(index: UInt32, chain: Chain) -> Address {
+        return pubKey(index: index, chain: chain).toAddress()
+    }
+
+    /// Increment external index and update privkey/pubkey/address cache.
+    public func incrementExternalIndex(by value: UInt32) {
+        let newIndex: UInt32 = externalIndex + value
+        let newPrivKeys: [PrivateKey] = (externalIndex + 1...newIndex).map { privKey(index: $0, chain: .external) }
+        let newPubKeys: [PublicKey] = newPrivKeys.map { $0.publicKey() }
+        let newAddresses: [Address] = newPubKeys.map { $0.toAddress() }
+        externalIndex += value
+        externalPrivKeys += newPrivKeys
+        externalPubKeys += newPubKeys
+        externalAddresses += newAddresses
+    }
+
+    /// Increment internal index and update privkey/pubkey/address cache.
+    public func incrementInternalIndex(by value: UInt32) {
+        let newIndex: UInt32 = internalIndex + value
+        let newPrivKeys: [PrivateKey] = (internalIndex + 1...newIndex).map { privKey(index: $0, chain: .internal) }
+        let newPubKeys: [PublicKey] = newPrivKeys.map { $0.publicKey() }
+        let newAddresses: [Address] = newPubKeys.map { $0.toAddress() }
+        internalIndex += value
+        internalPrivKeys += newPrivKeys
+        internalPubKeys += newPubKeys
+        internalAddresses += newAddresses
+    }
+
+    // MARK: - Deprecated properties
+    @available(*, unavailable)
     public var transactions: [Transaction] {
         return []
     }
 
+    @available(*, unavailable)
     public var unspentTransactions: [Transaction] {
         return []
     }
 
+    @available(*, unavailable)
     public var balance: UInt64 {
         return 0
     }
 
-    private let seed: Data
-    private let keychain: HDKeychain
-
-    private let purpose: UInt32
-    private let coinType: UInt32
-    var account: UInt32
-    var externalIndex: UInt32
-    var internalIndex: UInt32
-
-    public init(seed: Data, network: Network) {
-        self.seed = seed
-        self.network = network
-        keychain = HDKeychain(seed: seed, network: network)
-
-        // m / purpose' / coin_type' / account' / change / address_index
-        //
-        // Purpose is a constant set to 44' (or 0x8000002C) following the BIP43 recommendation.
-        // It indicates that the subtree of this node is used according to this specification.
-        // Hardened derivation is used at this level.
-        purpose = 44
-
-        // One master node (seed) can be used for unlimited number of independent cryptocoins such as Bitcoin, Litecoin or Namecoin. However, sharing the same space for various cryptocoins has some disadvantages.
-        // This level creates a separate subtree for every cryptocoin, avoiding reusing addresses across cryptocoins and improving privacy issues.
-        // Coin type is a constant, set for each cryptocoin. Cryptocoin developers may ask for registering unused number for their project.
-        // The list of already allocated coin types is in the chapter "Registered coin types" below.
-        // Hardened derivation is used at this level.
-        coinType = network == .mainnet ? 0 : 1
-
-        // This level splits the key space into independent user identities, so the wallet never mixes the coins across different accounts.
-        // Users can use these accounts to organize the funds in the same fashion as bank accounts; for donation purposes (where all addresses are considered public), for saving purposes, for common expenses etc.
-        // Accounts are numbered from index 0 in sequentially increasing manner. This number is used as child index in BIP32 derivation.
-        // Hardened derivation is used at this level.
-        // Software should prevent a creation of an account if a previous account does not have a transaction history (meaning none of its addresses have been used before).
-        // Software needs to discover all used accounts after importing the seed from an external source. Such an algorithm is described in "Account discovery" chapter.
-        account = 0
-
-        // Constant 0 is used for external chain and constant 1 for internal chain (also known as change addresses).
-        // External chain is used for addresses that are meant to be visible outside of the wallet (e.g. for receiving payments).
-        // Internal chain is used for addresses which are not meant to be visible outside of the wallet and is used for return transaction change.
-        // Public derivation is used at this level.
-
-        // Addresses are numbered from index 0 in sequentially increasing manner. This number is used as child index in BIP32 derivation.
-        // Public derivation is used at this level.
-        externalIndex = 0
-        internalIndex = 0
-    }
-
-    // MARK: - External Addresses & Keys (Receive Addresses & Keys)
+    // MARK: - Deprecated methods
+    // External Addresses & Keys (Receive Addresses & Keys)
+    @available(*, unavailable, renamed: "address")
     public func receiveAddress() throws -> Address {
-        return try receiveAddress(index: externalIndex)
+        return address(index: externalIndex, chain: .external)
     }
 
+    @available(*, unavailable, message: "Use address(_ index: UInt32, chain: Chain) instead")
     public func receiveAddress(index: UInt32) throws -> Address {
-        let key = try publicKey(index: index)
-        return key.toCashaddr()
+        return address(index: index, chain: .external)
     }
 
+    @available(*, unavailable, renamed: "pubKey")
     public func publicKey(index: UInt32) throws -> PublicKey {
-        return try extendedPublicKey(index: index).publicKey()
+        return pubKey(index: index, chain: .external)
     }
 
+    @available(*, unavailable, renamed: "privKey")
     public func privateKey(index: UInt32) throws -> PrivateKey {
-        return try extendedPrivateKey(index: index).privateKey()
+        return privKey(index: index, chain: .external)
     }
 
+    @available(*, unavailable, renamed: "xpubKey")
     public func extendedPublicKey(index: UInt32) throws -> HDPublicKey {
-        return try extendedPrivateKey(index: index).extendedPublicKey()
+        return xpubKey(index: index, chain: .external)
     }
 
+    @available(*, unavailable, renamed: "xprivKey")
     public func extendedPrivateKey(index: UInt32) throws -> HDPrivateKey {
-        let privateKey = try keychain.derivedKey(path: "m/\(purpose)'/\(coinType)'/\(account)'/\(Chain.external.rawValue)/\(index)")
-        return privateKey
+        return xprivKey(index: index, chain: .external)
     }
 
     // MARK: - Internal Addresses & Keys (Change Addresses& Keys)
-    public func changeAddress() throws -> Address {
-        return try changeAddress(index: internalIndex)
-    }
-
+    @available(*, unavailable, message: "Use address(_ index: UInt32, chain: Chain) instead")
     public func changeAddress(index: UInt32) throws -> Address {
-        let key = try changePublicKey(index: index)
-        return key.toCashaddr()
+        return address(index: index, chain: .internal)
     }
 
+    @available(*, unavailable, renamed: "pubKey")
     public func changePublicKey(index: UInt32) throws -> PublicKey {
-        return try changeExtendedPublicKey(index: index).publicKey()
+        return pubKey(index: index, chain: .internal)
     }
 
+    @available(*, unavailable, renamed: "privKey")
     public func changePrivateKey(index: UInt32) throws -> PrivateKey {
-        return try changeExtendedPrivateKey(index: index).privateKey()
+        return privKey(index: index, chain: .internal)
     }
 
+    @available(*, unavailable, renamed: "xpubKey")
     public func changeExtendedPublicKey(index: UInt32) throws -> HDPublicKey {
-        return try changeExtendedPrivateKey(index: index).extendedPublicKey()
+        return xpubKey(index: index, chain: .internal)
     }
 
+    @available(*, unavailable, renamed: "xprivKey")
     public func changeExtendedPrivateKey(index: UInt32) throws -> HDPrivateKey {
-        let privateKey = try keychain.derivedKey(path: "m/\(purpose)'/\(coinType)'/\(account)'/\(Chain.internal.rawValue)/\(index)")
-        return privateKey
-    }
-
-    enum Chain: Int {
-        case external
-        case `internal`
+        return xprivKey(index: index, chain: .internal)
     }
 }

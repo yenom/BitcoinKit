@@ -460,8 +460,8 @@ private extension MnemonicTests {
             do {
                 let seed = try Mnemonic.seed(mnemonic: words)
                 XCTAssertEqual(seed.hex, vector.expectedBIP39SeedHex)
-                let hdWallet = HDWallet.init(seed: seed, network: .mainnetBTC)
-                let privateKey = try! hdWallet.privateKey(index: UInt32(0))
+                let hdWallet = HDWallet.init(seed: seed, externalIndex: 0, internalIndex: 0, network: .mainnetBTC)
+                let privateKey = hdWallet.privKey(index: 0, chain: .external)
                 XCTAssertEqual(privateKey.toWIF(), vector.bip44BTCMainnetIndex0PrivateKeyWIF)
             } catch {
                 XCTFail("Error: \(error)")
