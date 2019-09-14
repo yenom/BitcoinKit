@@ -25,28 +25,42 @@
 
 import Foundation
 
-public class Network {
+open class Network {
     public static let mainnet: Network = BCHMainnet()
     public static let testnet: Network = BCHTestnet()
     public static let mainnetBTC: Network = BTCMainnet()
     public static let testnetBTC: Network = BTCTestnet()
 
-    public var name: String { return "" }
-    public var alias: String { return "" }
-    public var scheme: String { return "" }
+    /// Network name i.e. livenet/testnet
+    open var name: String { fatalError("Network.name must be implemented.") }
+    /// Network name alias i.e. mainnet/regtest
+    open var alias: String { fatalError("Network.alias must be implemented.") }
+    /// Address Scheme
+    open var scheme: String { fatalError("Network.scheme must be implemented.") }
+    /// BIP44 CoinType
+    open var coinType: CoinType { fatalError("Network.coinType must be implemented.") }
 
-    // version byte
-    var pubkeyhash: UInt8 { return 0 }
-    var privatekey: UInt8 { return 0 }
-    var scripthash: UInt8 { return 0 }
-    var xpubkey: UInt32 { return 0 }
-    var xprivkey: UInt32 { return 0 }
+    /// pubkeyhash version byte
+    open var pubkeyhash: UInt8 { fatalError("Network.pubkeyhash must be implemented.") }
+    /// privatekey version byte
+    open var privatekey: UInt8 { fatalError("Network.privatekey must be implemented.") }
+    /// scripthash version byte
+    open var scripthash: UInt8 { fatalError("Network.scripthash must be implemented.") }
+    /// xpubkey version byte
+    open var xpubkey: UInt32 { fatalError("Network.xpubkey must be implemented.") }
+    /// xprivkey version byte
+    open var xprivkey: UInt32 { fatalError("Network.xprivkey must be implemented.") }
 
-    var magic: UInt32 { return 0 }
-    public var port: UInt32 { return 0 }
-    public var dnsSeeds: [String] { return [] }
-    var checkpoints: [Checkpoint] { return [] }
-    var genesisBlock: Data { return Data() }
+    /// Network magic
+    open var magic: UInt32 { fatalError("Network.magic must be implemented.") }
+    /// Port number
+    open var port: UInt32 { fatalError("Network.port must be implemented.") }
+    /// DNS seeds
+    open var dnsSeeds: [String] { fatalError("Network.dnsSeeds must be implemented.") }
+    /// Checkpoints to IBD
+    open var checkpoints: [Checkpoint] { fatalError("Network.checkpoints must be implemented.") }
+    /// Genesis Block
+    open var genesisBlock: Data { fatalError("Network.genesisBlock must be implemented.") }
 
     fileprivate init() {}
 }
@@ -55,24 +69,34 @@ extension Network: Equatable {
     // swiftlint:disable operator_whitespace
     public static func ==(lhs: Network, rhs: Network) -> Bool {
         return lhs.name == rhs.name
+            && lhs.pubkeyhash == rhs.pubkeyhash
+            && lhs.privatekey == rhs.privatekey
+            && lhs.scripthash == rhs.scripthash
+            && lhs.xpubkey == rhs.xpubkey
+            && lhs.xprivkey == rhs.xprivkey
+            && lhs.magic == rhs.magic
+            && lhs.port == rhs.port
     }
 }
 
-struct Checkpoint {
-    let height: Int32
-    let hash: Data
-    let timestamp: UInt32
-    let target: UInt32
+public struct Checkpoint {
+    public let height: Int32
+    public let hash: Data
+    public let timestamp: UInt32
+    public let target: UInt32
 }
 
 public class BTCMainnet: Mainnet {
-    public override var scheme: String {
+    override public var scheme: String {
         return "bitcoin"
     }
-    override var magic: UInt32 {
+    override public var magic: UInt32 {
         return 0xf9beb4d9
     }
-    public override var dnsSeeds: [String] {
+    public override var coinType: CoinType {
+        return .BTC
+    }
+    override public var dnsSeeds: [String] {
         return [
             "seed.bitcoin.sipa.be",         // Pieter Wuille
             "dnsseed.bluematt.me",          // Matt Corallo
@@ -85,7 +109,7 @@ public class BTCMainnet: Mainnet {
             "seed.ob1.io"                  // OpenBazaar
         ]
     }
-    override var checkpoints: [Checkpoint] {
+    override public var checkpoints: [Checkpoint] {
         return super.checkpoints + [
             Checkpoint(height: 463_680, hash: Data(Data(hex: "000000000000000000431a2f4619afe62357cd16589b638bb638f2992058d88e")!.reversed()), timestamp: 1_493_259_601, target: 0x18021b3e)
         ]
@@ -93,13 +117,16 @@ public class BTCMainnet: Mainnet {
 }
 
 public class BTCTestnet: Testnet {
-    public override var scheme: String {
+    override public var scheme: String {
         return "bitcoin"
     }
-    override var magic: UInt32 {
+    override public var magic: UInt32 {
         return 0x0b110907
     }
-    public override var dnsSeeds: [String] {
+    public override var coinType: CoinType {
+        return .testnet
+    }
+    override public var dnsSeeds: [String] {
         return [
             "testnet-seed.bitcoin.jonasschnelli.ch", // Jonas Schnelli
             "testnet-seed.bluematt.me",              // Matt Corallo
@@ -108,7 +135,7 @@ public class BTCTestnet: Testnet {
             "bitcoin-testnet.bloqseeds.net"         // Bloq
         ]
     }
-    override var checkpoints: [Checkpoint] {
+    override public var checkpoints: [Checkpoint] {
         return super.checkpoints + [
             Checkpoint(height: 1_108_800, hash: Data(Data(hex: "00000000000288d9a219419d0607fb67cc324d4b6d2945ca81eaa5e739fab81e")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0)
         ]
@@ -116,13 +143,16 @@ public class BTCTestnet: Testnet {
 }
 
 public class BCHMainnet: Mainnet {
-    public override var scheme: String {
+    override public var scheme: String {
         return "bitcoincash"
     }
-    override var magic: UInt32 {
+    override public var magic: UInt32 {
         return 0xe3e1f3e8
     }
-    public override var dnsSeeds: [String] {
+    public override var coinType: CoinType {
+        return .BCH
+    }
+    override public var dnsSeeds: [String] {
         return [
             "seed.bitcoinabc.org", // - Bitcoin ABC seeder
             "seed-abc.bitcoinforks.org", // - bitcoinforks seeders
@@ -132,7 +162,7 @@ public class BCHMainnet: Mainnet {
             "seeder.criptolayer.net" // - criptolayer.net
         ]
     }
-    override var checkpoints: [Checkpoint] {
+    override public var checkpoints: [Checkpoint] {
         return super.checkpoints + [
             Checkpoint(height: 478_559, hash: Data(Data(hex: "000000000000000000651ef99cb9fcbe0dadde1d424bd9f15ff20136191a5eec")!.reversed()), timestamp: 1_501_611_161, target: 0x18021b3e)
         ]
@@ -140,13 +170,16 @@ public class BCHMainnet: Mainnet {
 }
 
 public class BCHTestnet: Testnet {
-    public override var scheme: String {
+    override public var scheme: String {
         return "bchtest"
     }
-    override var magic: UInt32 {
+    override public var magic: UInt32 {
         return 0xf4e5f3f4
     }
-    public override var dnsSeeds: [String] {
+    public override var coinType: CoinType {
+        return .testnet
+    }
+    override public var dnsSeeds: [String] {
         return [
             "testnet-seed.bitcoinabc.org",
             "testnet-seed-abc.bitcoinforks.org",
@@ -155,7 +188,7 @@ public class BCHTestnet: Testnet {
             "testnet-seeder.criptolayer.net"
         ]
     }
-    override var checkpoints: [Checkpoint] {
+    override public var checkpoints: [Checkpoint] {
         return super.checkpoints + [
             Checkpoint(height: 1_200_000, hash: Data(Data(hex: "00000000d91bdbb5394bcf457c0f0b7a7e43eb978e2d881b6c2a4c2756abc558")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0),
             Checkpoint(height: 1_240_000, hash: Data(Data(hex: "0000000002a2bbefefa5aa5f0b7e95957537693808e753f4b4a8e26c5257891d")!.reversed()), timestamp: 1_296_688_602, target: 0x1b09ecf0)
@@ -164,33 +197,33 @@ public class BCHTestnet: Testnet {
 }
 
 public class Mainnet: Network {
-    public override var name: String {
+    override public var name: String {
         return "livenet"
     }
-    public override var alias: String {
+    override public var alias: String {
         return "mainnet"
     }
-    override var pubkeyhash: UInt8 {
+    override public var pubkeyhash: UInt8 {
         return 0x00
     }
-    override var privatekey: UInt8 {
+    override public var privatekey: UInt8 {
         return 0x80
     }
-    override var scripthash: UInt8 {
+    override public var scripthash: UInt8 {
         return 0x05
     }
-    override var xpubkey: UInt32 {
+    override public var xpubkey: UInt32 {
         return 0x0488b21e
     }
-    override var xprivkey: UInt32 {
+    override public var xprivkey: UInt32 {
         return 0x0488ade4
     }
-    public override var port: UInt32 {
+    override public var port: UInt32 {
         return 8333
     }
     /// blockchain checkpoints - these are also used as starting points for partial chain downloads, so they need to be at
     /// difficulty transition boundaries in order to verify the block difficulty at the immediately following transition
-    override var checkpoints: [Checkpoint] {
+    override public var checkpoints: [Checkpoint] {
         return [
             Checkpoint(height: 0, hash: Data(Data(hex: "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f")!.reversed()), timestamp: 1_231_006_505, target: 0x1d00ffff),
             Checkpoint(height: 20_160, hash: Data(Data(hex: "000000000f1aef56190aee63d33a373e6487132d522ff4cd98ccfc96566d461e")!.reversed()), timestamp: 1_248_481_816, target: 0x1d00ffff),
@@ -219,37 +252,37 @@ public class Mainnet: Network {
         ]
     }
     // These hashes are genesis blocks' ones
-    override var genesisBlock: Data {
+    override public var genesisBlock: Data {
         return Data(Data(hex: "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f")!.reversed())
     }
 }
 
 public class Testnet: Network {
-    public override var name: String {
+    override public var name: String {
         return "testnet"
     }
-    public override var alias: String {
+    override public var alias: String {
         return "regtest"
     }
-    override var pubkeyhash: UInt8 {
+    override public var pubkeyhash: UInt8 {
         return 0x6f
     }
-    override var privatekey: UInt8 {
+    override public var privatekey: UInt8 {
         return 0xef
     }
-    override var scripthash: UInt8 {
+    override public var scripthash: UInt8 {
         return 0xc4
     }
-    override var xpubkey: UInt32 {
+    override public var xpubkey: UInt32 {
         return 0x043587cf
     }
-    override var xprivkey: UInt32 {
+    override public var xprivkey: UInt32 {
         return 0x04358394
     }
-    public override var port: UInt32 {
+    override public var port: UInt32 {
         return 18_333
     }
-    override var checkpoints: [Checkpoint] {
+    override public var checkpoints: [Checkpoint] {
         return [
             Checkpoint(height: 0, hash: Data(Data(hex: "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943")!.reversed()), timestamp: 1_376_543_922, target: 0x1d00ffff),
             Checkpoint(height: 100_800, hash: Data(Data(hex: "0000000000a33112f86f3f7b0aa590cb4949b84c2d9c673e9e303257b3be9000")!.reversed()), timestamp: 1_393_813_869, target: 0x1c00d907),
@@ -264,7 +297,7 @@ public class Testnet: Network {
             Checkpoint(height: 1_008_000, hash: Data(Data(hex: "000000000000390aca616746a9456a0d64c1bd73661fd60a51b5bf1c92bae5a0")!.reversed()), timestamp: 1_490_751_239, target: 0x1a52ccc0)
         ]
     }
-    override var genesisBlock: Data {
+    override public var genesisBlock: Data {
         return Data(Data(hex: "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943")!.reversed())
     }
 }
