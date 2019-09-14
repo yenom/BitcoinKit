@@ -169,7 +169,7 @@ open class HDWallet {
 
     /// [Non-Cache] Get address for index
     public func address(_ index: UInt32, chain: Chain) -> Address {
-        pubKey(index, chain: chain).toAddress()
+        return pubKey(index, chain: chain).toAddress()
     }
 
     /// Increment external index and update privkey/pubkey/address cache.
