@@ -52,7 +52,6 @@ extension UInt11 {
 		self.init(valueBoundBy16Bits: valueBoundBy16Bits)
 	}
 
-
 	init<T>(truncatingIfNeeded source: T) where T: BinaryInteger {
 		let valueBoundBy16Bits = UInt16(truncatingIfNeeded: source)
 		self.valueBoundBy16Bits = Swift.min(UInt11.max16, valueBoundBy16Bits)
