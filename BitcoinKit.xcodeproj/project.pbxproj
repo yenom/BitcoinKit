@@ -161,6 +161,9 @@
 		294CE2EF232CECCD00922458 /* FeeCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */; };
 		294CE2F1232CFE7200922458 /* UnspentTransactionOutputSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */; };
 		294CE2F3232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */; };
+		294CE309232D0E0800922458 /* TransactionPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE308232D0E0800922458 /* TransactionPlan.swift */; };
+		294CE30B232D0E2B00922458 /* TransactionPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE30A232D0E2B00922458 /* TransactionPlanner.swift */; };
+		294CE30E232D1AD100922458 /* TransactionPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE30C232D1AC300922458 /* TransactionPlannerTests.swift */; };
 		294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE31211A05D200B7F645 /* OP_RETURN.swift */; };
 		294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3A211B31B100B7F645 /* OP_NOP.swift */; };
 		294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3C211B31C100B7F645 /* OP_VER.swift */; };
@@ -394,6 +397,9 @@
 		294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeCalculatorTests.swift; sourceTree = "<group>"; };
 		294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransactionOutputSelector.swift; sourceTree = "<group>"; };
 		294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransactionOutputSelectorTests.swift; sourceTree = "<group>"; };
+		294CE308232D0E0800922458 /* TransactionPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPlan.swift; sourceTree = "<group>"; };
+		294CE30A232D0E2B00922458 /* TransactionPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPlanner.swift; sourceTree = "<group>"; };
+		294CE30C232D1AC300922458 /* TransactionPlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPlannerTests.swift; sourceTree = "<group>"; };
 		294DDE31211A05D200B7F645 /* OP_RETURN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RETURN.swift; sourceTree = "<group>"; };
 		294DDE3A211B31B100B7F645 /* OP_NOP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOP.swift; sourceTree = "<group>"; };
 		294DDE3C211B31C100B7F645 /* OP_VER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VER.swift; sourceTree = "<group>"; };
@@ -697,6 +703,7 @@
 				294CE2E7232CBE7100922458 /* HDWalletTests.swift */,
 				294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */,
 				294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */,
+				294CE30C232D1AC300922458 /* TransactionPlannerTests.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -876,6 +883,8 @@
 				14A2961E2032317B00E19177 /* HDWallet.swift */,
 				294CE2EA232CE9AE00922458 /* FeeCalculator.swift */,
 				294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */,
+				294CE308232D0E0800922458 /* TransactionPlan.swift */,
+				294CE30A232D0E2B00922458 /* TransactionPlanner.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -1137,6 +1146,7 @@
 				0C1DE15F211E6FA700FE8E43 /* OP_NIP.swift in Sources */,
 				CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */,
 				29290BA1210AF90D00D2BE78 /* OP_VERIFY.swift in Sources */,
+				294CE309232D0E0800922458 /* TransactionPlan.swift in Sources */,
 				2914BE41211BAAC900B349CB /* OP_RIPEMD160.swift in Sources */,
 				29E1ED75210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift in Sources */,
 				294DDE3F211B31CB00B7F645 /* OP_IF.swift in Sources */,
@@ -1145,6 +1155,7 @@
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
 				0C1DD40A211819CE004BA8A8 /* OP_GREATERTHAN.swift in Sources */,
 				2914BE49211BAB1900B349CB /* OP_CODESEPARATOR.swift in Sources */,
+				294CE30B232D0E2B00922458 /* TransactionPlanner.swift in Sources */,
 				29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */,
 				0C1DE169211E7AB000FE8E43 /* OP_TUCK.swift in Sources */,
 				2914BE52211BCF9600B349CB /* OP_RESERVED2.swift in Sources */,
@@ -1293,6 +1304,7 @@
 				CFA290702101CDCA001A1BAB /* ScriptTests.swift in Sources */,
 				6E20AECF2112C66C008A9810 /* HDKeyChainTests.swift in Sources */,
 				CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */,
+				294CE30E232D1AD100922458 /* TransactionPlannerTests.swift in Sources */,
 				29089F0E2122BE7200E0C305 /* MockHelperTests.swift in Sources */,
 				294CE2EF232CECCD00922458 /* FeeCalculatorTests.swift in Sources */,
 				6E20AECD2112C559008A9810 /* CashAddrTests.swift in Sources */,
