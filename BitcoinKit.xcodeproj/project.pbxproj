@@ -600,40 +600,17 @@
 		147494D4201F9A29006D1CF8 /* BitcoinKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				147494D7201F9A29006D1CF8 /* Info.plist */,
-				CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */,
-				CF432AF520F0ED4500AD4020 /* AddressTests.swift */,
-				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
-				CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */,
-				29F5D1E321106772007DA3BF /* BigNumberTests.swift */,
 				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
-				0F59D2EA21370FD8008B9C0B /* BlockMessageTests.swift */,
-				6E20AED42112C8F9008A9810 /* BloomFilterTests.swift */,
-				6E20AECC2112C559008A9810 /* CashAddrTests.swift */,
-				6EE789DA2112C1E500EAB620 /* CryptoTests.swift */,
-				E6A6430F2244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift */,
-				6E20AECE2112C66C008A9810 /* HDKeyChainTests.swift */,
-				6E20AECA2112C434008A9810 /* HDPrivateKeyTests.swift */,
-				6E20AEC82112C31A008A9810 /* LegacyAddressTests.swift */,
-				0C2375A32132501700DB2872 /* MessageSerializerTests.swift */,
-				29089F0D2122BE7200E0C305 /* MockHelperTests.swift */,
-				6E20AED62112D417008A9810 /* MurmurHashTests.swift */,
-				6E797C442116C8A5003BEDFD /* OpCodeFactoryTests.swift */,
-				29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */,
-				6E20AED02112C6AA008A9810 /* PaymentURITests.swift */,
-				E6C9FB9C2243FF7A000AAE12 /* PointMultiplicationTests.swift */,
-				6E20AEC62112C290008A9810 /* PrivateKeyTests.swift */,
-				A2E11230212C400A00A0A40A /* ProofOfWorkTests.swift */,
-				CFA290732102B650001A1BAB /* ScriptMachineTests.swift */,
-				CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */,
-				A2DAA5F8211F2C93009DAB7B /* SerializationTests.swift */,
 				2949920320F22A1500D078B6 /* TestHelpers.swift */,
-				297C408021100810003AF4EF /* MnemonicTests.swift */,
 				CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */,
 				6E20AED22112C7DA008A9810 /* TransactionTests.swift */,
-				A2DAA5F6211F0579009DAB7B /* UInt32MathTests.swift */,
-				A2DE510F212AFCF200F54EA0 /* UInt256+BitcoinTests.swift */,
-				A20B537E211C72F9009D147A /* UInt256Tests.swift */,
+				29089F0D2122BE7200E0C305 /* MockHelperTests.swift */,
+				294CE2E0232CBA2400922458 /* Core */,
+				294CE2E1232CBA2B00922458 /* Script */,
+				294CE2E2232CBA3200922458 /* Wallet */,
+				294CE2E3232CBA4000922458 /* Networking */,
+				294CE2E4232CBA4600922458 /* Messages */,
+				147494D7201F9A29006D1CF8 /* Info.plist */,
 			);
 			name = BitcoinKitTests;
 			path = Tests/BitcoinKitTests;
@@ -712,6 +689,85 @@
 				14CDC38B2021EF5000C01556 /* Helpers.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		294CE2E0232CBA2400922458 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				297C408021100810003AF4EF /* MnemonicTests.swift */,
+				29F5D1E321106772007DA3BF /* BigNumberTests.swift */,
+				6EE789DA2112C1E500EAB620 /* CryptoTests.swift */,
+				E6C9FB9C2243FF7A000AAE12 /* PointMultiplicationTests.swift */,
+				E6A6430F2244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift */,
+				6E20AED02112C6AA008A9810 /* PaymentURITests.swift */,
+				6E20AED42112C8F9008A9810 /* BloomFilterTests.swift */,
+				6E20AED62112D417008A9810 /* MurmurHashTests.swift */,
+				A20B537E211C72F9009D147A /* UInt256Tests.swift */,
+				A2DAA5F6211F0579009DAB7B /* UInt32MathTests.swift */,
+				A2DAA5F8211F2C93009DAB7B /* SerializationTests.swift */,
+				A2DE510F212AFCF200F54EA0 /* UInt256+BitcoinTests.swift */,
+				A2E11230212C400A00A0A40A /* ProofOfWorkTests.swift */,
+				294CE2E6232CBBBF00922458 /* Keys */,
+				294CE2E5232CBAC600922458 /* Address */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		294CE2E1232CBA2B00922458 /* Script */ = {
+			isa = PBXGroup;
+			children = (
+				6E797C442116C8A5003BEDFD /* OpCodeFactoryTests.swift */,
+				29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */,
+				CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */,
+				CFA290732102B650001A1BAB /* ScriptMachineTests.swift */,
+			);
+			path = Script;
+			sourceTree = "<group>";
+		};
+		294CE2E2232CBA3200922458 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		294CE2E3232CBA4000922458 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		294CE2E4232CBA4600922458 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				0C2375A32132501700DB2872 /* MessageSerializerTests.swift */,
+				0F59D2EA21370FD8008B9C0B /* BlockMessageTests.swift */,
+			);
+			path = Messages;
+			sourceTree = "<group>";
+		};
+		294CE2E5232CBAC600922458 /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				6E20AECC2112C559008A9810 /* CashAddrTests.swift */,
+				6E20AEC82112C31A008A9810 /* LegacyAddressTests.swift */,
+				CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */,
+				CF432AF520F0ED4500AD4020 /* AddressTests.swift */,
+				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
+				CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */,
+			);
+			path = Address;
+			sourceTree = "<group>";
+		};
+		294CE2E6232CBBBF00922458 /* Keys */ = {
+			isa = PBXGroup;
+			children = (
+				6E20AECE2112C66C008A9810 /* HDKeyChainTests.swift */,
+				6E20AECA2112C434008A9810 /* HDPrivateKeyTests.swift */,
+				6E20AEC62112C290008A9810 /* PrivateKeyTests.swift */,
+			);
+			path = Keys;
 			sourceTree = "<group>";
 		};
 		294DDE33211B2AEA00B7F645 /* Push Data */ = {
