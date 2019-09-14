@@ -155,6 +155,7 @@
 		2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920320F22A1500D078B6 /* TestHelpers.swift */; };
 		2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */; };
 		294CE2DF232CA88800922458 /* CoinType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2DE232CA88800922458 /* CoinType.swift */; };
+		294CE2E9232CBE8F00922458 /* HDWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2E7232CBE7100922458 /* HDWalletTests.swift */; };
 		294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE31211A05D200B7F645 /* OP_RETURN.swift */; };
 		294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3A211B31B100B7F645 /* OP_NOP.swift */; };
 		294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DDE3C211B31C100B7F645 /* OP_VER.swift */; };
@@ -403,6 +404,7 @@
 		2949920320F22A1500D078B6 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
 		294CE2DE232CA88800922458 /* CoinType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinType.swift; sourceTree = "<group>"; };
+		294CE2E7232CBE7100922458 /* HDWalletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWalletTests.swift; sourceTree = "<group>"; };
 		294DDE31211A05D200B7F645 /* OP_RETURN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_RETURN.swift; sourceTree = "<group>"; };
 		294DDE3A211B31B100B7F645 /* OP_NOP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_NOP.swift; sourceTree = "<group>"; };
 		294DDE3C211B31C100B7F645 /* OP_VER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_VER.swift; sourceTree = "<group>"; };
@@ -727,6 +729,7 @@
 		294CE2E2232CBA3200922458 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
+				294CE2E7232CBE7100922458 /* HDWalletTests.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -1371,6 +1374,7 @@
 			files = (
 				147494D6201F9A29006D1CF8 /* BitcoinKitTests.swift in Sources */,
 				A2DE5110212AFCF200F54EA0 /* UInt256+BitcoinTests.swift in Sources */,
+				294CE2E9232CBE8F00922458 /* HDWalletTests.swift in Sources */,
 				CFA290742102B650001A1BAB /* ScriptMachineTests.swift in Sources */,
 				E6C9FB9D2243FF7A000AAE12 /* PointMultiplicationTests.swift in Sources */,
 				6E20AECB2112C434008A9810 /* HDPrivateKeyTests.swift in Sources */,
