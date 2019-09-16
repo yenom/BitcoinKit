@@ -1,7 +1,7 @@
 //
-//  UnsignedTransaction.swift
-//
-//  Copyright © 2018 BitcoinKit developers
+//  SignatureHashHelper.swift
+//  
+//  Copyright © 2019 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,14 @@
 
 import Foundation
 
-@available(*, deprecated)
-public struct UnsignedTransaction {
-    public let tx: Transaction
-    public let utxos: [UnspentTransaction]
-
-    public init(tx: Transaction, utxos: [UnspentTransaction]) {
-        self.tx = tx
-        self.utxos = utxos
-    }
+public protocol SignatureHashHelper {
+    var hashType: SighashType { get }
+    /// Create the signature hash of the transaction
+    ///
+    /// - Parameters:
+    ///   - tx: Transaction to be signed
+    ///   - utxoOutput: TransactionOutput to be signed
+    ///   - inputIndex: The index of the transaction output to be signed
+    /// - Returns: The signature hash for the transaction to be signed.
+    func createSignatureHash(of tx: Transaction, for utxoOutput: TransactionOutput, inputIndex: Int) -> Data
 }

@@ -34,7 +34,9 @@ public final class TransactionSigner {
     public let plan: TransactionPlan
     /// Transaction being signed.
     public let transaction: Transaction
-    
+    /// Signature Hash Helper
+    public let sighashHelper: SignatureHashHelper
+
     /// List of signed inputs.
     private var signedInputs: [TransactionInput]
     /// Signed transaction
@@ -45,41 +47,41 @@ public final class TransactionSigner {
             outputs: transaction.outputs,
             lockTime: transaction.lockTime)
     }
-    
-    public init(plan: TransactionPlan, transaction: Transaction) {
+
+    public init(plan: TransactionPlan, transaction: Transaction, sighashHelper: SignatureHashHelper) {
         self.plan = plan
         self.transaction = transaction
         self.signedInputs = transaction.inputs
+        self.sighashHelper = sighashHelper
     }
-    
+
     public func sign(with keys: [PrivateKey]) throws -> Transaction {
         // Sign
-        let hashType = SighashType.BCH.ALL
         for (i, utxo) in plan.utxos.enumerated() {
             // Select key
             let pubkeyHash: Data = Script.getPublicKeyHash(from: utxo.output.lockingScript)
-            
+
             let keysOfUtxo: [PrivateKey] = keys.filter { $0.publicKey().pubkeyHash == pubkeyHash }
             guard let key = keysOfUtxo.first else {
                 throw TransactionSignerError.noKeyFound
             }
-            
+
             // Sign transaction hash
-            let sighash: Data = signedTransaction.signatureHash(for: utxo.output, inputIndex: i, hashType: SighashType.BCH.ALL)
+            let sighash: Data = sighashHelper.createSignatureHash(of: transaction, for: utxo.output, inputIndex: i)
             let signature: Data = try Crypto.sign(sighash, privateKey: key)
             let txin = signedInputs[i]
             let pubkey = key.publicKey()
-            
+
             // Create Signature Script
-            let sigWithHashType: Data = signature + [UInt8(hashType)]
+            let sigWithHashType: Data = signature + [sighashHelper.hashType.uint8]
             let unlockingScript: Script = try Script()
                 .appendData(sigWithHashType)
                 .appendData(pubkey.data)
-            
+
             // Update TransactionInput
             signedInputs[i] = TransactionInput(previousOutput: txin.previousOutput, signatureScript: unlockingScript.data, sequence: txin.sequence)
         }
         return signedTransaction
-        
+
     }
 }

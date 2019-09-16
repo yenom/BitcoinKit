@@ -28,6 +28,7 @@ private let zero: Data = Data(repeating: 0, count: 32)
 private let one: Data = Data(repeating: 1, count: 1) + Data(repeating: 0, count: 31)
 
 extension Transaction {
+    @available(*, deprecated, message: "Use BCHSignatureHashHelper.createPrevoutHash(of:) instead")
     internal func getPrevoutHash(hashType: SighashType) -> Data {
         if !hashType.isAnyoneCanPay {
             // If the ANYONECANPAY flag is not set, hashPrevouts is the double SHA256 of the serialization of all input outpoints
@@ -39,6 +40,7 @@ extension Transaction {
         }
     }
 
+    @available(*, deprecated, message: "Use BCHSignatureHashHelper.createSequenceHash(of:) instead")
     internal func getSequenceHash(hashType: SighashType) -> Data {
         if !hashType.isAnyoneCanPay
             && !hashType.isSingle
@@ -52,6 +54,7 @@ extension Transaction {
         }
     }
 
+    @available(*, deprecated, message: "Use BCHSignatureHashHelper.createOutputsHash(of:index:) instead")
     internal func getOutputsHash(index: Int, hashType: SighashType) -> Data {
         if !hashType.isSingle
             && !hashType.isNone {
@@ -68,6 +71,7 @@ extension Transaction {
         }
     }
 
+    @available(*, deprecated, message: "Use BTCSignatureHashHelper.createSignatureHash(of:for:inputIndex:) instead")
     internal func signatureHashLegacy(for utxo: TransactionOutput, inputIndex: Int, hashType: SighashType) -> Data {
         // If inputIndex is out of bounds, BitcoinABC is returning a 256-bit little-endian 0x01 instead of failing with error.
         guard inputIndex < inputs.count else {
@@ -82,13 +86,14 @@ extension Transaction {
         }
 
         // Transaction is struct(value type), so it's ok to use self as an arg
-        let txSigSerializer = TransactionSignatureSerializer(tx: self, utxo: utxo, inputIndex: inputIndex, hashType: hashType)
+        let txSigSerializer = TransactionSignatureSerializer(transaction: self, output: utxo, inputIndex: inputIndex, hashType: hashType)
         var data: Data = txSigSerializer.serialize()
-        data += UInt32(hashType)
+        data += hashType.uint32
         let hash = Crypto.sha256sha256(data)
         return hash
     }
 
+    @available(*, deprecated, message: "Use BCHSignatureHashHelper.createSignatureHash(of:for:inputIndex:) or BTCSignatureHashHelper.createSignatureHash(of:for:inputIndex:) instead")
     public func signatureHash(for utxo: TransactionOutput, inputIndex: Int, hashType: SighashType) -> Data {
         // If hashType doesn't have a fork id, use legacy signature hash
         guard hashType.hasForkId else {
@@ -121,7 +126,7 @@ extension Transaction {
         // 9. nLocktime (4-byte)
         data += lockTime
         // 10. Sighash types [This time input] (4-byte)
-        data += UInt32(hashType)
+        data += hashType.uint32
         let hash = Crypto.sha256sha256(data)
         return hash
     }

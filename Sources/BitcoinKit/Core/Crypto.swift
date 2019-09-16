@@ -77,11 +77,17 @@ public struct Crypto {
             throw ScriptMachineError.error("SigData is empty.")
         }
         // Extract hash type from the last byte of the signature.
-        let hashType = SighashType(sigData.last!)
+        let helper: SignatureHashHelper
+        if let hashType = BCHSighashType(rawValue: sigData.last!) {
+            helper = BCHSignatureHashHelper(hashType: hashType)
+        } else if let hashType = BTCSighashType(rawValue: sigData.last!) {
+            helper = BTCSignatureHashHelper(hashType: hashType)
+        } else {
+            throw ScriptMachineError.error("Unknown sig hash type")
+        }
         // Strip that last byte to have a pure signature.
-        let signature = sigData.dropLast()
-
-        let sighash: Data = tx.signatureHash(for: utxo, inputIndex: inputIndex, hashType: hashType)
+        let sighash: Data = helper.createSignatureHash(of: tx, for: utxo, inputIndex: inputIndex)
+        let signature: Data = sigData.dropLast()
 
         return try Crypto.verifySignature(signature, message: sighash, publicKey: pubKeyData)
     }

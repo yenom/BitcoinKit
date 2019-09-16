@@ -157,6 +157,7 @@ public func signTx(unsignedTx: UnsignedTransaction, keys: [PrivateKey]) -> Trans
 
     // Signing
     let hashType = SighashType.BCH.ALL
+    let helper = BCHSignatureHashHelper(hashType: hashType)
     for (i, utxo) in unsignedTx.utxos.enumerated() {
         let pubkeyHash: Data = Script.getPublicKeyHash(from: utxo.output.lockingScript)
         
@@ -165,12 +166,12 @@ public func signTx(unsignedTx: UnsignedTransaction, keys: [PrivateKey]) -> Trans
             continue
         }
         
-        let sighash: Data = transactionToSign.signatureHash(for: utxo.output, inputIndex: i, hashType: SighashType.BCH.ALL)
+        let sighash: Data = helper.createSignatureHash(of: transactionToSign, for: utxo.output, inputIndex: i)
         let signature: Data = try! Crypto.sign(sighash, privateKey: key)
         let txin = inputsToSign[i]
         let pubkey = key.publicKey()
         
-        var unlockingScript: Data = Data([UInt8(signature.count + 1)]) + signature + UInt8(hashType)
+        var unlockingScript: Data = Data([UInt8(signature.count + 1)]) + signature + hashType.uint8
         unlockingScript += VarInt(pubkey.data.count).serialized()
         unlockingScript += pubkey.data
         
