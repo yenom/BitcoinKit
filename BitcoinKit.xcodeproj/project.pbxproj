@@ -150,6 +150,8 @@
 		29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */; };
 		29330145214F749C0028946B /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330144214F749C0028946B /* QRCodeGenerator.swift */; };
 		29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330F6D210597B700106AFA /* UnitsAndLimits.swift */; };
+		29440D11232FB98F00E99571 /* TransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D10232FB98F00E99571 /* TransactionBuilder.swift */; };
+		29440D13232FBE0900E99571 /* TransactionBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D12232FBE0900E99571 /* TransactionBuilderTests.swift */; };
 		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
 		2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920320F22A1500D078B6 /* TestHelpers.swift */; };
@@ -406,6 +408,8 @@
 		29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSIGVERIFY.swift; sourceTree = "<group>"; };
 		29330144214F749C0028946B /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		29330F6D210597B700106AFA /* UnitsAndLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsAndLimits.swift; sourceTree = "<group>"; };
+		29440D10232FB98F00E99571 /* TransactionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBuilder.swift; sourceTree = "<group>"; };
+		29440D12232FBE0900E99571 /* TransactionBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBuilderTests.swift; sourceTree = "<group>"; };
 		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
 		2949920320F22A1500D078B6 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
@@ -747,6 +751,7 @@
 				294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */,
 				294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */,
 				294CE30C232D1AC300922458 /* TransactionPlannerTests.swift */,
+				29440D12232FBE0900E99571 /* TransactionBuilderTests.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -928,6 +933,7 @@
 				294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */,
 				294CE308232D0E0800922458 /* TransactionPlan.swift */,
 				294CE30A232D0E2B00922458 /* TransactionPlanner.swift */,
+				29440D10232FB98F00E99571 /* TransactionBuilder.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -1388,6 +1394,7 @@
 				0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */,
 				0C1DE15D211E6EB400FE8E43 /* OP_DROP.swift in Sources */,
 				299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */,
+				29440D11232FB98F00E99571 /* TransactionBuilder.swift in Sources */,
 				A201ABB6222ACF7100DEFE13 /* BitcoinKitPrivateSwift.swift in Sources */,
 				2918A918233357AC0075A21A /* Mnemonic+Language.swift in Sources */,
 			);
@@ -1401,6 +1408,7 @@
 				A2DE5110212AFCF200F54EA0 /* UInt256+BitcoinTests.swift in Sources */,
 				294CE2E9232CBE8F00922458 /* HDWalletTests.swift in Sources */,
 				CFA290742102B650001A1BAB /* ScriptMachineTests.swift in Sources */,
+				29440D13232FBE0900E99571 /* TransactionBuilderTests.swift in Sources */,
 				E6C9FB9D2243FF7A000AAE12 /* PointMultiplicationTests.swift in Sources */,
 				6E20AECB2112C434008A9810 /* HDPrivateKeyTests.swift in Sources */,
 				6E20AED52112C8F9008A9810 /* BloomFilterTests.swift in Sources */,
