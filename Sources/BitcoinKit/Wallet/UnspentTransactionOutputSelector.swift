@@ -105,7 +105,7 @@ public struct UnspentTransactionOutputSelector {
     }
 }
 
-private extension Sequence where Element == UnspentTransaction {
+internal extension Sequence where Element == UnspentTransaction {
     func sum() -> UInt64 {
         return self.map { $0.output.value }.reduce(0, +)
     }

@@ -161,7 +161,6 @@
 		29440D22233003C000E99571 /* BTCSignatureHashHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D21233003C000E99571 /* BTCSignatureHashHelperTests.swift */; };
 		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
-		2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920320F22A1500D078B6 /* TestHelpers.swift */; };
 		2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */; };
 		294CE2DF232CA88800922458 /* CoinType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2DE232CA88800922458 /* CoinType.swift */; };
 		294CE2E9232CBE8F00922458 /* HDWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2E7232CBE7100922458 /* HDWalletTests.swift */; };
@@ -246,7 +245,6 @@
 		CF432AF420F0DFAC00AD4020 /* Bech32Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */; };
 		CF432AF620F0ED4500AD4020 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF520F0ED4500AD4020 /* AddressTests.swift */; };
 		CF432AFA20F222B400AD4020 /* AddressFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */; };
-		CF432AFC20F25E0000AD4020 /* TestHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */; };
 		CFA2906C2101CD96001A1BAB /* ScriptChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */; };
 		CFA2906E2101CDA3001A1BAB /* Opcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA2906D2101CDA3001A1BAB /* Opcode.swift */; };
 		CFA290702101CDCA001A1BAB /* ScriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */; };
@@ -426,7 +424,6 @@
 		29440D21233003C000E99571 /* BTCSignatureHashHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCSignatureHashHelperTests.swift; sourceTree = "<group>"; };
 		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
-		2949920320F22A1500D078B6 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
 		294CE2DE232CA88800922458 /* CoinType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinType.swift; sourceTree = "<group>"; };
 		294CE2E7232CBE7100922458 /* HDWalletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWalletTests.swift; sourceTree = "<group>"; };
@@ -513,7 +510,6 @@
 		CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bech32Tests.swift; sourceTree = "<group>"; };
 		CF432AF520F0ED4500AD4020 /* AddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTests.swift; sourceTree = "<group>"; };
 		CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactoryTests.swift; sourceTree = "<group>"; };
-		CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpersTests.swift; sourceTree = "<group>"; };
 		CFA2906B2101CD96001A1BAB /* ScriptChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptChunk.swift; sourceTree = "<group>"; };
 		CFA2906D2101CDA3001A1BAB /* Opcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opcode.swift; sourceTree = "<group>"; };
 		CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptTests.swift; sourceTree = "<group>"; };
@@ -636,8 +632,6 @@
 			isa = PBXGroup;
 			children = (
 				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
-				2949920320F22A1500D078B6 /* TestHelpers.swift */,
-				CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */,
 				6E20AED22112C7DA008A9810 /* TransactionTests.swift */,
 				29089F0D2122BE7200E0C305 /* MockHelperTests.swift */,
 				294CE2E0232CBA2400922458 /* Core */,
@@ -1457,7 +1451,6 @@
 				294CE2F3232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift in Sources */,
 				6E20AED72112D417008A9810 /* MurmurHashTests.swift in Sources */,
 				6E797C452116C8A5003BEDFD /* OpCodeFactoryTests.swift in Sources */,
-				CF432AFC20F25E0000AD4020 /* TestHelpersTests.swift in Sources */,
 				0C2375A52132507B00DB2872 /* MessageSerializerTests.swift in Sources */,
 				A2E11231212C400A00A0A40A /* ProofOfWorkTests.swift in Sources */,
 				CFA290702101CDCA001A1BAB /* ScriptTests.swift in Sources */,
@@ -1473,7 +1466,6 @@
 				6E20AED12112C6AA008A9810 /* PaymentURITests.swift in Sources */,
 				CF432AF220F0CF9100AD4020 /* Base58Tests.swift in Sources */,
 				A2DAA5F9211F2C93009DAB7B /* SerializationTests.swift in Sources */,
-				2949920420F22A1500D078B6 /* TestHelpers.swift in Sources */,
 				29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */,
 				A20B537F211C72F9009D147A /* UInt256Tests.swift in Sources */,
 				29440D22233003C000E99571 /* BTCSignatureHashHelperTests.swift in Sources */,
