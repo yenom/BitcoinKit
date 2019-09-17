@@ -40,9 +40,9 @@ class TransactionBuilderTests: XCTestCase {
         let prevTxOutPoint = TransactionOutPoint(hash: prevTxHash, index: 1)
         
         // UnspentTransaction
-        let utxo = UnspentTransaction(output: prevTxOutput,
+        let unspentTransaction = UnspentTransaction(output: prevTxOutput,
                                       outpoint: prevTxOutPoint)
-        let plan = TransactionPlan(utxos: [utxo], amount: 50_000_000, fee: 10_000_000, change: 109_012_961)
+        let plan = TransactionPlan(unspentTransactions: [unspentTransaction], amount: 50_000_000, fee: 10_000_000, change: 109_012_961)
         let toAddress = try! AddressFactory.create("mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB")
         let privKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
         let changeAddress = privKey.publicKey().toLegacy()
@@ -70,9 +70,9 @@ class TransactionBuilderTests: XCTestCase {
         let prevTxOutPoint = TransactionOutPoint(hash: prevTxHash, index: 2)
         
         // UnspentTransaction
-        let utxo = UnspentTransaction(output: prevTxOutput,
+        let unspentTransaction = UnspentTransaction(output: prevTxOutput,
                                       outpoint: prevTxOutPoint)
-        let plan = TransactionPlan(utxos: [utxo], amount: 600, fee: 226, change: 4325)
+        let plan = TransactionPlan(unspentTransactions: [unspentTransaction], amount: 600, fee: 226, change: 4325)
         let toAddress = try! AddressFactory.create("bitcoincash:qpmfhhledgp0jy66r5vmwjwmdfu0up7ujqcp07ha9v")
         let changeAddress = try! AddressFactory.create("bitcoincash:qz0q3xmg38sr94rw8wg45vujah7kzma3cskxymnw06")
         let tx = TransactionBuilder.build(from: plan, toAddress: toAddress, changeAddress: changeAddress)

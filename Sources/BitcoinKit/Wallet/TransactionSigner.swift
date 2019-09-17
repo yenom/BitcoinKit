@@ -57,17 +57,17 @@ public final class TransactionSigner {
 
     public func sign(with keys: [PrivateKey]) throws -> Transaction {
         // Sign
-        for (i, utxo) in plan.utxos.enumerated() {
+        for (i, unspentTransaction) in plan.unspentTransactions.enumerated() {
             // Select key
-            let pubkeyHash: Data = Script.getPublicKeyHash(from: utxo.output.lockingScript)
+            let utxo = unspentTransaction.output
+            let pubkeyHash: Data = Script.getPublicKeyHash(from: utxo.lockingScript)
 
-            let keysOfUtxo: [PrivateKey] = keys.filter { $0.publicKey().pubkeyHash == pubkeyHash }
-            guard let key = keysOfUtxo.first else {
+            guard let key = keys.first(where: { $0.publicKey().pubkeyHash == pubkeyHash }) else {
                 throw TransactionSignerError.noKeyFound
             }
 
             // Sign transaction hash
-            let sighash: Data = sighashHelper.createSignatureHash(of: transaction, for: utxo.output, inputIndex: i)
+            let sighash: Data = sighashHelper.createSignatureHash(of: transaction, for: utxo, inputIndex: i)
             let signature: Data = try Crypto.sign(sighash, privateKey: key)
             let txin = signedInputs[i]
             let pubkey = key.publicKey()

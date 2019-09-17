@@ -26,26 +26,8 @@ import XCTest
 @testable import BitcoinKit
 
 class BCHSignatureHashHelperTests: XCTestCase {
-    // Transaction on Bitcoin Cash Mainnet
-    // TxID : 96ee20002b34e468f9d3c5ee54f6a8ddaa61c118889c4f35395c2cd93ba5bbb4
-    // https://explorer.bitcoin.com/bch/tx/96ee20002b34e468f9d3c5ee54f6a8ddaa61c118889c4f35395c2cd93ba5bbb4
-    
-    // TransactionOutput
-    var prevTxLockScript: Data!// = Data(hex: "76a914aff1e0789e5fe316b729577665aa0a04d5b0f8c788ac")
-    var prevTxOutput: TransactionOutput!// = TransactionOutput(value: 5151, lockingScript: prevTxLockScript!)
-    
-    // TransactionOutpoint
-    var prevTxID: String!// = "050d00e2e18ef13969606f1ceee290d3f49bd940684ce39898159352952b8ce2"
-    var prevTxHash: Data!// = Data(Data(hex: prevTxID)!.reversed())
-    var prevTxOutPoint: TransactionOutPoint!// = TransactionOutPoint(hash: prevTxHash, index: 2)
-    
-    // UnspentTransaction
-    var utxo: UnspentTransaction!// = UnspentTransaction(output: prevTxOutput,
-                                  //outpoint: prevTxOutPoint)
-    var plan: TransactionPlan!// = TransactionPlan(utxos: [utxo], amount: 600, fee: 226, change: 4325)
-    var toAddress: Address!// = try! AddressFactory.create("bitcoincash:qpmfhhledgp0jy66r5vmwjwmdfu0up7ujqcp07ha9v")
-    var changeAddress: Address!// = try! AddressFactory.create("bitcoincash:qz0q3xmg38sr94rw8wg45vujah7kzma3cskxymnw06")
-    var tx: Transaction!// = TransactionBuilder.build(from: plan, toAddress: toAddress, changeAddress: changeAddress)
+    var unspentTransaction: UnspentTransaction!
+    var tx: Transaction!
 
     override func setUp() {
         // Transaction on Bitcoin Cash Mainnet
@@ -53,20 +35,20 @@ class BCHSignatureHashHelperTests: XCTestCase {
         // https://explorer.bitcoin.com/bch/tx/96ee20002b34e468f9d3c5ee54f6a8ddaa61c118889c4f35395c2cd93ba5bbb4
         
         // TransactionOutput
-        prevTxLockScript = Data(hex: "76a914aff1e0789e5fe316b729577665aa0a04d5b0f8c788ac")!
-        prevTxOutput = TransactionOutput(value: 5151, lockingScript: prevTxLockScript!)
+        let prevTxLockScript = Data(hex: "76a914aff1e0789e5fe316b729577665aa0a04d5b0f8c788ac")!
+        let prevTxOutput = TransactionOutput(value: 5151, lockingScript: prevTxLockScript)
         
         // TransactionOutpoint
-        prevTxID = "050d00e2e18ef13969606f1ceee290d3f49bd940684ce39898159352952b8ce2"
-        prevTxHash = Data(Data(hex: prevTxID)!.reversed())
-        prevTxOutPoint = TransactionOutPoint(hash: prevTxHash, index: 2)
+        let prevTxID = "050d00e2e18ef13969606f1ceee290d3f49bd940684ce39898159352952b8ce2"
+        let prevTxHash = Data(Data(hex: prevTxID)!.reversed())
+        let prevTxOutPoint = TransactionOutPoint(hash: prevTxHash, index: 2)
         
         // UnspentTransaction
-        utxo = UnspentTransaction(output: prevTxOutput,
+        unspentTransaction = UnspentTransaction(output: prevTxOutput,
                                       outpoint: prevTxOutPoint)
-        plan = TransactionPlan(utxos: [utxo], amount: 600, fee: 226, change: 4325)
-        toAddress = try! AddressFactory.create("bitcoincash:qpmfhhledgp0jy66r5vmwjwmdfu0up7ujqcp07ha9v")
-        changeAddress = try! AddressFactory.create("bitcoincash:qz0q3xmg38sr94rw8wg45vujah7kzma3cskxymnw06")
+        let plan = TransactionPlan(unspentTransactions: [unspentTransaction], amount: 600, fee: 226, change: 4325)
+        let toAddress = try! AddressFactory.create("bitcoincash:qpmfhhledgp0jy66r5vmwjwmdfu0up7ujqcp07ha9v")
+        let changeAddress = try! AddressFactory.create("bitcoincash:qz0q3xmg38sr94rw8wg45vujah7kzma3cskxymnw06")
         tx = TransactionBuilder.build(from: plan, toAddress: toAddress, changeAddress: changeAddress)
     }
 
@@ -91,6 +73,6 @@ class BCHSignatureHashHelperTests: XCTestCase {
     func testSignatureHash() {
         let helper = BCHSignatureHashHelper(hashType: .ALL)
         let expected = "1136d4975aee4ff6ccf0b8a9c640532f563b48d9856fdc9682c37a071702937c"
-        XCTAssertEqual(helper.createSignatureHash(of: tx, for: utxo.output, inputIndex: 0).hex, expected)
+        XCTAssertEqual(helper.createSignatureHash(of: tx, for: unspentTransaction.output, inputIndex: 0).hex, expected)
     }
 }

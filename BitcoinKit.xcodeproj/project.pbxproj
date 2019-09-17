@@ -166,7 +166,7 @@
 		294CE2E9232CBE8F00922458 /* HDWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2E7232CBE7100922458 /* HDWalletTests.swift */; };
 		294CE2EB232CE9AE00922458 /* FeeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2EA232CE9AE00922458 /* FeeCalculator.swift */; };
 		294CE2EF232CECCD00922458 /* FeeCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */; };
-		294CE2F1232CFE7200922458 /* UnspentTransactionOutputSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */; };
+		294CE2F1232CFE7200922458 /* UnspentTransactionSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2F0232CFE7200922458 /* UnspentTransactionSelector.swift */; };
 		294CE2F3232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */; };
 		294CE309232D0E0800922458 /* TransactionPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE308232D0E0800922458 /* TransactionPlan.swift */; };
 		294CE30B232D0E2B00922458 /* TransactionPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE30A232D0E2B00922458 /* TransactionPlanner.swift */; };
@@ -429,7 +429,7 @@
 		294CE2E7232CBE7100922458 /* HDWalletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWalletTests.swift; sourceTree = "<group>"; };
 		294CE2EA232CE9AE00922458 /* FeeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeCalculator.swift; sourceTree = "<group>"; };
 		294CE2EC232CEBAB00922458 /* FeeCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeCalculatorTests.swift; sourceTree = "<group>"; };
-		294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransactionOutputSelector.swift; sourceTree = "<group>"; };
+		294CE2F0232CFE7200922458 /* UnspentTransactionSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransactionSelector.swift; sourceTree = "<group>"; };
 		294CE2F2232D03F900922458 /* UnspentTransactionOutputSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransactionOutputSelectorTests.swift; sourceTree = "<group>"; };
 		294CE308232D0E0800922458 /* TransactionPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPlan.swift; sourceTree = "<group>"; };
 		294CE30A232D0E2B00922458 /* TransactionPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPlanner.swift; sourceTree = "<group>"; };
@@ -707,7 +707,6 @@
 				A2F06FB92126785200DFF652 /* UInt32+Utility.swift */,
 				A246ED11211864500000418D /* UInt256.swift */,
 				A2613883211E8E12003A3B29 /* UInt256+Bitcoin.swift */,
-				2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */,
 				14839AA4202FE7A100A6CB34 /* ByteStream.swift */,
 				147F9728201FC89E0071F49D /* BloomFilter.swift */,
 				147494ED201FADAC006D1CF8 /* MurmurHash.swift */,
@@ -720,6 +719,7 @@
 		29440D1C232FE32C00E99571 /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */,
 				299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */,
 				299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */,
 			);
@@ -948,7 +948,7 @@
 			children = (
 				14A2961E2032317B00E19177 /* HDWallet.swift */,
 				294CE2EA232CE9AE00922458 /* FeeCalculator.swift */,
-				294CE2F0232CFE7200922458 /* UnspentTransactionOutputSelector.swift */,
+				294CE2F0232CFE7200922458 /* UnspentTransactionSelector.swift */,
 				294CE308232D0E0800922458 /* TransactionPlan.swift */,
 				294CE30A232D0E2B00922458 /* TransactionPlanner.swift */,
 				29440D10232FB98F00E99571 /* TransactionBuilder.swift */,
@@ -1387,7 +1387,7 @@
 				0C1DE175211E816E00FE8E43 /* OP_2SWAP.swift in Sources */,
 				0C1DE16F211E7D5800FE8E43 /* OP_3DUP.swift in Sources */,
 				481BDCC32332140C00FC79FC /* Mnemonic+Error.swift in Sources */,
-				294CE2F1232CFE7200922458 /* UnspentTransactionOutputSelector.swift in Sources */,
+				294CE2F1232CFE7200922458 /* UnspentTransactionSelector.swift in Sources */,
 				14839A97202FE6D000A6CB34 /* BlockMessage.swift in Sources */,
 				0C1DE16D211E7CC300FE8E43 /* OP_2DUP.swift in Sources */,
 				2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */,

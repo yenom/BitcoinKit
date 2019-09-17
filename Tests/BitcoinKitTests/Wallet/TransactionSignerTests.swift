@@ -41,9 +41,9 @@ class TransactionSignerTests: XCTestCase {
         let prevTxOutPoint = TransactionOutPoint(hash: prevTxHash, index: 2)
         
         // UnspentTransaction
-        let utxo = UnspentTransaction(output: prevTxOutput,
+        let unspentTransaction = UnspentTransaction(output: prevTxOutput,
                                       outpoint: prevTxOutPoint)
-        let plan = TransactionPlan(utxos: [utxo], amount: 600, fee: 226, change: 4325)
+        let plan = TransactionPlan(unspentTransactions: [unspentTransaction], amount: 600, fee: 226, change: 4325)
         let toAddress = try! AddressFactory.create("bitcoincash:qpmfhhledgp0jy66r5vmwjwmdfu0up7ujqcp07ha9v")
         let changeAddress = try! AddressFactory.create("bitcoincash:qz0q3xmg38sr94rw8wg45vujah7kzma3cskxymnw06")
         let tx = TransactionBuilder.build(from: plan, toAddress: toAddress, changeAddress: changeAddress)

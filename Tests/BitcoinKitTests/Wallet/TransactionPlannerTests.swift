@@ -35,8 +35,8 @@ class TransactionPlannerTests: XCTestCase {
     
     func testEmptyUtxos() {
         // If utxos are empty, returns empty plan
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 3000)
-        XCTAssertTrue(plan.utxos.isEmpty)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 3000)
+        XCTAssertTrue(plan.unspentTransactions.isEmpty)
         XCTAssertEqual(plan.amount, 0)
         XCTAssertEqual(plan.fee, 0)
         XCTAssertEqual(plan.change, 0)
@@ -48,8 +48,8 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(2000))
         utxos.append(buildUnspent(3000))
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 0)
-        XCTAssertTrue(plan.utxos.isEmpty)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 0)
+        XCTAssertTrue(plan.unspentTransactions.isEmpty)
         XCTAssertEqual(plan.amount, 0)
         XCTAssertEqual(plan.fee, 0)
         XCTAssertEqual(plan.change, 0)
@@ -60,8 +60,8 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(3000))
 
         // Dust threshold is 546
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 545)
-        XCTAssertTrue(plan.utxos.isEmpty)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 545)
+        XCTAssertTrue(plan.unspentTransactions.isEmpty)
         XCTAssertEqual(plan.amount, 0)
         XCTAssertEqual(plan.fee, 0)
         XCTAssertEqual(plan.change, 0)
@@ -72,9 +72,9 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(3000))
         
         // Dust threshold is 546
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 546)
-        XCTAssertEqual(plan.utxos.count, 1)
-        XCTAssertEqual(plan.utxos.sum(), 3000)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 546)
+        XCTAssertEqual(plan.unspentTransactions.count, 1)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 3000)
         XCTAssertEqual(plan.amount, 546)
         XCTAssertEqual(plan.fee, 226)
         XCTAssertEqual(plan.change, 2228)
@@ -85,10 +85,10 @@ class TransactionPlannerTests: XCTestCase {
         for _ in 0...20 {
             utxos.append(buildUnspent(200))
         }
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 600)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 600)
         
-        XCTAssertEqual(plan.utxos.count, 13)
-        XCTAssertEqual(plan.utxos.sum(), 2600)
+        XCTAssertEqual(plan.unspentTransactions.count, 13)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 2600)
         XCTAssertEqual(plan.amount, 600)
         XCTAssertEqual(plan.fee, 2000)
         XCTAssertEqual(plan.change, 0)
@@ -98,9 +98,9 @@ class TransactionPlannerTests: XCTestCase {
         // If change is not dust, returns plan with change
         utxos.append(buildUnspent(10_772))
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 10_000)
-        XCTAssertEqual(plan.utxos.count, 1)
-        XCTAssertEqual(plan.utxos.sum(), 10_772)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 10_000)
+        XCTAssertEqual(plan.unspentTransactions.count, 1)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 10_772)
         XCTAssertEqual(plan.amount, 10_000)
         XCTAssertEqual(plan.fee, 226)
         XCTAssertEqual(plan.change, 546)
@@ -112,9 +112,9 @@ class TransactionPlannerTests: XCTestCase {
 
         planner.dustPolicy = .toReceiver
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 10_000)
-        XCTAssertEqual(plan.utxos.count, 1)
-        XCTAssertEqual(plan.utxos.sum(), 10_771)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 10_000)
+        XCTAssertEqual(plan.unspentTransactions.count, 1)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 10_771)
         XCTAssertEqual(plan.amount, 10_579)
         XCTAssertEqual(plan.fee, 192)
         XCTAssertEqual(plan.change, 0)
@@ -126,9 +126,9 @@ class TransactionPlannerTests: XCTestCase {
 
         planner.dustPolicy = .toFee
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 10_000)
-        XCTAssertEqual(plan.utxos.count, 1)
-        XCTAssertEqual(plan.utxos.sum(), 10_771)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 10_000)
+        XCTAssertEqual(plan.unspentTransactions.count, 1)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 10_771)
         XCTAssertEqual(plan.amount, 10_000)
         XCTAssertEqual(plan.fee, 771)
         XCTAssertEqual(plan.change, 0)
@@ -138,8 +138,8 @@ class TransactionPlannerTests: XCTestCase {
         // If available amount is dust, returns empty plan
         utxos.append(buildUnspent(737))
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 546)
-        XCTAssertTrue(plan.utxos.isEmpty)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 546)
+        XCTAssertTrue(plan.unspentTransactions.isEmpty)
         XCTAssertEqual(plan.amount, 0)
         XCTAssertEqual(plan.fee, 0)
         XCTAssertEqual(plan.change, 0)
@@ -149,9 +149,9 @@ class TransactionPlannerTests: XCTestCase {
         // If available amount is not dust, returns valid plan
         utxos.append(buildUnspent(738))
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 546)
-        XCTAssertEqual(plan.utxos.count, 1)
-        XCTAssertEqual(plan.utxos.sum(), 738)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 546)
+        XCTAssertEqual(plan.unspentTransactions.count, 1)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 738)
         XCTAssertEqual(plan.amount, 546)
         XCTAssertEqual(plan.fee, 192)
         XCTAssertEqual(plan.change, 0)
@@ -165,9 +165,9 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(1000))
         utxos.append(buildUnspent(11_000))
         utxos.append(buildUnspent(12_000))
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 5000)
-        XCTAssertEqual(plan.utxos.count, 1)
-        XCTAssertEqual(plan.utxos.sum(), 11_000)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 5000)
+        XCTAssertEqual(plan.unspentTransactions.count, 1)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 11_000)
         XCTAssertEqual(plan.amount, 5000)
         XCTAssertEqual(plan.fee, 226)
         XCTAssertEqual(plan.change, 5774)
@@ -182,9 +182,9 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(50_000))
         utxos.append(buildUnspent(120_000))
         
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 10_000)
-        XCTAssertEqual(plan.utxos.count, 1)
-        XCTAssertEqual(plan.utxos.sum(), 50_000)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 10_000)
+        XCTAssertEqual(plan.unspentTransactions.count, 1)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 50_000)
         XCTAssertEqual(plan.amount, 10_000)
         XCTAssertEqual(plan.fee, 226)
         XCTAssertEqual(plan.change, 39_774)
@@ -196,9 +196,9 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(2000))
         utxos.append(buildUnspent(5000))
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 6000)
-        XCTAssertEqual(plan.utxos.count, 2)
-        XCTAssertEqual(plan.utxos.sum(), 9000)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 6000)
+        XCTAssertEqual(plan.unspentTransactions.count, 2)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 9000)
         XCTAssertEqual(plan.amount, 6000)
         XCTAssertEqual(plan.fee, 374)
         XCTAssertEqual(plan.change, 2626)
@@ -210,9 +210,9 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(30_000))
         utxos.append(buildUnspent(30_000))
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 50_000)
-        XCTAssertEqual(plan.utxos.count, 2)
-        XCTAssertEqual(plan.utxos.sum(), 70_000)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 50_000)
+        XCTAssertEqual(plan.unspentTransactions.count, 2)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 70_000)
         XCTAssertEqual(plan.amount, 50_000)
         XCTAssertEqual(plan.fee, 374)
         XCTAssertEqual(plan.change, 19_626)
@@ -230,9 +230,9 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(8000))
         utxos.append(buildUnspent(9000))
 
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 28_000)
-        XCTAssertEqual(plan.utxos.count, 4)
-        XCTAssertEqual(plan.utxos.sum(), 30_000)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 28_000)
+        XCTAssertEqual(plan.unspentTransactions.count, 4)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 30_000)
         XCTAssertEqual(plan.amount, 28_000)
         XCTAssertEqual(plan.fee, 670)
         XCTAssertEqual(plan.change, 1330)
@@ -244,9 +244,9 @@ class TransactionPlannerTests: XCTestCase {
         utxos.append(buildUnspent(4000))
         utxos.append(buildUnspent(4000))
         
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 15_000)
-        XCTAssertEqual(plan.utxos.count, 3)
-        XCTAssertEqual(plan.utxos.sum(), 12_000)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 15_000)
+        XCTAssertEqual(plan.unspentTransactions.count, 3)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 12_000)
         XCTAssertEqual(plan.amount, 11_512)
         XCTAssertEqual(plan.fee, 488)
         XCTAssertEqual(plan.change, 0)
@@ -259,9 +259,9 @@ class TransactionPlannerTests: XCTestCase {
 
         planner.feePerByte = 61
         
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 2_287_189)
-        XCTAssertEqual(plan.utxos.count, 2)
-        XCTAssertEqual(plan.utxos.sum(), 3_083_478)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 2_287_189)
+        XCTAssertEqual(plan.unspentTransactions.count, 2)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 3_083_478)
         XCTAssertEqual(plan.amount, 2_287_189)
         XCTAssertEqual(plan.fee, 22_814)
         XCTAssertEqual(plan.change, 773_475)
@@ -271,9 +271,9 @@ class TransactionPlannerTests: XCTestCase {
         // Trust/wallet-core: SelectMaxCase
         utxos.append(buildUnspent(10_189_534))
         
-        let plan: TransactionPlan = planner.plan(utxos: utxos, target: 10_189_534)
-        XCTAssertEqual(plan.utxos.count, 1)
-        XCTAssertEqual(plan.utxos.sum(), 10_189_534)
+        let plan: TransactionPlan = planner.plan(unspentTransactions: utxos, target: 10_189_534)
+        XCTAssertEqual(plan.unspentTransactions.count, 1)
+        XCTAssertEqual(plan.unspentTransactions.sum(), 10_189_534)
         XCTAssertEqual(plan.amount, 10_189_342)
         XCTAssertEqual(plan.fee, 192)
         XCTAssertEqual(plan.change, 0)

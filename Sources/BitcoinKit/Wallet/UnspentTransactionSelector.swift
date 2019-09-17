@@ -1,5 +1,5 @@
 //
-//  UnspentTransactionOutputSelector.swift
+//  UnspentTransactionSelector.swift
 //
 //  Copyright © 2019 BitcoinKit developers
 //
@@ -25,8 +25,8 @@
 import Foundation
 
 /// Helper model that selects a set of utxos to spend
-public struct UnspentTransactionOutputSelector {
-    public static func select(utxos: [UnspentTransaction], targetValue: UInt64, feePerByte: UInt64) -> [UnspentTransaction] {
+public struct UnspentTransactionSelector {
+    public static func select(from unspentTransactions: [UnspentTransaction], targetValue: UInt64, feePerByte: UInt64) -> [UnspentTransaction] {
         let dustValue: UInt64 = FeeCalculator.calculateDust(feePerByte: feePerByte)
 
         // if target value is dust, return empty array
@@ -50,15 +50,15 @@ public struct UnspentTransactionOutputSelector {
 
         // Filter too small utxos and sort ascending order
         let singleInputFee: UInt64 = FeeCalculator.calculateSingleInputFee(feePerByte: feePerByte)
-        let sortedUtxos: [UnspentTransaction] = utxos
+        let availableUnspentTransactions: [UnspentTransaction] = unspentTransactions
             .filter { $0.output.value > singleInputFee }
             .sorted(by: { $0.output.value < $1.output.value })
 
         // Maximum available amount of utxos should be greater than targetValue
-        let feeToSpendAll: UInt64 = FeeCalculator.calculateFee(inputs: UInt64(sortedUtxos.count), outputs: 1, feePerByte: feePerByte)
-        let availableMax: UInt64 = sortedUtxos.sum() - feeToSpendAll
+        let feeToSpendAll: UInt64 = FeeCalculator.calculateFee(inputs: UInt64(availableUnspentTransactions.count), outputs: 1, feePerByte: feePerByte)
+        let availableMax: UInt64 = availableUnspentTransactions.sum() - feeToSpendAll
         guard availableMax >= targetValue else {
-            return sortedUtxos
+            return availableUnspentTransactions
         }
 
         // difference from 2x targetValue
@@ -71,9 +71,9 @@ public struct UnspentTransactionOutputSelector {
         //    (2) closer to 2x the amount,
         //    (3) and does not produce dust change.
         txN:do {
-            for numTx in (1...sortedUtxos.count) {
+            for numTx in (1...availableUnspentTransactions.count) {
                 numInputs = numTx
-                let nOutputsSlices = sortedUtxos.slices(of: numInputs)
+                let nOutputsSlices = availableUnspentTransactions.slices(of: numInputs)
                 var nOutputsInRange = nOutputsSlices.filter { $0.sum() >= targetWithFeeAndDust }
                 guard !nOutputsInRange.isEmpty else {
                     continue
@@ -88,9 +88,9 @@ public struct UnspentTransactionOutputSelector {
         // 2. If not, find a combination of outputs that may produce dust change.
         numOutputs = 1
         txDiscardDust:do {
-            for numTx in (1...sortedUtxos.count) {
+            for numTx in (1...availableUnspentTransactions.count) {
                 numInputs = numTx
-                let nOutputsSlices = sortedUtxos.slices(of: numInputs)
+                let nOutputsSlices = availableUnspentTransactions.slices(of: numInputs)
                 let nOutputsInRange = nOutputsSlices.filter {
                     return $0.sum() >= targetWithFee
                 }
@@ -101,7 +101,7 @@ public struct UnspentTransactionOutputSelector {
         }
 
         // This can't be called
-        return sortedUtxos
+        return availableUnspentTransactions
     }
 }
 

@@ -29,8 +29,8 @@ import Foundation
 /// // Initialize a planner
 /// let planner = TransactionPlanner(feePerByte: 1)
 ///
-/// // Plan a transaction with utxos and target amount
-/// let plan = planner.plan(utxos: utxos, amount: targetAmount)
+/// // Plan a transaction with unspent transactions and target amount
+/// let plan = planner.plan(unspentTransactions: unspentTransactions, amount: targetAmount)
 /// ```
 public struct TransactionPlanner {
     public enum DustPolicy {
@@ -46,20 +46,20 @@ public struct TransactionPlanner {
     /// Plan a transaction from available utxos and the target amount
     ///
     /// - Parameters:
-    ///   - utxos: Available unspent transaction outputs
+    ///   - unspentTransactions: Available unspent transactions
     ///   - target: Target amount to send
     /// - Returns: A transaction plan. The amount of the plan may be different from target. Bit smaller when the funds are insufficient, bit bigger when the change is dust.
-    public func plan(utxos: [UnspentTransaction], target amount: UInt64) -> TransactionPlan {
+    public func plan(unspentTransactions: [UnspentTransaction], target amount: UInt64) -> TransactionPlan {
         let dustValue: UInt64 = FeeCalculator.calculateDust(feePerByte: feePerByte)
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: amount, feePerByte: feePerByte)
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: amount, feePerByte: feePerByte)
 
         let availableAmount: UInt64 = selected.map { $0.output.value }.reduce(0, +)
         let fee: UInt64 = FeeCalculator.calculateFee(inputs: UInt64(selected.count), outputs: 2, feePerByte: feePerByte)
         let feeWithoutChange: UInt64 = FeeCalculator.calculateFee(inputs: UInt64(selected.count), outputs: 1, feePerByte: feePerByte)
         if availableAmount >= amount + fee + dustValue {
             let change: UInt64 = availableAmount - amount - fee
-            return TransactionPlan(utxos: selected,
+            return TransactionPlan(unspentTransactions: selected,
                                    amount: amount,
                                    fee: fee,
                                    change: change)
@@ -77,18 +77,18 @@ public struct TransactionPlanner {
                 newFee = feeWithoutChange
                 newAmount = availableAmount - newFee
             }
-            return TransactionPlan(utxos: selected,
+            return TransactionPlan(unspentTransactions: selected,
                                    amount: newAmount,
                                    fee: newFee,
                                    change: 0)
         } else if availableAmount >= feeWithoutChange + dustValue {
             // Insufficient funds, spend all
-            return TransactionPlan(utxos: selected,
+            return TransactionPlan(unspentTransactions: selected,
                                    amount: availableAmount - feeWithoutChange,
                                    fee: feeWithoutChange,
                                    change: 0)
         } else {
-            return TransactionPlan(utxos: [],
+            return TransactionPlan(unspentTransactions: [],
                                    amount: 0,
                                    fee: 0,
                                    change: 0)

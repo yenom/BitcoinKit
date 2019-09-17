@@ -99,7 +99,7 @@ public struct BCHSignatureHashHelper: SignatureHashHelper {
     ///   - utxoOutput: TransactionOutput to be signed
     ///   - inputIndex: The index of the transaction output to be signed
     /// - Returns: The signature hash for the transaction to be signed.
-    public func createSignatureHash(of tx: Transaction, for utxoOutput: TransactionOutput, inputIndex: Int) -> Data {
+    public func createSignatureHash(of tx: Transaction, for utxo: TransactionOutput, inputIndex: Int) -> Data {
         // "txin" ≒ "utxo"
         // "txin" is an input of this tx
         // "utxo" is an output of the prev tx
@@ -116,9 +116,9 @@ public struct BCHSignatureHashHelper: SignatureHashHelper {
         // 4. outpoint [of the input txin]
         data += txin.previousOutput.serialized()
         // 5. scriptCode [of the input txout]
-        data += utxoOutput.scriptCode()
+        data += utxo.scriptCode()
         // 6. value [of the input txout] (8-byte)
-        data += utxoOutput.value
+        data += utxo.value
         // 7. nSequence [of the input txin] (4-byte)
         data += txin.sequence
         // 8. hashOutputs

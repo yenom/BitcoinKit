@@ -49,7 +49,7 @@ public struct TransactionBuilder {
             )
         }
 
-        let unsignedInputs: [TransactionInput] = plan.utxos.map {
+        let unsignedInputs: [TransactionInput] = plan.unspentTransactions.map {
             TransactionInput(
                 previousOutput: $0.outpoint,
                 signatureScript: Data(),

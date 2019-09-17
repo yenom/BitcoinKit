@@ -25,7 +25,7 @@
 import Foundation
 
 public struct FeeCalculator {
-    /// Calclate minimum utxo amount that will be accepted by full nodes
+    /// Calclate minimum transaction output amount that will be accepted by full nodes
     /// Check here  : https://github.com/Bitcoin-ABC/bitcoin-abc/blob/1da1ddd10d3a52de49fcf3b399917cfbc28ae8d6/src/test/transaction_tests.cpp#L641
     static func calculateDust(feePerByte: UInt64) -> UInt64 {
         return 3 * 182 * feePerByte

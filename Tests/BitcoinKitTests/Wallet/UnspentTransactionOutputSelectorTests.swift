@@ -32,69 +32,69 @@ func buildUnspent(_ value: UInt64) -> UnspentTransaction {
 }
 
 class UnspentTransactionOutputSelectorTests: XCTestCase {
-    var utxos: [UnspentTransaction] = []
+    var unspentTransactions: [UnspentTransaction] = []
     
     override func setUp() {
-        utxos = []
+        unspentTransactions = []
     }
     
-    func testEmptyUtxos() {
-        // If utxos are empty, returns empty
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 3000, feePerByte: 1)
+    func testEmptyUnspentTransactions() {
+        // If unspentTransactions are empty, returns empty
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 3000, feePerByte: 1)
         XCTAssertTrue(selected.isEmpty)
     }
 
     func testTargetValueIsZero() {
         // If targetValue is 0, returns empty
-        utxos.append(buildUnspent(1000))
-        utxos.append(buildUnspent(2000))
-        utxos.append(buildUnspent(3000))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 0, feePerByte: 1)
+        unspentTransactions.append(buildUnspent(1000))
+        unspentTransactions.append(buildUnspent(2000))
+        unspentTransactions.append(buildUnspent(3000))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 0, feePerByte: 1)
         XCTAssertTrue(selected.isEmpty)
     }
     
-    func testSingleUtxoCloseToDouble() {
-        // 1. Single utxo closest 2x
-        utxos.append(buildUnspent(2000))
-        utxos.append(buildUnspent(6000))
-        utxos.append(buildUnspent(1000))
-        utxos.append(buildUnspent(11000))
-        utxos.append(buildUnspent(12000))
+    func testSingleUnspentTransactionCloseToDouble() {
+        // 1. Single unspentTransaction closest 2x
+        unspentTransactions.append(buildUnspent(2000))
+        unspentTransactions.append(buildUnspent(6000))
+        unspentTransactions.append(buildUnspent(1000))
+        unspentTransactions.append(buildUnspent(11000))
+        unspentTransactions.append(buildUnspent(12000))
         
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 5000, feePerByte: 1)
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 5000, feePerByte: 1)
         XCTAssertEqual(selected.count, 1)
         XCTAssertEqual(selected.sum(), 11000)
     }
     
-    func testTwoUtxosCloseToDouble() {
-        // 3. Two utxos closest to 2x value of target
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(2000))
-        utxos.append(buildUnspent(5000))
+    func testTwoUnspentTransactionsCloseToDouble() {
+        // 3. Two unspentTransactions closest to 2x value of target
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(2000))
+        unspentTransactions.append(buildUnspent(5000))
         
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 4999, feePerByte: 1)
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 4999, feePerByte: 1)
         XCTAssertEqual(selected.count, 2)
         XCTAssertEqual(selected.sum(), 9000)
     }
     
-    func testFewestUtxosGreaterThanTarget() {
-        // 5. Fewest utxos greater than 1x value of target
-        utxos.append(buildUnspent(1000))
-        utxos.append(buildUnspent(2000))
-        utxos.append(buildUnspent(3000))
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(5000))
-        utxos.append(buildUnspent(6000))
-        utxos.append(buildUnspent(7000))
-        utxos.append(buildUnspent(8000))
-        utxos.append(buildUnspent(9000))
+    func testFewestUnspentTransactionsGreaterThanTarget() {
+        // 5. Fewest unspentTransactions greater than 1x value of target
+        unspentTransactions.append(buildUnspent(1000))
+        unspentTransactions.append(buildUnspent(2000))
+        unspentTransactions.append(buildUnspent(3000))
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(5000))
+        unspentTransactions.append(buildUnspent(6000))
+        unspentTransactions.append(buildUnspent(7000))
+        unspentTransactions.append(buildUnspent(8000))
+        unspentTransactions.append(buildUnspent(9000))
         
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 28000, feePerByte: 1)
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 28000, feePerByte: 1)
         XCTAssertEqual(selected.count, 4)
         XCTAssertEqual(selected.sum(), 30000)
         XCTAssertEqual(selected[0].output.value, 6000)
@@ -105,100 +105,100 @@ class UnspentTransactionOutputSelectorTests: XCTestCase {
     
     func testInsufficientFund() {
         // 6. Insufficient funds
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(4000))
         
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 15000, feePerByte: 1)
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 15000, feePerByte: 1)
         XCTAssertEqual(selected.count, 3)
         XCTAssertEqual(selected.sum(), 12000)
     }
 
-    func testUtxos1() {
+    func testUnspentTransactions1() {
         // Trust/wallet-core: SelectUnpsents1
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(2000))
-        utxos.append(buildUnspent(6000))
-        utxos.append(buildUnspent(1000))
-        utxos.append(buildUnspent(11_000))
-        utxos.append(buildUnspent(12_000))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 5000, feePerByte: 1)
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(2000))
+        unspentTransactions.append(buildUnspent(6000))
+        unspentTransactions.append(buildUnspent(1000))
+        unspentTransactions.append(buildUnspent(11_000))
+        unspentTransactions.append(buildUnspent(12_000))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 5000, feePerByte: 1)
         XCTAssertEqual(selected.count, 1)
         XCTAssertEqual(selected.sum(), 11_000)
     }
     
-    func testUtxos2() {
+    func testUnspentTransactions2() {
         // Trust/wallet-core: SelectUnpsents2
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(2000))
-        utxos.append(buildUnspent(6000))
-        utxos.append(buildUnspent(1000))
-        utxos.append(buildUnspent(50_000))
-        utxos.append(buildUnspent(120_000))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 10_000, feePerByte: 1)
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(2000))
+        unspentTransactions.append(buildUnspent(6000))
+        unspentTransactions.append(buildUnspent(1000))
+        unspentTransactions.append(buildUnspent(50_000))
+        unspentTransactions.append(buildUnspent(120_000))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 10_000, feePerByte: 1)
         XCTAssertEqual(selected.count, 1)
         XCTAssertEqual(selected.sum(), 50_000)
     }
 
-    func testUtxos3() {
+    func testUnspentTransactions3() {
         // Trust/wallet-core: SelectUnpsents3
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(2000))
-        utxos.append(buildUnspent(5000))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 6000, feePerByte: 1)
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(2000))
+        unspentTransactions.append(buildUnspent(5000))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 6000, feePerByte: 1)
         XCTAssertEqual(selected.count, 2)
         XCTAssertEqual(selected.sum(), 9000)
     }
 
-    func testUtxos4() {
+    func testUnspentTransactions4() {
         // Trust/wallet-core: SelectUnpsents4
-        utxos.append(buildUnspent(40_000))
-        utxos.append(buildUnspent(30_000))
-        utxos.append(buildUnspent(30_000))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 50_000, feePerByte: 1)
+        unspentTransactions.append(buildUnspent(40_000))
+        unspentTransactions.append(buildUnspent(30_000))
+        unspentTransactions.append(buildUnspent(30_000))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 50_000, feePerByte: 1)
         XCTAssertEqual(selected.count, 2)
         XCTAssertEqual(selected.sum(), 70_000)
     }
     
-    func testUtxos5() {
+    func testUnspentTransactions5() {
         // Trust/wallet-core: SelectUnpsents5
-        utxos.append(buildUnspent(1000))
-        utxos.append(buildUnspent(2000))
-        utxos.append(buildUnspent(3000))
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(5000))
-        utxos.append(buildUnspent(6000))
-        utxos.append(buildUnspent(7000))
-        utxos.append(buildUnspent(8000))
-        utxos.append(buildUnspent(9000))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 28_000, feePerByte: 1)
+        unspentTransactions.append(buildUnspent(1000))
+        unspentTransactions.append(buildUnspent(2000))
+        unspentTransactions.append(buildUnspent(3000))
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(5000))
+        unspentTransactions.append(buildUnspent(6000))
+        unspentTransactions.append(buildUnspent(7000))
+        unspentTransactions.append(buildUnspent(8000))
+        unspentTransactions.append(buildUnspent(9000))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 28_000, feePerByte: 1)
         XCTAssertEqual(selected.count, 4)
         XCTAssertEqual(selected.sum(), 30_000)
     }
     
     func testSelectUnpsentsInsufficient()  {
         // Trust/wallet-core: SelectUnpsentsInsufficient
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(4000))
-        utxos.append(buildUnspent(4000))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 15_000, feePerByte: 1)
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(4000))
+        unspentTransactions.append(buildUnspent(4000))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 15_000, feePerByte: 1)
         XCTAssertEqual(selected.count, 3)
         XCTAssertEqual(selected.sum(), 12_000)
     }
 
     func testSelectCustom()  {
         // Trust/wallet-core: SelectCustomCase
-        utxos.append(buildUnspent(794_121))
-        utxos.append(buildUnspent(2_289_357))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 2_287_189, feePerByte: 61)
+        unspentTransactions.append(buildUnspent(794_121))
+        unspentTransactions.append(buildUnspent(2_289_357))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 2_287_189, feePerByte: 61)
         XCTAssertEqual(selected.count, 2)
         XCTAssertEqual(selected.sum(), 3_083_478)
 
@@ -206,9 +206,9 @@ class UnspentTransactionOutputSelectorTests: XCTestCase {
 
     func testSelectMax()  {
         // Trust/wallet-core: SelectMaxCase
-        utxos.append(buildUnspent(10_189_534))
-        let selected: [UnspentTransaction] = UnspentTransactionOutputSelector
-            .select(utxos: utxos, targetValue: 10_189_534, feePerByte: 1)
+        unspentTransactions.append(buildUnspent(10_189_534))
+        let selected: [UnspentTransaction] = UnspentTransactionSelector
+            .select(from: unspentTransactions, targetValue: 10_189_534, feePerByte: 1)
         XCTAssertEqual(selected.count, 1)
         XCTAssertEqual(selected.sum(), 10_189_534)
     }
