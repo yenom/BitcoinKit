@@ -26,7 +26,7 @@
 import Foundation
 
 // swiftlint:disable file_length
-public extension WordList {
+public extension Mnemonic.WordList {
     static var english: [String] = {
         let words =
         """

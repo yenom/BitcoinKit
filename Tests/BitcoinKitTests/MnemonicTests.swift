@@ -468,7 +468,7 @@ private extension MnemonicTests {
             }
             XCTAssertNoThrow(try Mnemonic.validateChecksumOf(mnemonic: words, language: .english), "validation of vector with mnemonic failed: '\(words)'")
 
-        let firstWordInVocabulary = WordList.english.first!
+        let firstWordInVocabulary = Mnemonic.WordList.english.first!
         XCTAssertNotEqual(words[0], firstWordInVocabulary) // assert that we dont have such bad luck that the first
         let mnemonicFirstWordReplaced: [String] = { var tmp = words; tmp[0] = firstWordInVocabulary; return tmp }()
 

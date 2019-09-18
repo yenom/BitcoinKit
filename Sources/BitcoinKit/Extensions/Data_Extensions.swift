@@ -24,6 +24,8 @@
 
 import Foundation
 
+internal let bitsPerByte = 8
+
 extension Data {
     var binaryString: String {
         var result: [String] = []

@@ -1,93 +1,77 @@
 //
 //  Mnemonic+Strength.swift
-//  BitcoinKit
 //
-//  Created by Alexander Cyon on 2019-09-18.
-//  Copyright © 2019 BitcoinKit developers. All rights reserved.
+//  Copyright © 2018 BitcoinKit developers
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 import Foundation
 
-internal let bitsPerByte = 8
-internal let wordListSizeLog2 = 11 // 2^11 => 2048
-
 // MARK: Strength
 public extension Mnemonic {
-    enum Strength: Int, CaseIterable {
-        case `default` = 128
-        case low = 160
-        case medium = 192
-        case high = 224
-        case veryHigh = 256
-    }
+	enum Strength: Int, CaseIterable {
+		case `default` = 128
+		case low = 160
+		case medium = 192
+		case high = 224
+		case veryHigh = 256
+	}
 }
 
 public extension Mnemonic.Strength {
-    init?(wordCount: Int) {
-        guard
-            let entropyInBitsFromWordCount = Mnemonic.Strength.entropyInBitsFrom(wordCount: wordCount),
-            let strength = Self(rawValue: entropyInBitsFromWordCount)
-            else { return nil }
-        self = strength
-    }
 
-    init?(byteCount: Int) {
-        let bitCount = byteCount * bitsPerByte
-        guard
-            let strength = Self(rawValue: bitCount)
-            else { return nil }
-        self = strength
-    }
+	/// `wordCount` must be divisible by `3`, else `nil` is returned
+	init?(wordCount: Int) {
+		guard wordCount % Mnemonic.Strength.checksumBitsPerWord == 0 else { return nil }
+		let entropyInBitsFromWordCount = (wordCount / Mnemonic.Strength.checksumBitsPerWord) * 32
+		self.init(rawValue: entropyInBitsFromWordCount)
+	}
+
+	init?(byteCount: Int) {
+		let bitCount = byteCount * bitsPerByte
+		guard
+			let strength = Self(rawValue: bitCount)
+			else { return nil }
+		self = strength
+	}
 }
 
 // MARK: - Internal
 
 internal extension Mnemonic.Strength {
-    var wordCount: WordCount {
-        let wordCountInt = Mnemonic.Strength.wordCountFrom(entropyInBits: rawValue)
-        guard let wordCount = WordCount(rawValue: wordCountInt) else {
-            fatalError("Missed to include word count: \(wordCountInt)")
-        }
-        return wordCount
-    }
 
-    var byteCount: Int {
-        return rawValue / bitsPerByte
-    }
+	static let checksumBitsPerWord = 3
 
-    static func wordCountFrom(entropyInBits: Int) -> Int {
-        return Int(ceil(Double(entropyInBits) / Double(wordListSizeLog2)))
-    }
+	var byteCount: Int {
+		return rawValue / bitsPerByte
+	}
 
-    /// `wordCount` must be divisible by `3`, else `nil` is returned
-    static func entropyInBitsFrom(wordCount: Int) -> Int? {
-        guard wordCount % Mnemonic.Strength.checksumBitsPerWord == 0 else { return nil }
-        return (wordCount / Mnemonic.Strength.checksumBitsPerWord) * 32
-    }
+	var wordCount: Int {
+		return Mnemonic.Strength.wordCountFrom(entropyInBits: rawValue)
+	}
 
-    static let checksumBitsPerWord = 3
-    var checksumLengthInBits: Int {
-        return wordCount.wordCount / Mnemonic.Strength.checksumBitsPerWord
-    }
+	static func wordCountFrom(entropyInBits: Int) -> Int {
+		return Int(ceil(Double(entropyInBits) / Double(Mnemonic.WordList.sizeLog2)))
+	}
 
-    var checksumLengthInBytes: Int {
-          return checksumLengthInBits / bitsPerByte
-      }
-}
-
-// MARK: - WordCount
-internal extension Mnemonic.Strength {
-    enum WordCount: Int {
-        case wordCountOf12 = 12
-        case wordCountOf15 = 15
-        case wordCountOf18 = 18
-        case wordCountOf21 = 21
-        case wordCountOf24 = 24
-    }
-}
-
-internal extension Mnemonic.Strength.WordCount {
-    var wordCount: Int {
-        return rawValue
-    }
+	var checksumLengthInBits: Int {
+		return wordCount / Mnemonic.Strength.checksumBitsPerWord
+	}
 }
