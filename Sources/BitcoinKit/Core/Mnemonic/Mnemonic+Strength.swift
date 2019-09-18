@@ -47,7 +47,7 @@ public extension Mnemonic.Strength {
 	init?(byteCount: Int) {
 		let bitCount = byteCount * bitsPerByte
 		guard
-			let strength = Self(rawValue: bitCount)
+			let strength = Mnemonic.Strength(rawValue: bitCount)
 			else { return nil }
 		self = strength
 	}
