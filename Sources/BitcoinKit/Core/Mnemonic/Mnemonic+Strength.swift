@@ -30,6 +30,14 @@ public extension Mnemonic.Strength {
             else { return nil }
         self = strength
     }
+
+    init?(byteCount: Int) {
+        let bitCount = byteCount * bitsPerByte
+        guard
+            let strength = Self(rawValue: bitCount)
+            else { return nil }
+        self = strength
+    }
 }
 
 // MARK: - Internal
@@ -43,6 +51,10 @@ internal extension Mnemonic.Strength {
         return wordCount
     }
 
+    var byteCount: Int {
+        return rawValue / bitsPerByte
+    }
+
     static func wordCountFrom(entropyInBits: Int) -> Int {
         return Int(ceil(Double(entropyInBits) / Double(wordListSizeLog2)))
     }
@@ -54,9 +66,13 @@ internal extension Mnemonic.Strength {
     }
 
     static let checksumBitsPerWord = 3
-    var checksumLength: Int {
+    var checksumLengthInBits: Int {
         return wordCount.wordCount / Mnemonic.Strength.checksumBitsPerWord
     }
+
+    var checksumLengthInBytes: Int {
+          return checksumLengthInBits / bitsPerByte
+      }
 }
 
 // MARK: - WordCount

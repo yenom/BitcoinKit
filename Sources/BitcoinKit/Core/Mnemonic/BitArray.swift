@@ -36,9 +36,10 @@ import Foundation
 /// standard array such as constant time random access and
 /// amortized constant time insertion at the end of the array.
 ///
-/// Conforms to `MutableCollection`, `ExpressibleByArrayLiteral`
+/// Conforms to `MutableCollection`, `RangeReplaceableCollection`, `ExpressibleByArrayLiteral`
 /// , `Equatable`, `Hashable`, `CustomStringConvertible`
-public struct BitArray {
+
+public struct BitArray: Hashable, RangeReplaceableCollection {
 
     // MARK: Creating a BitArray
 
@@ -310,12 +311,9 @@ extension BitArray: CustomStringConvertible {
 
     /// A string containing a suitable textual
     /// representation of the bit array.
-    public var description: String { return map { "\($0 == true ? 1 : 0)" }.joined() }
+    public var description: String { return binaryString }
+    public var binaryString: String { return map { "\($0 == true ? 1 : 0)" }.joined() }
 }
-
-extension BitArray: Equatable {}
-
-// MARK: BitArray Equatable Protocol Conformance
 
 /// Returns `true` if and only if the bit arrays contain the same bits in the same order.
 public func == (lhs: BitArray, rhs: BitArray) -> Bool {
@@ -323,29 +321,6 @@ public func == (lhs: BitArray, rhs: BitArray) -> Bool {
         return false
     }
     return lhs.elementsEqual(rhs)
-}
-
-// MARK: Hashable Protocol Conformance
-extension BitArray: Hashable {}
-
-public extension BitArray {
-
-    /// Equivalence to Python's operator on lists: `[:n]`, e.g. `x = [1, 2, 3, 4, 5]; x[:3] // equals: [1, 2, 3]`
-    func prefix(maxBitCount: Int) -> BitArray {
-        return BitArray(self.prefix(maxBitCount))
-    }
-
-    /// Equivalent to Python's `[-n]`, e.g.`"Hello"[-3] // equals: "llo"`
-    func suffix(maxBitCount: Int) -> BitArray {
-        return BitArray(self.suffix(maxBitCount))
-    }
-
-    /// Equivalence to Python's operator on string: `[:-n]`, e.g.`"Hello"[:-3] // equals: "He"`
-    func prefix(subtractFromCount n: Int) -> BitArray {
-        let bitCount = count - n
-        guard bitCount > 0 else { return [] }
-        return prefix(maxBitCount: bitCount)
-    }
 }
 
 public extension BitArray {
@@ -369,8 +344,4 @@ public extension BitArray {
     func asData() -> Data {
         return Data(self.asBytesArray())
     }
-}
-
-extension BitArray: RangeReplaceableCollection {
-
 }

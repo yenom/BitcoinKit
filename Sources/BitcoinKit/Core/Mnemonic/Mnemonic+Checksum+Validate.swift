@@ -61,11 +61,11 @@ public extension Mnemonic {
         let checksumLength = mnemonicWords.count / 3
 
         let dataBits = bitArray.prefix(subtractFromCount: checksumLength)
-        let checksumBits = bitArray.suffix(maxBitCount: checksumLength)
+        let checksumBits = bitArray.suffix(maxCount: checksumLength)
 
         let hash = Crypto.sha256(dataBits.asData())
 
-        let hashBits = BitArray(data: hash).prefix(maxBitCount: checksumLength)
+        let hashBits = BitArray(data: hash).prefix(maxCount: checksumLength)
 
         guard hashBits == checksumBits else {
             throw MnemonicError.validationError(.checksumMismatch)

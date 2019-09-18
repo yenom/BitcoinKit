@@ -13,6 +13,7 @@ public typealias MnemonicError = Mnemonic.Error
 public extension Mnemonic {
     enum Error: Swift.Error {
         case randomBytesError
+        case unsupportedByteCountOfEntropy(got: Int)
         indirect case validationError(ValidationError)
     }
 }

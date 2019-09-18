@@ -34,12 +34,16 @@ struct UInt11: ExpressibleByIntegerLiteral {
 
     private let valueBoundBy16Bits: UInt16
 
-    init?<T>(exactly source: T) where T: BinaryInteger {
-        guard
-            let valueBoundBy16Bits = UInt16(exactly: source),
-            valueBoundBy16Bits < 2048 else { return nil }
-
+    init?(valueBoundBy16Bits: UInt16) {
+        if valueBoundBy16Bits > UInt11.max16 {
+            return nil
+        }
         self.valueBoundBy16Bits = valueBoundBy16Bits
+    }
+
+    init?<T>(exactly source: T) where T: BinaryInteger {
+        guard let valueBoundBy16Bits = UInt16(exactly: source) else { return nil }
+        self.init(valueBoundBy16Bits: valueBoundBy16Bits)
     }
 
 }
@@ -52,8 +56,8 @@ extension UInt11 {
 
      /// Creates a new integer value from the given string and radix.
      init?<S>(_ text: S, radix: Int = 10) where S: StringProtocol {
-         guard let uint16 = UInt16(text, radix: radix) else { return nil }
-         self.init(exactly: uint16)
+        guard let uint16 = UInt16(text, radix: radix) else { return nil }
+        self.init(valueBoundBy16Bits: uint16)
      }
 
     init(integerLiteral value: Int) {
@@ -62,6 +66,11 @@ extension UInt11 {
         }
         self = exactly
     }
+
+    init?(bitArray: BitArray) {
+        if bitArray.count > UInt11.bitWidth { return nil }
+        self.init(bitArray.binaryString, radix: 2)
+    }
 }
 
 extension UInt11 {
@@ -69,5 +78,9 @@ extension UInt11 {
         let binaryString = String(valueBoundBy16Bits.binaryString.suffix(Self.bitWidth))
         assert(UInt16(binaryString, radix: 2)! == valueBoundBy16Bits, "incorrect conversion.")
         return binaryString
+    }
+
+    var asInt: Int {
+        return Int(valueBoundBy16Bits)
     }
 }
