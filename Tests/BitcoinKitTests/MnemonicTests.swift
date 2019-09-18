@@ -26,6 +26,12 @@ import XCTest
 @testable import BitcoinKit
 
 class MnemonicTests: XCTestCase {
+
+    override func setUp() {
+        super.setUp()
+        continueAfterFailure = false
+    }
+
     func testMnemonic1() {
         let testVectors = """
             {
@@ -177,26 +183,26 @@ class MnemonicTests: XCTestCase {
                 ]
             }
             """
-        
+
         let vectors = try! JSONSerialization.jsonObject(with: testVectors.data(using: .utf8)!, options: []) as! [String: [[String]]]
         for vector in vectors["english"]! {
             let expected = (entropy: vector[0],
                             mnemonic: vector[1],
                             seed: vector[2],
                             key: vector[3])
-            
+
             let entropy = Data(hex: expected.entropy)!
-            let mnemonic = Mnemonic.generate(entropy: entropy)
+            let mnemonic = try! Mnemonic.generate(entropy: entropy)
             XCTAssertEqual(mnemonic.joined(separator: " "), expected.mnemonic)
-            
-            let seed = Mnemonic.seed(mnemonic: mnemonic, passphrase: "TREZOR")
+
+            let seed = try! Mnemonic.seed(mnemonic: mnemonic, passphrase: "TREZOR")
             XCTAssertEqual(seed.hex, expected.seed)
-            
+
             let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
             XCTAssertEqual(privateKey.extended(), expected.key)
         }
     }
-    
+
     func testMnemonic2() {
         let testVectors = """
             [
@@ -393,7 +399,7 @@ class MnemonicTests: XCTestCase {
                 }
             ]
             """
-        
+
         let vectors = try! JSONSerialization.jsonObject(with: testVectors.data(using: .utf8)!, options: []) as! [[String: String]]
         for vector in vectors {
             let expected = (entropy: vector["entropy"]!,
@@ -401,16 +407,153 @@ class MnemonicTests: XCTestCase {
                             passphrase: vector["passphrase"]!,
                             seed: vector["seed"]!,
                             bip32_xprv: vector["bip32_xprv"]!)
-            
+
             let entropy = Data(hex: expected.entropy)!
-            let mnemonic = Mnemonic.generate(entropy: entropy, language: .japanese)
+            let mnemonic = try! Mnemonic.generate(entropy: entropy, language: .japanese)
             XCTAssertEqual(mnemonic.joined(separator: "　"), expected.mnemonic)
-            
-            let seed = Mnemonic.seed(mnemonic: mnemonic, passphrase: expected.passphrase)
+
+            let seed = try! Mnemonic.seed(mnemonic: mnemonic, passphrase: expected.passphrase)
             XCTAssertEqual(seed.hex, expected.seed)
-            
+
             let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
             XCTAssertEqual(privateKey.extended(), expected.bip32_xprv)
         }
     }
+
+    func testChecksummedVectorsWordCountOf12() {
+        for vector in checksumVectorsWordCountOf12 {
+            doTest(checksumVector: vector)
+        }
+    }
+
+    func testChecksummedVectorsWordCountOf24() {
+        for vector in checksumVectorsWordCountOf24 {
+            doTest(checksumVector: vector)
+        }
+    }
+
+    func testGenerateManyAndVerifyChecksummed() {
+        for strength in Mnemonic.Strength.allCases {
+            for language in Mnemonic.Language.allCases {
+                for _ in 0..<10 {
+                    XCTAssertNoThrow(
+                        try Mnemonic.generate(strength: strength, language: language)
+                    )
+                }
+            }
+        }
+    }
+
+    func testChecksumValidation() {
+        let mnemonic = "gown pulp squeeze squeeze chuckle glance skill glare force dog absurd tennis"
+        let words: [String] = mnemonic.split(separator: " ").map { String($0) }
+        let lastWordReplaced: [String] = { var tmp = words; tmp[11] = "cat"; return tmp }()
+        XCTAssertNoThrow(try Mnemonic.seed(mnemonic: words))
+        XCTAssertThrowsError(try Mnemonic.seed(mnemonic: lastWordReplaced))
+        XCTAssertNoThrow(Mnemonic.seed(mnemonic: lastWordReplaced, validateChecksum: { _ in }))
+    }
 }
+
+private extension MnemonicTests {
+    func doTest(checksumVector vector: ChecksumVector) {
+            let words: [String] = vector.checksummed.split(separator: " ").map { String($0) }
+            do {
+                let seed = try Mnemonic.seed(mnemonic: words)
+                XCTAssertEqual(seed.hex, vector.expectedBIP39SeedHex)
+                let hdWallet = HDWallet.init(seed: seed, network: .mainnetBTC)
+                let privateKey = try! hdWallet.privateKey(index: UInt32(0))
+                XCTAssertEqual(privateKey.toWIF(), vector.bip44BTCMainnetIndex0PrivateKeyWIF)
+            } catch {
+                XCTFail("Error: \(error)")
+            }
+            XCTAssertNoThrow(try Mnemonic.validateChecksumOf(mnemonic: words, language: .english), "validation of vector with mnemonic failed: '\(words)'")
+
+        let firstWordInVocabulary = WordList.english.first!
+        XCTAssertNotEqual(words[0], firstWordInVocabulary) // assert that we dont have such bad luck that the first
+        let mnemonicFirstWordReplaced: [String] = { var tmp = words; tmp[0] = firstWordInVocabulary; return tmp }()
+
+        XCTAssertThrowsError(try Mnemonic.validateChecksumOf(mnemonic: mnemonicFirstWordReplaced, language: .english), "mnemonic with non checksummed words should throw error") { error in
+            guard let mnemonicError = error as? MnemonicError else { return XCTFail("wrong error type") }
+            guard case MnemonicError.validationError(.checksumMismatch) = mnemonicError else { return XCTFail("wrong error") }
+            // ok!
+        }
+    }
+}
+
+private struct ChecksumVector {
+    let checksummed: String
+    let expectedBIP39SeedHex: String
+    let bip44BTCMainnetIndex0PrivateKeyWIF: String
+}
+
+// MARK: - VECTORS
+// generated using https://iancoleman.io/bip39/
+private typealias V = ChecksumVector
+private let checksumVectorsWordCountOf12: [ChecksumVector] = [
+    V(
+        checksummed: "gown pulp squeeze squeeze chuckle glance skill glare force dog absurd tennis",
+        expectedBIP39SeedHex: "920bbfce06a01e8016145c3bbcd351b8d1d4c4cc2b407487c740bc6d5eec39db5143e814377e4a4b0f6323599f5e07c9258f245e7346ae53758d8ca03864d7eb",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "L4M7RJaw3jQpevpi7xUzEyEx4o5thCXDtgsWwgNB4ubijmkLZCkb"
+    ),
+
+    V(
+        checksummed: "nose order abuse element oven eager cable mom woman gun way forest",
+        expectedBIP39SeedHex: "37f5f2702cf56dec144267e9dae2cb998ebdb64eef881b3b06d50f8ce8fc4e5c4bb0809c6d021c1e5d1faa5547aa8ebda5af0f6c6c0b4bd3911d863207bc2772",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "L5B2chkFwkb8YwZ6HD1n9FVqkXJKPeHBjfURzWFbQ3J2Po4PGsqQ"
+    ),
+
+    V(
+        checksummed: "chaos bachelor bread brown palm little cube toy reveal tone legal mushroom",
+        expectedBIP39SeedHex: "efa9a923fbc3b9b0825d4f73a8620046ba03c75145c774183820c4e729f603b1d29471ad4d9a38f5cfffb7ae7eddeada4e7428a2c0d8f35df0dc882b2ec20556",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "KyZ2jCAwGa2QmekquQAqp7aSBYGMo2RDcFDAsE3vyBX224CYQAdP"
+    ),
+
+    V(
+        checksummed: "history repair able sun resemble health remind gloom put hunt bridge cause",
+        expectedBIP39SeedHex: "24ad1ea7a8a21f3c8a9a9b65b0bcf34369502ed2b5a6c4b2d6c81556775b9f2ff02ab3a528c4f67d55145d0a713fd0f8b9d94bfb6f172470b5d4a5ee168f4720",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "Kx3Ap21MCouj1mXrZ62Lc2gvo3srs5H8MDa5kezjuLMukBJM7ScM"
+    ),
+
+    V(
+        checksummed: "quit roast phone very umbrella settle gasp barely risk junior idea dignity",
+        expectedBIP39SeedHex: "b149811563a2d128b81f0f450bc96223d0514e24ade0b9946b61f062368a0ccf120101921b3c6d869c49df1389494444807abd3be425166d6ea016714fe125c6",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "L21oetMcVJGpzYNFLGarzAvt3pFT9dcCSDNLSoEDPpJuH2ATJ1Ez"
+    )
+]
+
+private let checksumVectorsWordCountOf24: [ChecksumVector] = [
+    V(
+        checksummed: "captain much tragic grocery rotate leg survey smile core diagram assist fossil today cattle collect history honey rent share fever dice addict joy void",
+        expectedBIP39SeedHex: "5a96eca608c3bf9be506a4b37ba85d745bb6be5d78f20e2fb1d925d68319810bdb0050f8cb6d4251a236ee5936b33fb988847ca10aba7f9ba92f794a73985194", bip44BTCMainnetIndex0PrivateKeyWIF: "Kxi3Rx52oNGPfFCxRiPhX58uJi4dJrBEVCQdTUuequqLZAfCzqg1"
+    ),
+
+    V(
+        checksummed: "donor lemon suffer industry defy mutual aim age veteran slab narrow hurry use valid prize pool remember puzzle glance odor fantasy boat hurry clay",
+        expectedBIP39SeedHex: "4cf3acfc36695f33f88acb00485e7a10c1f6ba9820ced490c791121f952de840c951bed834a741460744a9f7b773bda23ff0639722f609505a6ff7f422743ffe",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "KxtCtF2PhDcB7M7cWVR8bqdFWn29dB27D3Z9PGcoLnmc4sR9dPi4"
+    ),
+
+    V(
+        checksummed: "nothing dune rabbit usual shadow prosper connect matter lawn material order theory evil broom peasant tilt impose obey obvious awake chat alpha excuse head",
+        expectedBIP39SeedHex: "fb5e08d07f3c5f46bfb26447ff8603b6202b8056089a3ef76a6bdca504451696c8149865c1082f2d8d1e3a607ef25ae329dbd960c1949a0bb0daf15499ce2dbe",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "KydtUZprrGGPumDKnEgePChqULVpa5PBxzys4HcegTUZ9Pz796rT"
+    ),
+
+    V(
+        checksummed: "donor animal damage before jacket erase alien sudden vendor insane tool unknown romance utility globe reflect rabbit cereal tongue economy change pony voyage rotate",
+        expectedBIP39SeedHex: "48a2c40c76d49c4803d39bc805bd356af9b48a7f2a62390751a08d7be442459a043d4b8ddf2cd82b899dabab45fda10c426f59c559555e5a0e53e4a1ef9a3876",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "KwQywGberRy3f7882st9T6LZWm3u264qCfX26EH4eY562vnUnkNP"
+    ),
+
+    V(
+        checksummed: "main toilet mask tail globe draft split harvest grape view outer athlete flash profit space gauge design air next replace ceiling enemy tackle cup",
+        expectedBIP39SeedHex: "6d1bc19a93614f549361dc22baf6aec769a10b661b22b7d90ccb721249b921e009b353604fbbc700bed329fe29e79d1cbcffa5e496996c5af0b652824135eb7b",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "Kztw1M419yGo6gtPZTqhtuEHxqBLtFENpgiTAFpuzvZPBNWeVXrv"
+    ),
+
+    V(
+        checksummed: "dad moon dice soon wrap fine receive forward sponsor honey exit reduce between distance noise swallow cupboard carpet sea skull security grocery call shiver",
+        expectedBIP39SeedHex: "fe47a5d32c254c4b89f6ab2e36d9dff1a43bea65017b984cf1a987f58ec68f2f9bdfd35a262c76144732e688fcef71192153f85cc2ffd8573757fc135b598c98",
+        bip44BTCMainnetIndex0PrivateKeyWIF: "L54KpSZwiiv8ZcSJLZyHVab1Brwm19qhcBhkAQstSq4wxZw23rNj"
+    )
+]
