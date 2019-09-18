@@ -54,7 +54,7 @@ class TransactionTests: XCTestCase {
         XCTAssertEqual(sighash.hex, "fd2f20da1c28b008abcce8a8ac7e1a7687fc944e001a24fc3aacb6a7570a3d0f")
         let signature = privateKey.sign(sighash)
         XCTAssertEqual(signature.hex, "3044022074ddd327544e982d8dd53514406a77a96de47f40c186e58cafd650dd71ea522702204f67c558cc8e771581c5dda630d0dfff60d15e43bf13186669392936ec539d03")
-        let signer = TransactionSigner(plan: plan, transaction: transaction, sighashHelper: BTCSignatureHashHelper(hashType: .ALL))
+        let signer = TransactionSigner(unspentTransactions: plan.unspentTransactions, transaction: transaction, sighashHelper: BTCSignatureHashHelper(hashType: .ALL))
         let signedTransaction = try! signer.sign(with: [privateKey])
         XCTAssertEqual(signedTransaction.serialized().hex, "010000000131820866b6f840db0eeec1b5ecc44092869ebc72d4ff5e76b46690eb4eca2415010000008a473044022074ddd327544e982d8dd53514406a77a96de47f40c186e58cafd650dd71ea522702204f67c558cc8e771581c5dda630d0dfff60d15e43bf13186669392936ec539d030141047e000cc16c9a4d38cb1572b9dc34c1452626aa170b46150d0e806be1b42517f0832c8a58f543128083ffb8632bae94dd5f3e1e89fad0a17f64ed8bbbb90b5753ffffffff0280f0fa02000000001976a9149f9a7abd600c0caa03983a77c8c3df8e062cb2fa88ace1677f06000000001976a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac00000000")
         XCTAssertEqual(signedTransaction.txID, "0189910c263c4d416d5c5c2cf70744f9f6bcd5feaf0b149b02e5d88afbe78992")
@@ -77,7 +77,7 @@ class TransactionTests: XCTestCase {
         let plan = planner.plan(unspentTransactions: [unspentTransaction], target: 600)
         let transaction = TransactionBuilder.build(from: plan, toAddress: toAddress, changeAddress: changeAddress)
         
-        let signer = TransactionSigner(plan: plan, transaction: transaction, sighashHelper: BCHSignatureHashHelper(hashType: .ALL))
+        let signer = TransactionSigner(unspentTransactions: plan.unspentTransactions, transaction: transaction, sighashHelper: BCHSignatureHashHelper(hashType: .ALL))
         let signedTransaction = try! signer.sign(with: [utxoKey])
 
         XCTAssertEqual(signedTransaction.txID, "96ee20002b34e468f9d3c5ee54f6a8ddaa61c118889c4f35395c2cd93ba5bbb4")

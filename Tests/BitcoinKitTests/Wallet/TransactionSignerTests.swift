@@ -49,7 +49,7 @@ class TransactionSignerTests: XCTestCase {
         let tx = TransactionBuilder.build(from: plan, toAddress: toAddress, changeAddress: changeAddress)
         
         let privKey = try! PrivateKey(wif: "L1WFAgk5LxC5NLfuTeADvJ5nm3ooV3cKei5Yi9LJ8ENDfGMBZjdW")
-        let signer = TransactionSigner(plan: plan, transaction: tx, sighashHelper: BCHSignatureHashHelper(hashType: .ALL))
+        let signer = TransactionSigner(unspentTransactions: plan.unspentTransactions, transaction: tx, sighashHelper: BCHSignatureHashHelper(hashType: .ALL))
         let signedTx = try! signer.sign(with: [privKey])
         let expected: Data = Data(hex: "0100000001e28c2b955293159898e34c6840d99bf4d390e2ee1c6f606939f18ee1e2000d05020000006b483045022100b70d158b43cbcded60e6977e93f9a84966bc0cec6f2dfd1463d1223a90563f0d02207548d081069de570a494d0967ba388ff02641d91cadb060587ead95a98d4e3534121038eab72ec78e639d02758e7860cdec018b49498c307791f785aa3019622f4ea5bffffffff0258020000000000001976a914769bdff96a02f9135a1d19b749db6a78fe07dc9088ace5100000000000001976a9149e089b6889e032d46e3b915a3392edfd616fb1c488ac00000000")!
         XCTAssertEqual(signedTx.serialized(), expected)

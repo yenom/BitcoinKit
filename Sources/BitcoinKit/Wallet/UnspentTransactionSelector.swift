@@ -24,7 +24,11 @@
 
 import Foundation
 
-/// Helper model that selects a set of utxos to spend
+/// Helper model that selects a set of unspent transactions to spend
+/// ```
+/// // Select a unspent transactions to spend
+/// let selected = UnspentTransactionSelector.select(from: unspentTransactions, targetValue: 1000, feePerByte: 1)
+/// ```
 public struct UnspentTransactionSelector {
     public static func select(from unspentTransactions: [UnspentTransaction], targetValue: UInt64, feePerByte: UInt64) -> [UnspentTransaction] {
         let dustValue: UInt64 = FeeCalculator.calculateDust(feePerByte: feePerByte)

@@ -29,9 +29,16 @@ public enum TransactionSignerError: Error {
 }
 
 /// Helper class that performs Bitcoin transaction signing.
+/// ```
+/// // Initialize a signer
+/// let signer = TransactionSigner(unspentTransactions: unspentTransactions, transaction: transaction, sighashHelper: sighashHelper)
+///
+/// // Sign the unsigned transaction
+/// let signedTx = signer.sign(with: privKeys)
+/// ```
 public final class TransactionSigner {
-    /// Transaction plan.
-    public let plan: TransactionPlan
+    /// Unspent transactions to be signed.
+    public let unspentTransactions: [UnspentTransaction]
     /// Transaction being signed.
     public let transaction: Transaction
     /// Signature Hash Helper
@@ -48,16 +55,20 @@ public final class TransactionSigner {
             lockTime: transaction.lockTime)
     }
 
-    public init(plan: TransactionPlan, transaction: Transaction, sighashHelper: SignatureHashHelper) {
-        self.plan = plan
+    public init(unspentTransactions: [UnspentTransaction], transaction: Transaction, sighashHelper: SignatureHashHelper) {
+        self.unspentTransactions = unspentTransactions
         self.transaction = transaction
         self.signedInputs = transaction.inputs
         self.sighashHelper = sighashHelper
     }
 
+    /// Sign the transaction with keys of the unspent transactions
+    ///
+    /// - Parameters:
+    ///   - keys: the private keys of the unspent transactions
+    /// - Returns: A signed transaction. Error is thrown when the signing failed.
     public func sign(with keys: [PrivateKey]) throws -> Transaction {
-        // Sign
-        for (i, unspentTransaction) in plan.unspentTransactions.enumerated() {
+        for (i, unspentTransaction) in unspentTransactions.enumerated() {
             // Select key
             let utxo = unspentTransaction.output
             let pubkeyHash: Data = Script.getPublicKeyHash(from: utxo.lockingScript)
@@ -82,6 +93,5 @@ public final class TransactionSigner {
             signedInputs[i] = TransactionInput(previousOutput: txin.previousOutput, signatureScript: unlockingScript.data, sequence: txin.sequence)
         }
         return signedTransaction
-
     }
 }
