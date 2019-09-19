@@ -196,6 +196,7 @@
 		29F5D1E02110495F007DA3BF /* OpCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */; };
 		29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E321106772007DA3BF /* BigNumberTests.swift */; };
 		29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E5211068E8007DA3BF /* BigNumber.swift */; };
+		48022C72233366E8004F9021 /* Curve+Secp256k1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48022C71233366E8004F9021 /* Curve+Secp256k1.swift */; };
 		481BDCA423320B7000FC79FC /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9823320B7000FC79FC /* WordList.swift */; };
 		481BDCA523320B7000FC79FC /* WordList+Japanese.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9923320B7000FC79FC /* WordList+Japanese.swift */; };
 		481BDCA623320B7000FC79FC /* WordList+English.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9A23320B7000FC79FC /* WordList+English.swift */; };
@@ -460,6 +461,7 @@
 		29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeTests.swift; sourceTree = "<group>"; };
 		29F5D1E321106772007DA3BF /* BigNumberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumberTests.swift; sourceTree = "<group>"; };
 		29F5D1E5211068E8007DA3BF /* BigNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumber.swift; sourceTree = "<group>"; };
+		48022C71233366E8004F9021 /* Curve+Secp256k1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Curve+Secp256k1.swift"; sourceTree = "<group>"; };
 		481BDC9823320B7000FC79FC /* WordList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
 		481BDC9923320B7000FC79FC /* WordList+Japanese.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+Japanese.swift"; sourceTree = "<group>"; };
 		481BDC9A23320B7000FC79FC /* WordList+English.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+English.swift"; sourceTree = "<group>"; };
@@ -686,6 +688,7 @@
 		292AEA3C2112EB190012D7E5 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				48022C70233366CE004F9021 /* EllipticCurve */,
 				481BDCC52332172C00FC79FC /* SecureGenerateBytes */,
 				481BDC9623320B7000FC79FC /* Mnemonic */,
 				29AC9962214E898800AE82FE /* Keys */,
@@ -1020,6 +1023,14 @@
 			path = Keys;
 			sourceTree = "<group>";
 		};
+		48022C70233366CE004F9021 /* EllipticCurve */ = {
+			isa = PBXGroup;
+			children = (
+				48022C71233366E8004F9021 /* Curve+Secp256k1.swift */,
+			);
+			path = EllipticCurve;
+			sourceTree = "<group>";
+		};
 		481BDC9623320B7000FC79FC /* Mnemonic */ = {
 			isa = PBXGroup;
 			children = (
@@ -1255,6 +1266,7 @@
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
 				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
 				0C1DE171211E7DE300FE8E43 /* OP_2OVER.swift in Sources */,
+				48022C72233366E8004F9021 /* Curve+Secp256k1.swift in Sources */,
 				29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */,
 				297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */,
 				0C1DE180211EACE800FE8E43 /* OP_NUM2BIN.swift in Sources */,

@@ -27,6 +27,73 @@ import XCTest
 @testable import BitcoinKit
 
 class PrivateKeyTests: XCTestCase {
+
+    func testThatZeroKeyThrowsError() {
+        XCTAssertThrowsError(
+            try PrivateKey(data: Data([0])),
+            "Should not be possible to create key with scalar `0`"
+        ) { error in
+            guard
+                let privateKeyError = error as? PrivateKeyError
+                else {
+                    return XCTFail("Wrong error type, expected `PrivateKeyError`, but got: \(error) of type: \(type(of: error))")
+
+            }
+
+            XCTAssertEqual(privateKeyError, .mustBeGreaterThanZero)
+        }
+    }
+
+	func testThatKeyOfCurveOrderThrowsError() {
+		XCTAssertThrowsError(
+			try PrivateKey(data: Curve.Secp256k1.order),
+			"Should not be possible to create key with curve order"
+		) { error in
+			guard
+				let privateKeyError = error as? PrivateKeyError
+				else {
+					return XCTFail("Wrong error type, expected `PrivateKeyError`, but got: \(error) of type: \(type(of: error))")
+
+			}
+
+			XCTAssertEqual(privateKeyError, .mustBeSmallerThanCurveOrder)
+		}
+	}
+
+	func testThatKeyOfCurveOrderPlusOneThrowsError() {
+		let curveOrder = Curve.Secp256k1.order
+		var tmp = curveOrder
+		tmp[31] = 0x42
+		let curveOrderPlusOne = tmp
+		XCTAssertEqual(curveOrderPlusOne.hex, "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364142")
+		XCTAssertThrowsError(
+			try PrivateKey(data: curveOrderPlusOne),
+			"Should not be possible to create key with scalar larger than curve order"
+		) { error in
+			guard
+				let privateKeyError = error as? PrivateKeyError
+				else {
+					return XCTFail("Wrong error type, expected `PrivateKeyError`, but got: \(error) of type: \(type(of: error))")
+
+			}
+
+			XCTAssertEqual(privateKeyError, .mustBeSmallerThanCurveOrder)
+		}
+	}
+
+    func testThatKeyOfOneDoesNotThrowError() {
+        XCTAssertNoThrow(try PrivateKey(data: Data([1])))
+    }
+
+	func testThatKeyOfCurveOrderMinusOneDoesNotThrowError() {
+		let curveOrder = Curve.Secp256k1.order
+		var tmp = curveOrder
+		tmp[31] = 0x40
+		let curveOrderMinusOne = tmp
+		XCTAssertEqual(curveOrderMinusOne.hex, "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140")
+		XCTAssertNoThrow(try PrivateKey(data: curveOrderMinusOne))
+	}
+
     func testGenerateKeyPair() {
         let privateKey = PrivateKey(network: .testnet)
         let publicKey = privateKey.publicKey()

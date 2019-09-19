@@ -31,98 +31,130 @@ import BitcoinKitPrivate
 #endif
 
 public struct PrivateKey {
+
     @available(*, deprecated, renamed: "data")
     public var raw: Data { return data }
+
     public let data: Data
+
     public let network: Network
-    public let isPublicKeyCompressed: Bool
+    public let shouldCompressPublicKey: Bool
 
-    public init(network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
+    /// The "designated" initializer of the `PrivateKey` struct, initialized from a scalar (represented as `Data` in lack of `BigInt` type). This scalar has to be within
+    /// the correct bounds, thus a validation check is done, why this initializer is throwing.
+    ///
+    /// - Parameter data: The private key scalar, represented as `Data` ( in lack of `BigInt` type), has to a value in range `0 < key < Secp256k1.orderOfCurve`
+    /// - Parameter network: Which network used
+    /// - Parameter shouldCompressPublicKey: Wether to compress public key or not.
+    public init(data: Data, network: Network = .testnet, shouldCompressPublicKey: Bool = true) throws {
+
+        // Ensure private key data is on correct bounds.
+        self.data = try PrivateKey.validate(privateKeyCandidate: data)
+
         self.network = network
-        self.isPublicKeyCompressed = isPublicKeyCompressed
+        self.shouldCompressPublicKey = shouldCompressPublicKey
+    }
+}
 
-        // Check if vch is greater than or equal to max value
-        func check(_ vch: [UInt8]) -> Bool {
-            let max: [UInt8] = [
-                0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-                0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE,
-                0xBA, 0xAE, 0xDC, 0xE6, 0xAF, 0x48, 0xA0, 0x3B,
-                0xBF, 0xD2, 0x5E, 0x8C, 0xD0, 0x36, 0x41, 0x40
-            ]
-            var fIsZero = true
-            for byte in vch where byte != 0 {
-                fIsZero = false
-                break
-            }
-            if fIsZero {
-                return false
-            }
-            for (index, byte) in vch.enumerated() {
-                if byte < max[index] {
-                    return true
-                }
-                if byte > max[index] {
-                    return false
-                }
-            }
-            return true
-        }
+// MARK: - Convenience Init
+public extension PrivateKey {
+
+    /// Generates a new PrivateKey from securely generated entropy using Apple's `SecRandomCopyBytes` generator.
+    init(network: Network = .testnet, shouldCompressPublicKey: Bool = true) {
 
         let count = 32
-        var key = Data(count: count)
-        var status: Int32 = 0
+        var key: Data!
         repeat {
-            status = key.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, count, $0.baseAddress.unsafelyUnwrapped) }
-        } while (status != 0 || !check([UInt8](key)))
+            guard
+                let randomBytes = try? securelyGenerateBytes(count: count),
+                let privateKeyData = try? PrivateKey.validate(privateKeyCandidate: randomBytes)
+                else { continue }
+            key = privateKeyData
+        } while key == nil
 
-        self.data = key
+        do {
+            try self.init(data: key, network: network, shouldCompressPublicKey: shouldCompressPublicKey)
+        } catch {
+            fatalError("Unexpected error: \(error), should always be able to generate new private key, implementation of this init is incorrect.")
+        }
     }
 
-    public init(wif: String) throws {
+    /// From `Wallet Import Format` (a.k.a. "WIF")
+    init(wif: String) throws {
+        let invalidFormatError = Error.importError(.invalidFormat)
         guard let decoded = Base58.decode(wif) else {
-            throw PrivateKeyError.invalidFormat
+            throw invalidFormatError
         }
         let checksumDropped = decoded.prefix(decoded.count - 4)
         guard checksumDropped.count == (1 + 32) || checksumDropped.count == (1 + 32 + 1) else {
-            throw PrivateKeyError.invalidFormat
+            throw invalidFormatError
         }
 
-        let addressPrefix = checksumDropped[0]
-        switch addressPrefix {
-        case Network.mainnet.privatekey:
-            network = .mainnet
-        case Network.testnet.privatekey:
-            network = .testnet
-        default:
-            throw PrivateKeyError.invalidFormat
+        func networkFrom(addressPrefixByte: UInt8) throws -> Network {
+            switch addressPrefixByte {
+            case Network.mainnet.privatekey:
+                return .mainnet
+            case Network.testnet.privatekey:
+                return .testnet
+            default:
+                throw invalidFormatError
+            }
         }
 
         let h = Crypto.sha256sha256(checksumDropped)
         let calculatedChecksum = h.prefix(4)
         let originalChecksum = decoded.suffix(4)
         guard calculatedChecksum == originalChecksum else {
-            throw PrivateKeyError.invalidFormat
+            throw invalidFormatError
         }
 
         // The life is not always easy. Somehow some people added one extra byte to a private key in Base58 to
         // let us know that the resulting public key must be compressed.
-        self.isPublicKeyCompressed = (checksumDropped.count == (1 + 32 + 1))
+        let shouldCompressPublicKey = (checksumDropped.count == (1 + 32 + 1))
 
         // Private key itself is always 32 bytes.
-        data = checksumDropped.dropFirst().prefix(32)
+        let privateKeyData = checksumDropped.dropFirst().prefix(32)
+
+        let network = try networkFrom(addressPrefixByte: checksumDropped[0])
+
+        try self.init(
+            data: privateKeyData,
+            network: network,
+            shouldCompressPublicKey: shouldCompressPublicKey
+        )
+    }
+}
+
+// MARK: - Public
+public extension PrivateKey {
+    /// Checks if `privateKeyCandidate` is greater than or equal to max value
+    @discardableResult
+    static func validate(privateKeyCandidate: Data) throws -> Data {
+        if privateKeyCandidate.allSatisfy({ $0 == 0 }) {
+            throw Error.mustBeGreaterThanZero
+        }
+
+        let curveOrderMinusOne: Data = {
+            var tmp = Curve.Secp256k1.order
+            tmp[tmp.count - 1] = tmp.last! - 1
+            return tmp
+        }()
+
+        for (index, byte) in privateKeyCandidate.enumerated() {
+            if byte < curveOrderMinusOne[index] {
+                // strictly smaller than the order, thus valid!
+                return privateKeyCandidate
+            }
+            if byte > curveOrderMinusOne[index] {
+                throw Error.mustBeSmallerThanCurveOrder
+            }
+        }
+
+        // Private key scalar (represented as byte) is within the correct bounds.
+        return privateKeyCandidate
     }
 
-    public init(data: Data, network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
-        self.data = data
-        self.network = network
-        self.isPublicKeyCompressed = isPublicKeyCompressed
-    }
-
-    private func computePublicKeyData() -> Data {
-        return _SwiftKey.computePublicKey(fromPrivateKey: data, compression: isPublicKeyCompressed)
-    }
-
-    public func publicKeyPoint() throws -> PointOnCurve {
+    func publicKeyPoint() throws -> PointOnCurve {
         let xAndY: Data = _SwiftKey.computePublicKey(fromPrivateKey: data, compression: false)
         let expectedLengthOfScalar = Scalar32Bytes.expectedByteCount
         let expectedLengthOfKey = expectedLengthOfScalar * 2
@@ -134,13 +166,13 @@ public struct PrivateKey {
         return try PointOnCurve(x: x, y: y)
     }
 
-    public func publicKey() -> PublicKey {
+    func publicKey() -> PublicKey {
         return PublicKey(bytes: computePublicKeyData(), network: network)
     }
 
-    public func toWIF() -> String {
+    func toWIF() -> String {
         var payload = Data([network.privatekey]) + data
-        if isPublicKeyCompressed {
+        if shouldCompressPublicKey {
             // Add extra byte 0x01 in the end.
             payload += Int8(1)
         }
@@ -148,12 +180,12 @@ public struct PrivateKey {
         return Base58.encode(payload + checksum)
     }
 
-    public func sign(_ data: Data) -> Data {
+    func sign(_ data: Data) -> Data {
         return try! Crypto.sign(data, privateKey: self)
     }
 
     @available(*, unavailable, message: "Use SignatureHashHelper and sign(_ data: Data) method instead")
-    public func sign(_ tx: Transaction, utxoToSign: UnspentTransaction, hashType: SighashType, inputIndex: Int = 0) -> Data {
+    func sign(_ tx: Transaction, utxoToSign: UnspentTransaction, hashType: SighashType, inputIndex: Int = 0) -> Data {
         let helper: SignatureHashHelper
         if hashType.hasForkId {
             helper = BCHSignatureHashHelper(hashType: BCHSighashType(rawValue: hashType.uint8)!)
@@ -181,6 +213,25 @@ extension PrivateKey: CustomStringConvertible {
 extension PrivateKey: QRCodeConvertible {}
 #endif
 
-public enum PrivateKeyError: Error {
-    case invalidFormat
+// MARK: - Error
+public typealias PrivateKeyError = PrivateKey.Error
+public extension PrivateKey {
+
+    enum Error: Swift.Error, Equatable {
+        case mustBeGreaterThanZero
+        case mustBeSmallerThanCurveOrder
+        indirect case importError(ImportError)
+    }
+
+    enum ImportError: Swift.Error, Equatable {
+        case invalidFormat
+    }
+}
+
+// MARK: - Private
+private extension PrivateKey {
+
+    func computePublicKeyData() -> Data {
+        return _SwiftKey.computePublicKey(fromPrivateKey: data, compression: shouldCompressPublicKey)
+    }
 }

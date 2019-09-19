@@ -78,7 +78,11 @@ public class HDPrivateKey {
     }
 
     public func privateKey() -> PrivateKey {
-        return PrivateKey(data: raw, network: network, isPublicKeyCompressed: true)
+        do {
+            return try PrivateKey(data: raw, network: network, shouldCompressPublicKey: true)
+        } catch {
+            fatalError("Unexpected error: \(error), should always be possible to create `PrivateKey` from `HDPrivateKey`")
+        }
     }
 
     public func extendedPublicKey() -> HDPublicKey {

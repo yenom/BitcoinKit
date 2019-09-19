@@ -45,7 +45,7 @@ class CryptoTests: XCTestCase {
     func testSign() {
         let msg = Data(hex: "52204d20fd0131ae1afd173fd80a3a746d2dcc0cddced8c9dc3d61cc7ab6e966")!
         let pk = Data(hex: "16f243e962c59e71e54189e67e66cf2440a1334514c09c00ddcc21632bac9808")!
-        let privateKey = PrivateKey(data: pk)
+        let privateKey = try! PrivateKey(data: pk)
 
         let signature = try? Crypto.sign(msg, privateKey: privateKey)
 
