@@ -1,6 +1,7 @@
 //
-//  Scalar32Bytes.swift
+//  WordList.swift
 //
+//  Copyright © 2018 Kishikawa Katsumi
 //  Copyright © 2018 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,17 +25,11 @@
 
 import Foundation
 
-public struct Scalar32Bytes {
-    public enum Error: Swift.Error {
-        case tooManyBytes(expectedCount: Int, butGot: Int)
-    }
-    public static let expectedByteCount = 32
-    public let data: Data
-    public init(data: Data) throws {
-        let byteCount = data.count
-        if byteCount > Scalar32Bytes.expectedByteCount {
-            throw Error.tooManyBytes(expectedCount: Scalar32Bytes.expectedByteCount, butGot: byteCount)
-        }
-        self.data = data
-    }
+public extension Mnemonic {
+	enum WordList {}
+}
+
+internal extension Mnemonic.WordList {
+	/// `2^11 => 2048`
+	static let sizeLog2 = 11
 }

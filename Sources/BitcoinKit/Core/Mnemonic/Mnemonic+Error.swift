@@ -1,5 +1,5 @@
 //
-//  Scalar32Bytes.swift
+//  Mnemonic+Error.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,17 +24,21 @@
 
 import Foundation
 
-public struct Scalar32Bytes {
-    public enum Error: Swift.Error {
-        case tooManyBytes(expectedCount: Int, butGot: Int)
+public typealias MnemonicError = Mnemonic.Error
+
+public extension Mnemonic {
+    enum Error: Swift.Error {
+        case randomBytesError
+        case unsupportedByteCountOfEntropy(got: Int)
+        indirect case validationError(ValidationError)
     }
-    public static let expectedByteCount = 32
-    public let data: Data
-    public init(data: Data) throws {
-        let byteCount = data.count
-        if byteCount > Scalar32Bytes.expectedByteCount {
-            throw Error.tooManyBytes(expectedCount: Scalar32Bytes.expectedByteCount, butGot: byteCount)
-        }
-        self.data = data
+}
+
+public extension Mnemonic.Error {
+    enum ValidationError: Swift.Error {
+        case badWordCount(expectedAnyOf: [Int], butGot: Int)
+        case wordNotInList(String, language: Mnemonic.Language)
+        case unableToDeriveLanguageFrom(words: [String])
+        case checksumMismatch
     }
 }

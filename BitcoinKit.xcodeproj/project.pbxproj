@@ -80,8 +80,6 @@
 		147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494ED201FADAC006D1CF8 /* MurmurHash.swift */; };
 		147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147494EF201FAE30006D1CF8 /* Serialization.swift */; };
 		147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147F9728201FC89E0071F49D /* BloomFilter.swift */; };
-		1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E12026B0680098B612 /* Mnemonic.swift */; };
-		1482B5E42026F2590098B612 /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E32026F2580098B612 /* WordList.swift */; };
 		1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E7202721FF0098B612 /* HDPrivateKey.swift */; };
 		1482B5EA20273B8A0098B612 /* HDPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1482B5E920273B8A0098B612 /* HDPublicKey.swift */; };
 		14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839A7B202F79F900A6CB34 /* PaymentURI.swift */; };
@@ -198,6 +196,29 @@
 		29F5D1E02110495F007DA3BF /* OpCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */; };
 		29F5D1E421106772007DA3BF /* BigNumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E321106772007DA3BF /* BigNumberTests.swift */; };
 		29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F5D1E5211068E8007DA3BF /* BigNumber.swift */; };
+		481BDCA423320B7000FC79FC /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9823320B7000FC79FC /* WordList.swift */; };
+		481BDCA523320B7000FC79FC /* WordList+Japanese.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9923320B7000FC79FC /* WordList+Japanese.swift */; };
+		481BDCA623320B7000FC79FC /* WordList+English.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9A23320B7000FC79FC /* WordList+English.swift */; };
+		481BDCA723320B7000FC79FC /* WordList+French.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9B23320B7000FC79FC /* WordList+French.swift */; };
+		481BDCA823320B7000FC79FC /* WordList+Italian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9C23320B7000FC79FC /* WordList+Italian.swift */; };
+		481BDCA923320B7000FC79FC /* WordList+Korean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9D23320B7000FC79FC /* WordList+Korean.swift */; };
+		481BDCAA23320B7000FC79FC /* WordList+TraditionalChinese.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9E23320B7000FC79FC /* WordList+TraditionalChinese.swift */; };
+		481BDCAB23320B7000FC79FC /* WordList+Spanish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDC9F23320B7000FC79FC /* WordList+Spanish.swift */; };
+		481BDCAC23320B7000FC79FC /* WordList+SimplifiedChinese.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCA023320B7000FC79FC /* WordList+SimplifiedChinese.swift */; };
+		481BDCAD23320B7000FC79FC /* UInt11.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCA123320B7000FC79FC /* UInt11.swift */; };
+		481BDCAE23320B7000FC79FC /* BitArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCA223320B7000FC79FC /* BitArray.swift */; };
+		481BDCAF23320B7000FC79FC /* Mnemonic+Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCA323320B7000FC79FC /* Mnemonic+Language.swift */; };
+		481BDCB523320C1B00FC79FC /* RangeReplaceableCollection_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCB223320C1A00FC79FC /* RangeReplaceableCollection_Extensions.swift */; };
+		481BDCB623320C1B00FC79FC /* FixedWidthInteger_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCB323320C1A00FC79FC /* FixedWidthInteger_Extensions.swift */; };
+		481BDCB723320C1B00FC79FC /* Data_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCB423320C1A00FC79FC /* Data_Extensions.swift */; };
+		481BDCB9233211A400FC79FC /* Mnemonic+Strength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCB8233211A400FC79FC /* Mnemonic+Strength.swift */; };
+		481BDCBB233212D700FC79FC /* Mnemonic+Generate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCBA233212D700FC79FC /* Mnemonic+Generate.swift */; };
+		481BDCBD2332130900FC79FC /* Mnemonic+Checksum+Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCBC2332130900FC79FC /* Mnemonic+Checksum+Validate.swift */; };
+		481BDCBF2332137700FC79FC /* Mnemonic+Wordlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCBE2332137700FC79FC /* Mnemonic+Wordlist.swift */; };
+		481BDCC1233213E800FC79FC /* Mnemonic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCC0233213E800FC79FC /* Mnemonic.swift */; };
+		481BDCC32332140C00FC79FC /* Mnemonic+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCC22332140C00FC79FC /* Mnemonic+Error.swift */; };
+		481BDCC82332172C00FC79FC /* SecureGenerateBytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCC62332172C00FC79FC /* SecureGenerateBytes.swift */; };
+		481BDCC92332172C00FC79FC /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BDCC72332172C00FC79FC /* Status.swift */; };
 		6E20AEC72112C290008A9810 /* PrivateKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20AEC62112C290008A9810 /* PrivateKeyTests.swift */; };
 		6E20AEC92112C31A008A9810 /* LegacyAddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20AEC82112C31A008A9810 /* LegacyAddressTests.swift */; };
 		6E20AECB2112C434008A9810 /* HDPrivateKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20AECA2112C434008A9810 /* HDPrivateKeyTests.swift */; };
@@ -326,8 +347,6 @@
 		147494ED201FADAC006D1CF8 /* MurmurHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MurmurHash.swift; sourceTree = "<group>"; };
 		147494EF201FAE30006D1CF8 /* Serialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
 		147F9728201FC89E0071F49D /* BloomFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloomFilter.swift; sourceTree = "<group>"; };
-		1482B5E12026B0680098B612 /* Mnemonic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mnemonic.swift; sourceTree = "<group>"; };
-		1482B5E32026F2580098B612 /* WordList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
 		1482B5E7202721FF0098B612 /* HDPrivateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPrivateKey.swift; sourceTree = "<group>"; };
 		1482B5E920273B8A0098B612 /* HDPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPublicKey.swift; sourceTree = "<group>"; };
 		14839A7B202F79F900A6CB34 /* PaymentURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentURI.swift; sourceTree = "<group>"; };
@@ -444,6 +463,29 @@
 		29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpCodeTests.swift; sourceTree = "<group>"; };
 		29F5D1E321106772007DA3BF /* BigNumberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumberTests.swift; sourceTree = "<group>"; };
 		29F5D1E5211068E8007DA3BF /* BigNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumber.swift; sourceTree = "<group>"; };
+		481BDC9823320B7000FC79FC /* WordList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
+		481BDC9923320B7000FC79FC /* WordList+Japanese.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+Japanese.swift"; sourceTree = "<group>"; };
+		481BDC9A23320B7000FC79FC /* WordList+English.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+English.swift"; sourceTree = "<group>"; };
+		481BDC9B23320B7000FC79FC /* WordList+French.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+French.swift"; sourceTree = "<group>"; };
+		481BDC9C23320B7000FC79FC /* WordList+Italian.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+Italian.swift"; sourceTree = "<group>"; };
+		481BDC9D23320B7000FC79FC /* WordList+Korean.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+Korean.swift"; sourceTree = "<group>"; };
+		481BDC9E23320B7000FC79FC /* WordList+TraditionalChinese.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+TraditionalChinese.swift"; sourceTree = "<group>"; };
+		481BDC9F23320B7000FC79FC /* WordList+Spanish.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+Spanish.swift"; sourceTree = "<group>"; };
+		481BDCA023320B7000FC79FC /* WordList+SimplifiedChinese.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordList+SimplifiedChinese.swift"; sourceTree = "<group>"; };
+		481BDCA123320B7000FC79FC /* UInt11.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UInt11.swift; sourceTree = "<group>"; };
+		481BDCA223320B7000FC79FC /* BitArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitArray.swift; sourceTree = "<group>"; };
+		481BDCA323320B7000FC79FC /* Mnemonic+Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mnemonic+Language.swift"; sourceTree = "<group>"; };
+		481BDCB223320C1A00FC79FC /* RangeReplaceableCollection_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeReplaceableCollection_Extensions.swift; sourceTree = "<group>"; };
+		481BDCB323320C1A00FC79FC /* FixedWidthInteger_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedWidthInteger_Extensions.swift; sourceTree = "<group>"; };
+		481BDCB423320C1A00FC79FC /* Data_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data_Extensions.swift; sourceTree = "<group>"; };
+		481BDCB8233211A400FC79FC /* Mnemonic+Strength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mnemonic+Strength.swift"; sourceTree = "<group>"; };
+		481BDCBA233212D700FC79FC /* Mnemonic+Generate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mnemonic+Generate.swift"; sourceTree = "<group>"; };
+		481BDCBC2332130900FC79FC /* Mnemonic+Checksum+Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mnemonic+Checksum+Validate.swift"; sourceTree = "<group>"; };
+		481BDCBE2332137700FC79FC /* Mnemonic+Wordlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mnemonic+Wordlist.swift"; sourceTree = "<group>"; };
+		481BDCC0233213E800FC79FC /* Mnemonic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mnemonic.swift; sourceTree = "<group>"; };
+		481BDCC22332140C00FC79FC /* Mnemonic+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mnemonic+Error.swift"; sourceTree = "<group>"; };
+		481BDCC62332172C00FC79FC /* SecureGenerateBytes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureGenerateBytes.swift; sourceTree = "<group>"; };
+		481BDCC72332172C00FC79FC /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		6E20AEC62112C290008A9810 /* PrivateKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKeyTests.swift; sourceTree = "<group>"; };
 		6E20AEC82112C31A008A9810 /* LegacyAddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyAddressTests.swift; sourceTree = "<group>"; };
 		6E20AECA2112C434008A9810 /* HDPrivateKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPrivateKeyTests.swift; sourceTree = "<group>"; };
@@ -571,6 +613,7 @@
 		147494C9201F9A29006D1CF8 /* BitcoinKit */ = {
 			isa = PBXGroup;
 			children = (
+				481BDCB123320C1A00FC79FC /* Extensions */,
 				292AEA3C2112EB190012D7E5 /* Core */,
 				296ADC1E2112EBAD007EE5C7 /* Scripts */,
 				296ADC1F2112EBF4007EE5C7 /* Wallet */,
@@ -591,40 +634,40 @@
 		147494D4201F9A29006D1CF8 /* BitcoinKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
-				297C408021100810003AF4EF /* MnemonicTests.swift */,
-				0F59D2EA21370FD8008B9C0B /* BlockMessageTests.swift */,
-				2949920320F22A1500D078B6 /* TestHelpers.swift */,
-				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
-				CF432AF520F0ED4500AD4020 /* AddressTests.swift */,
-				CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */,
-				CFA290732102B650001A1BAB /* ScriptMachineTests.swift */,
-				CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */,
-				CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */,
-				CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */,
-				29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */,
-				29F5D1E321106772007DA3BF /* BigNumberTests.swift */,
 				147494D7201F9A29006D1CF8 /* Info.plist */,
-				6EE789DA2112C1E500EAB620 /* CryptoTests.swift */,
-				6E20AEC62112C290008A9810 /* PrivateKeyTests.swift */,
-				E6C9FB9C2243FF7A000AAE12 /* PointMultiplicationTests.swift */,
-				E6A6430F2244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift */,
-				6E20AEC82112C31A008A9810 /* LegacyAddressTests.swift */,
-				6E20AECA2112C434008A9810 /* HDPrivateKeyTests.swift */,
-				6E20AECC2112C559008A9810 /* CashAddrTests.swift */,
-				6E20AECE2112C66C008A9810 /* HDKeyChainTests.swift */,
-				6E20AED02112C6AA008A9810 /* PaymentURITests.swift */,
-				6E20AED22112C7DA008A9810 /* TransactionTests.swift */,
-				0C2375A32132501700DB2872 /* MessageSerializerTests.swift */,
+				CF432AF920F222B400AD4020 /* AddressFactoryTests.swift */,
+				CF432AF520F0ED4500AD4020 /* AddressTests.swift */,
+				CF432AF120F0CF9100AD4020 /* Base58Tests.swift */,
+				CF432AF320F0DFAC00AD4020 /* Bech32Tests.swift */,
+				29F5D1E321106772007DA3BF /* BigNumberTests.swift */,
+				147494D5201F9A29006D1CF8 /* BitcoinKitTests.swift */,
+				0F59D2EA21370FD8008B9C0B /* BlockMessageTests.swift */,
 				6E20AED42112C8F9008A9810 /* BloomFilterTests.swift */,
+				6E20AECC2112C559008A9810 /* CashAddrTests.swift */,
+				6EE789DA2112C1E500EAB620 /* CryptoTests.swift */,
+				E6A6430F2244EA3B00CD4BFC /* DecodePointFromCompressedKeyTests.swift */,
+				6E20AECE2112C66C008A9810 /* HDKeyChainTests.swift */,
+				6E20AECA2112C434008A9810 /* HDPrivateKeyTests.swift */,
+				6E20AEC82112C31A008A9810 /* LegacyAddressTests.swift */,
+				0C2375A32132501700DB2872 /* MessageSerializerTests.swift */,
+				29089F0D2122BE7200E0C305 /* MockHelperTests.swift */,
 				6E20AED62112D417008A9810 /* MurmurHashTests.swift */,
 				6E797C442116C8A5003BEDFD /* OpCodeFactoryTests.swift */,
-				29089F0D2122BE7200E0C305 /* MockHelperTests.swift */,
-				A20B537E211C72F9009D147A /* UInt256Tests.swift */,
-				A2DAA5F6211F0579009DAB7B /* UInt32MathTests.swift */,
-				A2DAA5F8211F2C93009DAB7B /* SerializationTests.swift */,
-				A2DE510F212AFCF200F54EA0 /* UInt256+BitcoinTests.swift */,
+				29F5D1DF2110495F007DA3BF /* OpCodeTests.swift */,
+				6E20AED02112C6AA008A9810 /* PaymentURITests.swift */,
+				E6C9FB9C2243FF7A000AAE12 /* PointMultiplicationTests.swift */,
+				6E20AEC62112C290008A9810 /* PrivateKeyTests.swift */,
 				A2E11230212C400A00A0A40A /* ProofOfWorkTests.swift */,
+				CFA290732102B650001A1BAB /* ScriptMachineTests.swift */,
+				CFA2906F2101CDCA001A1BAB /* ScriptTests.swift */,
+				A2DAA5F8211F2C93009DAB7B /* SerializationTests.swift */,
+				2949920320F22A1500D078B6 /* TestHelpers.swift */,
+				297C408021100810003AF4EF /* MnemonicTests.swift */,
+				CF432AFB20F25E0000AD4020 /* TestHelpersTests.swift */,
+				6E20AED22112C7DA008A9810 /* TransactionTests.swift */,
+				A2DAA5F6211F0579009DAB7B /* UInt32MathTests.swift */,
+				A2DE510F212AFCF200F54EA0 /* UInt256+BitcoinTests.swift */,
+				A20B537E211C72F9009D147A /* UInt256Tests.swift */,
 			);
 			name = BitcoinKitTests;
 			path = Tests/BitcoinKitTests;
@@ -671,14 +714,14 @@
 		292AEA3C2112EB190012D7E5 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				481BDCC52332172C00FC79FC /* SecureGenerateBytes */,
+				481BDC9623320B7000FC79FC /* Mnemonic */,
 				29AC9962214E898800AE82FE /* Keys */,
 				147494EB201F9E4F006D1CF8 /* Network.swift */,
 				1463E6B52025E99C0033DAAE /* BlockChain.swift */,
 				1463E6B32025E9480033DAAE /* BlockStore.swift */,
 				E6A64305224418EB00CD4BFC /* PointOnCurve.swift */,
 				E6A643072244190400CD4BFC /* Scalar32Bytes.swift */,
-				1482B5E12026B0680098B612 /* Mnemonic.swift */,
-				1482B5E32026F2580098B612 /* WordList.swift */,
 				14839A7B202F79F900A6CB34 /* PaymentURI.swift */,
 				147494E3201F9B85006D1CF8 /* Crypto.swift */,
 				0C61BF50215B988A001415CA /* Encoding.swift */,
@@ -943,6 +986,58 @@
 			path = Keys;
 			sourceTree = "<group>";
 		};
+		481BDC9623320B7000FC79FC /* Mnemonic */ = {
+			isa = PBXGroup;
+			children = (
+				481BDC9723320B7000FC79FC /* WordList */,
+				481BDCA123320B7000FC79FC /* UInt11.swift */,
+				481BDCA223320B7000FC79FC /* BitArray.swift */,
+				481BDCA323320B7000FC79FC /* Mnemonic+Language.swift */,
+				481BDCC0233213E800FC79FC /* Mnemonic.swift */,
+				481BDCC22332140C00FC79FC /* Mnemonic+Error.swift */,
+				481BDCBE2332137700FC79FC /* Mnemonic+Wordlist.swift */,
+				481BDCBA233212D700FC79FC /* Mnemonic+Generate.swift */,
+				481BDCBC2332130900FC79FC /* Mnemonic+Checksum+Validate.swift */,
+				481BDCB8233211A400FC79FC /* Mnemonic+Strength.swift */,
+			);
+			path = Mnemonic;
+			sourceTree = "<group>";
+		};
+		481BDC9723320B7000FC79FC /* WordList */ = {
+			isa = PBXGroup;
+			children = (
+				481BDC9823320B7000FC79FC /* WordList.swift */,
+				481BDC9923320B7000FC79FC /* WordList+Japanese.swift */,
+				481BDC9A23320B7000FC79FC /* WordList+English.swift */,
+				481BDC9B23320B7000FC79FC /* WordList+French.swift */,
+				481BDC9C23320B7000FC79FC /* WordList+Italian.swift */,
+				481BDC9D23320B7000FC79FC /* WordList+Korean.swift */,
+				481BDC9E23320B7000FC79FC /* WordList+TraditionalChinese.swift */,
+				481BDC9F23320B7000FC79FC /* WordList+Spanish.swift */,
+				481BDCA023320B7000FC79FC /* WordList+SimplifiedChinese.swift */,
+			);
+			path = WordList;
+			sourceTree = "<group>";
+		};
+		481BDCB123320C1A00FC79FC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				481BDCB223320C1A00FC79FC /* RangeReplaceableCollection_Extensions.swift */,
+				481BDCB323320C1A00FC79FC /* FixedWidthInteger_Extensions.swift */,
+				481BDCB423320C1A00FC79FC /* Data_Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		481BDCC52332172C00FC79FC /* SecureGenerateBytes */ = {
+			isa = PBXGroup;
+			children = (
+				481BDCC62332172C00FC79FC /* SecureGenerateBytes.swift */,
+				481BDCC72332172C00FC79FC /* Status.swift */,
+			);
+			path = SecureGenerateBytes;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1095,16 +1190,19 @@
 				1482B5EA20273B8A0098B612 /* HDPublicKey.swift in Sources */,
 				2914BE5C211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift in Sources */,
 				29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */,
+				481BDCA823320B7000FC79FC /* WordList+Italian.swift in Sources */,
 				14F37A3A20209B5400D34748 /* Transaction.swift in Sources */,
-				1482B5E42026F2590098B612 /* WordList.swift in Sources */,
 				14839A93202FE6AC00A6CB34 /* FilterLoadMessage.swift in Sources */,
 				14839A9D202FE72600A6CB34 /* TransactionOutPoint.swift in Sources */,
+				481BDCB723320C1B00FC79FC /* Data_Extensions.swift in Sources */,
 				E6A643082244190400CD4BFC /* Scalar32Bytes.swift in Sources */,
 				2933014D214FCE150028946B /* TransactionHistoryProvider.swift in Sources */,
+				481BDCAB23320B7000FC79FC /* WordList+Spanish.swift in Sources */,
 				0C1DE155211D787100FE8E43 /* OP_TOTALSTACK.swift in Sources */,
 				2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */,
 				0C0900442116BA8F0077E9BC /* OP_RSHIFT.swift in Sources */,
 				14839A7F202FE58800A6CB34 /* VersionMessage.swift in Sources */,
+				481BDCC1233213E800FC79FC /* Mnemonic.swift in Sources */,
 				0C1DE16B211E7C0900FE8E43 /* OP_2DROP.swift in Sources */,
 				298E17BC215097C000FF6C77 /* BitcoinComUtxoProvider.swift in Sources */,
 				0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */,
@@ -1112,6 +1210,7 @@
 				297DB97320EB12E60077EEEE /* AddressType.swift in Sources */,
 				294DDE43211B31EA00B7F645 /* OP_VERIF.swift in Sources */,
 				14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */,
+				481BDCAA23320B7000FC79FC /* WordList+TraditionalChinese.swift in Sources */,
 				0C0900302116A3EB0077E9BC /* OP_2DIV.swift in Sources */,
 				0C1DE17A211E848600FE8E43 /* OP_CAT.swift in Sources */,
 				0C66CD092125427C0049DB89 /* OP_XOR.swift in Sources */,
@@ -1120,6 +1219,7 @@
 				2914BE60211C063300B349CB /* OP_PUBKEY.swift in Sources */,
 				294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */,
 				298FA5812126C77A009EFAC4 /* ScriptFactory.swift in Sources */,
+				481BDCA423320B7000FC79FC /* WordList.swift in Sources */,
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
 				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
 				0C1DE171211E7DE300FE8E43 /* OP_2OVER.swift in Sources */,
@@ -1132,6 +1232,7 @@
 				0C2CB94D211FAD320087A8EB /* OP_BIN2NUM.swift in Sources */,
 				29290B91210AF79300D2BE78 /* OP_DUP.swift in Sources */,
 				0C1DD41821181D08004BA8A8 /* OP_WITHIN.swift in Sources */,
+				481BDCC82332172C00FC79FC /* SecureGenerateBytes.swift in Sources */,
 				298E17CB2150AEA600FF6C77 /* StandardUtxoSelector.swift in Sources */,
 				296ADC252112EC8C007EE5C7 /* Peer.swift in Sources */,
 				0CD92D3B2118153700DD3148 /* OP_LESSTHANOREQUAL.swift in Sources */,
@@ -1143,6 +1244,7 @@
 				0C1DE17C211E8A0100FE8E43 /* OP_SPLIT.swift in Sources */,
 				294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */,
 				0C66CD07212542730049DB89 /* OP_OR.swift in Sources */,
+				481BDCAF23320B7000FC79FC /* Mnemonic+Language.swift in Sources */,
 				298E17C42150AD6900FF6C77 /* TransactionBuilder.swift in Sources */,
 				0C1DE15F211E6FA700FE8E43 /* OP_NIP.swift in Sources */,
 				29330152214FDC880028946B /* UserDefaults+BitcoinKitDataStoreProtocol.swift in Sources */,
@@ -1151,12 +1253,14 @@
 				2914BE41211BAAC900B349CB /* OP_RIPEMD160.swift in Sources */,
 				29E1ED75210EF071007F4627 /* OP_CHECKMULTISIGVERIFY.swift in Sources */,
 				294DDE3F211B31CB00B7F645 /* OP_IF.swift in Sources */,
+				481BDCA523320B7000FC79FC /* WordList+Japanese.swift in Sources */,
 				29290B8D210AF59600D2BE78 /* OpCodeFactory.swift in Sources */,
 				A246ED102118621B0000418D /* MerkleTree.swift in Sources */,
 				147F9729201FC89E0071F49D /* BloomFilter.swift in Sources */,
 				0C1DD40A211819CE004BA8A8 /* OP_GREATERTHAN.swift in Sources */,
 				2914BE49211BAB1900B349CB /* OP_CODESEPARATOR.swift in Sources */,
 				29F5D1E6211068E8007DA3BF /* BigNumber.swift in Sources */,
+				481BDCB523320C1B00FC79FC /* RangeReplaceableCollection_Extensions.swift in Sources */,
 				0C1DE169211E7AB000FE8E43 /* OP_TUCK.swift in Sources */,
 				2914BE52211BCF9600B349CB /* OP_RESERVED2.swift in Sources */,
 				0C66CD05212542660049DB89 /* OP_AND.swift in Sources */,
@@ -1165,14 +1269,17 @@
 				14839AA9202FE7DD00A6CB34 /* VarString.swift in Sources */,
 				E6A64306224418EB00CD4BFC /* PointOnCurve.swift in Sources */,
 				14F37A3E2020A02000D34748 /* SighashType.swift in Sources */,
+				481BDCAE23320B7000FC79FC /* BitArray.swift in Sources */,
 				A2F06FBA2126785200DFF652 /* UInt32+Utility.swift in Sources */,
 				14839A8F202FE68000A6CB34 /* PongMessage.swift in Sources */,
 				294DDE41211B31D600B7F645 /* OP_NOTIF.swift in Sources */,
+				481BDCA923320B7000FC79FC /* WordList+Korean.swift in Sources */,
 				0C1DE161211E717500FE8E43 /* OP_OVER.swift in Sources */,
 				0C1DD42321182126004BA8A8 /* OP_MOD.swift in Sources */,
 				A29721F8211B2497007228D5 /* Math.swift in Sources */,
 				29290B9B210AF88C00D2BE78 /* OP_HASH160.swift in Sources */,
 				14CDC3862021824200C01556 /* Wallet.swift in Sources */,
+				481BDCAC23320B7000FC79FC /* WordList+SimplifiedChinese.swift in Sources */,
 				0C1DE165211E75A800FE8E43 /* OP_ROLL.swift in Sources */,
 				0C1DD41621181CC0004BA8A8 /* OP_GREATERTHANOREQUAL.swift in Sources */,
 				2914BE45211BAAF400B349CB /* OP_SHA1.swift in Sources */,
@@ -1187,6 +1294,7 @@
 				0C1DD41D21182043004BA8A8 /* OP_SUB.swift in Sources */,
 				29290B93210AF86400D2BE78 /* OP_0.swift in Sources */,
 				0C1DE163211E724E00FE8E43 /* OP_PICK.swift in Sources */,
+				481BDCA623320B7000FC79FC /* WordList+English.swift in Sources */,
 				2914BE47211BAB0500B349CB /* OP_HASH256.swift in Sources */,
 				298E17BE2150983C00FF6C77 /* BitcoinComTransactionHistoryProvider.swift in Sources */,
 				2949920020F227EB00D078B6 /* VersionByte.swift in Sources */,
@@ -1196,6 +1304,7 @@
 				0C61BF51215B988A001415CA /* Encoding.swift in Sources */,
 				29E1ED73210ECD35007F4627 /* OP_CHECKMULTISIG.swift in Sources */,
 				29290B99210AF88400D2BE78 /* OP_EQUALVERIFY.swift in Sources */,
+				481BDCB623320C1B00FC79FC /* FixedWidthInteger_Extensions.swift in Sources */,
 				294DDE47211B322000B7F645 /* OP_ELSE.swift in Sources */,
 				2914BE50211BCF8E00B349CB /* OP_RESERVED1.swift in Sources */,
 				0C1DE173211E7E7C00FE8E43 /* OP_2ROT.swift in Sources */,
@@ -1204,6 +1313,7 @@
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
 				1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */,
+				481BDCA723320B7000FC79FC /* WordList+French.swift in Sources */,
 				0C1DD40C21181A40004BA8A8 /* OP_LESSTHAN.swift in Sources */,
 				298E17C021509DC200FF6C77 /* BitcoinComTransactionBroadcaster.swift in Sources */,
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
@@ -1214,6 +1324,7 @@
 				14839A9F202FE73B00A6CB34 /* TransactionOutput.swift in Sources */,
 				A246ED12211864500000418D /* UInt256.swift in Sources */,
 				1463E6B62025E99C0033DAAE /* BlockChain.swift in Sources */,
+				481BDCC92332172C00FC79FC /* Status.swift in Sources */,
 				2914BE4E211BCF7600B349CB /* OP_RESERVED.swift in Sources */,
 				14839A81202FE5CA00A6CB34 /* VerackMessage.swift in Sources */,
 				29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */,
@@ -1223,11 +1334,14 @@
 				0C1DE159211D7FC800FE8E43 /* OP_IFDUP.swift in Sources */,
 				298E17BA2150971800FF6C77 /* BitcoinComEndpoint.swift in Sources */,
 				2914BE56211BCFE600B349CB /* OP_NOPN.swift in Sources */,
+				481BDCBD2332130900FC79FC /* Mnemonic+Checksum+Validate.swift in Sources */,
 				14A2961F2032317B00E19177 /* HDWallet.swift in Sources */,
 				14839A7C202F79F900A6CB34 /* PaymentURI.swift in Sources */,
 				2914BE5E211C062200B349CB /* OP_PUBKEYHASH.swift in Sources */,
+				481BDCBF2332137700FC79FC /* Mnemonic+Wordlist.swift in Sources */,
 				0C1DE15B211D819A00FE8E43 /* OP_DEPTH.swift in Sources */,
 				29EA70362150EB76009B6485 /* AddressProvider.swift in Sources */,
+				481BDCAD23320B7000FC79FC /* UInt11.swift in Sources */,
 				0C1DD41221181B41004BA8A8 /* OP_BOOLOR.swift in Sources */,
 				294DDE32211A05D200B7F645 /* OP_RETURN.swift in Sources */,
 				29089F102122D06300E0C305 /* MockKey.swift in Sources */,
@@ -1245,9 +1359,9 @@
 				141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */,
 				0C1DE175211E816E00FE8E43 /* OP_2SWAP.swift in Sources */,
 				0C1DE16F211E7D5800FE8E43 /* OP_3DUP.swift in Sources */,
+				481BDCC32332140C00FC79FC /* Mnemonic+Error.swift in Sources */,
 				14839A97202FE6D000A6CB34 /* BlockMessage.swift in Sources */,
 				0C1DE16D211E7CC300FE8E43 /* OP_2DUP.swift in Sources */,
-				1482B5E22026B0680098B612 /* Mnemonic.swift in Sources */,
 				29330149214FC8E30028946B /* UtxoProvider.swift in Sources */,
 				2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */,
 				14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */,
@@ -1257,6 +1371,7 @@
 				294DDE45211B31FA00B7F645 /* OP_VERNOTIF.swift in Sources */,
 				0C2375A02132431B00DB2872 /* HeadersMessage.swift in Sources */,
 				147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */,
+				481BDCBB233212D700FC79FC /* Mnemonic+Generate.swift in Sources */,
 				0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */,
 				29290B9F210AF8FD00D2BE78 /* OP_EQUAL.swift in Sources */,
 				14839A8B202FE64D00A6CB34 /* GetDataMessage.swift in Sources */,
@@ -1265,6 +1380,7 @@
 				0C1DE167211E7A0900FE8E43 /* OP_ROT.swift in Sources */,
 				29290B97210AF87800D2BE78 /* OP_CHECKSIG.swift in Sources */,
 				0C23759D2132419400DB2872 /* GetHeadersMessage.swift in Sources */,
+				481BDCB9233211A400FC79FC /* Mnemonic+Strength.swift in Sources */,
 				0C1DD40821181719004BA8A8 /* OP_ABS.swift in Sources */,
 				1482B5E8202721FF0098B612 /* HDPrivateKey.swift in Sources */,
 				298E17CD2150AEB300FF6C77 /* StandardTransactionBuilder.swift in Sources */,
