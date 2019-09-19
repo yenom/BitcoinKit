@@ -43,9 +43,9 @@ class TransactionBuilderTests: XCTestCase {
         let unspentTransaction = UnspentTransaction(output: prevTxOutput,
                                       outpoint: prevTxOutPoint)
         let plan = TransactionPlan(unspentTransactions: [unspentTransaction], amount: 50_000_000, fee: 10_000_000, change: 109_012_961)
-        let toAddress = try! AddressFactory.create("mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB")
+        let toAddress = try! BitcoinAddress(legacy: "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB")
         let privKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
-        let changeAddress = privKey.publicKey().toLegacy()
+        let changeAddress = privKey.publicKey().toBitcoinAddress()
         let tx: Transaction = TransactionBuilder.build(from: plan, toAddress: toAddress, changeAddress: changeAddress)
         
         let expectedSerializedTx: Data = Data(hex: "010000000131820866b6f840db0eeec1b5ecc44092869ebc72d4ff5e76b46690eb4eca24150100000000ffffffff0280f0fa02000000001976a9149f9a7abd600c0caa03983a77c8c3df8e062cb2fa88ace1677f06000000001976a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac00000000")!
@@ -73,8 +73,8 @@ class TransactionBuilderTests: XCTestCase {
         let unspentTransaction = UnspentTransaction(output: prevTxOutput,
                                       outpoint: prevTxOutPoint)
         let plan = TransactionPlan(unspentTransactions: [unspentTransaction], amount: 600, fee: 226, change: 4325)
-        let toAddress = try! AddressFactory.create("bitcoincash:qpmfhhledgp0jy66r5vmwjwmdfu0up7ujqcp07ha9v")
-        let changeAddress = try! AddressFactory.create("bitcoincash:qz0q3xmg38sr94rw8wg45vujah7kzma3cskxymnw06")
+        let toAddress = try! BitcoinAddress(cashaddr: "bitcoincash:qpmfhhledgp0jy66r5vmwjwmdfu0up7ujqcp07ha9v")
+        let changeAddress = try! BitcoinAddress(cashaddr: "bitcoincash:qz0q3xmg38sr94rw8wg45vujah7kzma3cskxymnw06")
         let tx = TransactionBuilder.build(from: plan, toAddress: toAddress, changeAddress: changeAddress)
         let expectedSerializedTx: Data = Data(hex: "0100000001e28c2b955293159898e34c6840d99bf4d390e2ee1c6f606939f18ee1e2000d050200000000ffffffff0258020000000000001976a914769bdff96a02f9135a1d19b749db6a78fe07dc9088ace5100000000000001976a9149e089b6889e032d46e3b915a3392edfd616fb1c488ac00000000")!
         XCTAssertEqual(tx.serialized().hex, expectedSerializedTx.hex)

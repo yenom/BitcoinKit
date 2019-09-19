@@ -40,15 +40,22 @@ public struct PaymentURI {
         case amount
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     public init(_ string: String) throws {
-        guard let components = URLComponents(string: string), let scheme = components.scheme, scheme.lowercased() == "bitcoin" else {
+        guard let components = URLComponents(string: string),
+            let scheme = components.scheme,
+            scheme.lowercased() == "bitcoin",
+            let url = components.url else {
             throw PaymentURIError.invalid
         }
-        guard let address = try? AddressFactory.create(components.path) else {
+        self.uri = url
+        if let cashaddr = try? BitcoinAddress(cashaddr: scheme + components.path) {
+            self.address = cashaddr
+        } else if let legacy = try? BitcoinAddress(legacy: components.path) {
+            self.address = legacy
+        } else {
             throw PaymentURIError.malformed(.address)
         }
-        self.address = address
-        self.uri = components.url!
 
         guard let queryItems = components.queryItems else {
             self.label = nil
@@ -63,17 +70,16 @@ public struct PaymentURI {
         var amount: Decimal?
         var others = [String: String]()
         for queryItem in queryItems {
-            switch queryItem.name {
-            case Keys.label.rawValue:
+            switch Keys(rawValue: queryItem.name) {
+            case .some(.label):
                 label = queryItem.value
-            case Keys.message.rawValue:
+            case .some(.message):
                 message = queryItem.value
-            case Keys.amount.rawValue:
-                if let v = queryItem.value, let value = Decimal(string: v) {
-                    amount = value
-                } else {
+            case .some(.amount):
+                guard let v = queryItem.value, let value = Decimal(string: v) else {
                     throw PaymentURIError.malformed(.amount)
                 }
+                amount = value
             default:
                 if let value = queryItem.value {
                     others[queryItem.name] = value

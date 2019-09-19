@@ -42,8 +42,8 @@ public struct MockHelper {
     }
 
     public static func createTransaction(unspentTransaction: UnspentTransaction) -> Transaction {
-        let toAddress: Address = try! AddressFactory.create("1Bp9U1ogV3A14FMvKbRJms7ctyso4Z4Tcx")
-        let changeAddress: Address = try! AddressFactory.create("1FQc5LdgGHMHEN9nwkjmz6tWkxhPpxBvBU")
+        let toAddress: BitcoinAddress = try! BitcoinAddress(legacy: "1Bp9U1ogV3A14FMvKbRJms7ctyso4Z4Tcx")
+        let changeAddress: BitcoinAddress = try! BitcoinAddress(legacy: "1FQc5LdgGHMHEN9nwkjmz6tWkxhPpxBvBU")
         // 1. inputs
         let unsignedInputs = [TransactionInput(previousOutput: unspentTransaction.outpoint,
                                                signatureScript: Data(),

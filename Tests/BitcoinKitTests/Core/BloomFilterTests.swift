@@ -64,11 +64,11 @@ class BloomFilterTests: XCTestCase {
         do {
             var filter = BloomFilter(elements: 4, falsePositiveRate: 0.001, randomNonce: 100)
 
-            let publicKey1 = PublicKey(bytes: Data(hex: "03cdb817b334c8e3bdc6ce3a1eae9e624cc64426eb00ef9207d2021ce6d9253a2a")!, network: .testnet)
+            let publicKey1 = PublicKey(bytes: Data(hex: "03cdb817b334c8e3bdc6ce3a1eae9e624cc64426eb00ef9207d2021ce6d9253a2a")!, network: .testnetBCH)
             filter.insert(publicKey1.data)
             filter.insert(Crypto.sha256ripemd160(publicKey1.data))
 
-            let publicKey2 = PublicKey(bytes: Data(hex: "02784addc6ceed8bbbee10829194ce17c99a6a7029b3a9e078b6f849aa91c937b5")!, network: .testnet)
+            let publicKey2 = PublicKey(bytes: Data(hex: "02784addc6ceed8bbbee10829194ce17c99a6a7029b3a9e078b6f849aa91c937b5")!, network: .testnetBCH)
             filter.insert(publicKey2.data)
             filter.insert(Crypto.sha256ripemd160(publicKey2.data))
 

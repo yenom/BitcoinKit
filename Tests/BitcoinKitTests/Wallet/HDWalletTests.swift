@@ -33,7 +33,7 @@ class HDWalletTests: XCTestCase {
                                         passphrase: "TREZOR",
                                         externalIndex: 0,
                                         internalIndex: 0,
-                                        network: .mainnet)
+                                        network: .mainnetBCH)
     }
     
     func testInitFromMnemonic() {
@@ -42,7 +42,7 @@ class HDWalletTests: XCTestCase {
                               passphrase: "TREZOR",
                               externalIndex: 0,
                               internalIndex: 0,
-                              network: .mainnet)
+                              network: .mainnetBCH)
 
 
         XCTAssertEqual(walletFromMnemonic.mnemonic,
@@ -59,7 +59,7 @@ class HDWalletTests: XCTestCase {
         let walletFromSeed: HDWallet = HDWallet(seed: seed,
                                                     externalIndex: 0,
                                                     internalIndex: 0,
-                                                    network: .mainnet)
+                                                    network: .mainnetBCH)
         XCTAssertNil(walletFromSeed.mnemonic)
         XCTAssertEqual(walletFromSeed.rootXPrivKey.description, "xprv9s21ZrQH143K3h3fDYiay8mocZ3afhfULfb5GX8kCBdno77K4HiA15Tg23wpbeF1pLfs1c5SPmYHrEpTuuRhxMwvKDwqdKiGJS9XFKzUsAF")
         XCTAssertEqual(walletFromSeed.rootXPubKey.description, "xpub661MyMwAqRbcGB88KaFbLGiYAat55APKhtWg4uYMkXAmfuSTbq2QYsn9sKJCj1YqZPafsboef4h4YbXXhNhPwMbkHTpkf3zLhx7HvFw1NDy")
@@ -67,7 +67,7 @@ class HDWalletTests: XCTestCase {
     }
     
     func testCreateWallet() {
-        let created: HDWallet = HDWallet.create(passphrase: "BitcoinKit-Wallet", network: .mainnet)
+        let created: HDWallet = HDWallet.create(passphrase: "BitcoinKit-Wallet", network: .mainnetBCH)
         XCTAssertEqual(created.mnemonic?.count, 12)
         XCTAssertEqual(created.externalIndex, 0)
         XCTAssertEqual(created.internalIndex, 0)

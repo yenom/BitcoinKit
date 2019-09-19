@@ -39,6 +39,8 @@ import Foundation
 ///     // Possible cause 2: Checksum is invalid
 ///     throw SomeError()
 /// }
+/// let versionByte = payload[0]
+/// let pubkeyHash = payload.dropFirst()
 /// ```
 public struct Base58Check {
     public static func encode(_ bytes: Data) -> String {

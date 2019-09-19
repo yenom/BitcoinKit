@@ -43,10 +43,10 @@ class BTCSignatureHashHelperTests: XCTestCase {
         
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
 
-        let toAddress = try! AddressFactory.create("mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB")
+        let toAddress = try! BitcoinAddress(legacy: "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB")
         
         let lockingScript1 = Script(address: toAddress)!.data
-        let lockingScript2 = Script(address: privateKey.publicKey().toAddress())!.data
+        let lockingScript2 = Script(address: privateKey.publicKey().toBitcoinAddress())!.data
         
         let sending = TransactionOutput(value: amount, lockingScript: lockingScript1)
         let payback = TransactionOutput(value: balance - amount - fee, lockingScript: lockingScript2)

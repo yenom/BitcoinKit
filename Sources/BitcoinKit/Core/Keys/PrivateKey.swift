@@ -37,7 +37,7 @@ public struct PrivateKey {
     public let network: Network
     public let isPublicKeyCompressed: Bool
 
-    public init(network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
+    public init(network: Network = .testnetBCH, isPublicKeyCompressed: Bool = true) {
         self.network = network
         self.isPublicKeyCompressed = isPublicKeyCompressed
 
@@ -86,10 +86,10 @@ public struct PrivateKey {
 
         let addressPrefix = payload.popFirst()!
         switch addressPrefix {
-        case Network.mainnet.privatekey:
-            network = .mainnet
-        case Network.testnet.privatekey:
-            network = .testnet
+        case Network.mainnetBCH.privatekey:
+            network = .mainnetBCH
+        case Network.testnetBCH.privatekey:
+            network = .testnetBCH
         default:
             throw PrivateKeyError.invalidFormat
         }
@@ -102,7 +102,7 @@ public struct PrivateKey {
         data = payload.prefix(32)
     }
 
-    public init(data: Data, network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
+    public init(data: Data, network: Network = .testnetBCH, isPublicKeyCompressed: Bool = true) {
         self.data = data
         self.network = network
         self.isPublicKeyCompressed = isPublicKeyCompressed

@@ -1,5 +1,5 @@
 //
-//  Address.swift
+//  BitcoinScheme.swift
 // 
 //  Copyright © 2019 BitcoinKit developers
 //  
@@ -24,27 +24,13 @@
 
 import Foundation
 
-public protocol Address: CustomStringConvertible {
-    var network: Network { get }
-    var hashType: BitcoinAddress.HashType { get }
-    var data: Data { get }
-    var legacy: String { get }
-    var cashaddr: String { get }
-}
+public enum BitcoinScheme: String {
+    case bitcoincash
+    case bchtest
+    case bitcoin
+    case none = ""
 
-extension Address {
-    @available(*, deprecated, message: "Always returns nil. If you need public key with address, please use PublicKey instead.")
-    public var publicKey: Data? {
-        return nil
-    }
-
-    @available(*, deprecated, renamed: "legacy")
-    public var base58: String {
-        return legacy
-    }
-
-    @available(*, deprecated, renamed: "hashType")
-    public var type: BitcoinAddress.HashType {
-        return hashType
+    public init?(scheme: String) {
+        self.init(rawValue: scheme.lowercased())
     }
 }

@@ -1,5 +1,5 @@
 //
-//  Address.swift
+//  LegacyAddress.swift
 // 
 //  Copyright © 2019 BitcoinKit developers
 //  
@@ -24,27 +24,16 @@
 
 import Foundation
 
-public protocol Address: CustomStringConvertible {
-    var network: Network { get }
-    var hashType: BitcoinAddress.HashType { get }
-    var data: Data { get }
-    var legacy: String { get }
-    var cashaddr: String { get }
-}
-
-extension Address {
-    @available(*, deprecated, message: "Always returns nil. If you need public key with address, please use PublicKey instead.")
-    public var publicKey: Data? {
-        return nil
-    }
-
-    @available(*, deprecated, renamed: "legacy")
-    public var base58: String {
-        return legacy
-    }
-
-    @available(*, deprecated, renamed: "hashType")
-    public var type: BitcoinAddress.HashType {
-        return hashType
-    }
-}
+/// The model to represent Bitcoin LegacyAddress of base58Check format.
+/// The network is supposed to be mainnetBTC or testnetBTC.
+///
+/// ```
+/// // Initialize from base58check string
+/// let address1 = try LegacyAddress("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
+///
+/// // Initialize from data
+/// let address2 = LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: .mainnetBTC)
+/// let address3 = LegacyAddress(data: scriptHash, type: .scriptHash, network: .mainnetBTC)
+/// ```
+@available(*, deprecated, renamed: "BitcoinAddress")
+public typealias LegacyAddress = BitcoinAddress
