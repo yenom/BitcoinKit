@@ -53,7 +53,7 @@ public struct PublicKey {
     /// Bitcoin Address = Base58Encode(Key hash concatenated with Checksum)
     private func base58() -> String {
         let versionByte: Data = Data([network.pubkeyhash])
-        return publicKeyHashToAddress(versionByte + pubkeyHash)
+        return Base58Check.encode(versionByte + pubkeyHash)
     }
 
     private func bech32() -> String {

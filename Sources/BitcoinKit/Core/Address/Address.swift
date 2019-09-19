@@ -51,11 +51,9 @@ public struct LegacyAddress: Address {
     public let network: Network
     public let type: AddressType
     public let data: Data
-    public let base58: Base58Check
+    public let base58: String
     public let cashaddr: String
     public let publicKey: Data?
-
-    public typealias Base58Check = String
 
     public init(data: Data, type: AddressType, network: Network, base58: String, bech32: String, publicKey: Data?) {
         self.data = data
@@ -66,14 +64,8 @@ public struct LegacyAddress: Address {
         self.publicKey = publicKey
     }
 
-    public init(_ base58: Base58Check) throws {
-        guard let raw = Base58.decode(base58) else {
-            throw AddressError.invalid
-        }
-        let checksum = raw.suffix(4)
-        let pubKeyHash = raw.dropLast(4)
-        let checksumConfirm = Crypto.sha256sha256(pubKeyHash).prefix(4)
-        guard checksum == checksumConfirm else {
+    public init(_ base58: String) throws {
+        guard let pubKeyHash = Base58Check.decode(base58) else {
             throw AddressError.invalid
         }
 
@@ -118,7 +110,7 @@ public struct LegacyAddress: Address {
         self.type = type
         self.network = network
         self.publicKey = nil
-        self.base58 = publicKeyHashToAddress(addressData)
+        self.base58 = Base58Check.encode(addressData)
         self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
     }
 }
@@ -185,10 +177,10 @@ public struct Cashaddr: Address {
         switch typeBits {
         case .pubkeyHash:
             type = .pubkeyHash
-            base58 = publicKeyHashToAddress(Data([network.pubkeyhash]) + data)
+            base58 = Base58Check.encode([network.pubkeyhash] + data)
         case .scriptHash:
             type = .scriptHash
-            base58 = publicKeyHashToAddress(Data([network.scripthash]) + data)
+            base58 = Base58Check.encode([network.scripthash] + data)
         }
     }
     public init(data: Data, type: AddressType, network: Network) {
@@ -197,7 +189,7 @@ public struct Cashaddr: Address {
         self.type = type
         self.network = network
         self.publicKey = nil
-        self.base58 = publicKeyHashToAddress(addressData)
+        self.base58 = Base58Check.encode(addressData)
         self.cashaddr = Bech32.encode(addressData, prefix: network.scheme)
     }
 }

@@ -45,12 +45,12 @@ class ScriptMachineTests: XCTestCase {
         
         let fromPublicKey = privateKey.publicKey()
         let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.data)
-        let toPubKeyHash = Base58.decode(toAddress)!.dropFirst().dropLast(4)
+        let toPubKeyHash = Base58Check.decode(toAddress)!.dropFirst()
         
         // unsigned tx
         let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: toPubKeyHash)
         let lockingScript2 = Script.buildPublicKeyHashOut(pubKeyHash: fromPubKeyHash)
-        
+
         let sending = TransactionOutput(value: amount, lockingScript: lockingScript1)
         let payback = TransactionOutput(value: balance - amount - fee, lockingScript: lockingScript2)
         let subScript = Data(hex: "76a9142a539adfd7aefcc02e0196b4ccf76aea88a1f47088ac")!

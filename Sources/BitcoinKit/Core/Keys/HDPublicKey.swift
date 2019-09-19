@@ -56,8 +56,7 @@ public class HDPublicKey {
         data += childIndex.littleEndian
         data += chainCode
         data += raw
-        let checksum = Crypto.sha256sha256(data).prefix(4)
-        return Base58.encode(data + checksum)
+        return Base58Check.encode(data)
     }
 
     public func publicKey() -> PublicKey {

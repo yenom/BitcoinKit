@@ -32,7 +32,7 @@ class ScriptTests: XCTestCase {
 
         let fromPublicKey = privateKey.publicKey()
         let fromPubKeyHash = Crypto.sha256ripemd160(fromPublicKey.data)
-        let toPubKeyHash = Base58.decode(toAddress)!.dropFirst().dropLast(4)
+        let toPubKeyHash = Base58Check.decode(toAddress)!.dropFirst()
 
         let lockingScript1 = Script.buildPublicKeyHashOut(pubKeyHash: fromPubKeyHash)
         let lockingScript2 = Script.buildPublicKeyHashOut(pubKeyHash: toPubKeyHash)

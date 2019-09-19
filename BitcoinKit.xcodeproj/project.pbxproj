@@ -189,6 +189,9 @@
 		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
 		299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */; };
 		29AC9965214E8A7000AE82FE /* QRCodeConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */; };
+		29D8F12523337D8000E72008 /* Bech32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12423337D8000E72008 /* Bech32.swift */; };
+		29D8F12723337D8800E72008 /* Base58Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12623337D8800E72008 /* Base58Check.swift */; };
+		29D8F12923337DEE00E72008 /* Base58.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12823337DEE00E72008 /* Base58.swift */; };
 		29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */; };
 		29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */; };
 		29E1ED73210ECD35007F4627 /* OP_CHECKMULTISIG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */; };
@@ -319,7 +322,7 @@
 		0C2375A32132501700DB2872 /* MessageSerializerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSerializerTests.swift; sourceTree = "<group>"; };
 		0C2CB94C211FAD320087A8EB /* OP_BIN2NUM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OP_BIN2NUM.swift; sourceTree = "<group>"; };
 		0C4132EE210EFD1700906E4A /* OP_SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SWAP.swift; sourceTree = "<group>"; };
-		0C61BF50215B988A001415CA /* Encoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Encoding.swift; path = Keys/Encoding.swift; sourceTree = "<group>"; };
+		0C61BF50215B988A001415CA /* Encoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encoding.swift; sourceTree = "<group>"; };
 		0C66CD022125425D0049DB89 /* OP_INVERT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_INVERT.swift; sourceTree = "<group>"; };
 		0C66CD04212542660049DB89 /* OP_AND.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_AND.swift; sourceTree = "<group>"; };
 		0C66CD06212542730049DB89 /* OP_OR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_OR.swift; sourceTree = "<group>"; };
@@ -453,6 +456,9 @@
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
 		299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureSerializer.swift; sourceTree = "<group>"; };
 		29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeConvertible.swift; sourceTree = "<group>"; };
+		29D8F12423337D8000E72008 /* Bech32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bech32.swift; sourceTree = "<group>"; };
+		29D8F12623337D8800E72008 /* Base58Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58Check.swift; sourceTree = "<group>"; };
+		29D8F12823337DEE00E72008 /* Base58.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58.swift; sourceTree = "<group>"; };
 		29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_EXAMPLE.swift; sourceTree = "<group>"; };
 		29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1NEGATE.swift; sourceTree = "<group>"; };
 		29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKMULTISIG.swift; sourceTree = "<group>"; };
@@ -689,6 +695,8 @@
 				481BDCC52332172C00FC79FC /* SecureGenerateBytes */,
 				481BDC9623320B7000FC79FC /* Mnemonic */,
 				29AC9962214E898800AE82FE /* Keys */,
+				29D8F12223337D3300E72008 /* Address */,
+				29D8F12323337D4C00E72008 /* QR */,
 				147494EB201F9E4F006D1CF8 /* Network.swift */,
 				294CE2DE232CA88800922458 /* CoinType.swift */,
 				1463E6B52025E99C0033DAAE /* BlockChain.swift */,
@@ -697,7 +705,6 @@
 				E6A643072244190400CD4BFC /* Scalar32Bytes.swift */,
 				14839A7B202F79F900A6CB34 /* PaymentURI.swift */,
 				147494E3201F9B85006D1CF8 /* Crypto.swift */,
-				0C61BF50215B988A001415CA /* Encoding.swift */,
 				A29721F7211B2497007228D5 /* Math.swift */,
 				A246ED0F2118621B0000418D /* MerkleTree.swift */,
 				A2B7A34D2125464400764AE9 /* ProofOfWork.swift */,
@@ -1010,14 +1017,40 @@
 				14A2961C2032316900E19177 /* HDKeychain.swift */,
 				1482B5E7202721FF0098B612 /* HDPrivateKey.swift */,
 				1482B5E920273B8A0098B612 /* HDPublicKey.swift */,
+			);
+			path = Keys;
+			sourceTree = "<group>";
+		};
+		29D8F12223337D3300E72008 /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				29D8F12A23337F4300E72008 /* Encoding */,
 				14CDC3892021881A00C01556 /* Address.swift */,
 				294991FF20F227EB00D078B6 /* VersionByte.swift */,
 				297DB97220EB12E60077EEEE /* AddressType.swift */,
 				297DB97420EB13320077EEEE /* AddressFactory.swift */,
+			);
+			path = Address;
+			sourceTree = "<group>";
+		};
+		29D8F12323337D4C00E72008 /* QR */ = {
+			isa = PBXGroup;
+			children = (
 				29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */,
 				29330144214F749C0028946B /* QRCodeGenerator.swift */,
 			);
-			path = Keys;
+			path = QR;
+			sourceTree = "<group>";
+		};
+		29D8F12A23337F4300E72008 /* Encoding */ = {
+			isa = PBXGroup;
+			children = (
+				0C61BF50215B988A001415CA /* Encoding.swift */,
+				29D8F12423337D8000E72008 /* Bech32.swift */,
+				29D8F12823337DEE00E72008 /* Base58.swift */,
+				29D8F12623337D8800E72008 /* Base58Check.swift */,
+			);
+			path = Encoding;
 			sourceTree = "<group>";
 		};
 		481BDC9623320B7000FC79FC /* Mnemonic */ = {
@@ -1316,6 +1349,7 @@
 				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
 				299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */,
 				294DDE49211B322E00B7F645 /* OP_ENDIF.swift in Sources */,
+				29D8F12923337DEE00E72008 /* Base58.swift in Sources */,
 				29AC9965214E8A7000AE82FE /* QRCodeConvertible.swift in Sources */,
 				0C1DD40E21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift in Sources */,
 				2914BE5A211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift in Sources */,
@@ -1379,6 +1413,7 @@
 				0C1DD41F211820BB004BA8A8 /* OP_MUL.swift in Sources */,
 				29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */,
 				0C1DD41A21181DDF004BA8A8 /* OP_NUMEQUALVERIFY.swift in Sources */,
+				29D8F12523337D8000E72008 /* Bech32.swift in Sources */,
 				14A2961D2032316900E19177 /* HDKeychain.swift in Sources */,
 				296ADC242112EC8C007EE5C7 /* PeerGroup.swift in Sources */,
 				14CDC38A2021881A00C01556 /* Address.swift in Sources */,
@@ -1398,6 +1433,7 @@
 				294DDE45211B31FA00B7F645 /* OP_VERNOTIF.swift in Sources */,
 				0C2375A02132431B00DB2872 /* HeadersMessage.swift in Sources */,
 				147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */,
+				29D8F12723337D8800E72008 /* Base58Check.swift in Sources */,
 				481BDCBB233212D700FC79FC /* Mnemonic+Generate.swift in Sources */,
 				0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */,
 				29290B9F210AF8FD00D2BE78 /* OP_EQUAL.swift in Sources */,
