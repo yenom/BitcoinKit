@@ -4,7 +4,7 @@ about: "I have a suggestion (and may want to implement it \U0001F642)!"
 
 ---
 
-# What problem does this feture solve?
+# What problem does this feature solve?
 
 # Describe what you've considered?
 
