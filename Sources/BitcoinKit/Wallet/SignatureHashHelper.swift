@@ -1,7 +1,7 @@
 //
-//  StandardTransactionBuilder.swift
-//
-//  Copyright © 2018 BitcoinKit developers
+//  SignatureHashHelper.swift
+//  
+//  Copyright © 2019 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,22 +24,14 @@
 
 import Foundation
 
-public struct StandardTransactionBuilder: TransactionBuilder {
-    public init() {}
-    public func build(destinations: [(address: Address, amount: UInt64)], utxos: [UnspentTransaction]) throws -> UnsignedTransaction {
-        let outputs = try destinations.map { (address: Address, amount: UInt64) -> TransactionOutput in
-            guard let lockingScript = Script(address: address)?.data else {
-                throw TransactionBuildError.error("Invalid address type")
-            }
-            return TransactionOutput(value: amount, lockingScript: lockingScript)
-        }
-
-        let unsignedInputs = utxos.map { TransactionInput(previousOutput: $0.outpoint, signatureScript: Data(), sequence: UInt32.max) }
-        let tx = Transaction(version: 1, inputs: unsignedInputs, outputs: outputs, lockTime: 0)
-        return UnsignedTransaction(tx: tx, utxos: utxos)
-    }
-}
-
-enum TransactionBuildError: Error {
-    case error(String)
+public protocol SignatureHashHelper {
+    var hashType: SighashType { get }
+    /// Create the signature hash of the transaction
+    ///
+    /// - Parameters:
+    ///   - tx: Transaction to be signed
+    ///   - utxoOutput: TransactionOutput to be signed
+    ///   - inputIndex: The index of the transaction output to be signed
+    /// - Returns: The signature hash for the transaction to be signed.
+    func createSignatureHash(of tx: Transaction, for utxoOutput: TransactionOutput, inputIndex: Int) -> Data
 }

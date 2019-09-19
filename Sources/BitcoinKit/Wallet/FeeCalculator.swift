@@ -1,7 +1,7 @@
 //
-//  BitcoinComTransactionBroadcaster.swift
+//  FeeCalculator.swift
 //
-//  Copyright © 2018 BitcoinKit developers
+//  Copyright © 2019 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,29 +24,29 @@
 
 import Foundation
 
-public final class BitcoinComTransactionBroadcaster: TransactionBroadcaster {
-    private let endpoint: ApiEndPoint.BitcoinCom
-    public init(network: Network) {
-        self.endpoint = ApiEndPoint.BitcoinCom(network: network)
+public struct FeeCalculator {
+    /// Calclate minimum transaction output amount that will be accepted by full nodes
+    /// Check here  : https://github.com/Bitcoin-ABC/bitcoin-abc/blob/1da1ddd10d3a52de49fcf3b399917cfbc28ae8d6/src/test/transaction_tests.cpp#L641
+    static func calculateDust(feePerByte: UInt64) -> UInt64 {
+        return 3 * 182 * feePerByte
     }
 
-    public func post(_ rawtx: String, completion: ((_ txid: String?) -> Void)?) {
-        let url = endpoint.postRawtxURL(rawtx: rawtx)
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        let task = URLSession.shared.dataTask(with: request) { data, _, _ in
-            guard let data = data else {
-                print("response is nil.")
-                completion?(nil)
-                return
-            }
-            guard let response = String(bytes: data, encoding: .utf8) else {
-                print("broadcast response cannot be decoded.")
-                return
-            }
-
-            completion?(response)
+    /// Calculate fee
+    // txin(P2PKH) : 148 bytes
+    // txout(P2PKH) : 34 bytes
+    // cf. txin(P2SH) : cannot be decided
+    // cf. txout(P2SH) : 32 bytes
+    // cf. txout(OP_RETURN + String) : Roundup([#Characters]/32) + [#Characters] + 11 bytes
+    static func calculateFee(inputs: UInt64, outputs: UInt64, feePerByte: UInt64) -> UInt64 {
+        guard inputs > 0 else {
+            return 0
         }
-        task.resume()
+        let txByteSize: UInt64 = (inputs * 148) + (outputs * 34) + 10
+        return txByteSize * feePerByte
+    }
+
+    /// Calculate fee per single input (Not including other inputs, outputs and tx of itself)
+    static func calculateSingleInputFee(feePerByte: UInt64) -> UInt64 {
+        return 148 * feePerByte
     }
 }

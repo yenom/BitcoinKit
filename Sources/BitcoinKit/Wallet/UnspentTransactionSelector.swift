@@ -1,7 +1,7 @@
 //
-//  StandardUtxoSelector.swift
+//  UnspentTransactionSelector.swift
 //
-//  Copyright © 2018 BitcoinKit developers
+//  Copyright © 2019 BitcoinKit developers
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,40 +24,45 @@
 
 import Foundation
 
-public struct StandardUtxoSelector: UtxoSelector {
-    public let feePerByte: UInt64
-    public let dustThreshold: UInt64
+/// Helper model that selects a set of unspent transactions to spend
+/// ```
+/// // Select a unspent transactions to spend
+/// let selected = UnspentTransactionSelector.select(from: unspentTransactions, targetValue: 1000, feePerByte: 1)
+/// ```
+public struct UnspentTransactionSelector {
+    public static func select(from unspentTransactions: [UnspentTransaction], targetValue: UInt64, feePerByte: UInt64) -> [UnspentTransaction] {
+        let dustValue: UInt64 = FeeCalculator.calculateDust(feePerByte: feePerByte)
 
-    public init(feePerByte: UInt64 = 1, dustThreshold: UInt64 = 3 * 182) {
-        self.feePerByte = feePerByte
-        self.dustThreshold = dustThreshold
-    }
-
-    public func select(from utxos: [UnspentTransaction], targetValue: UInt64) throws -> (utxos: [UnspentTransaction], fee: UInt64) {
-        // if target value is zero, fee is zero
-        guard targetValue > 0 else {
-            return ([], 0)
+        // if target value is dust, return empty array
+        guard targetValue >= dustValue else {
+            return []
         }
 
         // definitions for the following caluculation
-        let doubleTargetValue = targetValue * 2
+        let doubleTargetValue: UInt64 = targetValue * 2
         var numOutputs = 2 // if allow multiple output, it will be changed.
         var numInputs = 2
         var fee: UInt64 {
-            return calculateFee(nIn: numInputs, nOut: numOutputs)
+            return FeeCalculator.calculateFee(inputs: UInt64(numInputs), outputs: UInt64(numOutputs), feePerByte: feePerByte)
         }
         var targetWithFee: UInt64 {
             return targetValue + fee
         }
         var targetWithFeeAndDust: UInt64 {
-            return targetWithFee + dustThreshold
+            return targetWithFee + dustValue
         }
 
-        let sortedUtxos: [UnspentTransaction] = utxos.sorted(by: { $0.output.value < $1.output.value })
+        // Filter too small utxos and sort ascending order
+        let singleInputFee: UInt64 = FeeCalculator.calculateSingleInputFee(feePerByte: feePerByte)
+        let availableUnspentTransactions: [UnspentTransaction] = unspentTransactions
+            .filter { $0.output.value > singleInputFee }
+            .sorted(by: { $0.output.value < $1.output.value })
 
-        // total values of utxos should be greater than targetValue
-        guard sortedUtxos.sum() >= targetValue && !sortedUtxos.isEmpty else {
-            throw UtxoSelectError.insufficientFunds
+        // Maximum available amount of utxos should be greater than targetValue
+        let feeToSpendAll: UInt64 = FeeCalculator.calculateFee(inputs: UInt64(availableUnspentTransactions.count), outputs: 1, feePerByte: feePerByte)
+        let availableMax: UInt64 = availableUnspentTransactions.sum() - feeToSpendAll
+        guard availableMax >= targetValue else {
+            return availableUnspentTransactions
         }
 
         // difference from 2x targetValue
@@ -70,54 +75,52 @@ public struct StandardUtxoSelector: UtxoSelector {
         //    (2) closer to 2x the amount,
         //    (3) and does not produce dust change.
         txN:do {
-            for numTx in (1...sortedUtxos.count) {
+            for numTx in (1...availableUnspentTransactions.count) {
                 numInputs = numTx
-                let nOutputsSlices = sortedUtxos.eachSlices(numInputs)
+                let nOutputsSlices = availableUnspentTransactions.slices(of: numInputs)
                 var nOutputsInRange = nOutputsSlices.filter { $0.sum() >= targetWithFeeAndDust }
+                guard !nOutputsInRange.isEmpty else {
+                    continue
+                }
                 nOutputsInRange.sort { distFrom2x($0.sum()) < distFrom2x($1.sum()) }
                 if let nOutputs = nOutputsInRange.first {
-                    return (nOutputs, fee)
+                    return Array(nOutputs)
                 }
             }
         }
 
         // 2. If not, find a combination of outputs that may produce dust change.
+        numOutputs = 1
         txDiscardDust:do {
-            for numTx in (1...sortedUtxos.count) {
+            for numTx in (1...availableUnspentTransactions.count) {
                 numInputs = numTx
-                let nOutputsSlices = sortedUtxos.eachSlices(numInputs)
+                let nOutputsSlices = availableUnspentTransactions.slices(of: numInputs)
                 let nOutputsInRange = nOutputsSlices.filter {
                     return $0.sum() >= targetWithFee
                 }
                 if let nOutputs = nOutputsInRange.first {
-                    return (nOutputs, fee)
+                    return Array(nOutputs)
                 }
             }
         }
 
-        throw UtxoSelectError.insufficientFunds
-    }
-
-    private func calculateFee(nIn: Int, nOut: Int = 2) -> UInt64 {
-        var txsize: Int {
-            return ((148 * nIn) + (34 * nOut) + 10)
-        }
-        return UInt64(txsize) * feePerByte
+        // This can't be called
+        return availableUnspentTransactions
     }
 }
 
-enum UtxoSelectError: Error {
-    case insufficientFunds
-    case error(String)
+internal extension Sequence where Element == UnspentTransaction {
+    func sum() -> UInt64 {
+        return self.map { $0.output.value }.reduce(0, +)
+    }
 }
 
 private extension Array {
     // Slice Array
-    // [0,1,2,3,4,5,6,7,8,9].eachSlices(3)
+    // [0,1,2,3,4,5,6,7,8,9].slices(of: 3)
     // >
     // [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]]
-    func eachSlices(_ num: Int) -> [[Element]] {
-        let slices = (0...count - num).map { self[$0..<$0 + num].map { $0 } }
-        return slices
+    func slices(of size: Int) -> [ArraySlice<Element>] {
+        return (0...count - size).map { self[$0..<$0 + size] }
     }
 }

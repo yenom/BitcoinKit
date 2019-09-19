@@ -593,15 +593,16 @@ class OpCodeTests: XCTestCase {
         let unsignedTx = Transaction(version: 1, inputs: [inputForSign], outputs: [], lockTime: 0)
 
         // sign
-        let hashType: SighashType = SighashType.BTC.ALL
+        let hashType: BTCSighashType = SighashType.BTC.ALL
         let utxoToSign = TransactionOutput(value: balance, lockingScript: subScript)
-        let _txHash = unsignedTx.signatureHash(for: utxoToSign, inputIndex: 0, hashType: hashType)
+        let helper = BTCSignatureHashHelper(hashType: hashType)
+        let _txHash = helper.createSignatureHash(of: unsignedTx, for: utxoToSign, inputIndex: 0)
         guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
             XCTFail("Failed to sign tx.")
             return
         }
 
-        let sigData: Data = signature + UInt8(hashType)
+        let sigData: Data = signature + hashType.uint8
         let pubkeyData: Data = fromPublicKey.data
 
         // OP_CHECKSIG success
@@ -679,15 +680,17 @@ class OpCodeTests: XCTestCase {
         let unsignedTx = Transaction(version: 1, inputs: [inputForSign], outputs: [], lockTime: 0)
 
         // sign
-        let hashType: SighashType = SighashType.BCH.ALL
+        let hashType: BCHSighashType = SighashType.BCH.ALL
         let utxoToSign = TransactionOutput(value: balance, lockingScript: subScript)
-        let _txHash = unsignedTx.signatureHash(for: utxoToSign, inputIndex: 0, hashType: hashType)
+        let helper = BCHSignatureHashHelper(hashType: hashType)
+        
+        let _txHash = helper.createSignatureHash(of: unsignedTx, for: utxoToSign, inputIndex: 0)
         guard let signature: Data = try? Crypto.sign(_txHash, privateKey: privateKey) else {
             XCTFail("Failed to sign tx.")
             return
         }
 
-        let sigData: Data = signature + UInt8(hashType)
+        let sigData: Data = signature + hashType.uint8
         let pubkeyData: Data = fromPublicKey.data
 
         // OP_CHECKSIG success

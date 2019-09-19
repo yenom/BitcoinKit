@@ -1,7 +1,8 @@
 //
-//  UtxoProvider.swift
+//  CoinType.swift
+//  BitcoinKit
 //
-//  Copyright © 2018 BitcoinKit developers
+//  Copyright © 2019 BitcoinKit developers. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +25,34 @@
 
 import Foundation
 
-public protocol UtxoProvider {
-    // Reload utxos [GET API, SPV, etc...]
-    func reload(addresses: [Address], completion: (([UnspentTransaction]) -> Void)?)
+/// BIP44 cointype value
+public struct CoinType {
+    /// BIP44 cointype value
+    public let index: UInt32
+    /// Coin symbol
+    public let symbol: String
+    /// Coin name
+    public let name: String
 
-    // List cached utxos
-    var cached: [UnspentTransaction] { get }
+    public init(_ index: UInt32, _ symbol: String, _ name: String) {
+        self.index = index
+        self.symbol = symbol
+        self.name = name
+    }
+}
+
+extension CoinType: Equatable {
+    // swiftlint:disable operator_whitespace
+    public static func ==(lhs: CoinType, rhs: CoinType) -> Bool {
+        return lhs.index == rhs.index
+            && lhs.symbol == rhs.symbol
+            && lhs.name == rhs.name
+    }
+}
+
+public extension CoinType {
+    static let testnet = CoinType(1, "", "Testnet (all coins)")
+
+    static let btc = CoinType(0, "BTC", "Bitcoin")
+    static let bch = CoinType(145, "BCH", "Bitcoin Cash")
 }

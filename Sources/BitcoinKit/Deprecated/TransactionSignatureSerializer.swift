@@ -24,11 +24,19 @@
 
 import Foundation
 
+@available(*, deprecated, message: "Use BTCSignatureHashHelper instead")
 public struct TransactionSignatureSerializer {
     var tx: Transaction
     var utxo: TransactionOutput
     var inputIndex: Int
     var hashType: SighashType
+
+    public init(transaction: Transaction, output: TransactionOutput, inputIndex: Int, hashType: SighashType) {
+        self.tx = transaction
+        self.utxo = output
+        self.inputIndex = inputIndex
+        self.hashType = hashType
+    }
 
     // input should be modified before sign
     internal func modifiedInput(for i: Int) -> TransactionInput {

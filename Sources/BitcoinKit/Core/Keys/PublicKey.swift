@@ -68,6 +68,15 @@ public struct PublicKey {
     public func toCashaddr() -> Cashaddr {
         return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), bech32: bech32(), publicKey: data)
     }
+
+    public func toAddress() -> Address {
+        switch network {
+        case .mainnet, .testnet:
+            return toCashaddr()
+        default:
+            return toLegacy()
+        }
+    }
 }
 
 extension PublicKey: Equatable {

@@ -1,5 +1,5 @@
 //
-//  BitcoinKitDataStoreProtocol.swift
+//  UnsignedTransaction.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,29 +24,13 @@
 
 import Foundation
 
-// MARK: - BitcoinKitDataStoreProtocol
-public protocol BitcoinKitDataStoreProtocol {
-    func getString(forKey key: String) -> String?
-    func setString(_ value: String, forKey key: String)
-    func getData(forKey key: String) -> Data?
-    func setData(_ value: Data, forKey key: String)
-}
+@available(*, deprecated)
+public struct UnsignedTransaction {
+    public let tx: Transaction
+    public let utxos: [UnspentTransaction]
 
-internal enum DataStoreKey: String {
-    case wif, utxos, transactions
-}
-
-internal extension BitcoinKitDataStoreProtocol {
-    func getString(forKey key: DataStoreKey) -> String? {
-        return getString(forKey: key.rawValue)
-    }
-    func setString(_ value: String, forKey key: DataStoreKey) {
-        setString(value, forKey: key.rawValue)
-    }
-    func getData(forKey key: DataStoreKey) -> Data? {
-        return getData(forKey: key.rawValue)
-    }
-    func setData(_ value: Data, forKey key: DataStoreKey) {
-        setData(value, forKey: key.rawValue)
+    public init(tx: Transaction, utxos: [UnspentTransaction]) {
+        self.tx = tx
+        self.utxos = utxos
     }
 }
