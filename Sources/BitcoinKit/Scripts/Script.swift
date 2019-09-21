@@ -61,9 +61,9 @@ public class Script {
             .append(.OP_EQUAL)
     }
 
-    public func standardP2SHAddress(network: Network) -> Address {
+    public func standardP2SHAddress(network: Network) -> BitcoinAddress {
         let scriptHash: Data = Crypto.sha256ripemd160(data)
-        return Cashaddr(data: scriptHash, type: .scriptHash, network: network)
+        return try! BitcoinAddress(data: scriptHash, hashType: .scriptHash, network: network)
     }
 
     // Multisignature script attribute.
@@ -100,7 +100,7 @@ public class Script {
 
     public convenience init?(address: Address) {
         self.init()
-        switch address.type {
+        switch address.hashType {
         case .pubkeyHash:
             // OP_DUP OP_HASH160 <hash> OP_EQUALVERIFY OP_CHECKSIG
             do {
@@ -121,8 +121,6 @@ public class Script {
             } catch {
                 return nil
             }
-        default:
-            return nil
         }
     }
 
@@ -304,7 +302,7 @@ public class Script {
             guard let data = pushedData(at: i) else {
                 return
             }
-            let pubkey = PublicKey(bytes: data, network: .mainnet)
+            let pubkey = PublicKey(bytes: data, network: .mainnetBCH)
             pubkeys.append(pubkey)
         }
 
@@ -321,17 +319,17 @@ public class Script {
         return chunks
     }
 
-    public func standardAddress(network: Network) -> Address? {
-        if isPayToPublicKeyHashScript {
-            guard let dataChunk = chunk(at: 2) as? DataChunk else {
-                return nil
-            }
-            return Cashaddr(data: dataChunk.pushedData, type: .pubkeyHash, network: network)
-        } else if isPayToScriptHashScript {
-            guard let dataChunk = chunk(at: 1) as? DataChunk else {
-                return nil
-            }
-            return Cashaddr(data: dataChunk.pushedData, type: .scriptHash, network: network)
+    public func standardAddress(network: Network) -> BitcoinAddress? {
+        if isPayToPublicKeyHashScript,
+            let pubkeyHash = pushedData(at: 2) {
+            return try? BitcoinAddress(data: pubkeyHash,
+                            hashType: .pubkeyHash,
+                            network: network)
+        } else if isPayToScriptHashScript,
+            let scriptHash = pushedData(at: 1) {
+            return try? BitcoinAddress(data: scriptHash,
+                            hashType: .scriptHash,
+                            network: network)
         }
         return nil
     }

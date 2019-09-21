@@ -73,7 +73,7 @@ public class SQLiteBlockStore: BlockStore {
     private var database: OpaquePointer?
     private var statements = [String: OpaquePointer]()
 
-    public init(file: URL, network: Network = .testnet) throws {
+    public init(file: URL, network: Network = .testnetBCH) throws {
         self.network = network
 
         try execute { sqlite3_open(file.path, &database) }
@@ -372,7 +372,7 @@ public class SQLiteBlockStore: BlockStore {
         try execute { txId.withUnsafeBytes { sqlite3_bind_blob(stmt, 5, $0.baseAddress.unsafelyUnwrapped, Int32(txId.count), SQLITE_TRANSIENT) } }
         if Script.isPublicKeyHashOut(output.lockingScript) {
             let pubKeyHash = Script.getPublicKeyHash(from: output.lockingScript)
-            let address = publicKeyHashToAddress(Data([network.pubkeyhash]) + pubKeyHash)
+            let address = Base58Check.encode([network.pubkeyhash] + pubKeyHash)
             try execute { sqlite3_bind_text(stmt, 6, address, -1, nil) }
         }
 
@@ -396,7 +396,7 @@ public class SQLiteBlockStore: BlockStore {
 
     public func calculateBalance(address: Address) throws -> Int64 {
         let stmt = statements["calculateBalance"]
-        try execute { sqlite3_bind_text(stmt, 1, address.base58, -1, SQLITE_TRANSIENT) }
+        try execute { sqlite3_bind_text(stmt, 1, address.legacy, -1, SQLITE_TRANSIENT) }
 
         var balance: Int64 = 0
         while sqlite3_step(stmt) == SQLITE_ROW {
@@ -411,7 +411,7 @@ public class SQLiteBlockStore: BlockStore {
 
     public func transactions(address: Address) throws -> [Payment] {
         let stmt = statements["transactions"]
-        try execute { sqlite3_bind_text(stmt, 1, address.base58, -1, SQLITE_TRANSIENT) }
+        try execute { sqlite3_bind_text(stmt, 1, address.legacy, -1, SQLITE_TRANSIENT) }
 
         var payments = [Payment]()
         while sqlite3_step(stmt) == SQLITE_ROW {
@@ -419,7 +419,15 @@ public class SQLiteBlockStore: BlockStore {
             let address = sqlite3_column_text(stmt, 1)!
             let index = sqlite3_column_int64(stmt, 2)
             let value = sqlite3_column_int64(stmt, 3)
-            payments.append(Payment(state: .received, index: index, amount: value, from: try! AddressFactory.create(String(cString: address)), to: try! AddressFactory.create(String(cString: address)), txid: Data(bytes: txid!, count: 32)))
+            payments.append(
+                Payment(state: .received,
+                        index: index,
+                        amount: value,
+                        from: try! BitcoinAddress(legacy: String(cString: address)),
+                        to: try! BitcoinAddress(legacy: String(cString: address)),
+                        txid: Data(bytes: txid!, count: 32)
+                )
+            )
         }
 
         try execute { sqlite3_reset(stmt) }
@@ -429,7 +437,7 @@ public class SQLiteBlockStore: BlockStore {
 
     public func unspentTransactions(address: Address) throws -> [Payment] {
         let stmt = statements["unspentTransactions"]
-        try execute { sqlite3_bind_text(stmt, 1, address.base58, -1, SQLITE_TRANSIENT) }
+        try execute { sqlite3_bind_text(stmt, 1, address.legacy, -1, SQLITE_TRANSIENT) }
 
         var payments = [Payment]()
         while sqlite3_step(stmt) == SQLITE_ROW {
@@ -437,7 +445,16 @@ public class SQLiteBlockStore: BlockStore {
             let address = sqlite3_column_text(stmt, 1)!
             let index = sqlite3_column_int64(stmt, 2)
             let value = sqlite3_column_int64(stmt, 3)
-            payments.append(Payment(state: .received, index: index, amount: value, from: try! AddressFactory.create(String(cString: address)), to: try! AddressFactory.create(String(cString: address)), txid: Data(bytes: txid!, count: 32)))
+            payments.append(
+                Payment(
+                    state: .received,
+                    index: index,
+                    amount: value,
+                    from: try! BitcoinAddress(legacy: String(cString: address)),
+                    to: try! BitcoinAddress(legacy: String(cString: address)),
+                    txid: Data(bytes: txid!, count: 32)
+                )
+            )
         }
 
         try execute { sqlite3_reset(stmt) }

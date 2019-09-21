@@ -198,7 +198,7 @@ class MnemonicTests: XCTestCase {
             let seed = try! Mnemonic.seed(mnemonic: mnemonic, passphrase: "TREZOR")
             XCTAssertEqual(seed.hex, expected.seed)
 
-            let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
+            let privateKey = HDPrivateKey(seed: seed, network: .mainnetBCH)
             XCTAssertEqual(privateKey.extended(), expected.key)
         }
     }
@@ -415,7 +415,7 @@ class MnemonicTests: XCTestCase {
             let seed = try! Mnemonic.seed(mnemonic: mnemonic, passphrase: expected.passphrase)
             XCTAssertEqual(seed.hex, expected.seed)
 
-            let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
+            let privateKey = HDPrivateKey(seed: seed, network: .mainnetBCH)
             XCTAssertEqual(privateKey.extended(), expected.bip32_xprv)
         }
     }

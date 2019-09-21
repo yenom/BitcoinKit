@@ -80,9 +80,9 @@ open class HDWallet {
 
     // MARK: - Addresses
     /// [Cached] External addresses for receiving payment.
-    public private(set) var externalAddresses: [Address]!
+    public private(set) var externalAddresses: [BitcoinAddress]!
     /// [Cached] Internal addresses for change output.
-    public private(set) var internalAddresses: [Address]!
+    public private(set) var internalAddresses: [BitcoinAddress]!
     /// [Cached] Addresses combined both external and internal.
     public var addresses: [Address] { return externalAddresses + internalAddresses }
 
@@ -111,8 +111,8 @@ open class HDWallet {
         self.internalPubKeys = internalPrivKeys.map { $0.publicKey() }
 
         // Address cache
-        self.externalAddresses = externalPubKeys.map { $0.toAddress() }
-        self.internalAddresses = internalPubKeys.map { $0.toAddress() }
+        self.externalAddresses = externalPubKeys.map { $0.toBitcoinAddress() }
+        self.internalAddresses = internalPubKeys.map { $0.toBitcoinAddress() }
     }
 
     public convenience init(seed: Data,
@@ -169,7 +169,7 @@ open class HDWallet {
 
     /// [Non-Cache] Get address for index
     public func address(index: UInt32, chain: Chain) -> Address {
-        return pubKey(index: index, chain: chain).toAddress()
+        return pubKey(index: index, chain: chain).toBitcoinAddress()
     }
 
     /// Increment external index and update privkey/pubkey/address cache.
@@ -177,7 +177,7 @@ open class HDWallet {
         let newIndex: UInt32 = externalIndex + value
         let newPrivKeys: [PrivateKey] = (externalIndex + 1...newIndex).map { privKey(index: $0, chain: .external) }
         let newPubKeys: [PublicKey] = newPrivKeys.map { $0.publicKey() }
-        let newAddresses: [Address] = newPubKeys.map { $0.toAddress() }
+        let newAddresses: [BitcoinAddress] = newPubKeys.map { $0.toBitcoinAddress() }
         externalIndex += value
         externalPrivKeys += newPrivKeys
         externalPubKeys += newPubKeys
@@ -189,7 +189,7 @@ open class HDWallet {
         let newIndex: UInt32 = internalIndex + value
         let newPrivKeys: [PrivateKey] = (internalIndex + 1...newIndex).map { privKey(index: $0, chain: .internal) }
         let newPubKeys: [PublicKey] = newPrivKeys.map { $0.publicKey() }
-        let newAddresses: [Address] = newPubKeys.map { $0.toAddress() }
+        let newAddresses: [BitcoinAddress] = newPubKeys.map { $0.toBitcoinAddress() }
         internalIndex += value
         internalPrivKeys += newPrivKeys
         internalPubKeys += newPubKeys

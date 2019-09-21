@@ -33,16 +33,17 @@ class LegacyAddressTests: XCTestCase {
             let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
             let publicKey = privateKey.publicKey()
 
-            let address1 = publicKey.toLegacy()
-            XCTAssertEqual("\(address1)", address1.base58)
+            let address1 = publicKey.toBitcoinAddress()
+            XCTAssertEqual("\(address1)", address1.cashaddr)
 
-            let address2 = try? LegacyAddress("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
+            let address2 = try? BitcoinAddress(legacy: "1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
             XCTAssertNotNil(address2)
             XCTAssertEqual(address2?.cashaddr, "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
-            XCTAssertEqual(address1, address2)
+            XCTAssertEqual(address1.legacy, address2?.legacy)
+            XCTAssertEqual(address1.cashaddr, address2?.cashaddr)
 
             do {
-                _ = try LegacyAddress("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W")
+                _ = try BitcoinAddress(legacy: "175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W")
                 XCTFail("Should throw invalid checksum error.")
             } catch AddressError.invalid {
                 // Success
@@ -56,13 +57,14 @@ class LegacyAddressTests: XCTestCase {
             let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
             let publicKey = privateKey.publicKey()
 
-            let address1 = publicKey.toLegacy()
-            XCTAssertEqual("\(address1)", address1.base58)
+            let address1 = publicKey.toBitcoinAddress()
+            XCTAssertEqual("\(address1)", address1.cashaddr)
 
-            let address2 = try? LegacyAddress("mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
+            let address2 = try? BitcoinAddress(legacy: "mjNkq5ycsAfY9Vybo9jG8wbkC5mbpo4xgC")
             XCTAssertNotNil(address2)
             XCTAssertEqual(address2?.cashaddr, "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
-            XCTAssertEqual(address1, address2)
+            XCTAssertEqual(address1.legacy, address2?.legacy)
+            XCTAssertEqual(address1.cashaddr, address2?.cashaddr)
         }
     }
 }

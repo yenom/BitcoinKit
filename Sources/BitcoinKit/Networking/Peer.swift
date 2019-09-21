@@ -66,11 +66,11 @@ public class Peer: NSObject, StreamDelegate {
     private var inputStream: InputStream!
     private var outputStream: OutputStream!
 
-    public convenience init(network: Network = .testnet) {
+    public convenience init(network: Network = .testnetBCH) {
         self.init(host: network.dnsSeeds[Int(arc4random_uniform(UInt32(network.dnsSeeds.count)))], network: network)
     }
 
-    public init(host: String, network: Network = .testnet) {
+    public init(host: String, network: Network = .testnetBCH) {
         self.host = host
         self.network = network
         latestBlockHash = network.genesisBlock

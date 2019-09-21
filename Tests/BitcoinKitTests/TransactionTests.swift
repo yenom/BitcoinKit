@@ -39,10 +39,10 @@ class TransactionTests: XCTestCase {
         let amount: UInt64  =  50000000
         let fee: UInt64     =  10000000
         let change: UInt64     =  balance - amount - fee
-        let toAddress = try! AddressFactory.create("mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB") // https://testnet.coinfaucet.eu/en/
+        let toAddress = try! BitcoinAddress(legacy: "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB") // https://testnet.coinfaucet.eu/en/
 
         let privateKey = try! PrivateKey(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
-        let changeAddress = privateKey.publicKey().toAddress()
+        let changeAddress = privateKey.publicKey().toBitcoinAddress()
 
         let lockScript = Script(address: changeAddress)!.data
         let output = TransactionOutput(value: 169012961, lockingScript: lockScript)
@@ -64,8 +64,8 @@ class TransactionTests: XCTestCase {
         // Transaction on Bitcoin Cash Mainnet
         // TxID : 96ee20002b34e468f9d3c5ee54f6a8ddaa61c118889c4f35395c2cd93ba5bbb4
         // https://explorer.bitcoin.com/bch/tx/96ee20002b34e468f9d3c5ee54f6a8ddaa61c118889c4f35395c2cd93ba5bbb4
-        let toAddress: Address = try! AddressFactory.create("1Bp9U1ogV3A14FMvKbRJms7ctyso4Z4Tcx")
-        let changeAddress: Address = try! AddressFactory.create("1FQc5LdgGHMHEN9nwkjmz6tWkxhPpxBvBU")
+        let toAddress: BitcoinAddress = try! BitcoinAddress(legacy: "1Bp9U1ogV3A14FMvKbRJms7ctyso4Z4Tcx")
+        let changeAddress: BitcoinAddress = try! BitcoinAddress(legacy: "1FQc5LdgGHMHEN9nwkjmz6tWkxhPpxBvBU")
 
         let unspentOutput = TransactionOutput(value: 5151, lockingScript: Data(hex: "76a914aff1e0789e5fe316b729577665aa0a04d5b0f8c788ac")!)
         let unspentOutpoint = TransactionOutPoint(hash: Data(hex: "e28c2b955293159898e34c6840d99bf4d390e2ee1c6f606939f18ee1e2000d05")!, index: 2)

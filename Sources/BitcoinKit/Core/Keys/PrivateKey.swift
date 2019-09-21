@@ -37,7 +37,7 @@ public struct PrivateKey {
     public let network: Network
     public let isPublicKeyCompressed: Bool
 
-    public init(network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
+    public init(network: Network = .testnetBCH, isPublicKeyCompressed: Bool = true) {
         self.network = network
         self.isPublicKeyCompressed = isPublicKeyCompressed
 
@@ -79,40 +79,30 @@ public struct PrivateKey {
     }
 
     public init(wif: String) throws {
-        guard let decoded = Base58.decode(wif) else {
-            throw PrivateKeyError.invalidFormat
-        }
-        let checksumDropped = decoded.prefix(decoded.count - 4)
-        guard checksumDropped.count == (1 + 32) || checksumDropped.count == (1 + 32 + 1) else {
+        guard var payload = Base58Check.decode(wif),
+            (payload.count == (1 + 32) || payload.count == (1 + 32 + 1)) else {
             throw PrivateKeyError.invalidFormat
         }
 
-        let addressPrefix = checksumDropped[0]
+        let addressPrefix = payload.popFirst()!
         switch addressPrefix {
-        case Network.mainnet.privatekey:
-            network = .mainnet
-        case Network.testnet.privatekey:
-            network = .testnet
+        case Network.mainnetBCH.privatekey:
+            network = .mainnetBCH
+        case Network.testnetBCH.privatekey:
+            network = .testnetBCH
         default:
             throw PrivateKeyError.invalidFormat
         }
 
-        let h = Crypto.sha256sha256(checksumDropped)
-        let calculatedChecksum = h.prefix(4)
-        let originalChecksum = decoded.suffix(4)
-        guard calculatedChecksum == originalChecksum else {
-            throw PrivateKeyError.invalidFormat
-        }
-
-        // The life is not always easy. Somehow some people added one extra byte to a private key in Base58 to
+        // The life is not always easy. Somehow some people added one extra byte to a private key in Base58 to
         // let us know that the resulting public key must be compressed.
-        self.isPublicKeyCompressed = (checksumDropped.count == (1 + 32 + 1))
+        self.isPublicKeyCompressed = (payload.count == (32 + 1))
 
         // Private key itself is always 32 bytes.
-        data = checksumDropped.dropFirst().prefix(32)
+        data = payload.prefix(32)
     }
 
-    public init(data: Data, network: Network = .testnet, isPublicKeyCompressed: Bool = true) {
+    public init(data: Data, network: Network = .testnetBCH, isPublicKeyCompressed: Bool = true) {
         self.data = data
         self.network = network
         self.isPublicKeyCompressed = isPublicKeyCompressed
@@ -144,8 +134,7 @@ public struct PrivateKey {
             // Add extra byte 0x01 in the end.
             payload += Int8(1)
         }
-        let checksum = Crypto.sha256sha256(payload).prefix(4)
-        return Base58.encode(payload + checksum)
+        return Base58Check.encode(payload)
     }
 
     public func sign(_ data: Data) -> Data {

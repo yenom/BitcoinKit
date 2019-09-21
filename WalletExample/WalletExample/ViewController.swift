@@ -41,7 +41,7 @@ class ViewController: UIViewController {
     
     func createWalletIfNeeded() {
         if wallet == nil {
-            let privateKey = PrivateKey(network: .testnet)
+            let privateKey = PrivateKey(network: .testnetBCH)
             wallet = Wallet(privateKey: privateKey)
             wallet?.save()
         }
@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         }
         
         do {
-            let address: Address = try AddressFactory.create(addressString)
+            let address: BitcoinAddress = try AddressFactory.create(addressString)
             try wallet?.send(to: address, amount: 10000, completion: { [weak self] (response) in
                 print(response ?? "")
                 self?.updateBalance()

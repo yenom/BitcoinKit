@@ -31,7 +31,7 @@ class HDKeyChainTests: XCTestCase {
         // Master: 000102030405060708090a0b0c0d0e0f
         let seed = Data(hex: "000102030405060708090a0b0c0d0e0f")!
 
-        let keychain = HDKeychain(seed: seed, network: .mainnet)
+        let keychain = HDKeychain(seed: seed, network: .mainnetBCH)
         let privateKey = try! keychain.derivedKey(path: "m")
 
         XCTAssertEqual(privateKey.extendedPublicKey().extended(), "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8")

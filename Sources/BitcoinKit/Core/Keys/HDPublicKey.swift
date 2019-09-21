@@ -39,7 +39,7 @@ public class HDPublicKey {
     public let raw: Data
     public let chainCode: Data
 
-    init(raw: Data, chainCode: Data, network: Network = .testnet, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
+    init(raw: Data, chainCode: Data, network: Network = .testnetBCH, depth: UInt8, fingerprint: UInt32, childIndex: UInt32) {
         self.network = network
         self.raw = raw
         self.chainCode = chainCode
@@ -56,8 +56,7 @@ public class HDPublicKey {
         data += childIndex.littleEndian
         data += chainCode
         data += raw
-        let checksum = Crypto.sha256sha256(data).prefix(4)
-        return Base58.encode(data + checksum)
+        return Base58Check.encode(data)
     }
 
     public func publicKey() -> PublicKey {

@@ -26,8 +26,12 @@
 import Foundation
 
 open class Network {
+    @available(*, deprecated, renamed: "mainnetBCH")
     public static let mainnet: Network = BCHMainnet()
+    @available(*, deprecated, renamed: "testnetBCH")
     public static let testnet: Network = BCHTestnet()
+    public static let mainnetBCH: Network = BCHMainnet()
+    public static let testnetBCH: Network = BCHTestnet()
     public static let mainnetBTC: Network = BTCMainnet()
     public static let testnetBTC: Network = BTCTestnet()
 
@@ -123,9 +127,6 @@ public class BTCTestnet: Testnet {
     override public var magic: UInt32 {
         return 0x0b110907
     }
-    public override var coinType: CoinType {
-        return .testnet
-    }
     override public var dnsSeeds: [String] {
         return [
             "testnet-seed.bitcoin.jonasschnelli.ch", // Jonas Schnelli
@@ -175,9 +176,6 @@ public class BCHTestnet: Testnet {
     }
     override public var magic: UInt32 {
         return 0xf4e5f3f4
-    }
-    public override var coinType: CoinType {
-        return .testnet
     }
     override public var dnsSeeds: [String] {
         return [
@@ -263,6 +261,9 @@ public class Testnet: Network {
     }
     override public var alias: String {
         return "regtest"
+    }
+    public override var coinType: CoinType {
+        return .testnet
     }
     override public var pubkeyhash: UInt8 {
         return 0x6f

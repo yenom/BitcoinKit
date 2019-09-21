@@ -1,44 +1,50 @@
 //
-//  Helpers.swift
-//
-//  Copyright © 2018 Kishikawa Katsumi
-//  Copyright © 2018 BitcoinKit developers
-//
+//  Address.swift
+// 
+//  Copyright © 2019 BitcoinKit developers
+//  
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
 //  in the Software without restriction, including without limitation the rights
 //  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 //  copies of the Software, and to permit persons to whom the Software is
 //  furnished to do so, subject to the following conditions:
-//
+//  
 //  The above copyright notice and this permission notice shall be included in
 //  all copies or substantial portions of the Software.
-//
+//  
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 //  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 //  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 //  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 //  THE SOFTWARE.
 //
 
 import Foundation
 
-func ipv4(from data: Data) -> String {
-    return Data(data.dropFirst(12)).map { String($0) }.joined(separator: ".")
+public protocol Address: CustomStringConvertible {
+    var network: Network { get }
+    var hashType: BitcoinAddress.HashType { get }
+    var data: Data { get }
+    var legacy: String { get }
+    var cashaddr: String { get }
 }
 
-func ipv6(from data: Data) -> String {
-    return stride(from: 0, to: data.count - 1, by: 2).map { Data([data[$0], data[$0 + 1]]).hex }.joined(separator: ":")
-}
-
-func pton(_ address: String) -> Data {
-    var addr = in6_addr()
-    _ = withUnsafeMutablePointer(to: &addr) {
-        inet_pton(AF_INET6, address, UnsafeMutablePointer($0))
+extension Address {
+    @available(*, deprecated, message: "Always returns nil. If you need public key with address, please use PublicKey instead.")
+    public var publicKey: Data? {
+        return nil
     }
-    var buffer = Data(count: 16)
-    _ = buffer.withUnsafeMutableBytes { memcpy($0.baseAddress.unsafelyUnwrapped, &addr, 16) }
-    return buffer
+
+    @available(*, deprecated, renamed: "legacy")
+    public var base58: String {
+        return legacy
+    }
+
+    @available(*, deprecated, renamed: "hashType")
+    public var type: BitcoinAddress.HashType {
+        return hashType
+    }
 }

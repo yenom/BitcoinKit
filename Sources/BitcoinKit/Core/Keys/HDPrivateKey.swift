@@ -73,8 +73,7 @@ public class HDPrivateKey {
         data += chainCode
         data += UInt8(0)
         data += raw
-        let checksum = Crypto.sha256sha256(data).prefix(4)
-        return Base58.encode(data + checksum)
+        return Base58Check.encode(data)
     }
 
     public func privateKey() -> PrivateKey {

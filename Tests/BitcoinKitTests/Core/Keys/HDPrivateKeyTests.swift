@@ -55,7 +55,7 @@ class HDPrivateKeyTests: XCTestCase {
         let seed = Data(hex: "000102030405060708090a0b0c0d0e0f")!
 
         // m
-        let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
+        let privateKey = HDPrivateKey(seed: seed, network: .mainnetBCH)
         XCTAssertEqual(privateKey.extendedPublicKey().extended(), "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8")
         XCTAssertEqual(privateKey.extended(), "xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi")
 
@@ -113,7 +113,7 @@ class HDPrivateKeyTests: XCTestCase {
         let seed = Data(hex: "fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542")!
 
         // m
-        let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
+        let privateKey = HDPrivateKey(seed: seed, network: .mainnetBCH)
         XCTAssertEqual(privateKey.extendedPublicKey().extended(), "xpub661MyMwAqRbcFW31YEwpkMuc5THy2PSt5bDMsktWQcFF8syAmRUapSCGu8ED9W6oDMSgv6Zz8idoc4a6mr8BDzTJY47LJhkJ8UB7WEGuduB")
         XCTAssertEqual(privateKey.extended(), "xprv9s21ZrQH143K31xYSDQpPDxsXRTUcvj2iNHm5NUtrGiGG5e2DtALGdso3pGz6ssrdK4PFmM8NSpSBHNqPqm55Qn3LqFtT2emdEXVYsCzC2U")
 
@@ -151,7 +151,7 @@ class HDPrivateKeyTests: XCTestCase {
         let seed = Data(hex: "4b381541583be4423346c643850da4b320e46a87ae3d2a4e6da11eba819cd4acba45d239319ac14f863b8d5ab5a0d0c64d2e8a1e7d1457df2e5a3c51c73235be")!
 
         // m
-        let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
+        let privateKey = HDPrivateKey(seed: seed, network: .mainnetBCH)
         XCTAssertEqual(privateKey.extendedPublicKey().extended(), "xpub661MyMwAqRbcEZVB4dScxMAdx6d4nFc9nvyvH3v4gJL378CSRZiYmhRoP7mBy6gSPSCYk6SzXPTf3ND1cZAceL7SfJ1Z3GC8vBgp2epUt13")
         XCTAssertEqual(privateKey.extended(), "xprv9s21ZrQH143K25QhxbucbDDuQ4naNntJRi4KUfWT7xo4EKsHt2QJDu7KXp1A3u7Bi1j8ph3EGsZ9Xvz9dGuVrtHHs7pXeTzjuxBrCmmhgC6")
 
@@ -166,7 +166,7 @@ class HDPrivateKeyTests: XCTestCase {
         let seed = Data(hex: "000102030405060708090a0b0c0d0e0f")!
 
         // m
-        let privateKey = HDPrivateKey(seed: seed, network: .mainnet)
+        let privateKey = HDPrivateKey(seed: seed, network: .mainnetBCH)
         // m/0'
         let m0prv = try! privateKey.derived(at: 0, hardened: true)
         // m/0'/1
@@ -179,7 +179,7 @@ class HDPrivateKeyTests: XCTestCase {
     func testDeriveProblem() {
         let seed = Data(hex: "f27fd395d30d00f1c11b7551a93961ca41c0a78bce21e9a618e83a99cf74aec159139ef3ef078bc0038557b7cb689933d0806ce33571df78bc4397e7f9976ff2")!
         
-        let key = try! HDPrivateKey(seed: seed, network: .mainnet)
+        let key = try! HDPrivateKey(seed: seed, network: .mainnetBCH)
             .derived(at: 44, hardened: true)
             .derived(at: 0, hardened: true)
             .derived(at: 0, hardened: true)
@@ -191,6 +191,6 @@ class HDPrivateKeyTests: XCTestCase {
         XCTAssertEqual(privKey.data.hex, "00f2c37dad54d1d2be57b06653ea655c6fd8eb3ca3f0b9671e036d50061d265b")
         XCTAssertEqual(privKey.description, "KwFZ6jFtuvBu7w4R4x4WpzQgSSYTHLEw8Pr2PUkWjADkHJUPNDVg")
         XCTAssertEqual(privKey.publicKey().description, "02a712f894d58baef44e4fbbc26ed6ca89487db1f17e944f9b45ca2ae666e99d72")
-        XCTAssertEqual(privKey.publicKey().toLegacy().description, "1DPUysR46jraybTwP3PfSbcBENeLScLxx")
+        XCTAssertEqual(privKey.publicKey().toBitcoinAddress().legacy, "1DPUysR46jraybTwP3PfSbcBENeLScLxx")
     }
 }

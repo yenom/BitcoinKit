@@ -37,7 +37,7 @@ public struct TransactionBuilder {
     ///   - toAddress: Address to send the amount
     ///   - changeAddress: Address to receive the change
     /// - Returns: The transaction whose inputs are not signed.
-    public static func build(from plan: TransactionPlan, toAddress: Address, changeAddress: Address) -> Transaction {
+    public static func build(from plan: TransactionPlan, toAddress: BitcoinAddress, changeAddress: BitcoinAddress) -> Transaction {
         let toLockScript: Data = Script(address: toAddress)!.data
         var outputs: [TransactionOutput] = [
             TransactionOutput(value: plan.amount, lockingScript: toLockScript)

@@ -28,7 +28,7 @@ import XCTest
 
 class PrivateKeyTests: XCTestCase {
     func testGenerateKeyPair() {
-        let privateKey = PrivateKey(network: .testnet)
+        let privateKey = PrivateKey(network: .testnetBCH)
         let publicKey = privateKey.publicKey()
 
         XCTAssertNotNil(privateKey)
@@ -48,7 +48,7 @@ class PrivateKeyTests: XCTestCase {
             XCTAssertNotNil(privateKey)
             XCTAssertNotNil(publicKey)
 
-            XCTAssertEqual(privateKey?.network, Network.mainnet)
+            XCTAssertEqual(privateKey?.network, Network.mainnetBCH)
 
             XCTAssertEqual(privateKey?.data.hex, "a7ec27c206a68e33f53d6a35f284c748e0874ca2f0ea56eca6eb7668db0fe805")
             XCTAssertEqual(privateKey?.description, "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
@@ -63,7 +63,7 @@ class PrivateKeyTests: XCTestCase {
             XCTAssertNotNil(privateKey)
             XCTAssertNotNil(publicKey)
 
-            XCTAssertEqual(privateKey?.network, Network.testnet)
+            XCTAssertEqual(privateKey?.network, Network.testnetBCH)
 
             XCTAssertEqual(privateKey?.data.hex, "a2359719d3dc9f1539c593e477dc9d57b9653a18e7c94299d87a95ed13525eae")
             XCTAssertEqual(privateKey?.description, "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")

@@ -108,7 +108,7 @@
 		14839AAD202FE80400A6CB34 /* ServiceFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14839AAC202FE80400A6CB34 /* ServiceFlags.swift */; };
 		14A2961D2032316900E19177 /* HDKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A2961C2032316900E19177 /* HDKeychain.swift */; };
 		14A2961F2032317B00E19177 /* HDWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A2961E2032317B00E19177 /* HDWallet.swift */; };
-		14CDC38A2021881A00C01556 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3892021881A00C01556 /* Address.swift */; };
+		14CDC38A2021881A00C01556 /* BitcoinAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC3892021881A00C01556 /* BitcoinAddress.swift */; };
 		14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CDC38B2021EF5000C01556 /* Helpers.swift */; };
 		14F37A3A20209B5400D34748 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3920209B5400D34748 /* Transaction.swift */; };
 		14F37A3C20209F9200D34748 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F37A3B20209F9200D34748 /* Script.swift */; };
@@ -150,6 +150,8 @@
 		29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */; };
 		29330145214F749C0028946B /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330144214F749C0028946B /* QRCodeGenerator.swift */; };
 		29330F6E210597B700106AFA /* UnitsAndLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29330F6D210597B700106AFA /* UnitsAndLimits.swift */; };
+		29351DE82334EC76007CF43F /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29351DE72334EC76007CF43F /* Address.swift */; };
+		29351DF32335C2A8007CF43F /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29351DF22335C2A7007CF43F /* AddressType.swift */; };
 		29440D11232FB98F00E99571 /* TransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D10232FB98F00E99571 /* TransactionBuilder.swift */; };
 		29440D13232FBE0900E99571 /* TransactionBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D12232FBE0900E99571 /* TransactionBuilderTests.swift */; };
 		29440D15232FC64500E99571 /* TransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D14232FC64500E99571 /* TransactionSigner.swift */; };
@@ -159,7 +161,6 @@
 		29440D1E232FF74700E99571 /* BTCSignatureHashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D1D232FF74700E99571 /* BTCSignatureHashHelper.swift */; };
 		29440D20232FF75B00E99571 /* SignatureHashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D1F232FF75B00E99571 /* SignatureHashHelper.swift */; };
 		29440D22233003C000E99571 /* BTCSignatureHashHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29440D21233003C000E99571 /* BTCSignatureHashHelperTests.swift */; };
-		2949920020F227EB00D078B6 /* VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294991FF20F227EB00D078B6 /* VersionByte.swift */; };
 		2949920220F228B400D078B6 /* UnspentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920120F228B400D078B6 /* UnspentTransaction.swift */; };
 		2949920620F22DCA00D078B6 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */; };
 		294CE2DF232CA88800922458 /* CoinType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294CE2DE232CA88800922458 /* CoinType.swift */; };
@@ -183,12 +184,25 @@
 		296ADC242112EC8C007EE5C7 /* PeerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296ADC222112EC8C007EE5C7 /* PeerGroup.swift */; };
 		296ADC252112EC8C007EE5C7 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296ADC232112EC8C007EE5C7 /* Peer.swift */; };
 		297C408121100810003AF4EF /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297C408021100810003AF4EF /* MnemonicTests.swift */; };
-		297DB97320EB12E60077EEEE /* AddressType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* AddressType.swift */; };
+		297DB97320EB12E60077EEEE /* BitcoinAddress+HashType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97220EB12E60077EEEE /* BitcoinAddress+HashType.swift */; };
 		297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297DB97420EB13320077EEEE /* AddressFactory.swift */; };
 		298FA5812126C77A009EFAC4 /* ScriptFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298FA5802126C77A009EFAC4 /* ScriptFactory.swift */; };
 		299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */; };
 		299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */; };
 		29AC9965214E8A7000AE82FE /* QRCodeConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */; };
+		29D8F12523337D8000E72008 /* Bech32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12423337D8000E72008 /* Bech32.swift */; };
+		29D8F12723337D8800E72008 /* Base58Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12623337D8800E72008 /* Base58Check.swift */; };
+		29D8F12923337DEE00E72008 /* Base58.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12823337DEE00E72008 /* Base58.swift */; };
+		29D8F12C2333B6BD00E72008 /* LegacyAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12B2333B6BC00E72008 /* LegacyAddress.swift */; };
+		29D8F12E2333B6C600E72008 /* Cashaddr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12D2333B6C600E72008 /* Cashaddr.swift */; };
+		29D8F1302333BED500E72008 /* BitcoinAddress+VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12F2333BED500E72008 /* BitcoinAddress+VersionByte.swift */; };
+		29D8F1322333BF3000E72008 /* BitcoinAddress+HashSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1312333BF3000E72008 /* BitcoinAddress+HashSize.swift */; };
+		29D8F1342333E10B00E72008 /* BitcoinScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1332333E10B00E72008 /* BitcoinScheme.swift */; };
+		29D8F1382334A18200E72008 /* BitcoinAddress+Legacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1372334A18200E72008 /* BitcoinAddress+Legacy.swift */; };
+		29D8F13A2334A1A300E72008 /* BitcoinAddress+Cashaddr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1392334A1A300E72008 /* BitcoinAddress+Cashaddr.swift */; };
+		29D8F13C2334B36E00E72008 /* AddressError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F13B2334B36E00E72008 /* AddressError.swift */; };
+		29D8F13E2334B4EE00E72008 /* BitcoinAddress+deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F13D2334B4EE00E72008 /* BitcoinAddress+deprecated.swift */; };
+		29D8F1402334B59700E72008 /* PublicKey+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F13F2334B59700E72008 /* PublicKey+Address.swift */; };
 		29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */; };
 		29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */; };
 		29E1ED73210ECD35007F4627 /* OP_CHECKMULTISIG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */; };
@@ -319,7 +333,7 @@
 		0C2375A32132501700DB2872 /* MessageSerializerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSerializerTests.swift; sourceTree = "<group>"; };
 		0C2CB94C211FAD320087A8EB /* OP_BIN2NUM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OP_BIN2NUM.swift; sourceTree = "<group>"; };
 		0C4132EE210EFD1700906E4A /* OP_SWAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_SWAP.swift; sourceTree = "<group>"; };
-		0C61BF50215B988A001415CA /* Encoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Encoding.swift; path = Keys/Encoding.swift; sourceTree = "<group>"; };
+		0C61BF50215B988A001415CA /* Encoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encoding.swift; sourceTree = "<group>"; };
 		0C66CD022125425D0049DB89 /* OP_INVERT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_INVERT.swift; sourceTree = "<group>"; };
 		0C66CD04212542660049DB89 /* OP_AND.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_AND.swift; sourceTree = "<group>"; };
 		0C66CD06212542730049DB89 /* OP_OR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_OR.swift; sourceTree = "<group>"; };
@@ -374,7 +388,7 @@
 		14A2961B203207F400E19177 /* BitcoinKit.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; name = BitcoinKit.modulemap; path = ../../BitcoinKit/BitcoinKit.modulemap; sourceTree = "<group>"; };
 		14A2961C2032316900E19177 /* HDKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDKeychain.swift; sourceTree = "<group>"; };
 		14A2961E2032317B00E19177 /* HDWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWallet.swift; sourceTree = "<group>"; };
-		14CDC3892021881A00C01556 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		14CDC3892021881A00C01556 /* BitcoinAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinAddress.swift; sourceTree = "<group>"; };
 		14CDC38B2021EF5000C01556 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		14F37A3920209B5400D34748 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		14F37A3B20209F9200D34748 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
@@ -413,6 +427,8 @@
 		29290BA6210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKSIGVERIFY.swift; sourceTree = "<group>"; };
 		29330144214F749C0028946B /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		29330F6D210597B700106AFA /* UnitsAndLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsAndLimits.swift; sourceTree = "<group>"; };
+		29351DE72334EC76007CF43F /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		29351DF22335C2A7007CF43F /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
 		29440D10232FB98F00E99571 /* TransactionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBuilder.swift; sourceTree = "<group>"; };
 		29440D12232FBE0900E99571 /* TransactionBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBuilderTests.swift; sourceTree = "<group>"; };
 		29440D14232FC64500E99571 /* TransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSigner.swift; sourceTree = "<group>"; };
@@ -422,7 +438,6 @@
 		29440D1D232FF74700E99571 /* BTCSignatureHashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCSignatureHashHelper.swift; sourceTree = "<group>"; };
 		29440D1F232FF75B00E99571 /* SignatureHashHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureHashHelper.swift; sourceTree = "<group>"; };
 		29440D21233003C000E99571 /* BTCSignatureHashHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCSignatureHashHelperTests.swift; sourceTree = "<group>"; };
-		294991FF20F227EB00D078B6 /* VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionByte.swift; sourceTree = "<group>"; };
 		2949920120F228B400D078B6 /* UnspentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnspentTransaction.swift; sourceTree = "<group>"; };
 		2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
 		294CE2DE232CA88800922458 /* CoinType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinType.swift; sourceTree = "<group>"; };
@@ -446,13 +461,26 @@
 		296ADC222112EC8C007EE5C7 /* PeerGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeerGroup.swift; sourceTree = "<group>"; };
 		296ADC232112EC8C007EE5C7 /* Peer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		297C408021100810003AF4EF /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
-		297DB97220EB12E60077EEEE /* AddressType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressType.swift; sourceTree = "<group>"; };
+		297DB97220EB12E60077EEEE /* BitcoinAddress+HashType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+HashType.swift"; sourceTree = "<group>"; };
 		297DB97420EB13320077EEEE /* AddressFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFactory.swift; sourceTree = "<group>"; };
 		298FA5802126C77A009EFAC4 /* ScriptFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptFactory.swift; sourceTree = "<group>"; };
 		298FA582212788A8009EFAC4 /* BitcoinKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BitcoinKit.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+SignatureHash.swift"; sourceTree = "<group>"; };
 		299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureSerializer.swift; sourceTree = "<group>"; };
 		29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeConvertible.swift; sourceTree = "<group>"; };
+		29D8F12423337D8000E72008 /* Bech32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bech32.swift; sourceTree = "<group>"; };
+		29D8F12623337D8800E72008 /* Base58Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58Check.swift; sourceTree = "<group>"; };
+		29D8F12823337DEE00E72008 /* Base58.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58.swift; sourceTree = "<group>"; };
+		29D8F12B2333B6BC00E72008 /* LegacyAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyAddress.swift; sourceTree = "<group>"; };
+		29D8F12D2333B6C600E72008 /* Cashaddr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cashaddr.swift; sourceTree = "<group>"; };
+		29D8F12F2333BED500E72008 /* BitcoinAddress+VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+VersionByte.swift"; sourceTree = "<group>"; };
+		29D8F1312333BF3000E72008 /* BitcoinAddress+HashSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+HashSize.swift"; sourceTree = "<group>"; };
+		29D8F1332333E10B00E72008 /* BitcoinScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinScheme.swift; sourceTree = "<group>"; };
+		29D8F1372334A18200E72008 /* BitcoinAddress+Legacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+Legacy.swift"; sourceTree = "<group>"; };
+		29D8F1392334A1A300E72008 /* BitcoinAddress+Cashaddr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+Cashaddr.swift"; sourceTree = "<group>"; };
+		29D8F13B2334B36E00E72008 /* AddressError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressError.swift; sourceTree = "<group>"; };
+		29D8F13D2334B4EE00E72008 /* BitcoinAddress+deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+deprecated.swift"; sourceTree = "<group>"; };
+		29D8F13F2334B59700E72008 /* PublicKey+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicKey+Address.swift"; sourceTree = "<group>"; };
 		29E1ED6E210EB4F8007F4627 /* OP_EXAMPLE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_EXAMPLE.swift; sourceTree = "<group>"; };
 		29E1ED70210EC751007F4627 /* OP_1NEGATE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_1NEGATE.swift; sourceTree = "<group>"; };
 		29E1ED72210ECD35007F4627 /* OP_CHECKMULTISIG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OP_CHECKMULTISIG.swift; sourceTree = "<group>"; };
@@ -689,6 +717,8 @@
 				481BDCC52332172C00FC79FC /* SecureGenerateBytes */,
 				481BDC9623320B7000FC79FC /* Mnemonic */,
 				29AC9962214E898800AE82FE /* Keys */,
+				29D8F12223337D3300E72008 /* Address */,
+				29D8F12323337D4C00E72008 /* QR */,
 				147494EB201F9E4F006D1CF8 /* Network.swift */,
 				294CE2DE232CA88800922458 /* CoinType.swift */,
 				1463E6B52025E99C0033DAAE /* BlockChain.swift */,
@@ -697,7 +727,6 @@
 				E6A643072244190400CD4BFC /* Scalar32Bytes.swift */,
 				14839A7B202F79F900A6CB34 /* PaymentURI.swift */,
 				147494E3201F9B85006D1CF8 /* Crypto.swift */,
-				0C61BF50215B988A001415CA /* Encoding.swift */,
 				A29721F7211B2497007228D5 /* Math.swift */,
 				A246ED0F2118621B0000418D /* MerkleTree.swift */,
 				A2B7A34D2125464400764AE9 /* ProofOfWork.swift */,
@@ -719,6 +748,10 @@
 		29440D1C232FE32C00E99571 /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				29351DF22335C2A7007CF43F /* AddressType.swift */,
+				29D8F12B2333B6BC00E72008 /* LegacyAddress.swift */,
+				29D8F12D2333B6C600E72008 /* Cashaddr.swift */,
+				297DB97420EB13320077EEEE /* AddressFactory.swift */,
 				2949920520F22DCA00D078B6 /* UnsignedTransaction.swift */,
 				299CB47220F0185500B1245C /* TransactionSignatureSerializer.swift */,
 				299CB46E20EE1EA500B1245C /* Transaction+SignatureHash.swift */,
@@ -1007,17 +1040,50 @@
 			children = (
 				141FE2E32022589E00A08B04 /* PrivateKey.swift */,
 				141FE2E12022588C00A08B04 /* PublicKey.swift */,
+				29D8F13F2334B59700E72008 /* PublicKey+Address.swift */,
 				14A2961C2032316900E19177 /* HDKeychain.swift */,
 				1482B5E7202721FF0098B612 /* HDPrivateKey.swift */,
 				1482B5E920273B8A0098B612 /* HDPublicKey.swift */,
-				14CDC3892021881A00C01556 /* Address.swift */,
-				294991FF20F227EB00D078B6 /* VersionByte.swift */,
-				297DB97220EB12E60077EEEE /* AddressType.swift */,
-				297DB97420EB13320077EEEE /* AddressFactory.swift */,
+			);
+			path = Keys;
+			sourceTree = "<group>";
+		};
+		29D8F12223337D3300E72008 /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				29D8F12A23337F4300E72008 /* Encoding */,
+				29D8F1332333E10B00E72008 /* BitcoinScheme.swift */,
+				29D8F13B2334B36E00E72008 /* AddressError.swift */,
+				29351DE72334EC76007CF43F /* Address.swift */,
+				14CDC3892021881A00C01556 /* BitcoinAddress.swift */,
+				29D8F13D2334B4EE00E72008 /* BitcoinAddress+deprecated.swift */,
+				297DB97220EB12E60077EEEE /* BitcoinAddress+HashType.swift */,
+				29D8F1312333BF3000E72008 /* BitcoinAddress+HashSize.swift */,
+				29D8F12F2333BED500E72008 /* BitcoinAddress+VersionByte.swift */,
+				29D8F1372334A18200E72008 /* BitcoinAddress+Legacy.swift */,
+				29D8F1392334A1A300E72008 /* BitcoinAddress+Cashaddr.swift */,
+			);
+			path = Address;
+			sourceTree = "<group>";
+		};
+		29D8F12323337D4C00E72008 /* QR */ = {
+			isa = PBXGroup;
+			children = (
 				29AC9964214E8A7000AE82FE /* QRCodeConvertible.swift */,
 				29330144214F749C0028946B /* QRCodeGenerator.swift */,
 			);
-			path = Keys;
+			path = QR;
+			sourceTree = "<group>";
+		};
+		29D8F12A23337F4300E72008 /* Encoding */ = {
+			isa = PBXGroup;
+			children = (
+				0C61BF50215B988A001415CA /* Encoding.swift */,
+				29D8F12423337D8000E72008 /* Bech32.swift */,
+				29D8F12823337DEE00E72008 /* Base58.swift */,
+				29D8F12623337D8800E72008 /* Base58Check.swift */,
+			);
+			path = Encoding;
 			sourceTree = "<group>";
 		};
 		481BDC9623320B7000FC79FC /* Mnemonic */ = {
@@ -1225,6 +1291,7 @@
 				2914BE5C211BD0DF00B349CB /* OP_CHECKSEQUENCEVERIFY.swift in Sources */,
 				29E1ED6F210EB4F8007F4627 /* OP_EXAMPLE.swift in Sources */,
 				481BDCA823320B7000FC79FC /* WordList+Italian.swift in Sources */,
+				29351DF32335C2A8007CF43F /* AddressType.swift in Sources */,
 				14F37A3A20209B5400D34748 /* Transaction.swift in Sources */,
 				14839A93202FE6AC00A6CB34 /* FilterLoadMessage.swift in Sources */,
 				14839A9D202FE72600A6CB34 /* TransactionOutPoint.swift in Sources */,
@@ -1240,7 +1307,7 @@
 				0C1DE16B211E7C0900FE8E43 /* OP_2DROP.swift in Sources */,
 				0C4132EF210EFD1700906E4A /* OP_SWAP.swift in Sources */,
 				14839AAB202FE7F000A6CB34 /* NetworkAddress.swift in Sources */,
-				297DB97320EB12E60077EEEE /* AddressType.swift in Sources */,
+				297DB97320EB12E60077EEEE /* BitcoinAddress+HashType.swift in Sources */,
 				294DDE43211B31EA00B7F645 /* OP_VERIF.swift in Sources */,
 				14839A83202FE5F800A6CB34 /* AddressMessage.swift in Sources */,
 				481BDCAA23320B7000FC79FC /* WordList+TraditionalChinese.swift in Sources */,
@@ -1252,11 +1319,13 @@
 				294DDE3D211B31C100B7F645 /* OP_VER.swift in Sources */,
 				298FA5812126C77A009EFAC4 /* ScriptFactory.swift in Sources */,
 				481BDCA423320B7000FC79FC /* WordList.swift in Sources */,
+				29D8F13E2334B4EE00E72008 /* BitcoinAddress+deprecated.swift in Sources */,
 				14839AA3202FE78600A6CB34 /* Message.swift in Sources */,
 				29290B95210AF86C00D2BE78 /* OP_N.swift in Sources */,
 				0C1DE171211E7DE300FE8E43 /* OP_2OVER.swift in Sources */,
 				29290BA5210AFD7A00D2BE78 /* OP_PUSHDATA.swift in Sources */,
 				297DB97520EB13320077EEEE /* AddressFactory.swift in Sources */,
+				29D8F1302333BED500E72008 /* BitcoinAddress+VersionByte.swift in Sources */,
 				0C1DE180211EACE800FE8E43 /* OP_NUM2BIN.swift in Sources */,
 				0C0900382116A7F50077E9BC /* OP_ADD.swift in Sources */,
 				0C09002821169C810077E9BC /* OP_1ADD.swift in Sources */,
@@ -1272,6 +1341,7 @@
 				CFA2906C2101CD96001A1BAB /* ScriptChunk.swift in Sources */,
 				14F37A3C20209F9200D34748 /* Script.swift in Sources */,
 				0C1DE17C211E8A0100FE8E43 /* OP_SPLIT.swift in Sources */,
+				29D8F12E2333B6C600E72008 /* Cashaddr.swift in Sources */,
 				294DDE3B211B31B100B7F645 /* OP_NOP.swift in Sources */,
 				0C66CD07212542730049DB89 /* OP_OR.swift in Sources */,
 				0C1DE15F211E6FA700FE8E43 /* OP_NIP.swift in Sources */,
@@ -1306,7 +1376,9 @@
 				481BDCA923320B7000FC79FC /* WordList+Korean.swift in Sources */,
 				0C1DE161211E717500FE8E43 /* OP_OVER.swift in Sources */,
 				0C1DD42321182126004BA8A8 /* OP_MOD.swift in Sources */,
+				29D8F1342333E10B00E72008 /* BitcoinScheme.swift in Sources */,
 				A29721F8211B2497007228D5 /* Math.swift in Sources */,
+				29D8F13C2334B36E00E72008 /* AddressError.swift in Sources */,
 				29290B9B210AF88C00D2BE78 /* OP_HASH160.swift in Sources */,
 				481BDCAC23320B7000FC79FC /* WordList+SimplifiedChinese.swift in Sources */,
 				0C1DE165211E75A800FE8E43 /* OP_ROLL.swift in Sources */,
@@ -1316,6 +1388,7 @@
 				141FE2E42022589E00A08B04 /* PrivateKey.swift in Sources */,
 				299CB46F20EE1EA500B1245C /* Transaction+SignatureHash.swift in Sources */,
 				294DDE49211B322E00B7F645 /* OP_ENDIF.swift in Sources */,
+				29D8F12923337DEE00E72008 /* Base58.swift in Sources */,
 				29AC9965214E8A7000AE82FE /* QRCodeConvertible.swift in Sources */,
 				0C1DD40E21181AAC004BA8A8 /* OP_NUMNOTEQUAL.swift in Sources */,
 				2914BE5A211BD0CC00B349CB /* OP_CHECKLOCKTIMEVERIFY.swift in Sources */,
@@ -1323,9 +1396,9 @@
 				29290B93210AF86400D2BE78 /* OP_0.swift in Sources */,
 				294CE2DF232CA88800922458 /* CoinType.swift in Sources */,
 				0C1DE163211E724E00FE8E43 /* OP_PICK.swift in Sources */,
+				29D8F13A2334A1A300E72008 /* BitcoinAddress+Cashaddr.swift in Sources */,
 				481BDCA623320B7000FC79FC /* WordList+English.swift in Sources */,
 				2914BE47211BAB0500B349CB /* OP_HASH256.swift in Sources */,
-				2949920020F227EB00D078B6 /* VersionByte.swift in Sources */,
 				29248EEF2104B64E00CC9051 /* ScriptChunkHelper.swift in Sources */,
 				14839A85202FE60E00A6CB34 /* InventoryMessage.swift in Sources */,
 				14839AA7202FE7C700A6CB34 /* VarInt.swift in Sources */,
@@ -1341,9 +1414,11 @@
 				14839A89202FE63400A6CB34 /* InventoryItem.swift in Sources */,
 				14CDC38C2021EF5000C01556 /* Helpers.swift in Sources */,
 				1419E83B202CDBE500FCB0BE /* BitcoinKitPrivate.m in Sources */,
+				29351DE82334EC76007CF43F /* Address.swift in Sources */,
 				481BDCA723320B7000FC79FC /* WordList+French.swift in Sources */,
 				0C1DD40C21181A40004BA8A8 /* OP_LESSTHAN.swift in Sources */,
 				147494F0201FAE30006D1CF8 /* Serialization.swift in Sources */,
+				29D8F1402334B59700E72008 /* PublicKey+Address.swift in Sources */,
 				147494E4201F9B85006D1CF8 /* Crypto.swift in Sources */,
 				0C0900422116B9DE0077E9BC /* OP_LSHIFT.swift in Sources */,
 				A2B7A34E2125464400764AE9 /* ProofOfWork.swift in Sources */,
@@ -1354,6 +1429,7 @@
 				2914BE4E211BCF7600B349CB /* OP_RESERVED.swift in Sources */,
 				14839A81202FE5CA00A6CB34 /* VerackMessage.swift in Sources */,
 				29E1ED71210EC751007F4627 /* OP_1NEGATE.swift in Sources */,
+				29D8F1382334A18200E72008 /* BitcoinAddress+Legacy.swift in Sources */,
 				294CE2EB232CE9AE00922458 /* FeeCalculator.swift in Sources */,
 				29440D17232FD1C500E99571 /* BCHSignatureHashHelper.swift in Sources */,
 				29440D1E232FF74700E99571 /* BTCSignatureHashHelper.swift in Sources */,
@@ -1379,9 +1455,10 @@
 				0C1DD41F211820BB004BA8A8 /* OP_MUL.swift in Sources */,
 				29290BA7210C01E800D2BE78 /* OP_CHECKSIGVERIFY.swift in Sources */,
 				0C1DD41A21181DDF004BA8A8 /* OP_NUMEQUALVERIFY.swift in Sources */,
+				29D8F12523337D8000E72008 /* Bech32.swift in Sources */,
 				14A2961D2032316900E19177 /* HDKeychain.swift in Sources */,
 				296ADC242112EC8C007EE5C7 /* PeerGroup.swift in Sources */,
-				14CDC38A2021881A00C01556 /* Address.swift in Sources */,
+				14CDC38A2021881A00C01556 /* BitcoinAddress.swift in Sources */,
 				29330145214F749C0028946B /* QRCodeGenerator.swift in Sources */,
 				141FE2E22022588C00A08B04 /* PublicKey.swift in Sources */,
 				0C1DE175211E816E00FE8E43 /* OP_2SWAP.swift in Sources */,
@@ -1394,10 +1471,12 @@
 				14839A9B202FE71200A6CB34 /* TransactionInput.swift in Sources */,
 				2914BE43211BAAE500B349CB /* OP_SHA256.swift in Sources */,
 				0C0900342116A53F0077E9BC /* OP_NOT.swift in Sources */,
+				29D8F12C2333B6BD00E72008 /* LegacyAddress.swift in Sources */,
 				CFA290722102B635001A1BAB /* ScriptMachine.swift in Sources */,
 				294DDE45211B31FA00B7F645 /* OP_VERNOTIF.swift in Sources */,
 				0C2375A02132431B00DB2872 /* HeadersMessage.swift in Sources */,
 				147494EE201FADAC006D1CF8 /* MurmurHash.swift in Sources */,
+				29D8F12723337D8800E72008 /* Base58Check.swift in Sources */,
 				481BDCBB233212D700FC79FC /* Mnemonic+Generate.swift in Sources */,
 				0C09002E2116A32C0077E9BC /* OP_2MUL.swift in Sources */,
 				29290B9F210AF8FD00D2BE78 /* OP_EQUAL.swift in Sources */,
@@ -1418,6 +1497,7 @@
 				0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
 				14839A8D202FE66A00A6CB34 /* PingMessage.swift in Sources */,
+				29D8F1322333BF3000E72008 /* BitcoinAddress+HashSize.swift in Sources */,
 				0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */,
 				0C1DE15D211E6EB400FE8E43 /* OP_DROP.swift in Sources */,
 				299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */,
