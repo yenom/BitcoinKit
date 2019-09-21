@@ -1709,6 +1709,7 @@
 					"$(SRCROOT)/Libraries/openssl/lib",
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
+				MARKETING_VERSION = 1.1.0;
 				MODULEMAP_FILE = "$(SRCROOT)/BitcoinKit/BitcoinKit.modulemap";
 				OTHER_SWIFT_FLAGS = "-D BitcoinKitXcode";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoinkit.BitcoinKit;
@@ -1748,6 +1749,7 @@
 					"$(SRCROOT)/Libraries/openssl/lib",
 					"$(SRCROOT)/Libraries/secp256k1/lib",
 				);
+				MARKETING_VERSION = 1.1.0;
 				MODULEMAP_FILE = "$(SRCROOT)/BitcoinKit/BitcoinKit.modulemap";
 				OTHER_SWIFT_FLAGS = "-D BitcoinKitXcode";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitcoinkit.BitcoinKit;
