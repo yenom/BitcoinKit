@@ -58,9 +58,9 @@ open class HDWallet {
     public private(set) var internalIndex: UInt32
 
     /// [Cached] Latest Address for receiving payment.
-    public var address: Address { return externalAddresses.last! }
+    public var address: BitcoinAddress { return externalAddresses.last! }
     /// [Cached] Latest Address for change output.
-    public var changeAddress: Address { return internalAddresses.last! }
+    public var changeAddress: BitcoinAddress { return internalAddresses.last! }
 
     // MARK: - Private Keys
     /// [Secret] [Cached] Private keys for external addresses (receive).
@@ -84,7 +84,7 @@ open class HDWallet {
     /// [Cached] Internal addresses for change output.
     public private(set) var internalAddresses: [BitcoinAddress]!
     /// [Cached] Addresses combined both external and internal.
-    public var addresses: [Address] { return externalAddresses + internalAddresses }
+    public var addresses: [BitcoinAddress] { return externalAddresses + internalAddresses }
 
     private init(mnemonic: [String]?,
                  seed: Data,
@@ -168,7 +168,7 @@ open class HDWallet {
     }
 
     /// [Non-Cache] Get address for index
-    public func address(index: UInt32, chain: Chain) -> Address {
+    public func address(index: UInt32, chain: Chain) -> BitcoinAddress {
         return pubKey(index: index, chain: chain).toBitcoinAddress()
     }
 

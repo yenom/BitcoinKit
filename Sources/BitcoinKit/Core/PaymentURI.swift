@@ -26,7 +26,7 @@
 import Foundation
 
 public struct PaymentURI {
-    public let address: Address
+    public let address: BitcoinAddress
     public let label: String?
     public let message: String?
     public let amount: Decimal?

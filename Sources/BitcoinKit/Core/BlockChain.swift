@@ -46,7 +46,7 @@ public class BlockChain {
         try blockStore.addTransaction(transaction, hash: hash)
     }
 
-    public func calculateBalance(address: BitcoinAddress) throws -> Int64 {
+    public func calculateBalance(address: Address) throws -> Int64 {
         return try blockStore.calculateBalance(address: address)
     }
 

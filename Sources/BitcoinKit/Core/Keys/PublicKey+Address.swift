@@ -35,11 +35,6 @@ extension PublicKey {
         return toBitcoinAddress()
     }
 
-    @available(*, deprecated, message: "toAddress() will be removed. Use toBitcoinAddress instead.")
-    public func toAddress() -> Address {
-        return toBitcoinAddress()
-    }
-
     public func toBitcoinAddress() -> BitcoinAddress {
         return try! BitcoinAddress(data: pubkeyHash, hashType: .pubkeyHash, network: network)
     }
