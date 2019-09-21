@@ -43,9 +43,10 @@ extension BitcoinAddress {
         return Bech32.encode([versionByte.rawValue] + data, prefix: scheme.rawValue)
     }
 
-    /// Creates a new Cashaddr with the bech32 encoded address with scheme The network
-    /// will be .mainnetBTC or .testnetBTC. This initializer perform prefix validation,
-    /// bech32 decode, and hash size validation.
+    /// Creates a new BitcoinAddress with the bech32 encoded address with scheme.
+    ///
+    /// The network will be .mainnetBTC or .testnetBTC. This initializer performs
+    /// prefix validation, bech32 decode, and hash size validation.
     ///
     /// ```
     /// let address = try BitcoinAddress(cashaddr: "bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
@@ -54,10 +55,10 @@ extension BitcoinAddress {
     /// - Parameter bech32: Bech32 encoded String value to use as the source of the new
     ///   instance. It must come with scheme "bitcioncash:" or "bchtest:".
     public init(cashaddr: String) throws {
+        // prefix validation and decode
         guard let decoded = Bech32.decode(cashaddr) else {
             throw AddressError.invalid
         }
-        let payload = decoded.data
 
         switch BitcoinScheme(scheme: decoded.prefix) {
         case .some(.bitcoincash):
@@ -68,6 +69,7 @@ extension BitcoinAddress {
             throw AddressError.invalidScheme
         }
 
+        let payload = decoded.data
         guard let versionByte = VersionByte(payload[0]) else {
             throw AddressError.invalidVersionByte
         }
@@ -75,6 +77,8 @@ extension BitcoinAddress {
         self.hashSize = versionByte.hashSize
 
         self.data = payload.dropFirst()
+
+        // validate data size
         guard data.count == hashSize.sizeInBytes else {
             throw AddressError.invalidVersionByte
         }

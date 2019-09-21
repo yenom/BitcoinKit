@@ -196,7 +196,7 @@
 		29D8F12C2333B6BD00E72008 /* LegacyAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12B2333B6BC00E72008 /* LegacyAddress.swift */; };
 		29D8F12E2333B6C600E72008 /* Cashaddr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12D2333B6C600E72008 /* Cashaddr.swift */; };
 		29D8F1302333BED500E72008 /* BitcoinAddress+VersionByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F12F2333BED500E72008 /* BitcoinAddress+VersionByte.swift */; };
-		29D8F1322333BF3000E72008 /* BitcoinAddress+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1312333BF3000E72008 /* BitcoinAddress+Size.swift */; };
+		29D8F1322333BF3000E72008 /* BitcoinAddress+HashSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1312333BF3000E72008 /* BitcoinAddress+HashSize.swift */; };
 		29D8F1342333E10B00E72008 /* BitcoinScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1332333E10B00E72008 /* BitcoinScheme.swift */; };
 		29D8F1382334A18200E72008 /* BitcoinAddress+Legacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1372334A18200E72008 /* BitcoinAddress+Legacy.swift */; };
 		29D8F13A2334A1A300E72008 /* BitcoinAddress+Cashaddr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F1392334A1A300E72008 /* BitcoinAddress+Cashaddr.swift */; };
@@ -474,7 +474,7 @@
 		29D8F12B2333B6BC00E72008 /* LegacyAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyAddress.swift; sourceTree = "<group>"; };
 		29D8F12D2333B6C600E72008 /* Cashaddr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cashaddr.swift; sourceTree = "<group>"; };
 		29D8F12F2333BED500E72008 /* BitcoinAddress+VersionByte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+VersionByte.swift"; sourceTree = "<group>"; };
-		29D8F1312333BF3000E72008 /* BitcoinAddress+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+Size.swift"; sourceTree = "<group>"; };
+		29D8F1312333BF3000E72008 /* BitcoinAddress+HashSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+HashSize.swift"; sourceTree = "<group>"; };
 		29D8F1332333E10B00E72008 /* BitcoinScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinScheme.swift; sourceTree = "<group>"; };
 		29D8F1372334A18200E72008 /* BitcoinAddress+Legacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+Legacy.swift"; sourceTree = "<group>"; };
 		29D8F1392334A1A300E72008 /* BitcoinAddress+Cashaddr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinAddress+Cashaddr.swift"; sourceTree = "<group>"; };
@@ -1058,7 +1058,7 @@
 				14CDC3892021881A00C01556 /* BitcoinAddress.swift */,
 				29D8F13D2334B4EE00E72008 /* BitcoinAddress+deprecated.swift */,
 				297DB97220EB12E60077EEEE /* BitcoinAddress+HashType.swift */,
-				29D8F1312333BF3000E72008 /* BitcoinAddress+Size.swift */,
+				29D8F1312333BF3000E72008 /* BitcoinAddress+HashSize.swift */,
 				29D8F12F2333BED500E72008 /* BitcoinAddress+VersionByte.swift */,
 				29D8F1372334A18200E72008 /* BitcoinAddress+Legacy.swift */,
 				29D8F1392334A1A300E72008 /* BitcoinAddress+Cashaddr.swift */,
@@ -1497,7 +1497,7 @@
 				0C09002C2116A1C30077E9BC /* OP_NEGATE.swift in Sources */,
 				1463E6B42025E9480033DAAE /* BlockStore.swift in Sources */,
 				14839A8D202FE66A00A6CB34 /* PingMessage.swift in Sources */,
-				29D8F1322333BF3000E72008 /* BitcoinAddress+Size.swift in Sources */,
+				29D8F1322333BF3000E72008 /* BitcoinAddress+HashSize.swift in Sources */,
 				0C0900362116A62E0077E9BC /* OP_0NOTEQUAL.swift in Sources */,
 				0C1DE15D211E6EB400FE8E43 /* OP_DROP.swift in Sources */,
 				299CB47320F0185500B1245C /* TransactionSignatureSerializer.swift in Sources */,

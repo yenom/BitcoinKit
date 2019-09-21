@@ -35,9 +35,10 @@ extension BitcoinAddress {
         }
     }
 
-    /// Creates a new LegacyAddress instance with Base58Check encoded address. The network
-    /// will be .mainnetBTC or .testnetBTC. This initializer perform base58check and hash
-    /// size validation.
+    /// Creates a new BitcoinAddress instance with Base58Check encoded address.
+    ///
+    /// The network will be .mainnetBTC or .testnetBTC. This initializer performs
+    /// base58check and hash size validation.
     /// ```
     /// let address = try BitcoinAddress(legacy: "1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
     /// ```
@@ -45,10 +46,13 @@ extension BitcoinAddress {
     /// - Parameter legacy: Base58Check encoded String value to use as the source of the new
     ///   instance. It must be without scheme.
     public init(legacy: String) throws {
+        // Hash size is 160 bits
+        self.hashSize = .bits160
+
+        // Base58Check decode
         guard let pubKeyHash = Base58Check.decode(legacy) else {
             throw AddressError.invalid
         }
-        self.hashSize = .bits160
 
         let networkVersionByte = pubKeyHash[0]
 
@@ -74,9 +78,7 @@ extension BitcoinAddress {
 
         self.data = pubKeyHash.dropFirst()
 
-        // cashaddr
-
-        // data is 20 byte
+        // validate data size
         guard data.count == hashSize.sizeInBytes else {
             throw AddressError.invalid
         }

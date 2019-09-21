@@ -25,11 +25,19 @@
 import Foundation
 
 extension BitcoinAddress {
-    /// Bitcoin address size. Usually it's 160 bis(20 bytes).
-    /// But more size variation were introduced in cashaddr.
+    /// An object that represents the hash size of a cashaddr.
+    ///
+    /// The 3 least significant bits of VersionByte in cashaddr are the size bits.
+    /// In most cases, the size of the hash is 160 bis, however different sizes
+    /// are also possible.
     /// https://www.bitcoincash.org/spec/cashaddr.html
     public struct HashSize {
         public let rawValue: UInt8
+        /// Creates a new HashSize instance with 3 bits value.
+        ///
+        /// Size bits are the least 3 bits of the version byte. So the rawValue
+        /// should be 0-7.
+        /// - Parameter rawValue: UInt8 value of the 3 bits.
         public init?(rawValue: UInt8) {
             guard [0, 1, 2, 3, 4, 5, 6, 7].contains(rawValue) else {
                 return nil
@@ -37,6 +45,10 @@ extension BitcoinAddress {
             self.rawValue = rawValue
         }
 
+        /// Creates a new HashSize instance with the actual size of the hash.
+        ///
+        /// The hash size in bits can be 160, 192, 224, 256, 320, 384, 448 or 512.
+        /// - Parameter sizeInBits: UInt8 value of the size of the hash in bits.
         public init?(sizeInBits: Int) {
             switch sizeInBits {
             case 160: rawValue = 0
