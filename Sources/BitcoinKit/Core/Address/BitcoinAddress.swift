@@ -46,7 +46,8 @@ public struct BitcoinAddress {
     public let hashSize: HashSize
 
     /// Creates a new BitcoinAddress instance with raw parameters.
-    /// This initializer perform hash size validation.
+    ///
+    /// This initializer performs hash size validation.
     /// ```
     /// // Initialize address from raw parameters
     /// let address = try BitcoinAddress(data: pubkeyHash,
@@ -55,9 +56,9 @@ public struct BitcoinAddress {
     /// ```
     ///
     /// - Parameters:
-    ///   - data: Hash data of public key or script
-    ///   - type: .pubkeyHash or .scriptHash
-    ///   - network: Bitcoin network .mainnetBCH or .testnetBCH is expected. But you can
+    ///   - data: The hash of public key or script
+    ///   - hashType: .pubkeyHash or .scriptHash
+    ///   - network: BitcoinCash network .mainnetBCH or .testnetBCH is expected. But you can
     ///     also use other network.
     public init(data: Data, hashType: HashType, network: Network) throws {
         guard let hashSize = HashSize(sizeInBits: data.count * 8) else {

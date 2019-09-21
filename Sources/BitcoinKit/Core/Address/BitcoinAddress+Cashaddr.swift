@@ -38,7 +38,8 @@ extension BitcoinAddress {
         case .mainnetBTC: scheme = .bitcoincash
         case .testnetBTC: scheme = .bchtest
         default:
-            fatalError("cashaddr is only supported in BitcoinCash network.")
+            assertionFailure("cashaddr is only supported for \(network).")
+            scheme = .bitcoincash
         }
         return Bech32.encode([versionByte.rawValue] + data, prefix: scheme.rawValue)
     }
