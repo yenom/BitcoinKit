@@ -86,22 +86,7 @@ open class HDWallet {
     /// [Cached] Addresses combined both external and internal.
     public var addresses: [BitcoinAddress] { return externalAddresses + internalAddresses }
 
-    private init(mnemonic: [String]?,
-                 seed: Data,
-                 externalIndex: UInt32,
-                 internalIndex: UInt32,
-                 network: Network,
-                 account: UInt32) {
-        self.mnemonic = mnemonic
-        self.seed = seed
-        self.network = network
-        self.account = account
-        self.externalIndex = externalIndex
-        self.internalIndex = internalIndex
-        self.keychain = HDKeychain(seed: seed, network: network)
-        self.rootXPrivKey = HDPrivateKey(seed: seed, network: network)
-        self.rootXPubKey = rootXPrivKey.extendedPublicKey()
-
+    private func initializeCache() {
         // Privkey cache
         self.externalPrivKeys = (0...externalIndex).map { privKey(index: $0, chain: .external) }
         self.internalPrivKeys = (0...internalIndex).map { privKey(index: $0, chain: .internal) }
@@ -115,22 +100,42 @@ open class HDWallet {
         self.internalAddresses = internalPubKeys.map { $0.toBitcoinAddress() }
     }
 
-    public convenience init(seed: Data,
-                            externalIndex: UInt32,
-                            internalIndex: UInt32,
-                            network: Network,
-                            account: UInt32 = 0) {
-        self.init(mnemonic: nil, seed: seed, externalIndex: externalIndex, internalIndex: internalIndex, network: network, account: account)
+    public init(seed: Data,
+                externalIndex: UInt32,
+                internalIndex: UInt32,
+                network: Network,
+                account: UInt32 = 0) {
+        self.mnemonic = nil
+        self.seed = seed
+        self.network = network
+        self.account = account
+        self.externalIndex = externalIndex
+        self.internalIndex = internalIndex
+        self.keychain = HDKeychain(seed: seed, network: network)
+        self.rootXPrivKey = HDPrivateKey(seed: seed, network: network)
+        self.rootXPubKey = rootXPrivKey.extendedPublicKey()
+
+        self.initializeCache()
     }
 
-    public convenience init(mnemonic: [String],
-                            passphrase: String,
-                            externalIndex: UInt32,
-                            internalIndex: UInt32,
-                            network: Network,
-                            account: UInt32 = 0) throws {
+    public init(mnemonic: [String],
+                passphrase: String,
+                externalIndex: UInt32,
+                internalIndex: UInt32,
+                network: Network,
+                account: UInt32 = 0) throws {
         let seed: Data = try Mnemonic.seed(mnemonic: mnemonic, passphrase: passphrase)
-        self.init(mnemonic: mnemonic, seed: seed, externalIndex: externalIndex, internalIndex: internalIndex, network: network, account: account)
+        self.mnemonic = mnemonic
+        self.seed = seed
+        self.network = network
+        self.account = account
+        self.externalIndex = externalIndex
+        self.internalIndex = internalIndex
+        self.keychain = HDKeychain(seed: seed, network: network)
+        self.rootXPrivKey = HDPrivateKey(seed: seed, network: network)
+        self.rootXPubKey = rootXPrivKey.extendedPublicKey()
+
+        self.initializeCache()
     }
 
     /// Create HDWallet by generating random mnemonic. Passphrase is used as salt to generate seed from the mnemonic.
