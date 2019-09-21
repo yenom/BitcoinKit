@@ -24,29 +24,40 @@
 
 import Foundation
 
-/// Version = 1 byte of 0 (zero); on the test network, this is 1 byte of 111
-/// Key hash = Version concatenated with RIPEMD-160(SHA-256(public key))
-/// Checksum = 1st 4 bytes of SHA-256(SHA-256(Key hash))
-/// Bitcoin Address = Base58Encode(Key hash concatenated with Checksum)
-/// Base58 encoding/decoding with checksum verification
+/// A set of Base58Check coding methods.
+///
 /// ```
 /// // Encode bytes to address
 /// let address = Base58Check.encode([versionByte] + pubkeyHash)
 ///
 /// // Decode address to bytes
 /// guard let payload = Base58Check.decode(address) else {
-///     // Possible cause 1: Coding format is invalid
-///     // Possible cause 2: Checksum is invalid
+///     // Invalid checksum or Base58 coding
 ///     throw SomeError()
 /// }
 /// let versionByte = payload[0]
 /// let pubkeyHash = payload.dropFirst()
 /// ```
 public struct Base58Check {
-    public static func encode(_ bytes: Data) -> String {
-        let checksum: Data = Crypto.sha256sha256(bytes).prefix(4)
-        return Base58.encode(bytes + checksum)
+    /// Encodes the data to Base58Check encoded string
+    ///
+    /// Puts checksum bytes to the original data and then, encode the combined
+    /// data to Base58 string.
+    /// ```
+    /// let address = Base58Check.encode([versionByte] + pubkeyHash)
+    /// ```
+    public static func encode(_ payload: Data) -> String {
+        let checksum: Data = Crypto.sha256sha256(payload).prefix(4)
+        return Base58.encode(payload + checksum)
     }
+
+    /// Decode the Base58 encoded String value to original payload
+    ///
+    /// First validate if checksum bytes are the first 4 bytes of the sha256(sha256(payload)).
+    /// If it's valid, returns the original payload.
+    /// ```
+    /// let payload = Base58Check.decode(base58checkText)
+    /// ```
     public static func decode(_ string: String) -> Data? {
         guard let raw = Base58.decode(string) else {
             return nil

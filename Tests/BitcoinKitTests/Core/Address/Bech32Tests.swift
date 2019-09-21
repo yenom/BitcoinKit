@@ -95,7 +95,7 @@ class Bech32Tetst: XCTestCase {
     func HexEncodesToBech32(hex: String, prefix: String, bech32: String, versionByte: UInt8) {
         //Encode
         let data = Data(hex: hex)!
-        XCTAssertEqual(Bech32.encode(Data([versionByte]) + data, prefix: prefix), bech32)
+        XCTAssertEqual(Bech32.encode(payload: Data([versionByte]) + data, prefix: prefix), bech32)
         //Decode
         let data2 = Bech32.decode(bech32)!
         XCTAssertEqual(data2.prefix, prefix)

@@ -41,7 +41,7 @@ extension BitcoinAddress {
             assertionFailure("cashaddr is only supported for \(network).")
             scheme = .bitcoincash
         }
-        return Bech32.encode([versionByte.rawValue] + data, prefix: scheme.rawValue)
+        return Bech32.encode(payload: [versionByte.rawValue] + data, prefix: scheme.rawValue)
     }
 
     /// Creates a new BitcoinAddress with the bech32 encoded address with scheme.

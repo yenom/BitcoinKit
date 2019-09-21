@@ -24,31 +24,78 @@
 
 import Foundation
 
+/// A set of Bech32 coding methods.
+///
+/// ```
+/// // Encode bytes to address
+/// let cashaddr: String = Bech32.encode(payload: [versionByte] + pubkeyHash,
+///                                      prefix: "bitcoincash")
+///
+/// // Decode address to bytes
+/// guard let payload: Data = Bech32.decode(text: address) else {
+///     // Invalid checksum or Bech32 coding
+///     throw SomeError()
+/// }
+/// let versionByte = payload[0]
+/// let pubkeyHash = payload.dropFirst()
+/// ```
 public struct Bech32 {
     internal static let base32Alphabets = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
 
-    public static func encode(_ bytes: Data, prefix: String, seperator: String = ":") -> String {
-        let payload = convertTo5bit(data: bytes, pad: true)
-        let checksum: Data = createChecksum(prefix: prefix, payload: payload) // Data of [UInt5]
-        let combined: Data = payload + checksum // Data of [UInt5]
+    /// Encodes the data to Bech32 encoded string
+    ///
+    /// Creates checksum bytes from the prefix and the payload, and then puts the
+    /// checksum bytes to the original data. Then, encode the combined data to
+    /// Base32 string. At last, returns the combined string of prefix, separator
+    /// and the encoded base32 text.
+    /// ```
+    /// let address = Base58Check.encode(payload: [versionByte] + pubkeyHash,
+    ///                                  prefix: "bitcoincash")
+    /// ```
+    /// - Parameters:
+    ///   - payload: The data to encode
+    ///   - prefix: The prefix of the encoded text. It is also used to create checksum.
+    ///   - separator: separator that separates prefix and Base32 encoded text
+    public static func encode(payload: Data, prefix: String, separator: String = ":") -> String {
+        let payloadUint5 = convertTo5bit(data: payload, pad: true)
+        let checksumUint5: Data = createChecksum(prefix: prefix, payload: payloadUint5) // Data of [UInt5]
+        let combined: Data = payloadUint5 + checksumUint5 // Data of [UInt5]
         var base32 = ""
         for b in combined {
             let index = String.Index(utf16Offset: Int(b), in: base32Alphabets)
             base32 += String(base32Alphabets[index])
         }
 
-        return prefix + seperator + base32
+        return prefix + separator + base32
     }
 
-    // string : "bitcoincash:qql8zpwglr3q5le9jnjxkmypefaku39dkygsx29fzk"
-    public static func decode(_ string: String, seperator: String = ":") -> (prefix: String, data: Data)? {
+    @available(*, unavailable, renamed: "encode(payload:prefix:separator:)")
+    public static func encode(_ bytes: Data, prefix: String, seperator: String = ":") -> String {
+        return encode(payload: bytes, prefix: prefix, separator: seperator)
+    }
+
+    /// Decodes the Bech32 encoded string to original payload
+    ///
+    /// ```
+    /// // Decode address to bytes
+    /// guard let payload: Data = Bech32.decode(text: address) else {
+    ///     // Invalid checksum or Bech32 coding
+    ///     throw SomeError()
+    /// }
+    /// let versionByte = payload[0]
+    /// let pubkeyHash = payload.dropFirst()
+    /// ```
+    /// - Parameters:
+    ///   - string: The data to encode
+    ///   - separator: separator that separates prefix and Base32 encoded text
+    public static func decode(_ string: String, separator: String = ":") -> (prefix: String, data: Data)? {
         // We can't have empty string.
         // Bech32 should be uppercase only / lowercase only.
         guard !string.isEmpty && [string.lowercased(), string.uppercased()].contains(string) else {
             return nil
         }
 
-        let components = string.components(separatedBy: seperator)
+        let components = string.components(separatedBy: separator)
         // We can only handle string contains both scheme and base32
         guard components.count == 2 else {
             return nil
@@ -75,6 +122,10 @@ public struct Bech32 {
             return nil
         }
         return (prefix, Data(bytes))
+    }
+    @available(*, unavailable, renamed: "decode(string:separator:)")
+    public static func decode(_ string: String, seperator: String = ":") -> (prefix: String, data: Data)? {
+        return decode(string, separator: seperator)
     }
 
     internal static func verifyChecksum(prefix: String, payload: Data) -> Bool {
