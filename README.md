@@ -43,88 +43,6 @@ Features
   - Send/receive transactions.
   - See current balance in a wallet.
 
-Usage
------
-
-#### Generate addresses
-```swift
-// from Testnet Cashaddr
-let cashaddrTest = try AddressFactory.create("bchtest:pr6m7j9njldwwzlg9v7v53unlr4jkmx6eyvwc0uz5t")
-
-// from Mainnet Cashaddr
-let cashaddrMain = try AddressFactory.create("bitcoincash:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd525rss978")
-
-// from Base58 format
-let address = try AddressFactory.create("1AC4gh14wwZPULVPCdxUkgqbtPvC92PQPN")
-```
-
-#### Creating new wallet
-
-```swift
-let privateKey = PrivateKey(network: .testnet) // You can choose .mainnet or .testnet
-let wallet = Wallet(privateKey: privateKey)
-```
-
-#### Import wallet from WIF
-
-```swift
-let wallet = try Wallet(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
-```
-
-#### Hierarchical Deterministic Wallet
-
-```swift
-// Generate mnemonic
-let mnemonic = try Mnemonic.generate()
-
-// Generate seed from the mnemonic
-let seed = Mnemonic.seed(mnemonic: mnemonic)
-
-let wallet = HDWallet(seed: seed, network: .testnet)
-```
-
-#### Key derivation
-
-```swift
-let mnemonic = try Mnemonic.generate()
-let seed = Mnemonic.seed(mnemonic: mnemonic)
-
-let privateKey = HDPrivateKey(seed: seed, network: .testnet)
-
-// m/0'
-let m0prv = try! privateKey.derived(at: 0, hardened: true)
-
-// m/0'/1
-let m01prv = try! m0prv.derived(at: 1)
-
-// m/0'/1/2'
-let m012prv = try! m01prv.derived(at: 2, hardened: true)
-```
-
-#### HD Wallet Key derivation
-
-```swift
-let keychain = HDKeychain(seed: seed, network: .mainnet)
-let privateKey = try! keychain.derivedKey(path: "m/44'/1'/0'/0/0")
-```
-
-#### Extended Keys
-
-```swift
-let extendedKey = privateKey.extended()
-```
-
-#### Sync blockchain
-
-```swift
-let blockStore = try! SQLiteBlockStore.default()
-let blockChain = BlockChain(network: .testnet, blockStore: blockStore)
-
-let peerGroup = PeerGroup(blockChain: blockChain)
-let peerGroup.delegate = self
-
-let peerGroup.start()
-```
 
 Requirements
 ------------
@@ -132,12 +50,11 @@ Requirements
 - Xcode 10.0+
 - Swift 5.0+
 
+
 Installation
 ------------
 
-### CocoaPods
-
-[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
 
 ```bash
 $ gem install cocoapods
@@ -149,11 +66,11 @@ To integrate BitcoinKit into your Xcode project using CocoaPods, specify it in y
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '10.0'
+platform :ios, '13.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'BitcoinKit'
+    pod 'BitcoinKit', '~> 1.1.0'
 end
 ```
 
@@ -162,33 +79,22 @@ Then, run the following command:
 $ pod install
 ```
 
-### Carthage
-
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
-
-You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
-
-```bash
-$ brew update
-$ brew install carthage
-```
-
-To integrate BitcoinKit into your Xcode project using Carthage, specify it in your `Cartfile`:
+### [Carthage](https://github.com/Carthage/Carthage)
+Add this to `Cartfile`
 
 ```ogdl
-github "yenom/BitcoinKit"
+github "yenom/BitcoinKit" ~> 1.1.0
 ```
 
 Run `carthage update` to build the framework and drag the built `BitcoinKit.framework` into your Xcode project.
 
 
-### Swift Package Manager
+### [Swift Package Manager](https://github.com/apple/swift-package-manager)
 
-BitcoinKit is available through [Swift Package Manager](https://github.com/apple/swift-package-manager). To install
-it, simply add the following lines to dependencies of your Package.swift:
+Simply add the following lines to dependencies of your Package.swift:
 
 ```swift
-.package(url: "https://github.com/yenom/BitcoinKit.git", .upToNextMinor(from: "1.0.0"))
+.package(url: "https://github.com/yenom/BitcoinKit.git", .upToNextMinor(from: "1.1.0"))
 ```
 
 Note that following data types and features are currently not supported on Linux platform.  
@@ -203,7 +109,6 @@ Feel free to open issues, drop us pull requests.
 
 ## Authors & Maintainers
  - [usatie](https://github.com/usatie)
- - [akifuji](https://github.com/akifuj)
 
  ## About
 
