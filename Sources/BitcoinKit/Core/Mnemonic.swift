@@ -84,6 +84,18 @@ public struct Mnemonic {
         let seed = _Key.deriveKey(mnemonic, salt: salt, iterations: 2048, keyLength: 64)
         return seed
     }
+    
+    public static func validateMnemonicWords(_ mnemonic: [String]) -> Bool {
+        let mnemonicSet = Set(mnemonic)
+        for lang in Language.allCases {
+            let wordSet = Set(wordList(for: lang).map(String.init))
+            if mnemonicSet.isSubset(of: wordSet) {
+                return true
+            }
+            continue
+        }
+        return false
+    }
 
     private static func wordList(for language: Language) -> [String.SubSequence] {
         switch language {
