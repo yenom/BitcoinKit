@@ -39,7 +39,7 @@ public struct Mnemonic {
         case veryHigh = 256
     }
 
-    public enum Language {
+    public enum Language: CaseIterable {
         case english
         case japanese
         case korean
