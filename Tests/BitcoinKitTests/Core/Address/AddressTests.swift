@@ -86,6 +86,18 @@ class AddressTests: XCTestCase {
         XCTAssertEqual("\(addressFromFormattedAddress!)", "bchtest:qq498xkl67h0espwqxttfn8hdt4g3g05wqtqeyg993")
     }
     
+    func testMainnetSlpaddr() {
+        let privateKey = try! PrivateKey(wif: "5K6EwEiKWKNnWGYwbNtrXjA8KKNntvxNKvepNqNeeLpfW7FSG1v")
+        let publicKey = privateKey.publicKey()
+        let addressFromPublicKey = publicKey.toSlpaddr()
+        XCTAssertEqual("\(addressFromPublicKey)", "simpleledger:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd5x0gt99qe")
+        
+        let addressFromFormattedAddress = try?
+            SimpleLedgerAddress("simpleledger:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd5x0gt99qe")
+        XCTAssertNotNil(addressFromFormattedAddress)
+        XCTAssertEqual("\(addressFromFormattedAddress!)", "simpleledger:qpjdpjrm5zvp2al5u4uzmp36t9m0ll7gd5x0gt99qe")
+    }
+    
     func testInvalidChecksumCashaddr() {
         // invalid address
         do {

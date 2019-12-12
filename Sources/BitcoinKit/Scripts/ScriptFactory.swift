@@ -55,6 +55,7 @@ public extension ScriptFactory.Standard {
     static func buildMultiSig(publicKeys: [PublicKey]) -> Script? {
         return Script(publicKeys: publicKeys, signaturesRequired: UInt(publicKeys.count))
     }
+    
     static func buildMultiSig(publicKeys: [PublicKey], signaturesRequired: UInt) -> Script? {
         return Script(publicKeys: publicKeys, signaturesRequired: signaturesRequired)
     }

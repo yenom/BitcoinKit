@@ -46,6 +46,39 @@ public struct PublicKey {
         let header = data[0]
         self.isCompressed = (header == 0x02 || header == 0x03)
     }
+
+    /// Version = 1 byte of 0 (zero); on the test network, this is 1 byte of 111
+    /// Key hash = Version concatenated with RIPEMD-160(SHA-256(public key))
+    /// Checksum = 1st 4 bytes of SHA-256(SHA-256(Key hash))
+    /// Bitcoin Address = Base58Encode(Key hash concatenated with Checksum)
+    private func base58() -> String {
+        let versionByte: Data = Data([network.pubkeyhash])
+        return publicKeyHashToAddress(versionByte + pubkeyHash)
+    }
+
+    private func bech32() -> String {
+        let versionByte: Data = Data([VersionByte.pubkeyHash160])
+        return Bech32.encode(versionByte + pubkeyHash, prefix: network.scheme)
+    }
+    
+    private func bech32Slp() -> String {
+        let versionByte: Data = Data([VersionByte.pubkeyHash160])
+        let slpPrefix = network is Mainnet ? "simpleledger" : "slptest"
+        
+        return Bech32.encode(versionByte + pubkeyHash, prefix: slpPrefix)
+    }
+
+    public func toLegacy() -> LegacyAddress {
+        return LegacyAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32Slp(), publicKey: data)
+    }
+
+    public func toCashaddr() -> Cashaddr {
+        return Cashaddr(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32Slp(), publicKey: data)
+    }
+    
+    public func toSlpaddr() -> SimpleLedgerAddress {
+        return SimpleLedgerAddress(data: pubkeyHash, type: .pubkeyHash, network: network, base58: base58(), cashaddr: bech32(), slpaddr: bech32Slp(), publicKey: data)
+    }
 }
 
 extension PublicKey: Equatable {

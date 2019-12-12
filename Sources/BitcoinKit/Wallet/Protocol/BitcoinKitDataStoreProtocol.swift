@@ -1,5 +1,5 @@
 //
-//  AddressFactory.swift
+//  BitcoinKitDataStoreProtocol.swift
 //
 //  Copyright © 2018 BitcoinKit developers
 //
@@ -24,19 +24,29 @@
 
 import Foundation
 
-@available(*, deprecated, message: "AddressFactory will be removed in ver. 2.0.0. Use BitcoinAddress.init(legacy:) or BitcoinAddress.init(cashaddr:) instead.")
-public struct AddressFactory {
-    public static func create(_ plainAddress: String) throws -> Address {
-        do {
-            return try Cashaddr(plainAddress)
-        } catch AddressError.invalidVersionByte {
-            throw AddressError.invalidVersionByte
-        } catch AddressError.invalidScheme {
-            return try SimpleLedgerAddress(plainAddress)
-        } catch AddressError.invalid {
-            return try BitcoinAddress(legacy: plainAddress)
-        } catch let e {
-            throw e
-        }
+// MARK: - BitcoinKitDataStoreProtocol
+public protocol BitcoinKitDataStoreProtocol {
+    func getString(forKey key: String) -> String?
+    func setString(_ value: String, forKey key: String)
+    func getData(forKey key: String) -> Data?
+    func setData(_ value: Data, forKey key: String)
+}
+
+internal enum DataStoreKey: String {
+    case wif, utxos, transactions
+}
+
+internal extension BitcoinKitDataStoreProtocol {
+    func getString(forKey key: DataStoreKey) -> String? {
+        return getString(forKey: key.rawValue)
+    }
+    func setString(_ value: String, forKey key: DataStoreKey) {
+        setString(value, forKey: key.rawValue)
+    }
+    func getData(forKey key: DataStoreKey) -> Data? {
+        return getData(forKey: key.rawValue)
+    }
+    func setData(_ value: Data, forKey key: DataStoreKey) {
+        setData(value, forKey: key.rawValue)
     }
 }

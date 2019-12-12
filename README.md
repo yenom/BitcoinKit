@@ -34,7 +34,7 @@ Release notes are [here](CHANGELOG.md).
 Features
 --------
 
-- Encoding/decoding addresses: base58, Cashaddr, P2PKH, P2SH, WIF format.
+- Encoding/decoding addresses: base58, Cashaddr, SLP, P2PKH, P2SH, WIF format.
 - Transaction building blocks: inputs, outputs, scripts.
 - EC keys and signatures.
 - BIP32, BIP44 hierarchical deterministic wallets.
@@ -65,6 +65,7 @@ $ gem install cocoapods
 To integrate BitcoinKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
+source 'https://github.com/Bitcoin-com/CocoaPods.git'
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '13.0'
 use_frameworks!
@@ -86,9 +87,6 @@ Add this to `Cartfile`
 github "yenom/BitcoinKit" ~> 1.1.0
 ```
 
-Run `carthage update` to build the framework and drag the built `BitcoinKit.framework` into your Xcode project.
-
-
 ### [Swift Package Manager](https://github.com/apple/swift-package-manager)
 
 Simply add the following lines to dependencies of your Package.swift:
@@ -107,15 +105,13 @@ Contribute
 Contributions to BitcoinKit are welcome and encouraged!
 Feel free to open issues, drop us pull requests.
 
-## Authors & Maintainers
+## Authors
+ - Kishikawa Katsumi
  - [usatie](https://github.com/usatie)
 
  ## About
 
- <img width=220 src="https://user-images.githubusercontent.com/24402451/44437525-9169ca00-a5f5-11e8-8a77-9c1b906fb864.jpg"></img>
-
- BitcoinKit is maintained and funded by Yenom.
- Visit our [website](https://yenom.tech) or say hi on twitter ([@Yenom_wallet_en](https://twitter.com/Yenom_wallet_en))
+ Visit our [website](https://bitcoin.com) or on twitter ([@BitcoinCom](https://twitter.com/BitcoinCom))
 
 License
 -------
@@ -125,29 +121,7 @@ BitcoinKit is available under the MIT license. See the LICENSE file for more inf
 ## Contributors
 
 This project exists thanks to all the people who contribute. 
-<a href="graphs/contributors"><img src="https://opencollective.com/BitcoinKit/contributors.svg?width=890&button=false" /></a>
+<a href="graphs/contributors">See the contributors</a>
 
-
-## Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/BitcoinKit#backer)]
-
-<a href="https://opencollective.com/BitcoinKit#backers" target="_blank"><img src="https://opencollective.com/BitcoinKit/backers.svg?width=890"></a>
-
-
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/BitcoinKit#sponsor)]
-
-<a href="https://opencollective.com/BitcoinKit/sponsor/0/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/1/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/2/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/3/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/4/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/5/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/6/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/7/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/8/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/BitcoinKit/sponsor/9/website" target="_blank"><img src="https://opencollective.com/BitcoinKit/sponsor/9/avatar.svg"></a>
 
 
