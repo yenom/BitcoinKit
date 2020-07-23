@@ -44,7 +44,7 @@ public class PeerGroup: PeerDelegate {
     public func start() {
         let network = blockChain.network
         for _ in peers.count..<maxConnections {
-            let peer = Peer(host: network.dnsSeeds[1], network: network)
+            let peer = Peer(network: network)
             peer.delegate = self
             peer.connect()
 
