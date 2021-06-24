@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 
-SCRIPT_DIR="`pwd`/`dirname $0`"
+SCRIPT_DIR="`dirname $0`"
 OPENSSL_VERSION=1.0.2n
 
 TDIR=`mktemp -d`
@@ -17,12 +17,18 @@ cd openssl-$OPENSSL_VERSION
 sh "$SCRIPT_DIR/build_crypto_impl.sh" iphoneos arm64
 sh "$SCRIPT_DIR/build_crypto_impl.sh" iphoneos armv7s
 sh "$SCRIPT_DIR/build_crypto_impl.sh" iphoneos armv7
+sh "$SCRIPT_DIR/build_crypto_impl.sh" iphonesimulator i386
+sh "$SCRIPT_DIR/build_crypto_impl.sh" iphonesimulator x86_64
+
+
 
 
 mkdir -p "$SCRIPT_DIR/../Libraries/openssl/lib"
 xcrun lipo -create .build/iphoneos/arm64/libcrypto.a \
                    .build/iphoneos/armv7s/libcrypto.a \
                    .build/iphoneos/armv7/libcrypto.a \
+                   .build/iphonesimulator/x86_64/libcrypto.a \
+                   .build/iphonesimulator/i386/libcrypto.a \
                    -o "$SCRIPT_DIR/../Libraries/openssl/lib/libcrypto.a"
 cp -rf $TDIR/openssl-$OPENSSL_VERSION/include "$SCRIPT_DIR/../Libraries/openssl/"
 
