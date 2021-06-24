@@ -9,7 +9,7 @@ trap "{ cd - ; rm -rf $TDIR; exit 255; }" SIGINT
 
 cd $TDIR
 
-curl -O https://www.openssl.org/source/old/1.0.2/openssl-$OPENSSL_VERSION.tar.gz
+curl -O https://www.openssl.org/source/old/3.0/openssl-$OPENSSL_VERSION.tar.gz
 tar zxf openssl-$OPENSSL_VERSION.tar.gz
 
 cd openssl-$OPENSSL_VERSION
